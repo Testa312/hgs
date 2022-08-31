@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\freesteam-2.1\b23.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\backwards.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\bounds.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\common.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\derivs.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\region1.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\region2.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\region3.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\region4.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\solver2.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\steam.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\steam_ph.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\steam_ps.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\steam_pT.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\steam_pu.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\steam_pv.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\steam_Ts.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\steam_Tx.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\surftens.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\thcond.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\viscosity.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\zeroin.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\freesteam-2.1\b23.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\backwards.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\backwards_impl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\bounds.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\common.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\compat.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\config.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\derivs.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\region1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\region2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\region3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\region4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\solver2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\steam.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\steam_ph.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\steam_ps.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\steam_pT.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\steam_pu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\steam_pv.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\steam_Ts.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\steam_Tx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\surftens.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\thcond.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\viscosity.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freesteam-2.1\zeroin.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

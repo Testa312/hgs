@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug-DLL|Win32">
+      <Configuration>Debug-DLL</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug-StaticLib|Win32">
+      <Configuration>Debug-StaticLib</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release-DLL|Win32">
+      <Configuration>Release-DLL</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release-StaticLib|Win32">
+      <Configuration>Release-StaticLib</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0ACBA07B-CEB6-4620-B6B4-E8D274C3BA14}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>freesteam</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-StaticLib|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-DLL|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-StaticLib|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-DLL|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug-StaticLib|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug-DLL|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release-StaticLib|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release-DLL|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug-StaticLib|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\GnuWin32\include</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <CallingConvention>StdCall</CallingConvention>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug-DLL|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\GnuWin32\include</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <CallingConvention>StdCall</CallingConvention>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\gsllib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libgsl_d.lib;libgslcblas_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>$(TargetDir)$(ProjectName)_d_dll.lib</ImportLibrary>
+      <OutputFile>$(OutDir)$(TargetName)_d$(TargetExt)</OutputFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release-StaticLib|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <AdditionalIncludeDirectories>..\..\GnuWin32\include</AdditionalIncludeDirectories>
+      <CallingConvention>StdCall</CallingConvention>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>libgsl.lib;libgslcblas.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>F:\工作用程序\freesteam\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release-DLL|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <AdditionalIncludeDirectories>..\..\GnuWin32\include</AdditionalIncludeDirectories>
+      <CallingConvention>StdCall</CallingConvention>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>libgsl.lib;libgslcblas.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\gsllib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ImportLibrary>$(TargetDir)$(ProjectName)_dll.lib</ImportLibrary>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <ModuleDefinitionFile>freesteam.def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\freesteam-2.1\b23.c" />
+    <ClCompile Include="..\freesteam-2.1\backwards.c" />
+    <ClCompile Include="..\freesteam-2.1\bounds.c" />
+    <ClCompile Include="..\freesteam-2.1\common.c" />
+    <ClCompile Include="..\freesteam-2.1\derivs.c" />
+    <ClCompile Include="..\freesteam-2.1\region1.c" />
+    <ClCompile Include="..\freesteam-2.1\region2.c" />
+    <ClCompile Include="..\freesteam-2.1\region3.c" />
+    <ClCompile Include="..\freesteam-2.1\region4.c" />
+    <ClCompile Include="..\freesteam-2.1\solver2.c" />
+    <ClCompile Include="..\freesteam-2.1\steam.c" />
+    <ClCompile Include="..\freesteam-2.1\steam_ph.c" />
+    <ClCompile Include="..\freesteam-2.1\steam_ps.c" />
+    <ClCompile Include="..\freesteam-2.1\steam_pT.c" />
+    <ClCompile Include="..\freesteam-2.1\steam_pu.c" />
+    <ClCompile Include="..\freesteam-2.1\steam_pv.c" />
+    <ClCompile Include="..\freesteam-2.1\steam_Ts.c" />
+    <ClCompile Include="..\freesteam-2.1\steam_Tx.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug-StaticLib|Win32'">F:\工作用程序\freesteam\GnuWin32\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug-DLL|Win32'">F:\工作用程序\freesteam\GnuWin32\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release-StaticLib|Win32'">F:\工作用程序\freesteam\GnuWin32\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release-DLL|Win32'">F:\工作用程序\freesteam\GnuWin32\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug-StaticLib|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug-DLL|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release-StaticLib|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release-DLL|Win32'">NotUsing</PrecompiledHeader>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug-StaticLib|Win32'">CompileAsCpp</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug-DLL|Win32'">CompileAsCpp</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release-StaticLib|Win32'">CompileAsCpp</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release-DLL|Win32'">CompileAsCpp</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\freesteam-2.1\surftens.c" />
+    <ClCompile Include="..\freesteam-2.1\thcond.c" />
+    <ClCompile Include="..\freesteam-2.1\viscosity.c" />
+    <ClCompile Include="..\freesteam-2.1\zeroin.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\freesteam-2.1\b23.h" />
+    <ClInclude Include="..\freesteam-2.1\backwards.h" />
+    <ClInclude Include="..\freesteam-2.1\backwards_impl.h" />
+    <ClInclude Include="..\freesteam-2.1\bounds.h" />
+    <ClInclude Include="..\freesteam-2.1\common.h" />
+    <ClInclude Include="..\freesteam-2.1\compat.h" />
+    <ClInclude Include="..\freesteam-2.1\config.h" />
+    <ClInclude Include="..\freesteam-2.1\derivs.h" />
+    <ClInclude Include="..\freesteam-2.1\region1.h" />
+    <ClInclude Include="..\freesteam-2.1\region2.h" />
+    <ClInclude Include="..\freesteam-2.1\region3.h" />
+    <ClInclude Include="..\freesteam-2.1\region4.h" />
+    <ClInclude Include="..\freesteam-2.1\solver2.h" />
+    <ClInclude Include="..\freesteam-2.1\steam.h" />
+    <ClInclude Include="..\freesteam-2.1\steam_ph.h" />
+    <ClInclude Include="..\freesteam-2.1\steam_ps.h" />
+    <ClInclude Include="..\freesteam-2.1\steam_pT.h" />
+    <ClInclude Include="..\freesteam-2.1\steam_pu.h" />
+    <ClInclude Include="..\freesteam-2.1\steam_pv.h" />
+    <ClInclude Include="..\freesteam-2.1\steam_Ts.h" />
+    <ClInclude Include="..\freesteam-2.1\steam_Tx.h" />
+    <ClInclude Include="..\freesteam-2.1\surftens.h" />
+    <ClInclude Include="..\freesteam-2.1\thcond.h" />
+    <ClInclude Include="..\freesteam-2.1\viscosity.h" />
+    <ClInclude Include="..\freesteam-2.1\zeroin.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
