@@ -15,8 +15,8 @@ namespace HGS
 {
     public partial class FormSisPointList : Form
     {
-        OPAPI.Connect sisconn = new OPAPI.Connect(Pref.GetInstance().sisHost, Pref.GetInstance().sisPort, 60, 
-            Pref.GetInstance().sisUser, Pref.GetInstance().sisPassword);//建立连接
+        OPAPI.Connect sisconn = new OPAPI.Connect(Pref.GetInst().sisHost, Pref.GetInst().sisPort, 60, 
+            Pref.GetInst().sisUser, Pref.GetInst().sisPassword);//建立连接
         public HashSet<int> onlysisid;
         public FormSisPointList()
         {
@@ -110,8 +110,8 @@ namespace HGS
                     item.SubItems[4].Text = resultSet.getString(2);
                     item.SubItems[5].Text = resultSet.getString(3);
                     itemtag it = new itemtag();
-                    it.sisID = id;
-                    it.FM = resultSet.getInt(6);
+                    it.sisid = id;
+                    it.fm = (byte)resultSet.getInt(6);
                     item.Tag = it;                   
                     total++;
                 }
@@ -142,9 +142,9 @@ namespace HGS
             {
                 if (glacialList.IsItemVisible(item))
                 {
-                    sbid.Append(((itemtag)item.Tag).sisID.ToString());
+                    sbid.Append(((itemtag)item.Tag).sisid.ToString());
                     sbid.Append(",");
-                    dic.Add(((itemtag)item.Tag).sisID.ToString(), item);
+                    dic.Add(((itemtag)item.Tag).sisid.ToString(), item);
                     flag = true;
                     continue;
                 }
@@ -165,7 +165,7 @@ namespace HGS
                 {
                     string colValue = resultSet.getInt(0).ToString();//获取第i列值
                     GLItem item = dic[colValue];
-                    item.SubItems[3].Text = Math.Round(resultSet.getDouble(3), ((itemtag)item.Tag).FM).ToString();
+                    item.SubItems[3].Text = Math.Round(resultSet.getDouble(3), ((itemtag)item.Tag).fm).ToString();
                     short ds = resultSet.getShort(2);
                     if ((ds & gb1) == 0)
                     {

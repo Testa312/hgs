@@ -13,24 +13,17 @@ namespace HGS
 {
     public partial class FormPointSet : Form
     {
-        OPAPI.Connect sisconn = new OPAPI.Connect(Pref.GetInstance().sisHost, Pref.GetInstance().sisPort, 60,
-           Pref.GetInstance().sisUser, Pref.GetInstance().sisPassword);//建立连接
-
+        OPAPI.Connect sisconn = new OPAPI.Connect(Pref.GetInst().sisHost, Pref.GetInst().sisPort, 60,
+           Pref.GetInst().sisUser, Pref.GetInst().sisPassword);//建立连接
+        Dictionary<GLItem, point> dic_glItemNew = new Dictionary<GLItem, point>();
+        //Dictionary<GLItem, point> dic_glItemModified = new Dictionary<GLItem, point>();
+        //HashSet<GLItem> hs_glItemNew = new HashSet<GLItem>();
+        HashSet<GLItem> hs_glItemModified = new HashSet<GLItem>();
         HashSet<int> onlysisid = new HashSet<int>();
-
         public FormPointSet()
         {
             InitializeComponent();
             glacialLisint();
-        }
-        private string getsid(pointsrc cc, long id)
-        {
-            switch (cc)
-            {
-                case pointsrc.sis: return "S" + id.ToString();
-                case pointsrc.calc: return "C" + id.ToString(); ;
-                default: throw new Exception("点计算优先级错误！"); ;
-            }
         }
         private void glacialLisint()
         {
@@ -57,13 +50,23 @@ namespace HGS
                 itemn.SubItems[9].Text = Point.hl.ToString();
                 itemn.SubItems[10].Text = Point.zl.ToString();
                 itemn.SubItems[11].Text = Point.zh.ToString();
-                it.sisID = Point.id_sis;
+                it.sisid = Point.id_sis;
+                it.fm = Point.fm;
+                it.PointSrc = Point.pointsrc;
 
                 //Point.poitsrc = it.PointSrc = (pointsrc)pgreader.GetInt32(pgreader.GetOrdinal("pointsrc"));
                 if (Point.pointsrc == pointsrc.sis)
-                    onlysisid.Add(it.sisID);//唯一性
+                {
+                    onlysisid.Add(it.sisid);//唯一性
+                    itemn.SubItems[13].Text = Point.isalarm ? Pref.GetInst().strOk : Pref.GetInst().strNo;
+                }
+                else
+                {
+                    itemn.SubItems[13].Text = Point.isalarm ? Pref.GetInst().strOk : Pref.GetInst().strNo;
+                    itemn.SubItems[14].Text = Point.iscalc ? Pref.GetInst().strOk : Pref.GetInst().strNo;
+                }
 
-                itemn.SubItems[0].Text = getsid(Point.pointsrc, it.id);
+                itemn.SubItems[0].Text = Pref.GetInst().GetVarName(Point);
 
                 itemn.Tag = it;
             }
@@ -79,7 +82,7 @@ namespace HGS
                 toolStripButtonFind.Enabled = fspl.glacialList.SelectedItems.Count == 0;
                 foreach (GLItem item in fspl.glacialList.SelectedItems)
                 {
-                    if (!onlysisid.Contains(((itemtag)(item.Tag)).sisID))
+                    if (!onlysisid.Contains(((itemtag)(item.Tag)).sisid))
                     {
                         point Point = new point();
                         GLItem itemn;
@@ -89,13 +92,24 @@ namespace HGS
                         Point.pn = itemn.SubItems[2].Text = item.SubItems[1].Text;
                         Point.ed = itemn.SubItems[5].Text = item.SubItems[6].Text;
                         Point.eu = itemn.SubItems[4].Text = item.SubItems[4].Text;
-                        itemn.Tag = item.Tag;
-                        ((itemtag)(itemn.Tag)).isNew = true;
-                        //((itemtag)(itemn.Tag)).ownerid = 1;//所有人
-                        //((itemtag)(itemn.Tag)).PointSrc = pointsrc.sis;
-                        Point.id_sis = ((itemtag)(itemn.Tag)).sisID;
+                        Point.id_sis = ((itemtag)(item.Tag)).sisid;
+
                         onlysisid.Add(Point.id_sis);
-                        Data.Get().Add(Point);
+                   
+                        Point.id = Data.Get().GetNextPointID();
+
+                        Point.pointsrc = pointsrc.sis;
+                        Point.ownerid = Pref.GetInst().Owner;
+                        itemn.SubItems[0].Text = Pref.GetInst().GetVarName(Point);
+                        //
+                        itemtag it = new itemtag();
+                        itemn.Tag = it;
+                        //it.isNew = true;
+                        it.fm = ((itemtag)(item.Tag)).fm;
+                        //it.Point = Point;
+                        it.sisid = Point.id_sis;
+                        //Data.Get().Add(Point);
+                        dic_glItemNew.Add(item,Point);
                     }
                     else 
                     {
@@ -118,13 +132,13 @@ namespace HGS
                         foreach (GLItem item in glacialList1.SelectedItems)
                         {
                             itemtag it = (itemtag)item.Tag;
-                            point pt = Data.Get().cd_Point[it.id];
+                            point pt = dic_glItemNew.ContainsKey(item) ? dic_glItemNew[item] : Data.Get().cd_Point[it.id];
                             if (textBoxTV.Text.Length > 0) pt.tv = double.Parse(textBoxTV.Text); else pt.tv = null;
-                            if (textBoxBV.Text.Length > 0) pt.tv = double.Parse(textBoxBV.Text); else pt.tv = null;
-                            if (textBoxTV.Text.Length > 0) pt.tv = double.Parse(textBoxLL.Text); else pt.tv = null;
-                            if (textBoxTV.Text.Length > 0) pt.tv = double.Parse(textBoxHL.Text); else pt.tv = null;
-                            if (textBoxTV.Text.Length > 0) pt.tv = double.Parse(textBoxZL.Text); else pt.tv = null;
-                            if (textBoxTV.Text.Length > 0) pt.tv = double.Parse(textBoxZH.Text); else pt.tv = null;
+                            if (textBoxBV.Text.Length > 0) pt.bv = double.Parse(textBoxBV.Text); else pt.bv = null;
+                            if (textBoxLL.Text.Length > 0) pt.ll = double.Parse(textBoxLL.Text); else pt.ll = null;
+                            if (textBoxHL.Text.Length > 0) pt.hl = double.Parse(textBoxHL.Text); else pt.hl = null;
+                            if (textBoxZL.Text.Length > 0) pt.zl = double.Parse(textBoxZL.Text); else pt.zl = null;
+                            if (textBoxZH.Text.Length > 0) pt.zh = double.Parse(textBoxZH.Text); else pt.zh = null;
                         
                             item.SubItems[6].Text = textBoxTV.Text;
                             item.SubItems[7].Text = textBoxBV.Text;
@@ -132,9 +146,22 @@ namespace HGS
                             item.SubItems[9].Text = textBoxHL.Text;
                             item.SubItems[10].Text = textBoxZL.Text;
                             item.SubItems[11].Text = textBoxZH.Text;
-                            pt.isalarm = checkBoxAlarm.Checked; 
+                            pt.isalarm = checkBoxAlarm.Checked;
+                            if (pt.pointsrc == pointsrc.sis)
+                            {
+                                item.SubItems[13].Text = pt.isalarm ? Pref.GetInst().strOk : Pref.GetInst().strNo;
+                            }
+                            else
+                            {
+                                item.SubItems[13].Text = pt.isalarm ? Pref.GetInst().strOk : Pref.GetInst().strNo;
+                                item.SubItems[14].Text = pt.iscalc ? Pref.GetInst().strOk : Pref.GetInst().strNo;
+                            }
+                            //glItemModified.Add(item);
+                            if (!dic_glItemNew.ContainsKey(item))
+                                hs_glItemModified.Add(item);
+
                         }
-                        toolStripButtonFind.Enabled = glacialList1.SelectedItems.Count == 0;
+                        toolStripButtonFind.Enabled = glc == 0;
                     }                  
                 }
                 catch (Exception ee)
@@ -147,7 +174,18 @@ namespace HGS
         {
             try
             {
+                foreach(GLItem item in hs_glItemModified)
+                {
+                    Data.Get().Update(Data.Get().cd_Point[((itemtag)(item.Tag)).id]);
+                }
+                foreach(point pt in dic_glItemNew.Values)
+                {
+                    Data.Get().Add(pt);
+                }
                 Data.Get().SavetoPG();
+                hs_glItemModified.Clear();
+                dic_glItemNew.Clear();
+                toolStripButtonFind.Enabled = true;
             }
             catch(Exception ee)
             {
@@ -174,9 +212,9 @@ namespace HGS
                 itemtag it = (itemtag)(item.Tag);
                 if (glacialList1.IsItemVisible(item) &&  it.PointSrc == pointsrc.sis)
                 {
-                    sbid.Append(it.sisID.ToString());
+                    sbid.Append(it.sisid.ToString());
                     sbid.Append(",");
-                    dic.Add(it.sisID.ToString(), item);//??????????????????????
+                    dic.Add(it.sisid.ToString(), item);//??????????????????????
                     flag = it.PointSrc == pointsrc.sis ? false : true;
                     continue;
                 }
@@ -197,7 +235,7 @@ namespace HGS
                 {
                     string colValue = resultSet.getInt(0).ToString();//获取第i列值
                     GLItem item = dic[colValue];
-                    item.SubItems[3].Text = Math.Round(resultSet.getDouble(3), ((itemtag)item.Tag).FM).ToString();
+                    item.SubItems[3].Text = Math.Round(resultSet.getDouble(3), ((itemtag)item.Tag).fm).ToString();
                     short ds = resultSet.getShort(2);
                     if ((ds & gb1) == 0)
                     {
@@ -232,6 +270,7 @@ namespace HGS
                 textBoxZL.Text = item.SubItems[10].Text;
                 textBoxZH.Text = item.SubItems[11].Text;
                 itemtag it = (itemtag)(item.Tag);
+                checkBoxAlarm.Checked = dic_glItemNew.ContainsKey(item) ?  dic_glItemNew[item].isalarm : Data.Get().cd_Point[it.id].isalarm;
                 buttonCalc.Enabled = (it.PointSrc == pointsrc.calc) ? true : false;
             }
         }
@@ -249,10 +288,26 @@ namespace HGS
                 itemn.SubItems[glcols.GetColumnIndex("ND")].Text = fcps.CalcPoint.nd;
                 itemn.SubItems[glcols.GetColumnIndex("ED")].Text = fcps.CalcPoint.ed;
                 itemn.SubItems[glcols.GetColumnIndex("EU")].Text = fcps.CalcPoint.eu;
+                itemn.SubItems[glcols.GetColumnIndex("ID")].Text = Pref.GetInst().GetVarName(fcps.CalcPoint);
 
                 itemtag it = new itemtag();
-                it.isNew = true;
+                //it.isNew = true;
+                it.id = fcps.CalcPoint.id;
+                it.fm = fcps.CalcPoint.fm;
+                it.PointSrc = fcps.CalcPoint.pointsrc ;
+                //it.Point = fcps.CalcPoint;
                 itemn.Tag = it;
+                if (fcps.CalcPoint.pointsrc == pointsrc.sis)
+                {
+                    itemn.SubItems[13].Text = fcps.CalcPoint.isalarm ? Pref.GetInst().strOk : Pref.GetInst().strNo;
+                }
+                else
+                {
+                    itemn.SubItems[13].Text = fcps.CalcPoint.isalarm ? Pref.GetInst().strOk : Pref.GetInst().strNo;
+                    itemn.SubItems[14].Text = fcps.CalcPoint.iscalc ? Pref.GetInst().strOk : Pref.GetInst().strNo;
+                }
+                //Data.Get().Add(it.Point);
+                dic_glItemNew.Add(itemn, fcps.CalcPoint);
             }
         }
 
@@ -264,19 +319,36 @@ namespace HGS
                 GLItem itemn = (GLItem)glacialList1.SelectedItems[0];
                 itemtag it = (itemtag)itemn.Tag;
 
-                if (it.isNew) fcps.CalcPoint = it.Point;
-                else fcps.CalcPoint = Data.Get().cd_Point[it.id];
-
+                fcps.CalcPoint = dic_glItemNew.ContainsKey(itemn) ? dic_glItemNew[itemn] : Data.Get().cd_Point[it.id];
+                fcps.glacialLisint();
                 if (fcps.ShowDialog() == DialogResult.OK)
                 {
                     toolStripButtonFind.Enabled = false;
                     itemn.SubItems[5].Text = fcps.CalcPoint.ed;
-                    itemn.SubItems[4].Text = fcps.CalcPoint.eu;                  
+                    itemn.SubItems[4].Text = fcps.CalcPoint.eu;
+                    if (fcps.CalcPoint.pointsrc == pointsrc.sis)
+                    {
+                        itemn.SubItems[13].Text = fcps.CalcPoint.isalarm ? Pref.GetInst().strOk : Pref.GetInst().strNo;
+                    }
+                    else
+                    {
+                        itemn.SubItems[13].Text = fcps.CalcPoint.isalarm ? Pref.GetInst().strOk : Pref.GetInst().strNo;
+                        itemn.SubItems[14].Text = fcps.CalcPoint.iscalc ? Pref.GetInst().strOk : Pref.GetInst().strNo;
+                    }
                 }
+                //itemn.Tag = it;
+                if(!dic_glItemNew.ContainsKey(itemn))
+                    hs_glItemModified.Add(itemn);
+                //glItemModified.Add(itemn);
             }
         }
 
         private void toolStripButtonSelect_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void FormPointSet_Load(object sender, EventArgs e)
         {
 
         }

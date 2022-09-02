@@ -35,9 +35,13 @@ namespace HGS
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxStr = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.textBoxPatten = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.串 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -80,7 +84,7 @@ namespace HGS
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(70, 276);
+            this.button1.Location = new System.Drawing.Point(70, 196);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 3;
@@ -88,16 +92,16 @@ namespace HGS
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // textBox1
+            // textBoxStr
             // 
-            this.textBox1.Location = new System.Drawing.Point(70, 315);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(75, 21);
-            this.textBox1.TabIndex = 4;
+            this.textBoxStr.Location = new System.Drawing.Point(69, 333);
+            this.textBoxStr.Name = "textBoxStr";
+            this.textBoxStr.Size = new System.Drawing.Size(190, 21);
+            this.textBoxStr.TabIndex = 4;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(70, 359);
+            this.button2.Location = new System.Drawing.Point(151, 196);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 5;
@@ -107,7 +111,7 @@ namespace HGS
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(70, 398);
+            this.button3.Location = new System.Drawing.Point(70, 225);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 6;
@@ -115,14 +119,53 @@ namespace HGS
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(125, 385);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 7;
+            this.button4.Text = "正则表达式";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // textBoxPatten
+            // 
+            this.textBoxPatten.Location = new System.Drawing.Point(70, 285);
+            this.textBoxPatten.Name = "textBoxPatten";
+            this.textBoxPatten.Size = new System.Drawing.Size(177, 21);
+            this.textBoxPatten.TabIndex = 4;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(30, 288);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(29, 12);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "模式";
+            // 
+            // 串
+            // 
+            this.串.AutoSize = true;
+            this.串.Location = new System.Drawing.Point(30, 333);
+            this.串.Name = "串";
+            this.串.Size = new System.Drawing.Size(17, 12);
+            this.串.TabIndex = 8;
+            this.串.Text = "串";
+            // 
             // FormTestpgDataset
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(948, 450);
+            this.Controls.Add(this.串);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.textBoxPatten);
+            this.Controls.Add(this.textBoxStr);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.toolStrip1);
@@ -144,8 +187,12 @@ namespace HGS
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxStr;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.TextBox textBoxPatten;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label 串;
     }
 }

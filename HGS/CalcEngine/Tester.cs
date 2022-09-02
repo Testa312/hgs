@@ -32,12 +32,14 @@ namespace CalcEngine
             Test("(two + two)^2", 16);
             Variables.Clear();
 
-            // test simple variables 变量表达式
+            // test simple variables 变量表达式???????
+            /*
             Variables.Add("=one", 1);
             Variables.Add("=two", 2);
             Test("=one + two", 3);
             Test("=(two + two)^2", 16);
             Variables.Clear();
+            */
 
             // test DataContext
             var dc = DataContext;

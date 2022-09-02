@@ -9,17 +9,17 @@ namespace HGS
     {
     public class Pref
     {
-        private static Pref instance;
+        private static Pref inst;
 
         private Pref() { }
 
-        public static Pref GetInstance()
+        public static Pref GetInst()
         {
-            if (instance == null)
+            if (inst == null)
             {
-                instance = new Pref();
+                inst = new Pref();
             }
-            return instance;
+            return inst;
         }
         //PostgresSQL-----------
         static string pghost = "192.168.1.109";
@@ -32,6 +32,12 @@ namespace HGS
 
         //计算点节点名--------------------
         string calcpointnodeName = "CeCalc";
+        //--------------------
+        public string strOk = "√";
+        public string strNo = "×";
+        //-----
+        const char strCalcVarPfx = 'C';
+        const char strSisVarPfx = 'S';
         //登录ID------------------------
         int loginid = 0;
         //-----------------------
@@ -85,6 +91,25 @@ namespace HGS
             get { return loginid; }
         }
         //-------------------------------
+        public string GetVarName(point pt)
+        {
+            switch (pt.pointsrc)
+            {
+                case pointsrc.sis: return strSisVarPfx + pt.id.ToString();
+                case pointsrc.calc: return strCalcVarPfx + pt.id.ToString();
+                default: throw new Exception("点计算优先级错误！");
+            }
+        }
+        public string GetVarName(pointsrc ptsr,int id)
+        {
+            switch (ptsr)
+            {
+                case pointsrc.sis: return strSisVarPfx + id.ToString();
+                case pointsrc.calc: return strCalcVarPfx + id.ToString();
+                default: throw new Exception("点计算优先级错误！");
+            }
+        }
+        //---------------------------
         public void save()
         {
             XmlSettings seting = new XmlSettings();

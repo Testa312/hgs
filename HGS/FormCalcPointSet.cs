@@ -8,13 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GlacialComponents.Controls;
+using System.Collections;
+using System.Text.RegularExpressions;
 using Npgsql;
 namespace HGS
 {
     public partial class FormCalcPointSet : Form
     {
-        OPAPI.Connect sisconn = new OPAPI.Connect(Pref.GetInstance().sisHost, Pref.GetInstance().sisPort, 60,
-            Pref.GetInstance().sisUser, Pref.GetInstance().sisPassword);//建立连接
+        OPAPI.Connect sisconn = new OPAPI.Connect(Pref.GetInst().sisHost, Pref.GetInst().sisPort, 60,
+            Pref.GetInst().sisUser, Pref.GetInst().sisPassword);//建立连接
         HashSet<int> onlyid = new HashSet<int>();
        public point CalcPoint;
         //--------------------------------
@@ -22,43 +24,36 @@ namespace HGS
         {
             InitializeComponent();
         }
-        private string getsid(pointsrc cc, long id)
-        {
-            switch (cc)
-            {
-                case pointsrc.sis: return "S" + id.ToString(); 
-                case pointsrc.calc: return "C" + id.ToString();;
-                default: throw new Exception("点计算优先级错误！"); 
-            }
-        }
         public void glacialLisint()
         {
-            foreach(int ipt in CalcPoint.listSisCalaPointID)
+            foreach(subpoint subpt in CalcPoint.lsCalcOrgSubPoint)
             {
                 GLItem itemn;
                 itemtag it = new itemtag();
                 itemn = glacialList1.Items.Add("");
-                point Point = Data.Get().cd_Point[ipt];
+                point Point = Data.Get().cd_Point[subpt.id];
 
-                it.id = ipt;
+                it.id = subpt.id;
                
-                itemn.SubItems[1].Text = Point.nd;
-                itemn.SubItems[2].Text = Point.pn;
+                itemn.SubItems[2].Text = Point.nd;
+                itemn.SubItems[3].Text = Point.pn;
 
-                itemn.SubItems[4].Text = Point.eu;
-                itemn.SubItems[5].Text = Point.ed;
-                it.sisID = Point.id_sis;
+                itemn.SubItems[5].Text = Point.eu;
+                itemn.SubItems[6].Text = Point.ed;
+                itemn.SubItems[1].Text = Pref.GetInst().GetVarName(Point);
+                it.sisid = Point.id_sis;
                 if (onlyid.Contains(CalcPoint.id)) throw new Exception("不能引用自身！");
                 onlyid.Add(it.id);//唯一性
-                //it.PointSrc = (pointsrc)pgreader.GetInt32(pgreader.GetOrdinal("pointsrc"));
-                //if (!pgreader.IsDBNull(pgreader.GetOrdinal("ownerid")))
-                  //  it.ownerid = (int)pgreader["ownerid"];
-                //it.Formula = pgreader["formula"].ToString();
-                //it.isNew = true;
                 //
-                itemn.SubItems[0].Text = getsid(Point.pointsrc, it.id);                
+                itemn.SubItems[0].Text = subpt.varname;                
                 itemn.Tag = it;
             }
+            onlyid.Add(CalcPoint.id);//排除自已。
+            textBoxFormula.Text = CalcPoint.orgformula;
+            textBoxmDiscription.Text = CalcPoint.ed;
+            comboBox_eu.Text = CalcPoint.eu;
+            checkBoxCalc.Checked = CalcPoint.iscalc;
+            numericUpDown.Value = CalcPoint.fm;
         }
         private void FormPointSet_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -78,9 +73,9 @@ namespace HGS
                 itemtag it = (itemtag)item.Tag;
                 if (glacialList1.IsItemVisible(item)&&it.PointSrc == pointsrc.sis)
                 {
-                    sbid.Append(it.sisID.ToString());
+                    sbid.Append(it.sisid.ToString());
                     sbid.Append(",");
-                    dic.Add(it.sisID.ToString(), item);
+                    dic.Add(it.sisid.ToString(), item);
                     flag = true;
                     continue;
                 }
@@ -101,7 +96,7 @@ namespace HGS
                 {
                     string colValue = resultSet.getInt(0).ToString();//获取第i列值
                     GLItem item = dic[colValue];
-                    item.SubItems[3].Text = Math.Round(resultSet.getDouble(3), ((itemtag)item.Tag).FM).ToString();
+                    item.SubItems[4].Text = Math.Round(resultSet.getDouble(3), ((itemtag)item.Tag).fm).ToString();
                     short ds = resultSet.getShort(2);
                     string pas = "Bad";
                     if ((ds & gb1) == 0)
@@ -112,7 +107,7 @@ namespace HGS
                     {
                         pas = "Timeout";
                     }
-                    item.SubItems[6].Text = pas;
+                    item.SubItems[7].Text = pas;
                 }
                 if (resultSet != null)
                 {
@@ -123,15 +118,6 @@ namespace HGS
             {
             }
         }
-        private void glacialList1_Click(object sender, EventArgs e)
-        {
-
-            if (glacialList1.SelectedItems.Count == 1)
-            {
-                GLItem item = (GLItem)glacialList1.SelectedItems[0];
-                textBoxFormula.SelectedText = item.SubItems[0].Text;
-            }
-        }
         private void toolStripButtonAdd_Click_1(object sender, EventArgs e)
         {
             FormCalcPointList fcpl = new FormCalcPointList();
@@ -140,7 +126,7 @@ namespace HGS
             {
                 foreach (GLItem item in fcpl.glacialList.SelectedItems)
                 {
-                    if (!onlyid.Contains(((itemtag)(item.Tag)).sisID))
+                    if (!onlyid.Contains(((itemtag)(item.Tag)).sisid))
                     {
                         GLItem itemn;
 
@@ -151,9 +137,6 @@ namespace HGS
                         itemn.SubItems[5].Text = item.SubItems[5].Text;
                         itemn.SubItems[4].Text = item.SubItems[4].Text;
                         itemn.Tag = item.Tag;
-                        //((itemtag)(itemn.Tag)).isNew = true;
-                        //((itemtag)(itemn.Tag)).ownerid = Pref.GetInstance().LoginID;
-                        //((itemtag)(itemn.Tag)).PointSrc = pointsrc.sis;
                         onlyid.Add(((itemtag)(itemn.Tag)).id);
                     }
                     else
@@ -170,42 +153,127 @@ namespace HGS
                 item.Selected = false;
             }
         }
- 
-        private void buttonOK_Click(object sender, EventArgs e)
+        private void Dovalidity(bool rsl)
         {
-            if (textBoxmDiscription.Text.Length < 1)
-            {
-                MessageBox.Show("计算的的描述不能为空！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.DialogResult = System.Windows.Forms.DialogResult.None;
-            }
-            CalcPoint.ed = textBoxmDiscription.Text;
-            CalcPoint.formula = textBoxFormula.Text;
-            CalcPoint.eu = comboBox_eu.Text;
-            CalcPoint.ownerid = Pref.GetInstance().LoginID;
-            CalcPoint.pointsrc = pointsrc.calc;
-            CalcPoint.nd = Pref.GetInstance().CalcPointNodeName;
+            HashSet<string> hsVar = new HashSet<string>();
+            CalcEngine.CalcEngine ce = new CalcEngine.CalcEngine();
+            point Point = new point();
 
-            CalcPoint.lsOrgCalcPointID.Clear();
-
-            //Pref.GetInstance().cd_Point.Clear();
+            //-----
+            //可加内部变量
+            //hsVar.Add(???);
             foreach (GLItem item in glacialList1.Items)
             {
+                int i = 0;i++;
+                if (item.SubItems[0].Text == null )
+                {
+                    throw new Exception(string.Format("第{0}行,变量不能为空！", i));
+                }
+                string svar = item.SubItems[0].Text;
+                if (hsVar.Contains(svar))
+                {
+                    throw new Exception(string.Format("第{0}行,变量或点相同！", i));
+                }
+                hsVar.Add(svar);
+                Regex varrgx = new Regex("^[a-zA-Z][A-Za-z0-9_]*$");
+                if (!varrgx.IsMatch(svar))
+                {
+                    throw new Exception(string.Format("第{0}行,变量只能由英文字母开头，只能是英文字母、数字和下划线！",i));
+                }
+                if (textBoxmDiscription.Text.Length < 1)
+                {
+                    throw new Exception("计算点的的描述不能为空！");
+                }
                 itemtag it = (itemtag)item.Tag;
-                CalcPoint.lsOrgCalcPointID.Add(it.id);
+                subpoint subpt = new subpoint();
+                subpt.varname = item.SubItems[0].Text;
+                subpt.id = it.id;
+                Point.lsCalcOrgSubPoint.Add(subpt);
+
+                ce.Variables[subpt.varname] = Data.Get().cd_Point[it.id].av;//测试用。
             }
+            
+            //CalcPoint.ed = textBoxmDiscription.Text;
+            Point.orgformula = textBoxFormula.Text;
+            Point.eu = comboBox_eu.Text;
+            Point.ownerid = Pref.GetInst().LoginID;
+            Point.pointsrc = pointsrc.calc;
+            Point.nd = Pref.GetInst().CalcPointNodeName;
+            //if (CalcPoint.id <= 0) CalcPoint.id = Data.Get().GetNextPointID();
+            Point.iscalc = checkBoxCalc.Checked;
+            Point.fm = (byte)numericUpDown.Value;
+
+            Point.listSisCalaExpPointID = Data.Get().ExpandOrgPointToSisPoint(Point);
+            //
+            Point.expformula = Data.Get().ExpandOrgFormula(Point);
+            //
+            double orgv = (double)ce.Evaluate(Point.orgformula); //验证表达式的合法性
+                                               //
+            ce.Variables.Clear();
+            foreach (int pid in Data.Get().lsSisPoint)
+            {
+                point Ptx = Data.Get().cd_Point[pid];
+
+                ce.Variables.Add(Pref.GetInst().GetVarName(Ptx), Ptx.av);
+            }
+            double expv = (double)ce.Evaluate(Point.expformula);//验证表达式展开sis点的合法性。
+            if(rsl)
+                MessageBox.Show(string.Format("原公式计算值＝{0}\n展开公式计算值＝{1}",orgv,expv), 
+                    "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        private void buttonOK_Click(object sender, EventArgs e)
+        {
             try
             {
-                itemtag it = new itemtag();
-                Data.Get().Add(CalcPoint);
-                it.Point = CalcPoint;
+                Dovalidity(false);
+                CalcPoint.ed = textBoxmDiscription.Text;
+                CalcPoint.orgformula = textBoxFormula.Text;
+                CalcPoint.eu = comboBox_eu.Text;
+                CalcPoint.ownerid = Pref.GetInst().LoginID;
+                CalcPoint.pointsrc = pointsrc.calc;
+                CalcPoint.nd = Pref.GetInst().CalcPointNodeName;
+                if(CalcPoint.id <= 0) CalcPoint.id = Data.Get().GetNextPointID();
+                CalcPoint.iscalc = checkBoxCalc.Checked;
+                CalcPoint.fm = (byte)numericUpDown.Value;
+
+                CalcPoint.lsCalcOrgSubPoint.Clear();
+
+                foreach (GLItem item in glacialList1.Items)
+                {
+                    itemtag it = (itemtag)item.Tag;
+                    subpoint subpt = new subpoint();
+                    subpt.varname = item.SubItems[0].Text;
+                    subpt.id = it.id;
+                    CalcPoint.lsCalcOrgSubPoint.Add(subpt);
+                }                                                                                        
+                CalcPoint.listSisCalaExpPointID = Data.Get().ExpandOrgPointToSisPoint(CalcPoint);               
+                CalcPoint.expformula = Data.Get().ExpandOrgFormula(CalcPoint);
             }
-            catch(Exception ee)
+            catch (Exception ee)
             {
-                MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);               
-            }
-            finally
-            {
+                MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.DialogResult = System.Windows.Forms.DialogResult.None;
+            }
+        }
+
+        private void glacialList1_DoubleClick(object sender, EventArgs e)
+        {
+            if (glacialList1.SelectedItems.Count == 1)
+            {
+                GLItem item = (GLItem)glacialList1.SelectedItems[0];
+                textBoxFormula.SelectedText = item.SubItems[0].Text;
+            }
+        }
+
+        private void buttonTest_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Dovalidity(true);
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

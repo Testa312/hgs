@@ -43,6 +43,8 @@
             GlacialComponents.Controls.GLColumn glColumn11 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn12 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn13 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn14 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn15 = new GlacialComponents.Controls.GLColumn();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -359,7 +361,23 @@
             glColumn13.NumericSort = false;
             glColumn13.Text = "质量";
             glColumn13.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn13.Width = 100;
+            glColumn13.Width = 60;
+            glColumn14.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn14.CheckBoxes = false;
+            glColumn14.ImageIndex = -1;
+            glColumn14.Name = "IsAlarm";
+            glColumn14.NumericSort = false;
+            glColumn14.Text = "报警";
+            glColumn14.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            glColumn14.Width = 50;
+            glColumn15.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn15.CheckBoxes = false;
+            glColumn15.ImageIndex = -1;
+            glColumn15.Name = "IsCalce";
+            glColumn15.NumericSort = false;
+            glColumn15.Text = "计算";
+            glColumn15.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            glColumn15.Width = 50;
             this.glacialList1.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
             glColumn1,
             glColumn2,
@@ -373,7 +391,9 @@
             glColumn10,
             glColumn11,
             glColumn12,
-            glColumn13});
+            glColumn13,
+            glColumn14,
+            glColumn15});
             this.glacialList1.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
             this.glacialList1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.glacialList1.FullRowSelect = false;
@@ -609,6 +629,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "点报警设置";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormPointSet_FormClosed);
+            this.Load += new System.EventHandler(this.FormPointSet_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);

@@ -15,6 +15,8 @@ namespace HGS
         public FormMain()
         {
             InitializeComponent();
+            //
+            CalcEngine.CalcEngine cd = new CalcEngine.CalcEngine();
             Data.Get().LoadFromPG();
         }
 

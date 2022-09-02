@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Npgsql;
+using System.Text.RegularExpressions;
 namespace HGS
 {
     public partial class FormTestpgDataset : Form
@@ -24,7 +25,7 @@ namespace HGS
             string strsql = "select point.id,formula_point.pointid from point,formula_point where point.id = formula_point.id";
             
             //string strsql = "select * from point";
-            NpgsqlDataAdapter daPoint = new NpgsqlDataAdapter(strsql, Pref.GetInstance().pgConnString);
+            NpgsqlDataAdapter daPoint = new NpgsqlDataAdapter(strsql, Pref.GetInst().pgConnString);
             daPoint.Fill(dsPoint);
             //
             dataGridView1.DataSource = dsPoint.Tables[0];
@@ -33,9 +34,9 @@ namespace HGS
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text.Length == 0) return;
+            if (textBoxStr.Text.Length == 0) return;
             //string strexp = string.Format("id1={0}", textBox1.Text);
-            string strexp = string.Format("id1={0}", textBox1.Text);
+            string strexp = string.Format("id1={0}", textBoxStr.Text);
             DataRow[] frow = dsPoint.Tables[0].Select(strexp);
             StringBuilder sbx = new StringBuilder();
             foreach (DataRow dr in frow)
@@ -100,6 +101,18 @@ namespace HGS
             {
                 MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+            string input = textBoxStr.Text;
+            string pattern = textBoxPatten.Text;
+            //[a-zA-Z_]+\w+
+            foreach (Match match in Regex.Matches(input, pattern))
+                sb.AppendLine(match.Value);
+            richTextBox1.Text = sb.ToString();
+
         }
     }
 }

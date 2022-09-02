@@ -5,7 +5,9 @@ using System.Drawing;
 using System.Collections.Concurrent;
 using System.Data;
 using System.Windows.Forms;
+using System.Diagnostics;
 using Npgsql;
+using System.Text.RegularExpressions;
 namespace HGS
     {
     public class Data
@@ -28,7 +30,7 @@ namespace HGS
         {
             get { return NUMPOINTS; }
         }
-        //最大点id;
+        //点id最在值;
         int MAXOFPOINTID = 0;
         public int stat_MAXOFPOINTID
         {
@@ -39,22 +41,26 @@ namespace HGS
 
         //sis点列表，用于取得实时值------------------------------------------------------------------
 
-        List<int> lssispoint = new List<int>();
+        HashSet<int> hs_sispoint = new HashSet<int>();
+
+        //计算点列表，用于取得实时计算------------------------------------------------------------------
+
+        HashSet<int> hs_calcpoint = new HashSet<int>();
 
         //所点列表，用于进行计算，不使用并发字典的foreach(得到所有锁后才能进行)---------------------
 
-        List<int> lsallpoint = new List<int>();
+        HashSet<int> hs_allpoint = new HashSet<int>();
 
         //新加点列表，用于填加到DB------------------------------------------------------------------
 
-        List<point> lsNewPoint = new List<point>();
+        HashSet<point> hs_NewPoint = new HashSet<point>();
 
         //修改的点列表，用于更新到DB------------------------------------------------------------------
 
-        List<point> lsModifyPoint = new List<point>();
+        HashSet<point> hs_ModifyPoint = new HashSet<point>();
         //删除的点列表，用于更新到DB------------------------------------------------------------------
 
-        List<point> lsDeletePoint = new List<point>();
+        HashSet<point> lsDeletePoint = new HashSet<point>();
 
         //sis id和point id转换字典。------------------------------------
 
@@ -66,25 +72,44 @@ namespace HGS
         }
         //-------------------------------------临时表
 
-        DataTable dtPoint = new DataTable();
+        DataTable dtTempPoint = new DataTable();
         //-----------------------------------------------
-        public List<int> lsAllPoint
+        public HashSet<int> lsAllPoint
         {
-            set { lsallpoint = value; }
-            get { return lsallpoint; }
+            set { hs_allpoint = value; }
+            get { return hs_allpoint; }
+        }
+        public HashSet<int> lsSisPoint
+        {
+            set { hs_sispoint = value; }
+            get { return hs_sispoint; }
+        }
+        public HashSet<int> hsCalcPoint
+        {
+            set { hs_calcpoint = value; }
+            get { return hs_calcpoint; }
+        }
+        public int GetNextPointID()
+        {
+            return ++MAXOFPOINTID;
         }
 
         //取得计算点的相关点列表。
-        private List<int> GetSubPoint(int pid)
+        private List<subpoint> GetSubPointList(point pt)
         {
-            List<int> lsid = new List<int>();
-            string strexp = string.Format("id={0}", pid);
-            DataRow[] frow = dtPoint.Select(strexp);
+            if (pt.pointsrc != pointsrc.calc) return null;
+            List<subpoint> lssubpt = new List<subpoint>();
+            string strexp = string.Format("id={0}", pt.id);
+            DataRow[] frow = dtTempPoint.Select(strexp);
             foreach (DataRow dr in frow)
             {
-                lsid.Add((int)dr["pointid"]);
+                subpoint subpt = new subpoint();
+                subpt.id = (int)dr["pointid"];
+                subpt.varname = dr["varname"].ToString();
+                //subpt.PointSrc = (pointsrc)(short)dr["pointsrc"];
+                lssubpt.Add(subpt);
             }
-            return lsid;
+            return lssubpt;
         }
         //返回大于n的素数。
         private  int AbovePrimes(int n)
@@ -112,7 +137,7 @@ namespace HGS
         }
         private void GetPointsStat()
         {
-            var pgconn = new NpgsqlConnection(Pref.GetInstance().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.GetInst().pgConnString);
             try
             {
                 pgconn.Open();
@@ -156,50 +181,98 @@ namespace HGS
             cd_Point = new ConcurrentDictionary<int, point>(concurrencyLevel, initialCapacity);
             //         
         }
-        private void LoadSubPointTabel()
-        {
-            //得到关连的参与计算点。
-            string strsql = "select point.id,formula_point.pointid from point,formula_point where point.id = formula_point.id";
-            NpgsqlDataAdapter daPoint = new NpgsqlDataAdapter(strsql, Pref.GetInstance().pgConnString);
-            dtPoint.Clear();//清空
-            daPoint.Fill(dtPoint);
-        }
         static HashSet<int> loopvar = new HashSet<int>();
-        //返回计算点展开成sis点的列表。
-        private List<int> ExpandOrgPointToSisPoint(int id)
+        public string  ExpandOrgFormula(point pt)
         {
-            List<int> ExtendPoint = new List<int>();
-            if (loopvar.Contains(id))
+            //Debug.Assert(pt.pointsrc == pointsrc.calc);
+            if (pt.pointsrc != pointsrc.calc || pt.orgformula.Length == 0) return "";
+
+            //if(loopvar.Count == 0) LoadSubPointTabel();
+
+            if (loopvar.Contains(pt.id))
             {
                 StringBuilder sb = new StringBuilder();
                 foreach (int sid in loopvar)
-                    sb.Append(string.Format("{0},", cd_Point[sid].ed));
+                {
+                    point Point = cd_Point[sid];
+                    sb.Append(string.Format("[{0}]:{1},",Point.id, Point.ed));
+                }
                 throw new ArgumentException(sb.Append("循环变量引用！").ToString());
             }
-            loopvar.Add(id);
-            point Point = cd_Point[id];
-            foreach (int sid in Point.lsOrgCalcPointID)
+            loopvar.Add(pt.id);
+            string orgf = pt.orgformula;
+            Dictionary<string, int> Var = new Dictionary<string, int>();
+            foreach (subpoint subpt in pt.lsCalcOrgSubPoint)
             {
-                point Pointx = cd_Point[sid];
-                if (Pointx.pointsrc == pointsrc.sis)
+                point Point = cd_Point[subpt.id];
+                if(Point.pointsrc == pointsrc.calc)
                 {
-                    ExtendPoint.Add(Pointx.id);
+                    string rpl = string.Format("({0})",ExpandOrgFormula(Point));
+                    string pat = string.Format(@"\b{0}\b(?=[^(])|\b{0}$", subpt.varname);
+
+                    orgf = Regex.Replace(orgf, pat, rpl);
                 }
                 else
-                    ExtendPoint.AddRange(ExpandOrgPointToSisPoint(Pointx.id));
-
+                {
+                    string rpl = string.Format("{0}", Pref.GetInst().GetVarName(Point));
+                    string pat = string.Format(@"\b{0}\b(?=[^(])|\b{0}$", subpt.varname);
+                    orgf = Regex.Replace(orgf, pat, rpl);
+                }
             }
             loopvar.Clear();
-            return ExtendPoint;
+            //dtTempPoint.Clear();
+            return orgf;
+        }
+        private void LoadSubPointTable()
+        {
+            //得到关连的参与计算点。
+            string strsql = "select point.id,formula_point.pointid,varname from point,formula_point where point.id = formula_point.id";
+            NpgsqlDataAdapter daPoint = new NpgsqlDataAdapter(strsql, Pref.GetInst().pgConnString);
+            dtTempPoint.Clear();//清空
+            daPoint.Fill(dtTempPoint);
+        }
+        
+        static HashSet<int> xloopvar = new HashSet<int>();
+        //返回计算点展开成sis点的列表,用于检查循环引用问题。
+        public List<int> ExpandOrgPointToSisPoint(point pt)
+        {
+            if (pt.pointsrc != pointsrc.calc) return null;
+            List<int> ExpanddPoint = new List<int>();
+            if (xloopvar.Contains(pt.id))
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (int sid in xloopvar)
+                {
+                    point Point = cd_Point[sid];
+                    sb.Append(string.Format("[{0}]:{1},", Point.id,Point.ed));
+                }
+                throw new ArgumentException(sb.Append("循环变量引用！").ToString());
+            }
+            xloopvar.Add(pt.id);
+            //point Point = cd_Point[id];
+            foreach (subpoint subpt in pt.lsCalcOrgSubPoint)
+            {
+                point Pointx = cd_Point[subpt.id];
+                if (Pointx.pointsrc == pointsrc.calc)
+                {
+                    ExpanddPoint.AddRange(ExpandOrgPointToSisPoint(Pointx));
+                }
+                else
+                {
+                    ExpanddPoint.Add(subpt.id);
+                }
+            }
+            xloopvar.Clear();
+            return ExpanddPoint;
         }
         //-------------------------------
         private void LoadData()
         {
-            var pgconn = new NpgsqlConnection(Pref.GetInstance().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.GetInst().pgConnString);
             try
             {
                 pgconn.Open();
-                string strsql = "select * from point";
+                string strsql = "select * from point order by id";
                 var cmd = new NpgsqlCommand(strsql, pgconn);
                 NpgsqlDataReader pgreader = cmd.ExecuteReader();
 
@@ -211,30 +284,60 @@ namespace HGS
                     Point.pn = pgreader["pn"].ToString();
                     Point.eu = pgreader["eu"].ToString();
                     Point.ed = pgreader["ed"].ToString();
-                    Point.tv = (double)pgreader["tv"];
-                    Point.bv = (double)pgreader["bv"];
-                    Point.ll = (double)pgreader["ll"];
-                    Point.hl = (double)pgreader["hl"];
-                    Point.zl = (double)pgreader["zl"];
-                    Point.zh = (double)pgreader["zh"];
+
+                    if (pgreader["tv"] == DBNull.Value)
+                        Point.tv = null;
+                    else
+                        Point.tv = (double)pgreader["tv"];
+
+                    if (pgreader["bv"] == DBNull.Value)
+                        Point.bv = null;
+                    else
+                        Point.bv = (double)pgreader["bv"];
+
+                    if (pgreader["ll"] == DBNull.Value)
+                        Point.ll = null;
+                    else
+                        Point.ll = (double)pgreader["ll"];
+
+                    if (pgreader["hl"] == DBNull.Value)
+                        Point.hl = null;
+                    else
+                        Point.hl = (double)pgreader["hl"];
+
+                    if (pgreader["zl"] == DBNull.Value)
+                        Point.zl = null;
+                    else
+                        Point.zl = (double)pgreader["zl"];
+                    if (pgreader["zh"] == DBNull.Value)
+                        Point.zh = null;
+                    else
+                        Point.zh = (double)pgreader["zh"];
+ 
                     Point.id_sis = (int)pgreader["id_sis"];
-                    Point.pointsrc = (pointsrc)pgreader["pointsrc"];
+
+                    //object oo = (int)pgreader["pointsrc"];
+                    Point.pointsrc = (pointsrc)(short)pgreader["pointsrc"];
                     Point.ownerid = (int)pgreader["ownerid"];
-                    Point.formula = pgreader["formula"].ToString();
+                    Point.orgformula = pgreader["orgformula"].ToString();
+                    Point.expformula = pgreader["expformula"].ToString();
+                    Point.isalarm = (bool)pgreader["isalarm"];
+                    Point.iscalc = (bool)pgreader["iscalc"];
+                    Point.fm = (short)pgreader["fm"];
                     //
-                    if (Point.pointsrc == pointsrc.calc)
-                    {
-                        Point.lsOrgCalcPointID = GetSubPoint(Point.id);
-                    }
+
+                    Point.lsCalcOrgSubPoint = GetSubPointList(Point);
+
                     cd_Point[Point.id] = Point;
+                    hs_allpoint.Add(Point.id);
+                    if (Point.pointsrc == pointsrc.sis)
+                        hs_sispoint.Add(Point.id);
                 }
                 ///展开计算点到sis点。
                 foreach (point v in cd_Point.Values)
                 {
-                    if (v.pointsrc == pointsrc.calc)
-                    {
-                        v.listSisCalaPointID = ExpandOrgPointToSisPoint(v.id);
-                    }
+                    v.expformula = ExpandOrgFormula(v);
+                    v.listSisCalaExpPointID = ExpandOrgPointToSisPoint(v);
                 }
             }
             catch (Exception) { throw; }
@@ -242,17 +345,17 @@ namespace HGS
         }
         public void LoadFromPG()
         {
-            lsallpoint.Clear();
-            lsModifyPoint.Clear();
-            lsNewPoint.Clear();
-            lssispoint.Clear();
+            hs_allpoint.Clear();
+            hs_ModifyPoint.Clear();
+            hs_NewPoint.Clear();
+            hs_sispoint.Clear();
             dic_sisIdtoPointId.Clear();
             if(cd_Point != null) cd_Point.Clear();
             GetPointsStat();
             Initcd_dicCapacity();
-            LoadSubPointTabel();
+            LoadSubPointTable();
             LoadData();
-            dtPoint.Clear();//清空,省内存
+            //dtTempPoint.Clear();//清空,省内存??????????????
         }
         private string dtoNULL(double? d)
         {
@@ -261,34 +364,44 @@ namespace HGS
         public void SavetoPG()
         {
             StringBuilder sb = new StringBuilder();
-            foreach (point pt in lsModifyPoint)
+            foreach (point pt in hs_ModifyPoint)
             {
+                pt.expformula = ExpandOrgFormula(pt);
+                pt.listSisCalaExpPointID = ExpandOrgPointToSisPoint(pt);
 
-                sb.AppendLine(string.Format(@"update point set tv={0},bv={1},ll={2},hl={3},zl={4},zh={5},mt='{6}',eu='{7}',ownerid={8},formula='{9}';" +
-                                        "where id = {10}", dtoNULL(pt.tv), dtoNULL(pt.bv), dtoNULL(pt.ll), dtoNULL(pt.hl), dtoNULL(pt.zl),
-                                        DateTime.UtcNow, pt.eu, pt.ownerid, pt.formula, pt.id));
-                if (pt.pointsrc == pointsrc.calc && pt.lsOrgCalcPointID.Count > 0)
+                sb.AppendLine(string.Format(@"update point set tv={0},bv={1},ll={2},hl={3},zl={4},zh={5},mt='{6}',eu='{7}',"+
+                                                   "ownerid={8},orgformula='{9}',expformula='{10}',fm={11},iscalc = {12}," +
+                                                   "isalarm = {13 },ed = '{14}' where id = {15};",
+                                                dtoNULL(pt.tv), dtoNULL(pt.bv), dtoNULL(pt.ll), dtoNULL(pt.hl), dtoNULL(pt.zl), dtoNULL(pt.zh),
+                                                DateTime.Now,pt.eu, pt.ownerid, pt.orgformula,pt.expformula,pt.fm,
+                                                pt.iscalc,pt.isalarm, pt.ed,pt.id)); 
+                if (pt.pointsrc == pointsrc.calc && pt.lsCalcOrgSubPoint.Count > 0)
                 {
                     sb.AppendLine(string.Format("delete  from formula_point where id = {0};", pt.id));
-                    foreach (int id in pt.lsOrgCalcPointID)
+                    foreach (subpoint supt in pt.lsCalcOrgSubPoint)
                     {
-                        sb.AppendLine(string.Format("insert into formula_point (id,pointid) values({0},{1});", pt.id, id));
+                        sb.AppendLine(string.Format("insert into formula_point (id,pointid,varname) values({0},{1},'{2}');", pt.id, supt.id,supt.varname));
                     }
                 }
             }
-            foreach (point pt in lsNewPoint)
+            foreach (point pt in hs_NewPoint)
             {
-                sb.AppendLine(string.Format(@"insert into point (id,nd,pn,ed,eu,tv,bv,ll,hl,zl,zh,id_sis,pointsrc,mt,ownerid,formula)" +
-                                    "values ({0},'{1}','{2}','{3}','{4}',{5},{6},{7},{8},{9},{10},{11},{12},'{13}',{14},'{15}');",
-                                    ++MAXOFPOINTID, pt.nd, pt.pn, pt.ed, pt.eu, dtoNULL(pt.tv), dtoNULL(pt.bv), dtoNULL(pt.ll),
-                                    dtoNULL(pt.hl), dtoNULL(pt.zl), dtoNULL(pt.zh), pt.id_sis,
-                                    (int)pt.pointsrc, DateTime.UtcNow, Pref.GetInstance().Owner, pt.formula));
-                if (pt.lsOrgCalcPointID.Count > 0)
+                pt.expformula = ExpandOrgFormula(pt);
+                pt.listSisCalaExpPointID = ExpandOrgPointToSisPoint(pt);
+
+                sb.AppendLine(string.Format(@"insert into point (id,nd,pn,ed,eu,tv,bv,ll,hl,zl,"+
+                                            "zh,id_sis,pointsrc,mt,ownerid,orgformula,expformula,fm,iscalc,isalarm) "+ 
+                                    "values ({0},'{1}','{2}','{3}','{4}',{5},{6},{7},{8},{9},"+
+                                            "{10},{11},{12},'{13}',{14},'{15}','{16}',{17},{18},{19});",
+                                    pt.id, pt.nd, pt.pn, pt.ed, pt.eu, dtoNULL(pt.tv), dtoNULL(pt.bv), dtoNULL(pt.ll),dtoNULL(pt.hl), dtoNULL(pt.zl), 
+                                    dtoNULL(pt.zh), pt.id_sis,(int)pt.pointsrc, DateTime.Now, Pref.GetInst().Owner, pt.orgformula,
+                                    pt.expformula,pt.fm,pt.iscalc,pt.isalarm));
+                if (pt.pointsrc == pointsrc.calc && pt.lsCalcOrgSubPoint.Count > 0)
                 {
                     //sb.AppendLine(string.Format("delete  from formula_point where id = {0};", MAXOFPOINTID));//????????????????
-                    foreach (int id in pt.lsOrgCalcPointID)
+                    foreach (subpoint subpt in pt.lsCalcOrgSubPoint)
                     {
-                        sb.AppendLine(string.Format("insert into formula_point (id,pointid) values({0},{1});", MAXOFPOINTID, id));
+                        sb.AppendLine(string.Format("insert into formula_point (id,pointid,varname) values({0},{1},'{2}');", pt.id, subpt.id,subpt.varname));
                     }
                 }
             }
@@ -296,7 +409,7 @@ namespace HGS
             {
                 sb.AppendLine(string.Format("delete  from formula_point where id = {0};", pt.id));
             }
-            var pgconn = new NpgsqlConnection(Pref.GetInstance().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.GetInst().pgConnString);
             try
             {
                 if (sb.Length < 10) return;
@@ -304,13 +417,13 @@ namespace HGS
                 pgconn.Open();
                 cmd.ExecuteNonQuery();
                 pgconn.Close();
-                foreach (point pt in lsNewPoint)
+                foreach (point pt in hs_NewPoint)
                 {
                     cd_Point[pt.id] = pt;
-                    lsallpoint.Add(pt.id);
+                    hs_allpoint.Add(pt.id);
                     if (pt.pointsrc == pointsrc.sis)
                     {
-                        lssispoint.Add(pt.id);
+                        hs_sispoint.Add(pt.id);
                         dic_sisIdtoPointId.Add(pt.id_sis, pt.id);
                     }
                 }
@@ -318,15 +431,17 @@ namespace HGS
                 {
                     point  rpt;
                     cd_Point.TryRemove(pt.id ,out rpt);//???????????????
-                    lsallpoint.Remove(pt.id);
+                    hs_allpoint.Remove(pt.id);
                     if (pt.pointsrc == pointsrc.sis)
                     {
-                        lssispoint.Remove(pt.id);
+                        hs_sispoint.Remove(pt.id);
                         dic_sisIdtoPointId.Remove(pt.id_sis);
                     }
                     }
-                lsNewPoint.Clear();
-                lsModifyPoint.Clear();              
+                hs_NewPoint.Clear();
+                hs_ModifyPoint.Clear();
+                //重装子点表
+                LoadSubPointTable();
             }
             catch (Exception)
             {
@@ -334,33 +449,26 @@ namespace HGS
             }
             finally
             {
-                MAXOFPOINTID--;
+                //MAXOFPOINTID--;
                 pgconn.Close();
             }
         }
         public void Add(point pt)
         {
-            foreach (int id in pt.lsOrgCalcPointID)
-            {
-                if (cd_Point[id].pointsrc == pointsrc.calc)
-                    pt.listSisCalaPointID.AddRange(ExpandOrgPointToSisPoint(id));
-                else
-                    pt.listSisCalaPointID.Add(id);
-            }
-            lsNewPoint.Add(pt);
-           
+            if (hs_ModifyPoint.Contains(pt))
+                throw new Exception("修改点中也包括此点！");
+            hs_NewPoint.Add(pt);
         }
         public void Delete(point pt)
         {
             lsDeletePoint.Add(pt);//有问题?????????????
-
         }
         public void Update(point pt)
         {
-            pt.listSisCalaPointID = ExpandOrgPointToSisPoint(pt.id);
-            lsModifyPoint.Add(pt);
-        }
-       
+            if (hs_NewPoint.Contains(pt))
+                throw new Exception("新加点中也包括此点！");
+            hs_ModifyPoint.Add(pt);
+        }     
     }
     
 }

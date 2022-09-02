@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-
+using System.Collections.Concurrent;
 namespace CalcEngine
 {
     /// <summary>
@@ -210,7 +210,7 @@ namespace CalcEngine
         /// <summary>
         /// Gets the dictionary that contains simple variables (not in the DataContext).
         /// </summary>
-        public IDictionary<string, object> Variables
+        public IDictionary<string, object> Variables//????????????????
         {
             get { return _vars; }
             set { _vars = value; }

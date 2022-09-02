@@ -15,8 +15,8 @@ namespace HGS
 {
     public partial class FormCalcPointList : Form
     {
-        OPAPI.Connect sisconn = new OPAPI.Connect(Pref.GetInstance().sisHost, Pref.GetInstance().sisPort, 60, 
-            Pref.GetInstance().sisUser, Pref.GetInstance().sisPassword);//建立连接
+        OPAPI.Connect sisconn = new OPAPI.Connect(Pref.GetInst().sisHost, Pref.GetInst().sisPort, 60, 
+            Pref.GetInst().sisUser, Pref.GetInst().sisPassword);//建立连接
         private HashSet<int> onlyid;
         public FormCalcPointList()
         {
@@ -27,21 +27,12 @@ namespace HGS
         {
             sisconn.close();
         }
-        private string getsid(pointsrc cc, long id)
-        {
-            switch (cc)
-            {
-                case pointsrc.sis: return "S" + id.ToString();
-                case pointsrc.calc: return "C" + id.ToString(); ;
-                default: throw new Exception("点计算优先级错误！"); ;
-            }
-        }
         //初始化节点列表。
         public void InitList()
         {
             try
             {
-                var pgconn = new NpgsqlConnection(Pref.GetInstance().pgConnString);
+                var pgconn = new NpgsqlConnection(Pref.GetInst().pgConnString);
                 pgconn.Open();
                 //
                 string strsql = "select distinct nd from point";
@@ -65,7 +56,7 @@ namespace HGS
             onlyid = Onlyid;
             try
             {
-                var pgconn = new NpgsqlConnection(Pref.GetInstance().pgConnString);
+                var pgconn = new NpgsqlConnection(Pref.GetInst().pgConnString);
                 pgconn.Open();
                 StringBuilder sb = new StringBuilder();
                 if (tSCBNode.Text.Length > 0)
@@ -108,15 +99,10 @@ namespace HGS
                     itemn.SubItems[4].Text = pgreader["eu"].ToString();
                     itemn.SubItems[5].Text = pgreader["ed"].ToString();
 
-                    it.sisID = int.Parse(pgreader["id_sis"].ToString());
+                    it.sisid = int.Parse(pgreader["id_sis"].ToString());
 
                     it.PointSrc = (pointsrc)pgreader.GetInt32(pgreader.GetOrdinal("pointsrc"));
-                    itemn.SubItems[0].Text = getsid(it.PointSrc, it.id);
-
-                    if (!pgreader.IsDBNull(pgreader.GetOrdinal("ownerid")))
-                        it.ownerid = (int)pgreader["ownerid"];
-                    it.Formula = pgreader["formula"].ToString();
-                    
+                    itemn.SubItems[0].Text = Pref.GetInst().GetVarName(it.PointSrc, it.id);                
 
                     itemn.Tag = it;
                 }
@@ -145,9 +131,9 @@ namespace HGS
                 itemtag it = (itemtag)item.Tag;
                 if (glacialList.IsItemVisible(item) && it.PointSrc == pointsrc.sis)
                 {
-                    sbid.Append(it.sisID.ToString());
+                    sbid.Append(it.sisid.ToString());
                     sbid.Append(",");
-                    dic.Add(it.sisID.ToString(), item);
+                    dic.Add(it.sisid.ToString(), item);
                     flag = it.PointSrc == pointsrc.sis ? false : true;
                     continue;
                 }
@@ -169,7 +155,7 @@ namespace HGS
                 {
                     string colValue = resultSet.getInt(0).ToString();//获取第i列值
                     GLItem item = dic[colValue];
-                    item.SubItems[3].Text = Math.Round(resultSet.getDouble(3), ((itemtag)item.Tag).FM).ToString();
+                    item.SubItems[3].Text = Math.Round(resultSet.getDouble(3), ((itemtag)item.Tag).fm).ToString();
                     short ds = resultSet.getShort(2);
                     if ((ds & gb1) == 0)
                     {
@@ -196,7 +182,6 @@ namespace HGS
             }
            // conn.close(); //关闭连接，千万要记住！！！
         }
-
         private void FormSisPointList_FormClosed(object sender, FormClosedEventArgs e)
         {
             timer.Enabled = false;
