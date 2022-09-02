@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using Npgsql;
 using System.Text.RegularExpressions;
+using CalcEngine;
 namespace HGS
     {
     public class Data
@@ -41,11 +42,11 @@ namespace HGS
 
         //sis点列表，用于取得实时值------------------------------------------------------------------
 
-        HashSet<int> hs_sispoint = new HashSet<int>();
+        HashSet<point> hs_sispoint = new HashSet<point>();
 
         //计算点列表，用于取得实时计算------------------------------------------------------------------
 
-        HashSet<int> hs_calcpoint = new HashSet<int>();
+        HashSet<point> hs_calcpoint = new HashSet<point>();
 
         //所点列表，用于进行计算，不使用并发字典的foreach(得到所有锁后才能进行)---------------------
 
@@ -64,7 +65,12 @@ namespace HGS
 
         //sis id和point id转换字典。------------------------------------
 
-        static Dictionary<int, int> dic_sisIdtoPointId = new Dictionary<int, int>();
+        Dictionary<int, int> dic_sisIdtoPointId = new Dictionary<int, int>();
+        IDictionary<string, object> variables;
+
+        //计算
+        CalcEngine.CalcEngine _ce = new CalcEngine.CalcEngine();
+        //
         public Dictionary<int, int> dic_SisIdtoPointId
         {
             //set { dic_sisIdtoPointId = value; }
@@ -79,15 +85,20 @@ namespace HGS
             set { hs_allpoint = value; }
             get { return hs_allpoint; }
         }
-        public HashSet<int> lsSisPoint
+        public HashSet<point> lsSisPoint
         {
             set { hs_sispoint = value; }
             get { return hs_sispoint; }
         }
-        public HashSet<int> hsCalcPoint
+        public HashSet<point> hsCalcPoint
         {
             set { hs_calcpoint = value; }
             get { return hs_calcpoint; }
+        }
+        public IDictionary<string, object> Variables
+        {
+            get { return _ce.Variables; }
+            //set { _vars = value; }
         }
         public int GetNextPointID()
         {
@@ -234,10 +245,10 @@ namespace HGS
         
         static HashSet<int> xloopvar = new HashSet<int>();
         //返回计算点展开成sis点的列表,用于检查循环引用问题。
-        public List<int> ExpandOrgPointToSisPoint(point pt)
+        public List<point> ExpandOrgPointToSisPoint(point pt)
         {
             if (pt.pointsrc != pointsrc.calc) return null;
-            List<int> ExpanddPoint = new List<int>();
+            List<point> ExpanddPoint = new List<point>();
             if (xloopvar.Contains(pt.id))
             {
                 StringBuilder sb = new StringBuilder();
@@ -259,7 +270,7 @@ namespace HGS
                 }
                 else
                 {
-                    ExpanddPoint.Add(subpt.id);
+                    ExpanddPoint.Add(Pointx);
                 }
             }
             xloopvar.Clear();
@@ -331,13 +342,23 @@ namespace HGS
                     cd_Point[Point.id] = Point;
                     hs_allpoint.Add(Point.id);
                     if (Point.pointsrc == pointsrc.sis)
-                        hs_sispoint.Add(Point.id);
+                    {
+                        hs_sispoint.Add(Point);
+                        dic_sisIdtoPointId.Add(Point.id_sis, Point.id);
+                        _ce.Variables.Add(Pref.GetInst().GetVarName(Point), Point.av);
+                    }
+                    else
+                    {
+                        hs_calcpoint.Add(Point);
+                    }
                 }
                 ///展开计算点到sis点。
                 foreach (point v in cd_Point.Values)
                 {
                     v.expformula = ExpandOrgFormula(v);
                     v.listSisCalaExpPointID = ExpandOrgPointToSisPoint(v);
+                    if(v.pointsrc == pointsrc.calc)
+                        v.expression = _ce.Parse(v.expformula);
                 }
             }
             catch (Exception) { throw; }
@@ -423,21 +444,27 @@ namespace HGS
                     hs_allpoint.Add(pt.id);
                     if (pt.pointsrc == pointsrc.sis)
                     {
-                        hs_sispoint.Add(pt.id);
+                        hs_sispoint.Add(pt);
                         dic_sisIdtoPointId.Add(pt.id_sis, pt.id);
                     }
+                    else
+                        pt.expression = _ce.Parse(pt.expformula);
                 }
                 foreach (point pt in lsDeletePoint)
                 {
-                    point  rpt;
-                    cd_Point.TryRemove(pt.id ,out rpt);//???????????????
+                    point rpt;
+                    cd_Point.TryRemove(pt.id, out rpt);//???????????????
                     hs_allpoint.Remove(pt.id);
                     if (pt.pointsrc == pointsrc.sis)
                     {
-                        hs_sispoint.Remove(pt.id);
+                        hs_sispoint.Remove(pt);
                         dic_sisIdtoPointId.Remove(pt.id_sis);
                     }
-                    }
+                }
+                foreach (point pt in hs_ModifyPoint)
+                {
+                    pt.expression = _ce.Parse(pt.expformula);
+                }
                 hs_NewPoint.Clear();
                 hs_ModifyPoint.Clear();
                 //重装子点表

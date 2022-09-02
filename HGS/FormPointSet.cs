@@ -105,7 +105,7 @@ namespace HGS
                         itemtag it = new itemtag();
                         itemn.Tag = it;
                         //it.isNew = true;
-                        it.fm = ((itemtag)(item.Tag)).fm;
+                        Point.fm = it.fm = ((itemtag)(item.Tag)).fm;
                         //it.Point = Point;
                         it.sisid = Point.id_sis;
                         //Data.Get().Add(Point);
@@ -202,59 +202,15 @@ namespace HGS
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (glacialList1.Items.Count == 0) return;
-            //if (!conn.isAlive()) return;
-            Dictionary<string, GLItem> dic = new Dictionary<string, GLItem>();
-            StringBuilder sbid = new StringBuilder();
-            bool flag = false;
             foreach (GLItem item in glacialList1.Items)
             {
-                itemtag it = (itemtag)(item.Tag);
-                if (glacialList1.IsItemVisible(item) &&  it.PointSrc == pointsrc.sis)
+                if (glacialList1.IsItemVisible(item))
                 {
-                    sbid.Append(it.sisid.ToString());
-                    sbid.Append(",");
-                    dic.Add(it.sisid.ToString(), item);//??????????????????????
-                    flag = it.PointSrc == pointsrc.sis ? false : true;
-                    continue;
+                    itemtag it = (itemtag)(item.Tag);
+                    point pt = Data.Get().cd_Point[it.id];
+                    item.SubItems[3].Text = pt.av.ToString();
+                    item.SubItems[12].Text = pt.ps.ToString();
                 }
-                if (flag) break;
-
-            }
-            if (sbid.Length > 0)
-                sbid.Remove(sbid.Length - 1, 1);
-            else return;
-            string sql = string.Format("select ID,TM,DS,AV from Realtime where ID in ({0})", sbid.ToString());
-            try
-            {
-                OPAPI.ResultSet resultSet =  sisconn.executeQuery(sql);//执行SQL
-            
-                const short gb1 = -32256;
-                const short gb2 = -32768;
-                while (resultSet.next())//next()执行一次，游标下移一行
-                {
-                    string colValue = resultSet.getInt(0).ToString();//获取第i列值
-                    GLItem item = dic[colValue];
-                    item.SubItems[3].Text = Math.Round(resultSet.getDouble(3), ((itemtag)item.Tag).fm).ToString();
-                    short ds = resultSet.getShort(2);
-                    if ((ds & gb1) == 0)
-                    {
-                        item.SubItems[12].Text = "Good";
-                    }
-                    else if ((ds & gb2) == gb2)
-                    {
-                        item.SubItems[12].Text = "Timeout";
-                    }
-                    else
-                        item.SubItems[12].Text = "Bad";
-                }
-                if (resultSet != null)
-                {
-                    resultSet.close(); //释放内存
-                }
-            }
-            catch (Exception ee)
-            {
             }
         }
         private void glacialList1_Click(object sender, EventArgs e)
@@ -342,15 +298,83 @@ namespace HGS
                 //glItemModified.Add(itemn);
             }
         }
+        private void GetSisValue()
+        {
+            StringBuilder sbid = new StringBuilder();
+            foreach (point pt in Data.Get().lsSisPoint )
+            {
+                sbid.Append(pt.id_sis);
+                sbid.Append(",");
+            }
+            if (sbid.Length > 0)
+                sbid.Remove(sbid.Length - 1, 1);
+            else return;
+            //
+            string sql = string.Format("select ID,TM,DS,AV from Realtime where ID in ({0})", sbid.ToString());
+            try
+            {
+                OPAPI.ResultSet resultSet = sisconn.executeQuery(sql);//执行SQL
 
+                const short gb1 = -32256;
+                const short gb2 = -32768;
+                while (resultSet.next())//next()执行一次，游标下移一行
+                {
+                    point Point = Data.Get().cd_Point[Data.Get().dic_SisIdtoPointId[resultSet.getInt(0)]];
+                    Point.av = Math.Round(resultSet.getDouble(3),Point.fm);
+                    Data.Get().Variables[Pref.GetInst().GetVarName(Point)] = Point.av; 
+                    short ds = resultSet.getShort(2);
+                    if ((ds & gb1) == 0)
+                    {
+                        Point.ps = PointState.Good;
+                    }
+                    else if ((ds & gb2) == gb2)
+                    {
+                        Point.ps = PointState.Timeout;
+                    }
+                    else
+                        Point.ps = PointState.Bad;
+                }
+                if (resultSet != null)
+                {
+                    resultSet.close(); //释放内存
+                }
+            }
+            catch (Exception ee)
+            {
+            }
+
+        }
         private void toolStripButtonSelect_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void FormPointSet_Load(object sender, EventArgs e)
+        private void timerCalc_Tick(object sender, EventArgs e)
         {
-
+            GetSisValue();
+            foreach (point calcpt in Data.Get().hsCalcPoint)
+            {
+                if (calcpt.calciserror) continue;
+                //point Point = Data.Get().cd_Point[calcid];
+                foreach (point pt in calcpt.listSisCalaExpPointID)
+                {
+                    if (pt.ps != PointState.Good)
+                    {
+                        calcpt.ps = PointState.Error;
+                        break;
+                    }
+                    calcpt.ps = PointState.Good;
+                }
+                try
+                {
+                    calcpt.av = (double)calcpt.expression.Evaluate();
+                }
+                catch (Exception ee)
+                {
+                    calcpt.ps = PointState.Error;
+                    calcpt.calciserror = true;
+                }
+            }
         }
     }
 }

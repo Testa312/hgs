@@ -63,59 +63,15 @@ namespace HGS
         }
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (glacialList1.Items.Count == 0) return;
-            //if (!conn.isAlive()) return;
-            Dictionary<string, GLItem> dic = new Dictionary<string, GLItem>();
-            StringBuilder sbid = new StringBuilder();
-            bool flag = false;
             foreach (GLItem item in glacialList1.Items)
             {
-                itemtag it = (itemtag)item.Tag;
-                if (glacialList1.IsItemVisible(item)&&it.PointSrc == pointsrc.sis)
+                if (glacialList1.IsItemVisible(item))
                 {
-                    sbid.Append(it.sisid.ToString());
-                    sbid.Append(",");
-                    dic.Add(it.sisid.ToString(), item);
-                    flag = true;
-                    continue;
+                    itemtag it = (itemtag)(item.Tag);
+                    point pt = Data.Get().cd_Point[it.id];
+                    item.SubItems[4].Text = pt.av.ToString();
+                    item.SubItems[7].Text = pt.ps.ToString();
                 }
-                flag = it.PointSrc == pointsrc.sis ? false : true;
-
-            }
-            if (sbid.Length > 0)
-                sbid.Remove(sbid.Length - 1, 1);
-            else return;
-            string sql = string.Format("select ID,TM,DS,AV from Realtime where ID in ({0})", sbid.ToString());
-            try
-            {
-                OPAPI.ResultSet resultSet =  sisconn.executeQuery(sql);//执行SQL
-            
-                const short gb1 = -32256;
-                const short gb2 = -32768;
-                while (resultSet.next())//next()执行一次，游标下移一行
-                {
-                    string colValue = resultSet.getInt(0).ToString();//获取第i列值
-                    GLItem item = dic[colValue];
-                    item.SubItems[4].Text = Math.Round(resultSet.getDouble(3), ((itemtag)item.Tag).fm).ToString();
-                    short ds = resultSet.getShort(2);
-                    string pas = "Bad";
-                    if ((ds & gb1) == 0)
-                    {
-                        pas = "Good";
-                    }
-                    else if ((ds & gb2) == gb2)
-                    {
-                        pas = "Timeout";
-                    }
-                    item.SubItems[7].Text = pas;
-                }
-                if (resultSet != null)
-                {
-                    resultSet.close(); //释放内存
-                }
-            }
-            catch (Exception ee)
-            {
             }
         }
         private void toolStripButtonAdd_Click_1(object sender, EventArgs e)
@@ -141,7 +97,8 @@ namespace HGS
                     }
                     else
                     {
-                        MessageBox.Show(string.Format("点:{0}-{1}已存在！", item.SubItems[1].Text, item.SubItems[6].Text), "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show(string.Format("点:{0}-{1}已存在！", item.SubItems[1].Text, 
+                            item.SubItems[6].Text), "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     };
                 }
             }
@@ -210,11 +167,10 @@ namespace HGS
             double orgv = (double)ce.Evaluate(Point.orgformula); //验证表达式的合法性
                                                //
             ce.Variables.Clear();
-            foreach (int pid in Data.Get().lsSisPoint)
+            foreach (point pt in Data.Get().lsSisPoint)
             {
-                point Ptx = Data.Get().cd_Point[pid];
-
-                ce.Variables.Add(Pref.GetInst().GetVarName(Ptx), Ptx.av);
+                //point Ptx = Data.Get().cd_Point[pid];
+                ce.Variables.Add(Pref.GetInst().GetVarName(pt), pt.av);
             }
             double expv = (double)ce.Evaluate(Point.expformula);//验证表达式展开sis点的合法性。
             if(rsl)

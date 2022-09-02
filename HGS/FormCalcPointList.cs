@@ -121,66 +121,16 @@ namespace HGS
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            if (glacialList.Items.Count == 0) return;
-            //if (!conn.isAlive()) return;
-            Dictionary<string, GLItem> dic = new Dictionary<string, GLItem>();
-            StringBuilder sbid = new StringBuilder();
-            bool flag = false;
             foreach (GLItem item in glacialList.Items)
             {
-                itemtag it = (itemtag)item.Tag;
-                if (glacialList.IsItemVisible(item) && it.PointSrc == pointsrc.sis)
+                if (glacialList.IsItemVisible(item))
                 {
-                    sbid.Append(it.sisid.ToString());
-                    sbid.Append(",");
-                    dic.Add(it.sisid.ToString(), item);
-                    flag = it.PointSrc == pointsrc.sis ? false : true;
-                    continue;
-                }
-                if (flag) break;
-
-            }
-            if (sbid.Length > 0)
-                sbid.Remove(sbid.Length - 1, 1);
-            else return;
-
-            string sql = string.Format("select ID,TM,DS,AV from Realtime where ID in ({0})", sbid.ToString());
-            try
-            {
-                OPAPI.ResultSet resultSet = sisconn.executeQuery(sql);//执行SQL
-                //const short gb1 = 512;
-                const short gb1 = -32256;
-                const short gb2 = -32768;
-                while (resultSet.next())//next()执行一次，游标下移一行
-                {
-                    string colValue = resultSet.getInt(0).ToString();//获取第i列值
-                    GLItem item = dic[colValue];
-                    item.SubItems[3].Text = Math.Round(resultSet.getDouble(3), ((itemtag)item.Tag).fm).ToString();
-                    short ds = resultSet.getShort(2);
-                    if ((ds & gb1) == 0)
-                    {
-                        item.SubItems[7].Text = "Good";
-                    }
-                    else if((ds & gb2) == gb2)
-                    {
-                        item.SubItems[7].Text = "Timeout";
-                    }
-                    else
-                        item.SubItems[7].Text = "Bad";
-                }
-                if (resultSet != null)
-                {
-                    resultSet.close(); //释放内存
+                    itemtag it = (itemtag)(item.Tag);
+                    point pt = Data.Get().cd_Point[it.id];
+                    item.SubItems[3].Text = pt.av.ToString();
+                    item.SubItems[6].Text = pt.ps.ToString();
                 }
             }
-            catch (Exception ee)
-            {
-            }
-            finally
-            {
-                
-            }
-           // conn.close(); //关闭连接，千万要记住！！！
         }
         private void FormSisPointList_FormClosed(object sender, FormClosedEventArgs e)
         {

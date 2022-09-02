@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GlacialComponents.Controls;
-
+using CalcEngine;
 namespace HGS
 {
 
@@ -45,19 +45,25 @@ namespace HGS
         public string eu;//点单位
         public bool iscalc;//是否计算
         public bool isalarm;//是否报警
-        public int AS = 0;//点状态
+        public PointState ps = PointState.Timeout;//点状态
         public double av = 1;//点值，实时或计算。
         public short fm = 0;//保留小数点位数。
+        public bool calciserror = false;
+        public Expression expression;//优化计算速度。
         //计算子点id
-        public List<subpoint> lsCalcOrgSubPoint = new List<subpoint>();//原始的能与计算点列表
+        public List<subpoint> lsCalcOrgSubPoint = new List<subpoint>();//原始参能与计算点列表
         //
         //计算子点id用于进行计算点状态计算。
-        public List<int> listSisCalaExpPointID = new List<int>();//展开成sis点的参与计算点列表。
+        public List<point> listSisCalaExpPointID = new List<point>();//展开成sis点的参与计算点列表。
     }
     //点来源。
     public enum pointsrc
     {
         sis,
-        calc,
+        calc
+    }
+    public enum PointState
+    {
+        Good, Timeout, Bad,Error
     }
 }
