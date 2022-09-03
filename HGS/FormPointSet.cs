@@ -365,7 +365,7 @@ namespace HGS
                 }
                 try
                 {
-                    calcpt.av = (double)calcpt.expression.Evaluate();
+                    calcpt.av = Math.Round((double)calcpt.expression.Evaluate(), calcpt.fm);
                 }
                 catch (Exception ee)
                 {

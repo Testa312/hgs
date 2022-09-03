@@ -76,6 +76,7 @@ namespace HGS
         }
         private void toolStripButtonAdd_Click_1(object sender, EventArgs e)
         {
+            const string cvn = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
             FormCalcPointList fcpl = new FormCalcPointList();
             fcpl.glacialLisint(onlyid);
             if (fcpl.ShowDialog() == DialogResult.OK)
@@ -84,9 +85,23 @@ namespace HGS
                 {
                     if (!onlyid.Contains(((itemtag)(item.Tag)).sisid))
                     {
-                        GLItem itemn;
-
-                        itemn = glacialList1.Items.Add("");
+                        string t = "";
+                        for (int i = 0; i < cvn.Length; i++)
+                        {
+                            t = cvn.Substring(i, 1);
+                            int j = 0;
+                            while (j < glacialList1.Items.Count)
+                            {
+                                if (glacialList1.Items[j].SubItems["VarName"].Text.Trim().Equals(t))
+                                    break;
+                                j++;
+                            }
+                            if (j == glacialList1.Items.Count)
+                                break;
+                        }
+                        
+                        GLItem itemn = glacialList1.Items.Add("");
+                        itemn.SubItems["VarName"].Text = t;
                         itemn.SubItems["ND"].Text = item.SubItems["ND"].Text;
                         itemn.SubItems["PN"].Text = item.SubItems["PN"].Text;
                         itemn.SubItems["EU"].Text = item.SubItems["EU"].Text;

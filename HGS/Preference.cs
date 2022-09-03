@@ -100,15 +100,6 @@ namespace HGS
                 default: throw new Exception("点计算优先级错误！");
             }
         }
-        public string GetVarName(pointsrc ptsr,int id)
-        {
-            switch (ptsr)
-            {
-                case pointsrc.sis: return strSisVarPfx + id.ToString();
-                case pointsrc.calc: return strCalcVarPfx + id.ToString();
-                default: throw new Exception("点计算优先级错误！");
-            }
-        }
         //---------------------------
         public void save()
         {
