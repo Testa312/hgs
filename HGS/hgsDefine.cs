@@ -14,8 +14,6 @@ namespace HGS
         public int id = 0;
         public short fm = 2;
         public pointsrc PointSrc = pointsrc.sis;
-        //public bool isNew = false;
-        //public point Point;
     }
     public class subpoint
     {
@@ -46,7 +44,7 @@ namespace HGS
         public bool iscalc;//是否计算
         public bool isalarm;//是否报警
         public PointState ps = PointState.Timeout;//点状态
-        public double av = 1;//点值，实时或计算。
+        public double av = -1;//点值，实时或计算。
         public short fm = 0;//保留小数点位数。
         public bool calciserror = false;
         public Expression expression;//优化计算速度。

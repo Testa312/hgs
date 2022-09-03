@@ -581,8 +581,24 @@ namespace GlacialComponents.Controls
 				return (GLSubItem)List[nItemIndex];
 			}
 		}
+		//2022.5.6
+		public GLSubItem this[string strColumnName]
+		{
+			get
+			{
+				int idx = this.Parent.Columns.GetColumnIndex(strColumnName);
+				while (List.Count <= idx)
+				{
+					GLSubItem newitem = new GLSubItem();
+					newitem.ChangedEvent += new ChangedEventHandler(SubItem_Changed);
+					newitem.Parent = this.m_Parent;
+					//newitem.Control = Parent.Columns[ nItemIndex ]
 
-
+					List.Add(newitem);
+				}// if the index doesn't yet exist, fill in the subitems till it does
+				return (GLSubItem)List[idx];
+			}
+		}
 		#endregion
 
 		#region CollectionEditor Support Routines

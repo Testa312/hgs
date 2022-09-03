@@ -61,10 +61,7 @@ namespace HGS
                 StringBuilder sb = new StringBuilder();
                 if (tSCBNode.Text.Length > 0)
                     sb.Append(string.Format(" nd = '{0}'", tSCBNode.Text));
-                if (toolStripTextBoxID.Text.Length > 1 && sb.Length > 3)
-                    sb.Append(string.Format(" and id = {0}", toolStripTextBoxID.Text.Substring(1)));
-                else if (toolStripTextBoxID.Text.Length > 1)
-                    sb.Append(string.Format("id = {0}", toolStripTextBoxID.Text.Substring(1)));
+             
                 if (tSTBPN.Text.Length > 0 && sb.Length > 3)
                     sb.Append(string.Format(" and pn like '%{0}%'", tSTBPN.Text));
                 else if (tSTBPN.Text.Length > 0)
@@ -93,16 +90,16 @@ namespace HGS
                     itemn = glacialList.Items.Add("");
                     it.id = (int)pgreader["id"];
                  
-                    itemn.SubItems[1].Text = pgreader["nd"].ToString();
-                    itemn.SubItems[2].Text = pgreader["pn"].ToString();
+                    itemn.SubItems["ND"].Text = pgreader["nd"].ToString();
+                    itemn.SubItems["PN"].Text = pgreader["pn"].ToString();
 
-                    itemn.SubItems[4].Text = pgreader["eu"].ToString();
-                    itemn.SubItems[5].Text = pgreader["ed"].ToString();
+                    itemn.SubItems["EU"].Text = pgreader["eu"].ToString();
+                    itemn.SubItems["ED"].Text = pgreader["ed"].ToString();
 
                     it.sisid = int.Parse(pgreader["id_sis"].ToString());
 
                     it.PointSrc = (pointsrc)pgreader.GetInt32(pgreader.GetOrdinal("pointsrc"));
-                    itemn.SubItems[0].Text = Pref.GetInst().GetVarName(it.PointSrc, it.id);                
+                    //itemn.SubItems[0].Text = Pref.GetInst().GetVarName(it.PointSrc, it.id);                
 
                     itemn.Tag = it;
                 }
@@ -127,8 +124,8 @@ namespace HGS
                 {
                     itemtag it = (itemtag)(item.Tag);
                     point pt = Data.Get().cd_Point[it.id];
-                    item.SubItems[3].Text = pt.av.ToString();
-                    item.SubItems[6].Text = pt.ps.ToString();
+                    item.SubItems["AV"].Text = pt.av.ToString();
+                    item.SubItems["DS"].Text = pt.ps.ToString();
                 }
             }
         }

@@ -94,21 +94,21 @@ namespace HGS
                         continue;
                     }                
                     item = glacialList.Items.Add("");                  
-                    item.SubItems[0].Text = total.ToString();
-                    item.SubItems[6].Text = colValue;
+                    //item.SubItems[0].Text = total.ToString();
+                    item.SubItems["ED"].Text = colValue;
 
-                    item.SubItems[1].Text = resultSet.getString(0);//速度较慢的原因
+                    item.SubItems["PN"].Text = resultSet.getString(0);//速度较慢的原因
                     switch(resultSet.getByte(1))
                     {
-                        case 0: item.SubItems[2].Text = "AX";break;
-                        case 1: item.SubItems[2].Text = "DX"; break;
-                        case 2: item.SubItems[2].Text = "I2"; break;
-                        case 3: item.SubItems[2].Text = "I4"; break;
-                        case 4: item.SubItems[2].Text = "R8"; break;
-                        default: item.SubItems[2].Text = "Error"; break;
+                        case 0: item.SubItems["RT"].Text = "AX";break;
+                        case 1: item.SubItems["RT"].Text = "DX"; break;
+                        case 2: item.SubItems["RT"].Text = "I2"; break;
+                        case 3: item.SubItems["RT"].Text = "I4"; break;
+                        case 4: item.SubItems["RT"].Text = "R8"; break;
+                        default: item.SubItems["RT"].Text = "Error"; break;
                     }         
-                    item.SubItems[4].Text = resultSet.getString(2);
-                    item.SubItems[5].Text = resultSet.getString(3);
+                    item.SubItems["EU"].Text = resultSet.getString(2);
+                    item.SubItems["KR"].Text = resultSet.getString(3);
                     itemtag it = new itemtag();
                     it.sisid = id;
                     it.fm = (byte)resultSet.getInt(6);
@@ -165,18 +165,19 @@ namespace HGS
                 {
                     string colValue = resultSet.getInt(0).ToString();//获取第i列值
                     GLItem item = dic[colValue];
-                    item.SubItems[3].Text = Math.Round(resultSet.getDouble(3), ((itemtag)item.Tag).fm).ToString();
+                    item.SubItems["AV"].Text = Math.Round(resultSet.getDouble(3), ((itemtag)item.Tag).fm).ToString();
                     short ds = resultSet.getShort(2);
+                    GLSubItem sim = item.SubItems["DS"];
                     if ((ds & gb1) == 0)
                     {
-                        item.SubItems[7].Text = "Good";
+                        sim.Text = "Good";
                     }
                     else if((ds & gb2) == gb2)
                     {
-                        item.SubItems[7].Text = "Timeout";
+                        sim.Text = "Timeout";
                     }
                     else
-                        item.SubItems[7].Text = "Bad";
+                        sim.Text = "Bad";
                 }
                 if (resultSet != null)
                 {

@@ -35,17 +35,17 @@ namespace HGS
 
                 it.id = subpt.id;
                
-                itemn.SubItems[2].Text = Point.nd;
-                itemn.SubItems[3].Text = Point.pn;
+                itemn.SubItems["ND"].Text = Point.nd;
+                itemn.SubItems["PN"].Text = Point.pn;
 
-                itemn.SubItems[5].Text = Point.eu;
-                itemn.SubItems[6].Text = Point.ed;
-                itemn.SubItems[1].Text = Pref.GetInst().GetVarName(Point);
+                itemn.SubItems["EU"].Text = Point.eu;
+                itemn.SubItems["ED"].Text = Point.ed;
+                //itemn.SubItems[1].Text = Pref.GetInst().GetVarName(Point);
                 it.sisid = Point.id_sis;
                 if (onlyid.Contains(CalcPoint.id)) throw new Exception("不能引用自身！");
                 onlyid.Add(it.id);//唯一性
                 //
-                itemn.SubItems[0].Text = subpt.varname;                
+                itemn.SubItems["VarName"].Text = subpt.varname;                
                 itemn.Tag = it;
             }
             onlyid.Add(CalcPoint.id);//排除自已。
@@ -69,8 +69,8 @@ namespace HGS
                 {
                     itemtag it = (itemtag)(item.Tag);
                     point pt = Data.Get().cd_Point[it.id];
-                    item.SubItems[4].Text = pt.av.ToString();
-                    item.SubItems[7].Text = pt.ps.ToString();
+                    item.SubItems["AV"].Text = pt.av.ToString();
+                    item.SubItems["DS"].Text = pt.ps.ToString();
                 }
             }
         }
@@ -87,18 +87,17 @@ namespace HGS
                         GLItem itemn;
 
                         itemn = glacialList1.Items.Add("");
-                        itemn.SubItems[0].Text = item.SubItems[0].Text;
-                        itemn.SubItems[1].Text = item.SubItems[1].Text;
-                        itemn.SubItems[2].Text = item.SubItems[2].Text;
-                        itemn.SubItems[5].Text = item.SubItems[5].Text;
-                        itemn.SubItems[4].Text = item.SubItems[4].Text;
+                        itemn.SubItems["ND"].Text = item.SubItems["ND"].Text;
+                        itemn.SubItems["PN"].Text = item.SubItems["PN"].Text;
+                        itemn.SubItems["EU"].Text = item.SubItems["EU"].Text;
+                        itemn.SubItems["ED"].Text = item.SubItems["ED"].Text;
                         itemn.Tag = item.Tag;
                         onlyid.Add(((itemtag)(itemn.Tag)).id);
                     }
                     else
                     {
-                        MessageBox.Show(string.Format("点:{0}-{1}已存在！", item.SubItems[1].Text, 
-                            item.SubItems[6].Text), "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show(string.Format("点:{0}-{1}已存在！", item.SubItems["ND"].Text, 
+                            item.SubItems["PN"].Text), "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     };
                 }
             }
@@ -122,11 +121,11 @@ namespace HGS
             foreach (GLItem item in glacialList1.Items)
             {
                 int i = 0;i++;
-                if (item.SubItems[0].Text == null )
+                if (item.SubItems["VarName"].Text == null )
                 {
                     throw new Exception(string.Format("第{0}行,变量不能为空！", i));
                 }
-                string svar = item.SubItems[0].Text;
+                string svar = item.SubItems["VarName"].Text;
                 if (hsVar.Contains(svar))
                 {
                     throw new Exception(string.Format("第{0}行,变量或点相同！", i));
@@ -143,7 +142,7 @@ namespace HGS
                 }
                 itemtag it = (itemtag)item.Tag;
                 subpoint subpt = new subpoint();
-                subpt.varname = item.SubItems[0].Text;
+                subpt.varname = item.SubItems["VarName"].Text;
                 subpt.id = it.id;
                 Point.lsCalcOrgSubPoint.Add(subpt);
 
@@ -164,7 +163,7 @@ namespace HGS
             //
             Point.expformula = Data.Get().ExpandOrgFormula(Point);
             //
-            double orgv = (double)ce.Evaluate(Point.orgformula); //验证表达式的合法性
+            double orgv = Point.orgformula.Length > 0 ? (double)ce.Evaluate(Point.orgformula) : -1; //验证表达式的合法性
                                                //
             ce.Variables.Clear();
             foreach (point pt in Data.Get().lsSisPoint)
@@ -172,7 +171,7 @@ namespace HGS
                 //point Ptx = Data.Get().cd_Point[pid];
                 ce.Variables.Add(Pref.GetInst().GetVarName(pt), pt.av);
             }
-            double expv = (double)ce.Evaluate(Point.expformula);//验证表达式展开sis点的合法性。
+            double expv = Point.orgformula.Length > 0 ? (double)ce.Evaluate(Point.expformula) : -1;//验证表达式展开sis点的合法性。
             if(rsl)
                 MessageBox.Show(string.Format("原公式计算值＝{0}\n展开公式计算值＝{1}",orgv,expv), 
                     "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -198,7 +197,7 @@ namespace HGS
                 {
                     itemtag it = (itemtag)item.Tag;
                     subpoint subpt = new subpoint();
-                    subpt.varname = item.SubItems[0].Text;
+                    subpt.varname = item.SubItems["VarName"].Text;
                     subpt.id = it.id;
                     CalcPoint.lsCalcOrgSubPoint.Add(subpt);
                 }                                                                                        
@@ -217,7 +216,7 @@ namespace HGS
             if (glacialList1.SelectedItems.Count == 1)
             {
                 GLItem item = (GLItem)glacialList1.SelectedItems[0];
-                textBoxFormula.SelectedText = item.SubItems[0].Text;
+                textBoxFormula.SelectedText = item.SubItems["VarName"].Text;
             }
         }
 
