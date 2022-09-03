@@ -116,7 +116,6 @@ namespace HGS
                     total++;
                 }
                 toolStripStatusLabel1.Text = string.Format("点数：{0}", total.ToString());
-                timer.Enabled = true;
             }
             catch (Exception ee)
             {
@@ -127,6 +126,7 @@ namespace HGS
                 {
                     resultSet.close(); //释放内存
                 }
+                timer.Enabled = true;
             }
             // conn.close(); //关闭连接，千万要记住！！！
         }

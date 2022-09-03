@@ -7,3 +7,4 @@ CREATE TABLE point (
   price DOUBLE PRECISION NULL,
   day_volume INT NULL
 );
+pg增加扩展模块：CREATE EXTENSION module_name;

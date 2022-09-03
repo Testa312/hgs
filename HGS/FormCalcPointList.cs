@@ -35,7 +35,8 @@ namespace HGS
                 var pgconn = new NpgsqlConnection(Pref.GetInst().pgConnString);
                 pgconn.Open();
                 //
-                string strsql = "select distinct nd from point";
+                //tSCBNode.Items.Add("");
+                string strsql = "select distinct nd from point order by nd";
                 var cmd = new NpgsqlCommand(strsql, pgconn);
                 NpgsqlDataReader pgreader = cmd.ExecuteReader();
                 while (pgreader.Read())
@@ -56,60 +57,50 @@ namespace HGS
             onlyid = Onlyid;
             try
             {
+                /*
                 var pgconn = new NpgsqlConnection(Pref.GetInst().pgConnString);
                 pgconn.Open();
-                StringBuilder sb = new StringBuilder();
-                if (tSCBNode.Text.Length > 0)
-                    sb.Append(string.Format(" nd = '{0}'", tSCBNode.Text));
-             
-                if (tSTBPN.Text.Length > 0 && sb.Length > 3)
-                    sb.Append(string.Format(" and pn like '%{0}%'", tSTBPN.Text));
-                else if (tSTBPN.Text.Length > 0)
-                    sb.Append(string.Format(" pn like '%{0}%'", tSTBPN.Text));
-                if (tSCBED.Text.Length > 0 && sb.Length > 3)
-                    sb.Append(string.Format(" and ed like '%{0}%'", tSCBED.Text));
-                else if (tSCBED.Text.Length > 0)
-                    sb.Append(string.Format(" ed like '%{0}%'", tSCBED.Text));
+     
+                string strsql = string.Format("select * from point where nd like '%{0}%' and pn like '%{1}%' and ed like '%{2}%'", 
+                    tSCBNode.Text.Trim(), tSTBPN.Text.Trim(), tSCBED.Text.Trim());
 
-                string strsql = "select * from point";
-                if (sb.Length > 3)
-                    strsql = string.Format("select * from point where {0}", sb.ToString());
                 var cmd = new NpgsqlCommand(strsql, pgconn);
                 NpgsqlDataReader pgreader = cmd.ExecuteReader();
-
+                */
                 timer.Enabled = false;
                 glacialList.Items.Clear();
-
-                while (pgreader.Read())
+                foreach (point ptx in Data.Get().lsAllPoint)
                 {
-                    GLItem itemn;
-                    itemtag it = new itemtag();
-                    it.id = (int)pgreader["id"];
-                    if (onlyid.Contains(it.id)) continue;
+                    //point Point = Data.Get().cd_Point[ipt];
+                    if (ptx.nd.Contains(tSCBNode.Text.Trim()) && ptx.ed.Contains(tSCBED.Text.Trim()) &&
+                        ptx.pn.Contains(tSTBPN.Text.Trim()))
+                    {                    
+                        if (onlyid.Contains(ptx.id)) continue;
 
-                    itemn = glacialList.Items.Add("");
-                    it.id = (int)pgreader["id"];
-                 
-                    itemn.SubItems["ND"].Text = pgreader["nd"].ToString();
-                    itemn.SubItems["PN"].Text = pgreader["pn"].ToString();
+                        GLItem itemn = glacialList.Items.Add("");
+                        ;
+                        itemtag it = new itemtag();
+                        it.id = ptx.id;
 
-                    itemn.SubItems["EU"].Text = pgreader["eu"].ToString();
-                    itemn.SubItems["ED"].Text = pgreader["ed"].ToString();
+                        itemn.SubItems["ND"].Text = ptx.nd;
+                        itemn.SubItems["PN"].Text = ptx.pn;
 
-                    it.sisid = int.Parse(pgreader["id_sis"].ToString());
+                        itemn.SubItems["EU"].Text = ptx.eu;
+                        itemn.SubItems["ED"].Text = ptx.ed;
 
-                    it.PointSrc = (pointsrc)pgreader.GetInt32(pgreader.GetOrdinal("pointsrc"));
-                    //itemn.SubItems[0].Text = Pref.GetInst().GetVarName(it.PointSrc, it.id);                
+                        it.sisid = ptx.id_sis;
 
-                    itemn.Tag = it;
+                        it.PointSrc = ptx.pointsrc;         
+
+                        itemn.Tag = it;
+                    }
                 }
-                pgconn.Close();
-                timer.Enabled = true;
             }
             catch (Exception ee)
             {
                 MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            timer.Enabled = true;
         }
         public void tSBFind_Click(object sender, EventArgs e)
         {

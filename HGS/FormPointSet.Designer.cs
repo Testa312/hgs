@@ -47,19 +47,20 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripComboBox2 = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripComboBox3 = new System.Windows.Forms.ToolStripComboBox();
+            this.tSCB_ND = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.tSTB_PN = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
+            this.tSTB_ED = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
+            this.tSTB_F = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripButtonFind = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonAdd = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonCalc = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonDelete = new System.Windows.Forms.ToolStripButton();
             this.timerUpdateValue = new System.Windows.Forms.Timer(this.components);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.glacialList1 = new GlacialComponents.Controls.GlacialList();
@@ -100,19 +101,20 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonSave,
             this.toolStripSeparator2,
-            this.toolStripLabel1,
-            this.toolStripComboBox1,
             this.toolStripLabel2,
-            this.toolStripComboBox2,
-            this.toolStripLabel3,
-            this.toolStripComboBox3,
+            this.tSCB_ND,
+            this.toolStripLabel1,
+            this.tSTB_PN,
             this.toolStripLabel4,
-            this.toolStripTextBox1,
+            this.tSTB_ED,
+            this.toolStripLabel3,
+            this.tSTB_F,
             this.toolStripButtonFind,
             this.toolStripSeparator1,
             this.toolStripButtonAdd,
             this.toolStripSeparator3,
-            this.toolStripButtonCalc});
+            this.toolStripButtonCalc,
+            this.toolStripButtonDelete});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1160, 25);
@@ -133,48 +135,27 @@
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(44, 22);
-            this.toolStripLabel1.Text = "专业：";
-            // 
-            // toolStripComboBox1
-            // 
-            this.toolStripComboBox1.Items.AddRange(new object[] {
-            "一单元",
-            "二单元",
-            "三单元"});
-            this.toolStripComboBox1.Name = "toolStripComboBox1";
-            this.toolStripComboBox1.Size = new System.Drawing.Size(100, 25);
-            // 
             // toolStripLabel2
             // 
             this.toolStripLabel2.Name = "toolStripLabel2";
             this.toolStripLabel2.Size = new System.Drawing.Size(44, 22);
             this.toolStripLabel2.Text = "节点：";
             // 
-            // toolStripComboBox2
+            // tSCB_ND
             // 
-            this.toolStripComboBox2.Items.AddRange(new object[] {
-            "汽机",
-            "锅炉",
-            "电气",
-            "除脱",
-            "化学"});
-            this.toolStripComboBox2.Name = "toolStripComboBox2";
-            this.toolStripComboBox2.Size = new System.Drawing.Size(100, 25);
+            this.tSCB_ND.Name = "tSCB_ND";
+            this.tSCB_ND.Size = new System.Drawing.Size(100, 25);
             // 
-            // toolStripLabel3
+            // toolStripLabel1
             // 
-            this.toolStripLabel3.Name = "toolStripLabel3";
-            this.toolStripLabel3.Size = new System.Drawing.Size(44, 22);
-            this.toolStripLabel3.Text = "点名：";
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(44, 22);
+            this.toolStripLabel1.Text = "点名：";
             // 
-            // toolStripComboBox3
+            // tSTB_PN
             // 
-            this.toolStripComboBox3.Name = "toolStripComboBox3";
-            this.toolStripComboBox3.Size = new System.Drawing.Size(120, 25);
+            this.tSTB_PN.Name = "tSTB_PN";
+            this.tSTB_PN.Size = new System.Drawing.Size(100, 25);
             // 
             // toolStripLabel4
             // 
@@ -182,15 +163,27 @@
             this.toolStripLabel4.Size = new System.Drawing.Size(44, 22);
             this.toolStripLabel4.Text = "描述：";
             // 
-            // toolStripTextBox1
+            // tSTB_ED
             // 
-            this.toolStripTextBox1.Name = "toolStripTextBox1";
-            this.toolStripTextBox1.Size = new System.Drawing.Size(120, 25);
+            this.tSTB_ED.Name = "tSTB_ED";
+            this.tSTB_ED.Size = new System.Drawing.Size(100, 25);
+            // 
+            // toolStripLabel3
+            // 
+            this.toolStripLabel3.Name = "toolStripLabel3";
+            this.toolStripLabel3.Size = new System.Drawing.Size(44, 22);
+            this.toolStripLabel3.Text = "公式：";
+            // 
+            // tSTB_F
+            // 
+            this.tSTB_F.Name = "tSTB_F";
+            this.tSTB_F.Size = new System.Drawing.Size(120, 25);
             // 
             // toolStripButtonFind
             // 
             this.toolStripButtonFind.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonFind.Image")));
             this.toolStripButtonFind.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonFind.Margin = new System.Windows.Forms.Padding(10, 1, 0, 2);
             this.toolStripButtonFind.Name = "toolStripButtonFind";
             this.toolStripButtonFind.Size = new System.Drawing.Size(52, 22);
             this.toolStripButtonFind.Text = "查询";
@@ -205,6 +198,7 @@
             // 
             this.toolStripButtonAdd.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonAdd.Image")));
             this.toolStripButtonAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonAdd.Margin = new System.Windows.Forms.Padding(10, 1, 0, 2);
             this.toolStripButtonAdd.Name = "toolStripButtonAdd";
             this.toolStripButtonAdd.Size = new System.Drawing.Size(82, 22);
             this.toolStripButtonAdd.Text = "填加SIS点";
@@ -219,10 +213,21 @@
             // 
             this.toolStripButtonCalc.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonCalc.Image")));
             this.toolStripButtonCalc.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonCalc.Margin = new System.Windows.Forms.Padding(10, 1, 0, 2);
             this.toolStripButtonCalc.Name = "toolStripButtonCalc";
             this.toolStripButtonCalc.Size = new System.Drawing.Size(88, 22);
             this.toolStripButtonCalc.Text = "填加计算点";
             this.toolStripButtonCalc.Click += new System.EventHandler(this.toolStripButtonAddNewCalc_Click);
+            // 
+            // toolStripButtonDelete
+            // 
+            this.toolStripButtonDelete.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonDelete.Image")));
+            this.toolStripButtonDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonDelete.Margin = new System.Windows.Forms.Padding(100, 1, 0, 2);
+            this.toolStripButtonDelete.Name = "toolStripButtonDelete";
+            this.toolStripButtonDelete.Size = new System.Drawing.Size(52, 22);
+            this.toolStripButtonDelete.Text = "删除";
+            this.toolStripButtonDelete.Click += new System.EventHandler(this.toolStripButtonDelete_Click);
             // 
             // timerUpdateValue
             // 
@@ -263,7 +268,7 @@
             glColumn1.ImageIndex = -1;
             glColumn1.Name = "ND";
             glColumn1.NumericSort = false;
-            glColumn1.Text = "节点";
+            glColumn1.Text = "  节点";
             glColumn1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             glColumn1.Width = 80;
             glColumn2.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
@@ -271,15 +276,15 @@
             glColumn2.ImageIndex = -1;
             glColumn2.Name = "PN";
             glColumn2.NumericSort = false;
-            glColumn2.Text = "点名（SIS）";
+            glColumn2.Text = "  SIS点名";
             glColumn2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             glColumn2.Width = 120;
             glColumn3.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn3.CheckBoxes = false;
             glColumn3.ImageIndex = -1;
             glColumn3.Name = "AV";
-            glColumn3.NumericSort = false;
-            glColumn3.Text = "值";
+            glColumn3.NumericSort = true;
+            glColumn3.Text = "值  ";
             glColumn3.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn3.Width = 70;
             glColumn4.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
@@ -288,63 +293,63 @@
             glColumn4.Name = "EU";
             glColumn4.NumericSort = false;
             glColumn4.Text = "单位";
-            glColumn4.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn4.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             glColumn4.Width = 100;
             glColumn5.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn5.CheckBoxes = false;
             glColumn5.ImageIndex = -1;
             glColumn5.Name = "ED";
             glColumn5.NumericSort = false;
-            glColumn5.Text = "描述";
+            glColumn5.Text = "  描述";
             glColumn5.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             glColumn5.Width = 150;
             glColumn6.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn6.CheckBoxes = false;
             glColumn6.ImageIndex = -1;
             glColumn6.Name = "TV";
-            glColumn6.NumericSort = false;
-            glColumn6.Text = "量程上限";
-            glColumn6.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn6.NumericSort = true;
+            glColumn6.Text = "量程上限  ";
+            glColumn6.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn6.Width = 70;
             glColumn7.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn7.CheckBoxes = false;
             glColumn7.ImageIndex = -1;
             glColumn7.Name = "BV";
-            glColumn7.NumericSort = false;
+            glColumn7.NumericSort = true;
             glColumn7.Text = "量程下限";
-            glColumn7.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn7.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn7.Width = 70;
             glColumn8.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn8.CheckBoxes = false;
             glColumn8.ImageIndex = -1;
             glColumn8.Name = "LL";
-            glColumn8.NumericSort = false;
+            glColumn8.NumericSort = true;
             glColumn8.Text = "报警低限";
-            glColumn8.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn8.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn8.Width = 70;
             glColumn9.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn9.CheckBoxes = false;
             glColumn9.ImageIndex = -1;
             glColumn9.Name = "HL";
-            glColumn9.NumericSort = false;
+            glColumn9.NumericSort = true;
             glColumn9.Text = "报警高限";
-            glColumn9.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn9.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn9.Width = 70;
             glColumn10.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn10.CheckBoxes = false;
             glColumn10.ImageIndex = -1;
             glColumn10.Name = "ZL";
-            glColumn10.NumericSort = false;
+            glColumn10.NumericSort = true;
             glColumn10.Text = "报警低2限";
-            glColumn10.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn10.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn10.Width = 70;
             glColumn11.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn11.CheckBoxes = false;
             glColumn11.ImageIndex = -1;
             glColumn11.Name = "ZH";
-            glColumn11.NumericSort = false;
+            glColumn11.NumericSort = true;
             glColumn11.Text = "报警高2限";
-            glColumn11.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn11.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn11.Width = 80;
             glColumn12.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn12.CheckBoxes = false;
@@ -352,7 +357,7 @@
             glColumn12.Name = "DS";
             glColumn12.NumericSort = false;
             glColumn12.Text = "质量";
-            glColumn12.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn12.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             glColumn12.Width = 60;
             glColumn13.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn13.CheckBoxes = false;
@@ -646,14 +651,10 @@
 
         #endregion
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
         private System.Windows.Forms.ToolStripLabel toolStripLabel2;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBox2;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel3;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBox3;
+        private System.Windows.Forms.ToolStripComboBox tSCB_ND;
         private System.Windows.Forms.ToolStripLabel toolStripLabel4;
-        private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
+        private System.Windows.Forms.ToolStripTextBox tSTB_F;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private GlacialComponents.Controls.GlacialList glacialList1;
         private System.Windows.Forms.ToolStripButton toolStripButtonAdd;
@@ -685,5 +686,10 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox checkBoxAlarm;
         private System.Windows.Forms.Timer timerCalc;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel3;
+        private System.Windows.Forms.ToolStripButton toolStripButtonDelete;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripTextBox tSTB_PN;
+        private System.Windows.Forms.ToolStripTextBox tSTB_ED;
     }
 }

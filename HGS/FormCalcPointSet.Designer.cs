@@ -124,7 +124,7 @@
             glColumn1.ImageIndex = -1;
             glColumn1.Name = "VarName";
             glColumn1.NumericSort = false;
-            glColumn1.Text = "变量名";
+            glColumn1.Text = "  变量名";
             glColumn1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             glColumn1.Width = 80;
             glColumn2.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
@@ -132,7 +132,7 @@
             glColumn2.ImageIndex = -1;
             glColumn2.Name = "ND";
             glColumn2.NumericSort = false;
-            glColumn2.Text = "节点";
+            glColumn2.Text = "  节点";
             glColumn2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             glColumn2.Width = 80;
             glColumn3.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
@@ -140,15 +140,15 @@
             glColumn3.ImageIndex = -1;
             glColumn3.Name = "PN";
             glColumn3.NumericSort = false;
-            glColumn3.Text = "点名（SIS）";
+            glColumn3.Text = "  点名（SIS）";
             glColumn3.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             glColumn3.Width = 150;
             glColumn4.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn4.CheckBoxes = false;
             glColumn4.ImageIndex = -1;
             glColumn4.Name = "AV";
-            glColumn4.NumericSort = false;
-            glColumn4.Text = "值";
+            glColumn4.NumericSort = true;
+            glColumn4.Text = "值  ";
             glColumn4.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn4.Width = 70;
             glColumn5.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
@@ -157,14 +157,14 @@
             glColumn5.Name = "EU";
             glColumn5.NumericSort = false;
             glColumn5.Text = "单位";
-            glColumn5.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn5.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             glColumn5.Width = 50;
             glColumn6.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn6.CheckBoxes = false;
             glColumn6.ImageIndex = -1;
             glColumn6.Name = "ED";
             glColumn6.NumericSort = false;
-            glColumn6.Text = "描述";
+            glColumn6.Text = "  描述";
             glColumn6.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             glColumn6.Width = 180;
             glColumn7.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
@@ -173,7 +173,7 @@
             glColumn7.Name = "DS";
             glColumn7.NumericSort = false;
             glColumn7.Text = "质量";
-            glColumn7.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn7.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             glColumn7.Width = 80;
             this.glacialList1.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
             glColumn1,

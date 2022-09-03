@@ -50,7 +50,7 @@ namespace HGS
 
         //所点列表，用于进行计算，不使用并发字典的foreach(得到所有锁后才能进行)---------------------
 
-        HashSet<int> hs_allpoint = new HashSet<int>();
+        HashSet<point> hs_allpoint = new HashSet<point>();
 
         //新加点列表，用于填加到DB------------------------------------------------------------------
 
@@ -61,12 +61,12 @@ namespace HGS
         HashSet<point> hs_ModifyPoint = new HashSet<point>();
         //删除的点列表，用于更新到DB------------------------------------------------------------------
 
-        HashSet<point> lsDeletePoint = new HashSet<point>();
+        HashSet<point> hs_DeletePoint = new HashSet<point>();
 
         //sis id和point id转换字典。------------------------------------
 
         Dictionary<int, int> dic_sisIdtoPointId = new Dictionary<int, int>();
-        IDictionary<string, object> variables;
+        //IDictionary<string, object> variables;
 
         //计算
         CalcEngine.CalcEngine _ce = new CalcEngine.CalcEngine();
@@ -80,7 +80,7 @@ namespace HGS
 
         DataTable dtTempPoint = new DataTable();
         //-----------------------------------------------
-        public HashSet<int> lsAllPoint
+        public HashSet<point> lsAllPoint
         {
             set { hs_allpoint = value; }
             get { return hs_allpoint; }
@@ -104,7 +104,18 @@ namespace HGS
         {
             return ++MAXOFPOINTID;
         }
-
+        //取得计算点的相关点列表。
+        public List<int> GetDeletePointIdList(int pointid)
+        {
+            List<int> lsptid = new List<int>();
+            string strexp = string.Format("pointid={0}", pointid);
+            DataRow[] frow = dtTempPoint.Select(strexp);
+            foreach (DataRow dr in frow)
+            {
+                lsptid.Add((int)dr["id"]);
+            }
+            return lsptid;
+        }
         //取得计算点的相关点列表。
         private List<subpoint> GetSubPointList(point pt)
         {
@@ -340,7 +351,7 @@ namespace HGS
                     Point.lsCalcOrgSubPoint = GetSubPointList(Point);
 
                     cd_Point[Point.id] = Point;
-                    hs_allpoint.Add(Point.id);
+                    hs_allpoint.Add(Point);
                     if (Point.pointsrc == pointsrc.sis)
                     {
                         hs_sispoint.Add(Point);
@@ -426,9 +437,9 @@ namespace HGS
                     }
                 }
             }
-            foreach(point pt in lsDeletePoint)
+            foreach(point pt in hs_DeletePoint)
             {
-                sb.AppendLine(string.Format("delete  from formula_point where id = {0};", pt.id));
+                sb.AppendLine(string.Format("delete  from point where id = {0};", pt.id));
             }
             var pgconn = new NpgsqlConnection(Pref.GetInst().pgConnString);
             try
@@ -441,20 +452,24 @@ namespace HGS
                 foreach (point pt in hs_NewPoint)
                 {
                     cd_Point[pt.id] = pt;
-                    hs_allpoint.Add(pt.id);
+                    hs_allpoint.Add(pt);
                     if (pt.pointsrc == pointsrc.sis)
                     {
                         hs_sispoint.Add(pt);
                         dic_sisIdtoPointId.Add(pt.id_sis, pt.id);
                     }
                     else
+                    {
                         pt.expression = _ce.Parse(pt.expformula);
+                        hs_calcpoint.Add(pt);
+                    }
                 }
-                foreach (point pt in lsDeletePoint)
+                foreach (point pt in hs_DeletePoint)
                 {
                     point rpt;
                     cd_Point.TryRemove(pt.id, out rpt);//???????????????
-                    hs_allpoint.Remove(pt.id);
+                    hs_allpoint.Remove(pt);
+                    hs_calcpoint.Remove(pt);
                     if (pt.pointsrc == pointsrc.sis)
                     {
                         hs_sispoint.Remove(pt);
@@ -467,6 +482,7 @@ namespace HGS
                 }
                 hs_NewPoint.Clear();
                 hs_ModifyPoint.Clear();
+                hs_DeletePoint.Clear();
                 //重装子点表
                 LoadSubPointTable();
             }
@@ -488,7 +504,7 @@ namespace HGS
         }
         public void Delete(point pt)
         {
-            lsDeletePoint.Add(pt);//有问题?????????????
+            hs_DeletePoint.Add(pt);//有问题?????????????
         }
         public void Update(point pt)
         {

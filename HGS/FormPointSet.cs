@@ -30,45 +30,45 @@ namespace HGS
             timerUpdateValue.Enabled = false;
             glacialList1.Items.Clear();
 
-            foreach (int ipt in Data.Get().lsAllPoint)
+            foreach (point ptx in Data.Get().lsAllPoint)
             {
                 GLItem itemn;
                 itemtag it = new itemtag();
-                point Point = Data.Get().cd_Point[ipt];
-
-                itemn = glacialList1.Items.Add("");
-                it.id = Point.id;
-
-                itemn.SubItems["ND"].Text = Point.nd;
-                itemn.SubItems["PN"].Text = Point.pn;
-
-                itemn.SubItems["EU"].Text = Point.eu;
-                itemn.SubItems["ED"].Text = Point.ed;
-                itemn.SubItems["TV"].Text = Point.tv.ToString();
-                itemn.SubItems["BV"].Text = Point.bv.ToString();
-                itemn.SubItems["LL"].Text = Point.ll.ToString();
-                itemn.SubItems["HL"].Text = Point.hl.ToString();
-                itemn.SubItems["ZL"].Text = Point.zl.ToString();
-                itemn.SubItems["ZH"].Text = Point.zh.ToString();
-                it.sisid = Point.id_sis;
-                it.fm = Point.fm;
-                it.PointSrc = Point.pointsrc;
-
-                //Point.poitsrc = it.PointSrc = (pointsrc)pgreader.GetInt32(pgreader.GetOrdinal("pointsrc"));
-                if (Point.pointsrc == pointsrc.sis)
+                //point Point = Data.Get().cd_Point[];
+                if ((ptx.pointsrc == pointsrc.sis || (ptx.ownerid == 0 || ptx.ownerid == Pref.GetInst().Owner)) &&
+                    ptx.nd.Contains(tSCB_ND.Text.Trim()) && ptx.ed.Contains(tSTB_ED.Text.Trim()) &&
+                    ptx.pn.Contains(tSTB_PN.Text.Trim()) && ptx.orgformula.Contains(tSTB_F.Text.Trim()))
                 {
-                    onlysisid.Add(it.sisid);//唯一性
-                    itemn.SubItems["IsAlarm"].Text = Point.isalarm ? Pref.GetInst().strOk : Pref.GetInst().strNo;
-                }
-                else
-                {
-                    itemn.SubItems["IsAlarm"].Text = Point.isalarm ? Pref.GetInst().strOk : Pref.GetInst().strNo;
-                    itemn.SubItems["IsCalc"].Text = Point.iscalc ? Pref.GetInst().strOk : Pref.GetInst().strNo;
-                }
+                    itemn = glacialList1.Items.Add("");
+                    it.id = ptx.id;
 
-                //itemn.SubItems["ID"].Text = Pref.GetInst().GetVarName(Point);
+                    itemn.SubItems["ND"].Text = ptx.nd;
+                    itemn.SubItems["PN"].Text = ptx.pn;
 
-                itemn.Tag = it;
+                    itemn.SubItems["EU"].Text = ptx.eu;
+                    itemn.SubItems["ED"].Text = ptx.ed;
+                    itemn.SubItems["TV"].Text = ptx.tv.ToString();
+                    itemn.SubItems["BV"].Text = ptx.bv.ToString();
+                    itemn.SubItems["LL"].Text = ptx.ll.ToString();
+                    itemn.SubItems["HL"].Text = ptx.hl.ToString();
+                    itemn.SubItems["ZL"].Text = ptx.zl.ToString();
+                    itemn.SubItems["ZH"].Text = ptx.zh.ToString();
+                    it.sisid = ptx.id_sis;
+                    it.fm = ptx.fm;
+                    it.PointSrc = ptx.pointsrc;
+                    if (ptx.pointsrc == pointsrc.sis)
+                    {
+                        onlysisid.Add(it.sisid);//唯一性
+                        itemn.SubItems["IsAlarm"].Text = ptx.isalarm ? Pref.GetInst().strOk : Pref.GetInst().strNo;
+                    }
+                    else
+                    {
+                        itemn.SubItems["IsAlarm"].Text = ptx.isalarm ? Pref.GetInst().strOk : Pref.GetInst().strNo;
+                        itemn.SubItems["IsCalc"].Text = ptx.iscalc ? Pref.GetInst().strOk : Pref.GetInst().strNo;
+                    }
+
+                    itemn.Tag = it;
+                }
             }
             timerUpdateValue.Enabled = true;
 
@@ -224,7 +224,8 @@ namespace HGS
                 textBoxZL.Text = item.SubItems["ZL"].Text;
                 textBoxZH.Text = item.SubItems["ZH"].Text;
                 itemtag it = (itemtag)(item.Tag);
-                checkBoxAlarm.Checked = dic_glItemNew.ContainsKey(item) ?  dic_glItemNew[item].isalarm : Data.Get().cd_Point[it.id].isalarm;
+                checkBoxAlarm.Checked = dic_glItemNew.ContainsKey(item) 
+                    ?  dic_glItemNew[item].isalarm : Data.Get().cd_Point[it.id].isalarm;
                 buttonCalc.Enabled = (it.PointSrc == pointsrc.calc) ? true : false;
             }
         }
@@ -344,7 +345,7 @@ namespace HGS
         }
         private void toolStripButtonSelect_Click(object sender, EventArgs e)
         {
-
+            glacialLisint();
         }
 
         private void timerCalc_Tick(object sender, EventArgs e)
@@ -371,6 +372,48 @@ namespace HGS
                 {
                     calcpt.ps = PointState.Error;
                     calcpt.calciserror = true;
+                }
+            }
+        }
+
+        private void toolStripButtonDelete_Click(object sender, EventArgs e)
+        {
+            if (glacialList1.SelectedItems.Count == 1)
+            {
+                GLItem itemn = (GLItem)glacialList1.SelectedItems[0];
+                itemtag it = (itemtag)itemn.Tag;
+
+                List<int> lspid = Data.Get().GetDeletePointIdList(it.id);
+                if (dic_glItemNew.ContainsKey(itemn))
+                {
+                    if (DialogResult.OK == MessageBox.Show(string.Format("是否删除点[{0}]-{1}？",
+                        itemn.SubItems["PN"].Text,itemn.SubItems["ED"].Text), "提示",
+                        MessageBoxButtons.OKCancel, MessageBoxIcon.Question))
+                    {
+                        dic_glItemNew.Remove(itemn);
+                        glacialList1.Items.Remove(itemn);
+                    }
+                    return;
+                }
+                else if (lspid.Count > 0)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendLine("被下列点引用，不能删除！");
+                    foreach (int pid in lspid)
+                    {
+                        point pt = Data.Get().cd_Point[pid];
+                        sb.AppendLine(string.Format("[id:{0}]-{1}", pt.id, pt.ed));
+                    }
+                    MessageBox.Show(sb.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (DialogResult.OK == MessageBox.Show(string.Format("是否删除点[{0}]-{1}？",
+                    itemn.SubItems["PN"].Text,itemn.SubItems["ED"].Text), "提示",
+                        MessageBoxButtons.OKCancel, MessageBoxIcon.Question))
+                {
+                    toolStripButtonFind.Enabled = false;
+                    Data.Get().Delete(Data.Get().cd_Point[it.id]);
+                    glacialList1.Items.Remove(itemn);
                 }
             }
         }

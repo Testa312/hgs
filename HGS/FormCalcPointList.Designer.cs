@@ -166,7 +166,7 @@
             glColumn1.ImageIndex = -1;
             glColumn1.Name = "ND";
             glColumn1.NumericSort = false;
-            glColumn1.Text = "节点";
+            glColumn1.Text = "    节点";
             glColumn1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             glColumn1.Width = 100;
             glColumn2.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
@@ -174,15 +174,15 @@
             glColumn2.ImageIndex = -1;
             glColumn2.Name = "PN";
             glColumn2.NumericSort = false;
-            glColumn2.Text = "点名";
+            glColumn2.Text = "    点名";
             glColumn2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             glColumn2.Width = 150;
             glColumn3.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn3.CheckBoxes = false;
             glColumn3.ImageIndex = -1;
             glColumn3.Name = "AV";
-            glColumn3.NumericSort = false;
-            glColumn3.Text = "值   ";
+            glColumn3.NumericSort = true;
+            glColumn3.Text = "值     ";
             glColumn3.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn3.Width = 60;
             glColumn4.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
@@ -198,7 +198,7 @@
             glColumn5.ImageIndex = -1;
             glColumn5.Name = "ED";
             glColumn5.NumericSort = false;
-            glColumn5.Text = "描述";
+            glColumn5.Text = "   描述";
             glColumn5.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             glColumn5.Width = 200;
             glColumn6.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
@@ -207,7 +207,7 @@
             glColumn6.Name = "DS";
             glColumn6.NumericSort = false;
             glColumn6.Text = "质量";
-            glColumn6.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn6.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             glColumn6.Width = 80;
             this.glacialList.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
             glColumn1,

@@ -26,7 +26,8 @@ namespace HGS
         }
         public void glacialLisint()
         {
-            foreach(subpoint subpt in CalcPoint.lsCalcOrgSubPoint)
+            timer1.Enabled = false;
+            foreach (subpoint subpt in CalcPoint.lsCalcOrgSubPoint)
             {
                 GLItem itemn;
                 itemtag it = new itemtag();
@@ -54,6 +55,7 @@ namespace HGS
             comboBox_eu.Text = CalcPoint.eu;
             checkBoxCalc.Checked = CalcPoint.iscalc;
             numericUpDown.Value = CalcPoint.fm;
+            timer1.Enabled = true;
         }
         private void FormPointSet_FormClosed(object sender, FormClosedEventArgs e)
         {
