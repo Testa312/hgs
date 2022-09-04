@@ -151,6 +151,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlarmSet.cs" />
     <Compile Include="Authorization.cs" />
     <Compile Include="CalcEngine\CalcEngine.cs" />
     <Compile Include="CalcEngine\Expression.cs" />
@@ -219,12 +220,13 @@
     <Compile Include="FormTestpgDataset.Designer.cs">
       <DependentUpon>FormTestpgDataset.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormTestpostrewql.cs">
+    <Compile Include="FormAlarmSet.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormTestpostrewql.Designer.cs">
-      <DependentUpon>FormTestpostrewql.cs</DependentUpon>
+    <Compile Include="FormAlarmSet.Designer.cs">
+      <DependentUpon>FormAlarmSet.cs</DependentUpon>
     </Compile>
+    <Compile Include="Functions.cs" />
     <Compile Include="GlacialList\BorderStrip.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -406,8 +408,8 @@
     <EmbeddedResource Include="FormTestpgDataset.resx">
       <DependentUpon>FormTestpgDataset.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormTestpostrewql.resx">
-      <DependentUpon>FormTestpostrewql.cs</DependentUpon>
+    <EmbeddedResource Include="FormAlarmSet.resx">
+      <DependentUpon>FormAlarmSet.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GlacialList\BorderStrip.resx" />
     <EmbeddedResource Include="GlacialList\GlacialList.resx" />

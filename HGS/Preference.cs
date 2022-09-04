@@ -9,17 +9,17 @@ namespace HGS
     {
     public class Pref
     {
-        private static Pref inst;
+        private static Pref instance;
 
         private Pref() { }
 
-        public static Pref GetInst()
+        public static Pref Inst()
         {
-            if (inst == null)
+            if (instance == null)
             {
-                inst = new Pref();
+                instance = new Pref();
             }
-            return inst;
+            return instance;
         }
         //PostgresSQL-----------
         static string pghost = "192.168.1.109";

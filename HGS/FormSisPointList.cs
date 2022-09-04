@@ -15,8 +15,8 @@ namespace HGS
 {
     public partial class FormSisPointList : Form
     {
-        OPAPI.Connect sisconn = new OPAPI.Connect(Pref.GetInst().sisHost, Pref.GetInst().sisPort, 60, 
-            Pref.GetInst().sisUser, Pref.GetInst().sisPassword);//建立连接
+        OPAPI.Connect sisconn = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60, 
+            Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
         public HashSet<int> onlysisid;
         public FormSisPointList()
         {

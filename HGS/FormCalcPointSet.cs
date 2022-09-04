@@ -15,8 +15,8 @@ namespace HGS
 {
     public partial class FormCalcPointSet : Form
     {
-        OPAPI.Connect sisconn = new OPAPI.Connect(Pref.GetInst().sisHost, Pref.GetInst().sisPort, 60,
-            Pref.GetInst().sisUser, Pref.GetInst().sisPassword);//建立连接
+        //OPAPI.Connect sisconn = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
+           // Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
         HashSet<int> onlyid = new HashSet<int>();
         public point CalcPoint;
         int PointNums = 0;
@@ -38,7 +38,7 @@ namespace HGS
                 GLItem itemn;
                 itemtag it = new itemtag();
                 itemn = glacialList1.Items.Add("");
-                point Point = Data.Get().cd_Point[subpt.id];
+                point Point = Data.inst().cd_Point[subpt.id];
 
                 it.id = subpt.id;
                
@@ -69,7 +69,7 @@ namespace HGS
         {
             glacialList1.Dispose();
             timer1.Enabled = false;
-            sisconn.close();
+            //sisconn.close();
         }
         private void timer1_Tick(object sender, EventArgs e)
         {
@@ -78,7 +78,7 @@ namespace HGS
                 if (glacialList1.IsItemVisible(item))
                 {
                     itemtag it = (itemtag)(item.Tag);
-                    point pt = Data.Get().cd_Point[it.id];
+                    point pt = Data.inst().cd_Point[it.id];
                     item.SubItems["AV"].Text = pt.av.ToString();
                     item.SubItems["DS"].Text = pt.ps.ToString();
                 }
@@ -174,7 +174,7 @@ namespace HGS
                 subpt.id = it.id;
                 Point.lsCalcOrgSubPoint.Add(subpt);
 
-                ce.Variables[subpt.varname] = Data.Get().cd_Point[it.id].av;//测试用。
+                ce.Variables[subpt.varname] = Data.inst().cd_Point[it.id].av;//测试用。
             }
             
             //CalcPoint.ed = textBoxmDiscription.Text;
@@ -182,22 +182,22 @@ namespace HGS
             Point.eu = comboBox_eu.Text;
             Point.ownerid = Auth.GetInst().LoginID;
             Point.pointsrc = pointsrc.calc;
-            Point.nd = Pref.GetInst().CalcPointNodeName;
+            Point.nd = Pref.Inst().CalcPointNodeName;
             //if (CalcPoint.id <= 0) CalcPoint.id = Data.Get().GetNextPointID();
             Point.iscalc = checkBoxCalc.Checked;
             Point.fm = (byte)numericUpDown.Value;
 
-            Point.listSisCalaExpPointID = Data.Get().ExpandOrgPointToSisPoint(Point);
+            Point.listSisCalaExpPointID = Data.inst().ExpandOrgPointToSisPoint(Point);
             //
-            Point.expformula = Data.Get().ExpandOrgFormula(Point);
+            Point.expformula = Data.inst().ExpandOrgFormula(Point);
             //
             double orgv = Point.orgformula.Length > 0 ? (double)ce.Evaluate(Point.orgformula) : -1; //验证表达式的合法性
                                                //
             ce.Variables.Clear();
-            foreach (point pt in Data.Get().lsSisPoint)
+            foreach (point pt in Data.inst().lsSisPoint)
             {
                 //point Ptx = Data.Get().cd_Point[pid];
-                ce.Variables.Add(Pref.GetInst().GetVarName(pt), pt.av);
+                ce.Variables.Add(Pref.Inst().GetVarName(pt), pt.av);
             }
             double expv = Point.orgformula.Length > 0 ? (double)ce.Evaluate(Point.expformula) : -1;//验证表达式展开sis点的合法性。
             if(rsl)
@@ -214,8 +214,8 @@ namespace HGS
                 CalcPoint.eu = comboBox_eu.Text;
                 CalcPoint.ownerid = Auth.GetInst().LoginID;
                 CalcPoint.pointsrc = pointsrc.calc;
-                CalcPoint.nd = Pref.GetInst().CalcPointNodeName;
-                if(CalcPoint.id <= 0) CalcPoint.id = Data.Get().GetNextPointID();
+                CalcPoint.nd = Pref.Inst().CalcPointNodeName;
+                if(CalcPoint.id <= 0) CalcPoint.id = Data.inst().GetNextPointID();
                 CalcPoint.iscalc = checkBoxCalc.Checked;
                 CalcPoint.fm = (byte)numericUpDown.Value;
 
@@ -229,8 +229,8 @@ namespace HGS
                     subpt.id = it.id;
                     CalcPoint.lsCalcOrgSubPoint.Add(subpt);
                 }                                                                                        
-                CalcPoint.listSisCalaExpPointID = Data.Get().ExpandOrgPointToSisPoint(CalcPoint);               
-                CalcPoint.expformula = Data.Get().ExpandOrgFormula(CalcPoint);
+                CalcPoint.listSisCalaExpPointID = Data.inst().ExpandOrgPointToSisPoint(CalcPoint);               
+                CalcPoint.expformula = Data.inst().ExpandOrgFormula(CalcPoint);
             }
             catch (Exception ee)
             {

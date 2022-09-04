@@ -17,7 +17,7 @@ namespace HGS
 
         private Data() { }
 
-        public static Data Get()
+        public static Data inst()
         {
             if (instance == null)
             {
@@ -134,33 +134,9 @@ namespace HGS
             }
             return lssubpt;
         }
-        //返回大于n的素数。
-        private  int AbovePrimes(int n)
-        {
-            int i = (n % 2) == 0 ? ++n : n + 2;
-            int j = 0;
-            for (; i <= 100003; i = i + 2)
-            {
-                int k = (int)Math.Sqrt(i);
-                for (j = 2; j <= k; j++)
-                {
-                    if ((i % j) == 0)
-                    {
-                        break;
-                    }
-                }
-
-                if (j > k)
-                {
-                    return i;
-                }
-            }
-            //最大100003
-            return 100003;
-        }
         private void GetPointsStat()
         {
-            var pgconn = new NpgsqlConnection(Pref.GetInst().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
             try
             {
                 pgconn.Open();
@@ -192,7 +168,7 @@ namespace HGS
             // So set the initial capacity to some prime number above that, to ensure that
             // the ConcurrentDictionary does not need to be resized while initializing it.
             //static int NUMITEMS = 20000;
-            int initialCapacity = AbovePrimes(NUMPOINTS);//素数
+            int initialCapacity = Functions.inst().AbovePrimes(NUMPOINTS);//素数
             initialCapacity = initialCapacity > 1009 ? initialCapacity : 1009;
 
             // The higher the concurrencyLevel, the higher the theoretical number of operations
@@ -237,7 +213,7 @@ namespace HGS
                 }
                 else
                 {
-                    string rpl = string.Format("{0}", Pref.GetInst().GetVarName(Point));
+                    string rpl = string.Format("{0}", Pref.Inst().GetVarName(Point));
                     string pat = string.Format(@"\b{0}\b(?=[^(])|\b{0}$", subpt.varname);
                     orgf = Regex.Replace(orgf, pat, rpl);
                 }
@@ -250,7 +226,7 @@ namespace HGS
         {
             //得到关连的参与计算点。
             string strsql = "select point.id,formula_point.pointid,varname from point,formula_point where point.id = formula_point.id";
-            NpgsqlDataAdapter daPoint = new NpgsqlDataAdapter(strsql, Pref.GetInst().pgConnString);
+            NpgsqlDataAdapter daPoint = new NpgsqlDataAdapter(strsql, Pref.Inst().pgConnString);
             dtTempPoint.Clear();//清空
             daPoint.Fill(dtTempPoint);
         }
@@ -291,7 +267,7 @@ namespace HGS
         //-------------------------------
         private void LoadData()
         {
-            var pgconn = new NpgsqlConnection(Pref.GetInst().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
             try
             {
                 pgconn.Open();
@@ -359,7 +335,7 @@ namespace HGS
                     {
                         hs_sispoint.Add(Point);
                         dic_sisIdtoPointId.Add(Point.id_sis, Point.id);
-                        _ce.Variables.Add(Pref.GetInst().GetVarName(Point), Point.av);
+                        _ce.Variables.Add(Pref.Inst().GetVarName(Point), Point.av);
                     }
                     else
                     {
@@ -406,7 +382,7 @@ namespace HGS
 
                 sb.AppendLine(string.Format(@"update point set tv={0},bv={1},ll={2},hl={3},zl={4},zh={5},mt='{6}',eu='{7}',"+
                                                    "ownerid={8},orgformula='{9}',expformula='{10}',fm={11},iscalc = {12}," +
-                                                   "isavalarm = {13 },ed = '{14}',isboolv = {15},boolalarminfo = '{16}' where id = {17};",
+                                                   "isavalarm = {13},ed = '{14}',isboolv = {15},boolalarminfo = '{16}' where id = {17};",
                                                 dtoNULL(pt.tv), dtoNULL(pt.bv), dtoNULL(pt.ll), dtoNULL(pt.hl), dtoNULL(pt.zl), dtoNULL(pt.zh),
                                                 DateTime.Now,pt.eu, pt.ownerid, pt.orgformula,pt.expformula,pt.fm,
                                                 pt.iscalc,pt.isavalarm, pt.ed,pt.isboolv,pt.boolalarminfo,pt.id)); 
@@ -444,7 +420,7 @@ namespace HGS
             {
                 sb.AppendLine(string.Format("delete  from point where id = {0};", pt.id));
             }
-            var pgconn = new NpgsqlConnection(Pref.GetInst().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
             try
             {
                 if (sb.Length < 10) return;

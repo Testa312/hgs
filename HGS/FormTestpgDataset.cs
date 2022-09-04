@@ -25,7 +25,7 @@ namespace HGS
             string strsql = "select point.id,formula_point.pointid from point,formula_point where point.id = formula_point.id";
             
             //string strsql = "select * from point";
-            NpgsqlDataAdapter daPoint = new NpgsqlDataAdapter(strsql, Pref.GetInst().pgConnString);
+            NpgsqlDataAdapter daPoint = new NpgsqlDataAdapter(strsql, Pref.Inst().pgConnString);
             daPoint.Fill(dsPoint);
             //
             dataGridView1.DataSource = dsPoint.Tables[0];

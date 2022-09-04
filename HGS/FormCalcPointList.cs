@@ -15,8 +15,8 @@ namespace HGS
 {
     public partial class FormCalcPointList : Form
     {
-        OPAPI.Connect sisconn = new OPAPI.Connect(Pref.GetInst().sisHost, Pref.GetInst().sisPort, 60, 
-            Pref.GetInst().sisUser, Pref.GetInst().sisPassword);//建立连接
+        //OPAPI.Connect sisconn = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60, 
+            //Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
         private HashSet<int> onlyid;
         public FormCalcPointList()
         {
@@ -25,7 +25,7 @@ namespace HGS
         }
          ~FormCalcPointList()
         {
-            sisconn.close();
+            //sisconn.close();
         }
         //初始化节点列表。
         public void InitList()
@@ -33,7 +33,7 @@ namespace HGS
             try
             {
                 tSCBNode.Items.Add("");
-               var pgconn = new NpgsqlConnection(Pref.GetInst().pgConnString);
+               var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
                 pgconn.Open();
 
                 string strsql = "select distinct nd from point order by nd";
@@ -70,7 +70,7 @@ namespace HGS
                 timer.Enabled = false;
                 glacialList.Items.Clear();
                 int count = 0;
-                foreach (point ptx in Data.Get().lsAllPoint)
+                foreach (point ptx in Data.inst().lsAllPoint)
                 {
                     //point Point = Data.Get().cd_Point[ipt];
                     if (ptx.nd.Contains(tSCBNode.Text.Trim()) && ptx.ed.Contains(tSCBED.Text.Trim()) &&
@@ -117,7 +117,7 @@ namespace HGS
                 if (glacialList.IsItemVisible(item))
                 {
                     itemtag it = (itemtag)(item.Tag);
-                    point pt = Data.Get().cd_Point[it.id];
+                    point pt = Data.inst().cd_Point[it.id];
                     item.SubItems["AV"].Text = pt.av.ToString();
                     item.SubItems["DS"].Text = pt.ps.ToString();
                 }
@@ -126,7 +126,7 @@ namespace HGS
         private void FormSisPointList_FormClosed(object sender, FormClosedEventArgs e)
         {
             timer.Enabled = false;
-            sisconn.close();
+            //sisconn.close();
         }
     }
 }

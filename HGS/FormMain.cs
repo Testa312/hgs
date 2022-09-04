@@ -17,7 +17,7 @@ namespace HGS
             InitializeComponent();
             //
             CalcEngine.CalcEngine cd = new CalcEngine.CalcEngine();
-            Data.Get().LoadFromPG();
+            Data.inst().LoadFromPG();
         }
 
         private void form1ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -64,12 +64,20 @@ namespace HGS
             frm1.WindowState = FormWindowState.Maximized;
             frm1.Show();
         }
-
+        //登录窗口
         private void FormMain_Shown(object sender, EventArgs e)
         {
-            FormLogin fl = new FormLogin();
-            if (DialogResult.Cancel == fl.ShowDialog()) this.Close();
-            this.Text = string.Format("HGS-{0}", Auth.GetInst().UserName);
+            //FormLogin fl = new FormLogin();
+            //if (DialogResult.Cancel == fl.ShowDialog()) this.Close();
+            //this.Text = string.Format("HGS-{0}", Auth.GetInst().UserName);
+        }
+        private void 报警信息ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormAlarmSet frm1 = new FormAlarmSet();     //创建form2窗体的对象
+
+            frm1.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
+            frm1.WindowState = FormWindowState.Maximized;
+            frm1.Show();
         }
     }
 }

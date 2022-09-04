@@ -15,6 +15,18 @@ namespace HGS
         public short fm = 2;
         public pointsrc PointSrc = pointsrc.sis;
     }
+    /*/-----------------------------
+    public class AlarmInfo
+    {
+        public int id = -1;//点id
+        public int id_sis = 0;//sis点id
+        public string nd = "";//节点名。
+        public string pn = "";//点名
+
+        public string ed = "";//点描述 
+        public DateTime lastalarmdatetime = DateTime.Now;
+    }
+    */
     public class subpoint
     {
         public int id {set;get;}
@@ -38,7 +50,7 @@ namespace HGS
         public int id_sis = 0;//sis点id
         public string nd;//节点名。
         public string pn;//点名
-        public int rt = 0;//点类类
+        //public int rt = 0;//点类型
         public string ed;//点描述
         //可null
         public double? tv = null;//量程上限
@@ -60,6 +72,10 @@ namespace HGS
         public short fm = 0;//保留小数点位数。
         public bool calciserror = false;
         //
+        public bool alarming = false;
+        public DateTime lastalarmdatetime = DateTime.Now;
+        public string alarmininfo = "";
+        //
         public bool isboolv = false;
         public string boolalarminfo = "";//isbool 为真时的报警信息。
         //
@@ -72,34 +88,44 @@ namespace HGS
         private string AlarmPrx()
         {
             if (pointsrc == pointsrc.sis)
-                return string.Format("SIS点{[0]}-{1}",pn,ed);
-            return string.Format("计算点{[0]}", ed);
+                return string.Format("SIS点[{0}]-{1}",pn,ed);
+            return string.Format("计算点[{0]}]", ed);
         }
-        public string AlarmCalc()
+        public bool AlarmCalc()
         {
+            string rsl = "";
             if (isboolv)
             {
                 if (Convert.ToBoolean(av))
-                    return string.Format("{0}------{1}！", AlarmPrx(), boolalarminfo);
+                {
+                    rsl = boolalarminfo;// string.Format("{0}, boolalarminfo);
+                }
             }
-            else if(isavalarm)
+            else if (isavalarm)
             {
                 if (zh != null && av > zh)
-                    return string.Format("{0}------越报警高2限！", AlarmPrx());
+                    rsl = string.Format("值={0}{1}-越报警高2限！({2}{3})！", av, eu, zh, eu);
                 if (hl != null && av > hl)
-                    return string.Format("{0}------越报警高限！", AlarmPrx());
+                    rsl = string.Format("值={0}{1}-越报警高限！({2}{3})", av, eu, hl, eu);
                 if (tv != null && av > tv)
-                    return string.Format("{0}------越量程上限！", AlarmPrx());
+                    rsl = string.Format("值={0}{1}-越量程上限！({2}{3})", av, eu, tv, eu);
 
                 if (bv != null && av < bv)
-                    return string.Format("{0}------越量程下限！", AlarmPrx());
+                    rsl = string.Format("值={0}{1}-越量程下限！({2}{3})", av, eu, bv, eu);
                 if (ll != null && av < ll)
-                    return string.Format("{0}------越报警低限！", AlarmPrx());
+                    rsl = string.Format("值={0}{1}-越报警低限！({2}{3})", av, eu, ll, eu);
                 if (zl != null && av < zl)
-                    return string.Format("{0}------越报警低2限！", AlarmPrx());
-                else return "";
+                    rsl = string.Format("值={0}{1}-越报警低2限！({2}{3})}", av, eu, zl, eu);
             }
-            return "";
+            else rsl = "";
+            if (rsl.Length > 0)
+            {
+                lastalarmdatetime = DateTime.Now;
+                alarming = true;
+            }
+            else alarming = false;
+            alarmininfo = rsl;
+            return alarming;
         }
     }
    
