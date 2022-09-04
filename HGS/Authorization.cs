@@ -19,7 +19,7 @@ namespace HGS
             return inst;
         }
         //登录ID------------------------
-        int loginid = -1;//0为管理员,见表Owner
+        int loginid = 0;//0为管理员,见表Owner
         string username = "";
         //-----------------------
         public int LoginID
