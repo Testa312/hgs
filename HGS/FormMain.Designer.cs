@@ -87,35 +87,35 @@
             // form1ToolStripMenuItem
             // 
             this.form1ToolStripMenuItem.Name = "form1ToolStripMenuItem";
-            this.form1ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.form1ToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.form1ToolStripMenuItem.Text = "点设置";
             this.form1ToolStripMenuItem.Click += new System.EventHandler(this.form1ToolStripMenuItem_Click);
             // 
             // 点表ToolStripMenuItem
             // 
             this.点表ToolStripMenuItem.Name = "点表ToolStripMenuItem";
-            this.点表ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.点表ToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.点表ToolStripMenuItem.Text = "点表";
             this.点表ToolStripMenuItem.Click += new System.EventHandler(this.点表ToolStripMenuItem_Click);
             // 
             // 测试ToolStripMenuItem
             // 
             this.测试ToolStripMenuItem.Name = "测试ToolStripMenuItem";
-            this.测试ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.测试ToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.测试ToolStripMenuItem.Text = "测试";
             this.测试ToolStripMenuItem.Click += new System.EventHandler(this.测试ToolStripMenuItem_Click);
             // 
             // 计算点ToolStripMenuItem
             // 
             this.计算点ToolStripMenuItem.Name = "计算点ToolStripMenuItem";
-            this.计算点ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.计算点ToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.计算点ToolStripMenuItem.Text = "计算点";
             this.计算点ToolStripMenuItem.Click += new System.EventHandler(this.计算点ToolStripMenuItem_Click);
             // 
             // testLuaToolStripMenuItem
             // 
             this.testLuaToolStripMenuItem.Name = "testLuaToolStripMenuItem";
-            this.testLuaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.testLuaToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.testLuaToolStripMenuItem.Text = "测试pg 数据源";
             this.testLuaToolStripMenuItem.Click += new System.EventHandler(this.testLuaToolStripMenuItem_Click);
             // 
@@ -141,6 +141,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "HGS";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Shown += new System.EventHandler(this.FormMain_Shown);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);

@@ -15,9 +15,8 @@ namespace HGS
     {
         OPAPI.Connect sisconn = new OPAPI.Connect(Pref.GetInst().sisHost, Pref.GetInst().sisPort, 60,
            Pref.GetInst().sisUser, Pref.GetInst().sisPassword);//建立连接
+
         Dictionary<GLItem, point> dic_glItemNew = new Dictionary<GLItem, point>();
-        //Dictionary<GLItem, point> dic_glItemModified = new Dictionary<GLItem, point>();
-        //HashSet<GLItem> hs_glItemNew = new HashSet<GLItem>();
         HashSet<GLItem> hs_glItemModified = new HashSet<GLItem>();
         HashSet<int> onlysisid = new HashSet<int>();
         public FormPointSet()
@@ -35,7 +34,7 @@ namespace HGS
                 GLItem itemn;
                 itemtag it = new itemtag();
                 //point Point = Data.Get().cd_Point[];
-                if ((ptx.pointsrc == pointsrc.sis || (ptx.ownerid == 0 || ptx.ownerid == Pref.GetInst().Owner)) &&
+                if ((ptx.pointsrc == pointsrc.sis || (Pref.GetInst().OwnerID == 0 || ptx.ownerid == Pref.GetInst().OwnerID)) &&
                     ptx.nd.Contains(tSCB_ND.Text.Trim()) && ptx.ed.Contains(tSTB_ED.Text.Trim()) &&
                     ptx.pn.Contains(tSTB_PN.Text.Trim()) && ptx.orgformula.Contains(tSTB_F.Text.Trim()))
                 {
@@ -98,7 +97,7 @@ namespace HGS
                    
                         Point.id = Data.Get().GetNextPointID();
                         Point.pointsrc = pointsrc.sis;
-                        Point.ownerid = Pref.GetInst().Owner;
+                        Point.ownerid = Pref.GetInst().OwnerID;
 
                         itemtag it = new itemtag();
                         itemn.Tag = it;
@@ -366,7 +365,7 @@ namespace HGS
                 }
                 try
                 {
-                    calcpt.av = Math.Round((double)calcpt.expression.Evaluate(), calcpt.fm);
+                    calcpt.av = Math.Round(calcpt.expformula.Length > 0 ? (double)calcpt.expression.Evaluate():-1, calcpt.fm);
                 }
                 catch (Exception ee)
                 {

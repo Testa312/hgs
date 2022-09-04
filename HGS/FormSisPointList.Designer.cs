@@ -158,7 +158,7 @@
             this.button1.Location = new System.Drawing.Point(222, 368);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
+            this.button1.TabIndex = 3;
             this.button1.Text = "取消";
             this.button1.UseVisualStyleBackColor = true;
             // 
@@ -168,7 +168,7 @@
             this.button2.Location = new System.Drawing.Point(447, 368);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 5;
+            this.button2.TabIndex = 2;
             this.button2.Text = "确定";
             this.button2.UseVisualStyleBackColor = true;
             // 
@@ -272,7 +272,7 @@
             this.glacialList.Size = new System.Drawing.Size(736, 303);
             this.glacialList.SortType = GlacialComponents.Controls.SortTypes.QuickSort;
             this.glacialList.SuperFlatHeaderColor = System.Drawing.Color.White;
-            this.glacialList.TabIndex = 3;
+            this.glacialList.TabIndex = 1;
             this.glacialList.Text = "glacialList";
             // 
             // FormSisPointList

@@ -418,7 +418,7 @@
             this.glacialList1.Size = new System.Drawing.Size(1160, 265);
             this.glacialList1.SortType = GlacialComponents.Controls.SortTypes.InsertionSort;
             this.glacialList1.SuperFlatHeaderColor = System.Drawing.Color.White;
-            this.glacialList1.TabIndex = 0;
+            this.glacialList1.TabIndex = 1;
             this.glacialList1.Text = "glacialList1";
             this.glacialList1.Click += new System.EventHandler(this.glacialList1_Click);
             // 
@@ -472,7 +472,7 @@
             this.buttonSet.Location = new System.Drawing.Point(782, 26);
             this.buttonSet.Name = "buttonSet";
             this.buttonSet.Size = new System.Drawing.Size(75, 23);
-            this.buttonSet.TabIndex = 3;
+            this.buttonSet.TabIndex = 2;
             this.buttonSet.Text = "设置";
             this.buttonSet.UseVisualStyleBackColor = true;
             this.buttonSet.Click += new System.EventHandler(this.buttonSet_Click);
@@ -501,7 +501,7 @@
             this.checkBoxAlarm.Location = new System.Drawing.Point(407, 64);
             this.checkBoxAlarm.Name = "checkBoxAlarm";
             this.checkBoxAlarm.Size = new System.Drawing.Size(48, 16);
-            this.checkBoxAlarm.TabIndex = 2;
+            this.checkBoxAlarm.TabIndex = 10;
             this.checkBoxAlarm.Text = "报警";
             this.checkBoxAlarm.UseVisualStyleBackColor = true;
             // 
@@ -510,14 +510,14 @@
             this.textBoxZH.Location = new System.Drawing.Point(285, 62);
             this.textBoxZH.Name = "textBoxZH";
             this.textBoxZH.Size = new System.Drawing.Size(100, 21);
-            this.textBoxZH.TabIndex = 1;
+            this.textBoxZH.TabIndex = 9;
             // 
             // textBoxZL
             // 
             this.textBoxZL.Location = new System.Drawing.Point(91, 62);
             this.textBoxZL.Name = "textBoxZL";
             this.textBoxZL.Size = new System.Drawing.Size(100, 21);
-            this.textBoxZL.TabIndex = 1;
+            this.textBoxZL.TabIndex = 7;
             // 
             // label13
             // 
@@ -542,7 +542,7 @@
             this.textBoxHL.Location = new System.Drawing.Point(285, 22);
             this.textBoxHL.Name = "textBoxHL";
             this.textBoxHL.Size = new System.Drawing.Size(100, 21);
-            this.textBoxHL.TabIndex = 1;
+            this.textBoxHL.TabIndex = 8;
             // 
             // label12
             // 
@@ -558,7 +558,7 @@
             this.textBoxLL.Location = new System.Drawing.Point(91, 22);
             this.textBoxLL.Name = "textBoxLL";
             this.textBoxLL.Size = new System.Drawing.Size(100, 21);
-            this.textBoxLL.TabIndex = 1;
+            this.textBoxLL.TabIndex = 6;
             // 
             // label10
             // 
@@ -587,7 +587,7 @@
             this.textBoxBV.Location = new System.Drawing.Point(64, 59);
             this.textBoxBV.Name = "textBoxBV";
             this.textBoxBV.Size = new System.Drawing.Size(100, 21);
-            this.textBoxBV.TabIndex = 1;
+            this.textBoxBV.TabIndex = 5;
             // 
             // label7
             // 
@@ -603,7 +603,7 @@
             this.textBoxTV.Location = new System.Drawing.Point(64, 22);
             this.textBoxTV.Name = "textBoxTV";
             this.textBoxTV.Size = new System.Drawing.Size(100, 21);
-            this.textBoxTV.TabIndex = 1;
+            this.textBoxTV.TabIndex = 4;
             // 
             // label5
             // 

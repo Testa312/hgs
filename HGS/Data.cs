@@ -33,7 +33,7 @@ namespace HGS
         }
         //点id最在值;
         int MAXOFPOINTID = 0;
-        public int stat_MAXOFPOINTID
+        int stat_MAXOFPOINTID
         {
             get { return MAXOFPOINTID; }
         }
@@ -103,6 +103,61 @@ namespace HGS
         public int GetNextPointID()
         {
             return ++MAXOFPOINTID;
+        }
+        //取得可登录的专业；
+        public List<string> GetUser()
+        {
+            List<string> ls_user = new List<string>();
+            var pgconn = new NpgsqlConnection(Pref.GetInst().pgConnString);
+            try
+            {
+                pgconn.Open();
+                string strsql = "select name,id  from owner order by id";
+                var cmd = new NpgsqlCommand(strsql, pgconn);
+                NpgsqlDataReader pgreader = cmd.ExecuteReader();
+                while (pgreader.Read())
+                {
+                    
+                    ls_user.Add(pgreader["Name"].ToString());
+                }
+
+                pgconn.Close();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                pgconn.Close();
+            }
+            return ls_user;
+        }
+        //用户授权
+        public bool  UserAuthorization(int userid,string pw)
+        {
+            var pgconn = new NpgsqlConnection(Pref.GetInst().pgConnString);
+            bool rsl = false;
+            try
+            {          
+                pgconn.Open();
+                string strsql = string.Format("select (password = crypt('{0}', password)) as password from owner where id = {1}"
+                    , pw,userid);
+                var cmd = new NpgsqlCommand(strsql, pgconn);
+                NpgsqlDataReader pgreader = cmd.ExecuteReader();
+                pgreader.Read();
+                rsl = (bool)pgreader["password"];
+                pgconn.Close();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                pgconn.Close();
+            }
+            return rsl;
         }
         //取得计算点的相关点列表。
         public List<int> GetDeletePointIdList(int pointid)
@@ -368,7 +423,7 @@ namespace HGS
                 {
                     v.expformula = ExpandOrgFormula(v);
                     v.listSisCalaExpPointID = ExpandOrgPointToSisPoint(v);
-                    if(v.pointsrc == pointsrc.calc)
+                    if(v.pointsrc == pointsrc.calc && v.expformula.Length > 0)
                         v.expression = _ce.Parse(v.expformula);
                 }
             }
@@ -426,7 +481,7 @@ namespace HGS
                                     "values ({0},'{1}','{2}','{3}','{4}',{5},{6},{7},{8},{9},"+
                                             "{10},{11},{12},'{13}',{14},'{15}','{16}',{17},{18},{19});",
                                     pt.id, pt.nd, pt.pn, pt.ed, pt.eu, dtoNULL(pt.tv), dtoNULL(pt.bv), dtoNULL(pt.ll),dtoNULL(pt.hl), dtoNULL(pt.zl), 
-                                    dtoNULL(pt.zh), pt.id_sis,(int)pt.pointsrc, DateTime.Now, Pref.GetInst().Owner, pt.orgformula,
+                                    dtoNULL(pt.zh), pt.id_sis,(int)pt.pointsrc, DateTime.Now, Pref.GetInst().OwnerID, pt.orgformula,
                                     pt.expformula,pt.fm,pt.iscalc,pt.isalarm));
                 if (pt.pointsrc == pointsrc.calc && pt.lsCalcOrgSubPoint.Count > 0)
                 {
@@ -460,7 +515,7 @@ namespace HGS
                     }
                     else
                     {
-                        pt.expression = _ce.Parse(pt.expformula);
+                        pt.expression = pt.expformula.Length > 0 ? _ce.Parse(pt.expformula) : new Expression();
                         hs_calcpoint.Add(pt);
                     }
                 }
@@ -478,7 +533,7 @@ namespace HGS
                 }
                 foreach (point pt in hs_ModifyPoint)
                 {
-                    pt.expression = _ce.Parse(pt.expformula);
+                    pt.expression = pt.expformula.Length > 0 ? _ce.Parse(pt.expformula) : new Expression() ;
                 }
                 hs_NewPoint.Clear();
                 hs_ModifyPoint.Clear();

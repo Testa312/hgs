@@ -64,5 +64,11 @@ namespace HGS
             frm1.WindowState = FormWindowState.Maximized;
             frm1.Show();
         }
+
+        private void FormMain_Shown(object sender, EventArgs e)
+        {
+            FormLogin fl = new FormLogin();
+            if (DialogResult.Cancel == fl.ShowDialog()) this.Close();
+        }
     }
 }

@@ -211,7 +211,7 @@
             this.glacialList1.Size = new System.Drawing.Size(728, 265);
             this.glacialList1.SortType = GlacialComponents.Controls.SortTypes.InsertionSort;
             this.glacialList1.SuperFlatHeaderColor = System.Drawing.Color.White;
-            this.glacialList1.TabIndex = 0;
+            this.glacialList1.TabIndex = 1;
             this.glacialList1.Text = "glacialList1";
             this.glacialList1.DoubleClick += new System.EventHandler(this.glacialList1_DoubleClick);
             this.glacialList1.Leave += new System.EventHandler(this.glacialList1_Leave);
@@ -271,7 +271,7 @@
             this.checkBoxCalc.Location = new System.Drawing.Point(78, 56);
             this.checkBoxCalc.Name = "checkBoxCalc";
             this.checkBoxCalc.Size = new System.Drawing.Size(48, 16);
-            this.checkBoxCalc.TabIndex = 6;
+            this.checkBoxCalc.TabIndex = 5;
             this.checkBoxCalc.Text = "计算";
             this.checkBoxCalc.UseVisualStyleBackColor = true;
             // 
@@ -296,7 +296,7 @@
             this.comboBox_eu.Location = new System.Drawing.Point(375, 23);
             this.comboBox_eu.Name = "comboBox_eu";
             this.comboBox_eu.Size = new System.Drawing.Size(53, 20);
-            this.comboBox_eu.TabIndex = 5;
+            this.comboBox_eu.TabIndex = 3;
             // 
             // label2
             // 
@@ -322,7 +322,7 @@
             this.buttonCancell.Location = new System.Drawing.Point(474, 14);
             this.buttonCancell.Name = "buttonCancell";
             this.buttonCancell.Size = new System.Drawing.Size(75, 23);
-            this.buttonCancell.TabIndex = 3;
+            this.buttonCancell.TabIndex = 9;
             this.buttonCancell.Text = "取消";
             this.buttonCancell.UseVisualStyleBackColor = true;
             // 
@@ -332,7 +332,7 @@
             this.buttonOK.Location = new System.Drawing.Point(579, 15);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
-            this.buttonOK.TabIndex = 3;
+            this.buttonOK.TabIndex = 8;
             this.buttonOK.Text = "确定";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
@@ -342,7 +342,7 @@
             this.buttonTest.Location = new System.Drawing.Point(160, 53);
             this.buttonTest.Name = "buttonTest";
             this.buttonTest.Size = new System.Drawing.Size(75, 23);
-            this.buttonTest.TabIndex = 3;
+            this.buttonTest.TabIndex = 6;
             this.buttonTest.Text = "测试";
             this.buttonTest.UseVisualStyleBackColor = true;
             this.buttonTest.Click += new System.EventHandler(this.buttonTest_Click);
@@ -360,7 +360,7 @@
             this.textBoxFormula.Multiline = true;
             this.textBoxFormula.Name = "textBoxFormula";
             this.textBoxFormula.Size = new System.Drawing.Size(670, 92);
-            this.textBoxFormula.TabIndex = 1;
+            this.textBoxFormula.TabIndex = 4;
             // 
             // label15
             // 

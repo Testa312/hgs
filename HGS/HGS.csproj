@@ -170,6 +170,12 @@
     <Compile Include="EasyMail.Designer.cs">
       <DependentUpon>EasyMail.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLogin.Designer.cs">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormCalcPointSet.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -378,6 +384,9 @@
     <EmbeddedResource Include="FormCalcPointSet.resx">
       <DependentUpon>FormCalcPointSet.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormLogin.resx">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormPointSet.resx">
       <DependentUpon>FormPointSet.cs</DependentUpon>
     </EmbeddedResource>
@@ -456,6 +465,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="readme.txt" />
+    <None Include="Resources\s-l1600.jpg" />
     <Content Include="ZedGraph\readme.txt" />
   </ItemGroup>
   <ItemGroup>

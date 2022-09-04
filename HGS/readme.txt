@@ -8,3 +8,27 @@ CREATE TABLE point (
   day_volume INT NULL
 );
 pg增加扩展模块：CREATE EXTENSION module_name;
+不计算就不会报警，有关联。
+没有实现用户注册，可在数据库中增加，其中0为管理员。
+//新建用户--------------------
+insert into password (userid,pwd) values (1, crypt('this is a pwd source', gen_salt('bf',10)));
+INSERT 0 1
+
+输入错误的密码, 返回假
+
+select crypt('this is a error pwd source', password)=password from userpwd where userid =1;
+ ?column? 
+----------
+ f
+(1 row)
+
+输入正确的密码, 返回真
+
+select crypt('this is a pwd source', password)=password from userpwd where userid =1;
+ ?column? 
+----------
+ t
+(1 row)
+-------------
+UPDATE owner SET password = crypt('123456', gen_salt('bf',10));
+--------------------------------------

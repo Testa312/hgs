@@ -41,7 +41,7 @@ namespace HGS
         //登录ID------------------------
         int loginid = 0;
         //-----------------------
-        int owner = 1;//1为管理员
+        int ownerid = 0;//0为管理员
         pointsrc Pointsrc = pointsrc.sis;
         //-------------------------
         public string sisHost
@@ -71,10 +71,10 @@ namespace HGS
             get { return sispassword; }
         }
         //------------------------
-        public int Owner
+        public int OwnerID
         {
-            set { owner = value; }
-            get { return owner; }
+            set { ownerid = value; }
+            get { return ownerid; }
         }
         public pointsrc PointSrc
         {

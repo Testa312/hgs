@@ -37,17 +37,17 @@ namespace HGS
         public double? zl = null;//报警高2限
         public pointsrc pointsrc = 0;//点源0:sis,1:计算点
         public int ownerid = 0;//专业id
-        public string orgformula;//计算公式
-        public string expformula;//展开成点的计算公式
+        public string orgformula = "";//计算公式
+        public string expformula = "";//展开成点的计算公式
         public int id = -1;//点id
         public string eu;//点单位
         public bool iscalc;//是否计算
         public bool isalarm;//是否报警
-        public PointState ps = PointState.Timeout;//点状态
+        public PointState ps = PointState.Error;//点状态
         public double av = -1;//点值，实时或计算。
         public short fm = 0;//保留小数点位数。
         public bool calciserror = false;
-        public Expression expression;//优化计算速度。
+        public Expression expression = new Expression();//优化计算速度。
         //计算子点id
         public List<subpoint> lsCalcOrgSubPoint = new List<subpoint>();//原始参能与计算点列表
         //
