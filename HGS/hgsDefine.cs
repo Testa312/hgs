@@ -120,8 +120,11 @@ namespace HGS
             else rsl = "";
             if (rsl.Length > 0)
             {
-                lastalarmdatetime = DateTime.Now;
-                alarming = true;
+                if (!alarming)
+                {
+                    lastalarmdatetime = DateTime.Now;
+                    alarming = true;
+                }
             }
             else alarming = false;
             alarmininfo = rsl;
