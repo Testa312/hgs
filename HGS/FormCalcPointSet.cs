@@ -18,14 +18,20 @@ namespace HGS
         OPAPI.Connect sisconn = new OPAPI.Connect(Pref.GetInst().sisHost, Pref.GetInst().sisPort, 60,
             Pref.GetInst().sisUser, Pref.GetInst().sisPassword);//建立连接
         HashSet<int> onlyid = new HashSet<int>();
-       public point CalcPoint;
+        public point CalcPoint;
+        int PointNums = 0;
         //--------------------------------
         public FormCalcPointSet()
         {
             InitializeComponent();
         }
+        private void DisplayStats()
+        {
+            tSSLabel_varnums.Text = "变量数：" + PointNums.ToString();
+        }
         public void glacialLisint()
         {
+            PointNums = 0;
             timer1.Enabled = false;
             foreach (subpoint subpt in CalcPoint.lsCalcOrgSubPoint)
             {
@@ -48,6 +54,7 @@ namespace HGS
                 //
                 itemn.SubItems["VarName"].Text = subpt.varname;                
                 itemn.Tag = it;
+                PointNums++;
             }
             onlyid.Add(CalcPoint.id);//排除自已。
             textBoxFormula.Text = CalcPoint.orgformula;
@@ -56,6 +63,7 @@ namespace HGS
             checkBoxCalc.Checked = CalcPoint.iscalc;
             numericUpDown.Value = CalcPoint.fm;
             timer1.Enabled = true;
+            DisplayStats();
         }
         private void FormPointSet_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -75,6 +83,7 @@ namespace HGS
                     item.SubItems["DS"].Text = pt.ps.ToString();
                 }
             }
+            DisplayStats();
         }
         private void toolStripButtonAdd_Click_1(object sender, EventArgs e)
         {
@@ -116,7 +125,9 @@ namespace HGS
                         MessageBox.Show(string.Format("点:{0}-{1}已存在！", item.SubItems["ND"].Text, 
                             item.SubItems["PN"].Text), "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     };
+                    PointNums++;
                 }
+                DisplayStats();
             }
         }
         private void glacialList1_Leave(object sender, EventArgs e)
@@ -169,7 +180,7 @@ namespace HGS
             //CalcPoint.ed = textBoxmDiscription.Text;
             Point.orgformula = textBoxFormula.Text;
             Point.eu = comboBox_eu.Text;
-            Point.ownerid = Pref.GetInst().LoginID;
+            Point.ownerid = Auth.GetInst().LoginID;
             Point.pointsrc = pointsrc.calc;
             Point.nd = Pref.GetInst().CalcPointNodeName;
             //if (CalcPoint.id <= 0) CalcPoint.id = Data.Get().GetNextPointID();
@@ -201,7 +212,7 @@ namespace HGS
                 CalcPoint.ed = textBoxmDiscription.Text;
                 CalcPoint.orgformula = textBoxFormula.Text;
                 CalcPoint.eu = comboBox_eu.Text;
-                CalcPoint.ownerid = Pref.GetInst().LoginID;
+                CalcPoint.ownerid = Auth.GetInst().LoginID;
                 CalcPoint.pointsrc = pointsrc.calc;
                 CalcPoint.nd = Pref.GetInst().CalcPointNodeName;
                 if(CalcPoint.id <= 0) CalcPoint.id = Data.Get().GetNextPointID();

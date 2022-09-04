@@ -34,6 +34,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxError = new System.Windows.Forms.TextBox();
             this.buttonTest2 = new System.Windows.Forms.Button();
+            this.buttonbool = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonTestCE
@@ -49,7 +50,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(59, 110);
+            this.label1.Location = new System.Drawing.Point(58, 113);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(41, 12);
             this.label1.TabIndex = 1;
@@ -59,7 +60,7 @@
             // 
             this.textBoxCE.Location = new System.Drawing.Point(107, 110);
             this.textBoxCE.Name = "textBoxCE";
-            this.textBoxCE.Size = new System.Drawing.Size(100, 21);
+            this.textBoxCE.Size = new System.Drawing.Size(130, 21);
             this.textBoxCE.TabIndex = 2;
             // 
             // label2
@@ -89,11 +90,22 @@
             this.buttonTest2.UseVisualStyleBackColor = true;
             this.buttonTest2.Click += new System.EventHandler(this.buttonTest2_Click);
             // 
+            // buttonbool
+            // 
+            this.buttonbool.Location = new System.Drawing.Point(43, 55);
+            this.buttonbool.Name = "buttonbool";
+            this.buttonbool.Size = new System.Drawing.Size(75, 23);
+            this.buttonbool.TabIndex = 6;
+            this.buttonbool.Text = "布尔值测试";
+            this.buttonbool.UseVisualStyleBackColor = true;
+            this.buttonbool.Click += new System.EventHandler(this.buttonbool_Click);
+            // 
             // FormTestCE
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(312, 391);
+            this.Controls.Add(this.buttonbool);
             this.Controls.Add(this.buttonTest2);
             this.Controls.Add(this.textBoxError);
             this.Controls.Add(this.label2);
@@ -115,5 +127,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxError;
         private System.Windows.Forms.Button buttonTest2;
+        private System.Windows.Forms.Button buttonbool;
     }
 }

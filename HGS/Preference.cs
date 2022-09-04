@@ -38,10 +38,7 @@ namespace HGS
         //-----
         const char strCalcVarPfx = 'C';
         const char strSisVarPfx = 'S';
-        //登录ID------------------------
-        int loginid = 0;
-        //-----------------------
-        int ownerid = 0;//0为管理员
+    
         pointsrc Pointsrc = pointsrc.sis;
         //-------------------------
         public string sisHost
@@ -71,11 +68,7 @@ namespace HGS
             get { return sispassword; }
         }
         //------------------------
-        public int OwnerID
-        {
-            set { ownerid = value; }
-            get { return ownerid; }
-        }
+        
         public pointsrc PointSrc
         {
             set { Pointsrc = value; }
@@ -84,11 +77,6 @@ namespace HGS
         public string CalcPointNodeName
         {
             get { return calcpointnodeName; }
-        }
-        public int LoginID
-        {
-            set { loginid = value; }
-            get { return loginid; }
         }
         //-------------------------------
         public string GetVarName(point pt)

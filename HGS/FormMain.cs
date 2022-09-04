@@ -69,6 +69,7 @@ namespace HGS
         {
             FormLogin fl = new FormLogin();
             if (DialogResult.Cancel == fl.ShowDialog()) this.Close();
+            this.Text = string.Format("HGS-{0}", Auth.GetInst().UserName);
         }
     }
 }

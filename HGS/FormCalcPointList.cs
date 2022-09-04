@@ -32,10 +32,10 @@ namespace HGS
         {
             try
             {
-                var pgconn = new NpgsqlConnection(Pref.GetInst().pgConnString);
+                tSCBNode.Items.Add("");
+               var pgconn = new NpgsqlConnection(Pref.GetInst().pgConnString);
                 pgconn.Open();
-                //
-                //tSCBNode.Items.Add("");
+
                 string strsql = "select distinct nd from point order by nd";
                 var cmd = new NpgsqlCommand(strsql, pgconn);
                 NpgsqlDataReader pgreader = cmd.ExecuteReader();
@@ -69,6 +69,7 @@ namespace HGS
                 */
                 timer.Enabled = false;
                 glacialList.Items.Clear();
+                int count = 0;
                 foreach (point ptx in Data.Get().lsAllPoint)
                 {
                     //point Point = Data.Get().cd_Point[ipt];
@@ -93,8 +94,10 @@ namespace HGS
                         it.PointSrc = ptx.pointsrc;         
 
                         itemn.Tag = it;
+                        count++;
                     }
                 }
+                tSSLabel_nums.Text = string.Format("点数：{0}", count);
             }
             catch (Exception ee)
             {

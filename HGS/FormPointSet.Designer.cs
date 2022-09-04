@@ -63,11 +63,11 @@
             this.toolStripButtonDelete = new System.Windows.Forms.ToolStripButton();
             this.timerUpdateValue = new System.Windows.Forms.Timer(this.components);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.glacialList1 = new GlacialComponents.Controls.GlacialList();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageBase = new System.Windows.Forms.TabPage();
             this.buttonCalc = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.label_formula = new System.Windows.Forms.Label();
+            this.labelf = new System.Windows.Forms.Label();
             this.buttonSet = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.checkBoxAlarm = new System.Windows.Forms.CheckBox();
@@ -85,6 +85,13 @@
             this.textBoxTV = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.timerCalc = new System.Windows.Forms.Timer(this.components);
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.tSSLabel_count = new System.Windows.Forms.ToolStripStatusLabel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tB_boolAlarmInfo = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.checkBoxbool = new System.Windows.Forms.CheckBox();
+            this.glacialList1 = new GlacialComponents.Controls.GlacialList();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -94,6 +101,8 @@
             this.tabPageBase.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -254,6 +263,271 @@
             this.splitContainer1.SplitterDistance = 265;
             this.splitContainer1.TabIndex = 1;
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPageBase);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(1160, 229);
+            this.tabControl1.TabIndex = 0;
+            // 
+            // tabPageBase
+            // 
+            this.tabPageBase.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.tabPageBase.Controls.Add(this.buttonCalc);
+            this.tabPageBase.Controls.Add(this.label_formula);
+            this.tabPageBase.Controls.Add(this.labelf);
+            this.tabPageBase.Controls.Add(this.buttonSet);
+            this.tabPageBase.Controls.Add(this.groupBox3);
+            this.tabPageBase.Controls.Add(this.groupBox1);
+            this.tabPageBase.Controls.Add(this.groupBox2);
+            this.tabPageBase.Location = new System.Drawing.Point(4, 22);
+            this.tabPageBase.Name = "tabPageBase";
+            this.tabPageBase.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageBase.Size = new System.Drawing.Size(1152, 203);
+            this.tabPageBase.TabIndex = 0;
+            this.tabPageBase.Text = "基本";
+            // 
+            // buttonCalc
+            // 
+            this.buttonCalc.Enabled = false;
+            this.buttonCalc.Location = new System.Drawing.Point(962, 91);
+            this.buttonCalc.Name = "buttonCalc";
+            this.buttonCalc.Size = new System.Drawing.Size(75, 23);
+            this.buttonCalc.TabIndex = 3;
+            this.buttonCalc.Text = "计算";
+            this.buttonCalc.UseVisualStyleBackColor = true;
+            this.buttonCalc.Click += new System.EventHandler(this.buttonCalcSet_Click);
+            // 
+            // label_formula
+            // 
+            this.label_formula.AutoSize = true;
+            this.label_formula.Location = new System.Drawing.Point(65, 138);
+            this.label_formula.Name = "label_formula";
+            this.label_formula.Size = new System.Drawing.Size(29, 12);
+            this.label_formula.TabIndex = 0;
+            this.label_formula.Text = "提示";
+            // 
+            // labelf
+            // 
+            this.labelf.AutoSize = true;
+            this.labelf.Location = new System.Drawing.Point(25, 138);
+            this.labelf.Name = "labelf";
+            this.labelf.Size = new System.Drawing.Size(41, 12);
+            this.labelf.TabIndex = 0;
+            this.labelf.Text = "公式：";
+            // 
+            // buttonSet
+            // 
+            this.buttonSet.Location = new System.Drawing.Point(962, 14);
+            this.buttonSet.Name = "buttonSet";
+            this.buttonSet.Size = new System.Drawing.Size(75, 23);
+            this.buttonSet.TabIndex = 2;
+            this.buttonSet.Text = "设置";
+            this.buttonSet.UseVisualStyleBackColor = true;
+            this.buttonSet.Click += new System.EventHandler(this.buttonSet_Click);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.checkBoxAlarm);
+            this.groupBox3.Controls.Add(this.textBoxZH);
+            this.groupBox3.Controls.Add(this.textBoxZL);
+            this.groupBox3.Controls.Add(this.label13);
+            this.groupBox3.Controls.Add(this.label11);
+            this.groupBox3.Controls.Add(this.textBoxHL);
+            this.groupBox3.Controls.Add(this.label12);
+            this.groupBox3.Controls.Add(this.textBoxLL);
+            this.groupBox3.Controls.Add(this.label10);
+            this.groupBox3.Location = new System.Drawing.Point(233, 14);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(491, 100);
+            this.groupBox3.TabIndex = 1;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "报警";
+            // 
+            // checkBoxAlarm
+            // 
+            this.checkBoxAlarm.AutoSize = true;
+            this.checkBoxAlarm.Location = new System.Drawing.Point(407, 64);
+            this.checkBoxAlarm.Name = "checkBoxAlarm";
+            this.checkBoxAlarm.Size = new System.Drawing.Size(48, 16);
+            this.checkBoxAlarm.TabIndex = 10;
+            this.checkBoxAlarm.Text = "报警";
+            this.checkBoxAlarm.UseVisualStyleBackColor = true;
+            this.checkBoxAlarm.CheckedChanged += new System.EventHandler(this.checkBoxAlarm_CheckedChanged);
+            // 
+            // textBoxZH
+            // 
+            this.textBoxZH.Location = new System.Drawing.Point(285, 62);
+            this.textBoxZH.Name = "textBoxZH";
+            this.textBoxZH.Size = new System.Drawing.Size(100, 21);
+            this.textBoxZH.TabIndex = 9;
+            // 
+            // textBoxZL
+            // 
+            this.textBoxZL.Location = new System.Drawing.Point(91, 62);
+            this.textBoxZL.Name = "textBoxZL";
+            this.textBoxZL.Size = new System.Drawing.Size(100, 21);
+            this.textBoxZL.TabIndex = 7;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(216, 65);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(83, 12);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "高限2（ZH）：";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(22, 65);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(83, 12);
+            this.label11.TabIndex = 0;
+            this.label11.Text = "低限2（ZL）：";
+            // 
+            // textBoxHL
+            // 
+            this.textBoxHL.Location = new System.Drawing.Point(285, 22);
+            this.textBoxHL.Name = "textBoxHL";
+            this.textBoxHL.Size = new System.Drawing.Size(100, 21);
+            this.textBoxHL.TabIndex = 8;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(216, 28);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(77, 12);
+            this.label12.TabIndex = 0;
+            this.label12.Text = "高限（HL）：";
+            // 
+            // textBoxLL
+            // 
+            this.textBoxLL.Location = new System.Drawing.Point(91, 22);
+            this.textBoxLL.Name = "textBoxLL";
+            this.textBoxLL.Size = new System.Drawing.Size(100, 21);
+            this.textBoxLL.TabIndex = 6;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(22, 28);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(77, 12);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "低限（LL）：";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.textBoxBV);
+            this.groupBox2.Controls.Add(this.label7);
+            this.groupBox2.Controls.Add(this.textBoxTV);
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Location = new System.Drawing.Point(8, 14);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(196, 100);
+            this.groupBox2.TabIndex = 1;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "量程";
+            // 
+            // textBoxBV
+            // 
+            this.textBoxBV.Location = new System.Drawing.Point(64, 59);
+            this.textBoxBV.Name = "textBoxBV";
+            this.textBoxBV.Size = new System.Drawing.Size(100, 21);
+            this.textBoxBV.TabIndex = 5;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(17, 62);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(41, 12);
+            this.label7.TabIndex = 0;
+            this.label7.Text = "下限：";
+            // 
+            // textBoxTV
+            // 
+            this.textBoxTV.Location = new System.Drawing.Point(64, 22);
+            this.textBoxTV.Name = "textBoxTV";
+            this.textBoxTV.Size = new System.Drawing.Size(100, 21);
+            this.textBoxTV.TabIndex = 4;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(17, 25);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 12);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "上限：";
+            // 
+            // timerCalc
+            // 
+            this.timerCalc.Enabled = true;
+            this.timerCalc.Interval = 2000;
+            this.timerCalc.Tick += new System.EventHandler(this.timerCalc_Tick);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tSSLabel_count});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 501);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1160, 22);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Text = "statusStrip";
+            // 
+            // tSSLabel_count
+            // 
+            this.tSSLabel_count.Name = "tSSLabel_count";
+            this.tSSLabel_count.Size = new System.Drawing.Size(44, 17);
+            this.tSSLabel_count.Text = "点数：";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.checkBoxbool);
+            this.groupBox1.Controls.Add(this.tB_boolAlarmInfo);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Location = new System.Drawing.Point(740, 14);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(196, 100);
+            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "开关量";
+            // 
+            // tB_boolAlarmInfo
+            // 
+            this.tB_boolAlarmInfo.Location = new System.Drawing.Point(64, 59);
+            this.tB_boolAlarmInfo.Name = "tB_boolAlarmInfo";
+            this.tB_boolAlarmInfo.Size = new System.Drawing.Size(126, 21);
+            this.tB_boolAlarmInfo.TabIndex = 5;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(17, 62);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(41, 12);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "信息：";
+            // 
+            // checkBoxbool
+            // 
+            this.checkBoxbool.AutoSize = true;
+            this.checkBoxbool.Location = new System.Drawing.Point(19, 24);
+            this.checkBoxbool.Name = "checkBoxbool";
+            this.checkBoxbool.Size = new System.Drawing.Size(48, 16);
+            this.checkBoxbool.TabIndex = 10;
+            this.checkBoxbool.Text = "报警";
+            this.checkBoxbool.UseVisualStyleBackColor = true;
+            this.checkBoxbool.Click += new System.EventHandler(this.checkBoxbool_Click);
+            // 
             // glacialList1
             // 
             this.glacialList1.AllowColumnResize = true;
@@ -294,7 +568,7 @@
             glColumn4.NumericSort = false;
             glColumn4.Text = "单位";
             glColumn4.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            glColumn4.Width = 100;
+            glColumn4.Width = 60;
             glColumn5.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn5.CheckBoxes = false;
             glColumn5.ImageIndex = -1;
@@ -422,214 +696,18 @@
             this.glacialList1.Text = "glacialList1";
             this.glacialList1.Click += new System.EventHandler(this.glacialList1_Click);
             // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabPageBase);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1160, 229);
-            this.tabControl1.TabIndex = 0;
-            // 
-            // tabPageBase
-            // 
-            this.tabPageBase.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.tabPageBase.Controls.Add(this.buttonCalc);
-            this.tabPageBase.Controls.Add(this.label1);
-            this.tabPageBase.Controls.Add(this.buttonSet);
-            this.tabPageBase.Controls.Add(this.groupBox3);
-            this.tabPageBase.Controls.Add(this.groupBox2);
-            this.tabPageBase.Location = new System.Drawing.Point(4, 22);
-            this.tabPageBase.Name = "tabPageBase";
-            this.tabPageBase.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageBase.Size = new System.Drawing.Size(1152, 203);
-            this.tabPageBase.TabIndex = 0;
-            this.tabPageBase.Text = "基本";
-            // 
-            // buttonCalc
-            // 
-            this.buttonCalc.Enabled = false;
-            this.buttonCalc.Location = new System.Drawing.Point(782, 91);
-            this.buttonCalc.Name = "buttonCalc";
-            this.buttonCalc.Size = new System.Drawing.Size(75, 23);
-            this.buttonCalc.TabIndex = 3;
-            this.buttonCalc.Text = "计算";
-            this.buttonCalc.UseVisualStyleBackColor = true;
-            this.buttonCalc.Click += new System.EventHandler(this.buttonCalcSet_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(25, 136);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 12);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "公式：";
-            // 
-            // buttonSet
-            // 
-            this.buttonSet.Location = new System.Drawing.Point(782, 26);
-            this.buttonSet.Name = "buttonSet";
-            this.buttonSet.Size = new System.Drawing.Size(75, 23);
-            this.buttonSet.TabIndex = 2;
-            this.buttonSet.Text = "设置";
-            this.buttonSet.UseVisualStyleBackColor = true;
-            this.buttonSet.Click += new System.EventHandler(this.buttonSet_Click);
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.checkBoxAlarm);
-            this.groupBox3.Controls.Add(this.textBoxZH);
-            this.groupBox3.Controls.Add(this.textBoxZL);
-            this.groupBox3.Controls.Add(this.label13);
-            this.groupBox3.Controls.Add(this.label11);
-            this.groupBox3.Controls.Add(this.textBoxHL);
-            this.groupBox3.Controls.Add(this.label12);
-            this.groupBox3.Controls.Add(this.textBoxLL);
-            this.groupBox3.Controls.Add(this.label10);
-            this.groupBox3.Location = new System.Drawing.Point(233, 14);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(491, 100);
-            this.groupBox3.TabIndex = 1;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "报警";
-            // 
-            // checkBoxAlarm
-            // 
-            this.checkBoxAlarm.AutoSize = true;
-            this.checkBoxAlarm.Location = new System.Drawing.Point(407, 64);
-            this.checkBoxAlarm.Name = "checkBoxAlarm";
-            this.checkBoxAlarm.Size = new System.Drawing.Size(48, 16);
-            this.checkBoxAlarm.TabIndex = 10;
-            this.checkBoxAlarm.Text = "报警";
-            this.checkBoxAlarm.UseVisualStyleBackColor = true;
-            // 
-            // textBoxZH
-            // 
-            this.textBoxZH.Location = new System.Drawing.Point(285, 62);
-            this.textBoxZH.Name = "textBoxZH";
-            this.textBoxZH.Size = new System.Drawing.Size(100, 21);
-            this.textBoxZH.TabIndex = 9;
-            // 
-            // textBoxZL
-            // 
-            this.textBoxZL.Location = new System.Drawing.Point(91, 62);
-            this.textBoxZL.Name = "textBoxZL";
-            this.textBoxZL.Size = new System.Drawing.Size(100, 21);
-            this.textBoxZL.TabIndex = 7;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(216, 65);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(83, 12);
-            this.label13.TabIndex = 0;
-            this.label13.Text = "高限2（ZH）：";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(22, 65);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(83, 12);
-            this.label11.TabIndex = 0;
-            this.label11.Text = "低限2（ZL）：";
-            // 
-            // textBoxHL
-            // 
-            this.textBoxHL.Location = new System.Drawing.Point(285, 22);
-            this.textBoxHL.Name = "textBoxHL";
-            this.textBoxHL.Size = new System.Drawing.Size(100, 21);
-            this.textBoxHL.TabIndex = 8;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(216, 28);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(77, 12);
-            this.label12.TabIndex = 0;
-            this.label12.Text = "高限（HL）：";
-            // 
-            // textBoxLL
-            // 
-            this.textBoxLL.Location = new System.Drawing.Point(91, 22);
-            this.textBoxLL.Name = "textBoxLL";
-            this.textBoxLL.Size = new System.Drawing.Size(100, 21);
-            this.textBoxLL.TabIndex = 6;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(22, 28);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(77, 12);
-            this.label10.TabIndex = 0;
-            this.label10.Text = "低限（LL）：";
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.textBoxBV);
-            this.groupBox2.Controls.Add(this.label7);
-            this.groupBox2.Controls.Add(this.textBoxTV);
-            this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Location = new System.Drawing.Point(8, 14);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(196, 100);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "量程";
-            // 
-            // textBoxBV
-            // 
-            this.textBoxBV.Location = new System.Drawing.Point(64, 59);
-            this.textBoxBV.Name = "textBoxBV";
-            this.textBoxBV.Size = new System.Drawing.Size(100, 21);
-            this.textBoxBV.TabIndex = 5;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(17, 62);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(41, 12);
-            this.label7.TabIndex = 0;
-            this.label7.Text = "下限：";
-            // 
-            // textBoxTV
-            // 
-            this.textBoxTV.Location = new System.Drawing.Point(64, 22);
-            this.textBoxTV.Name = "textBoxTV";
-            this.textBoxTV.Size = new System.Drawing.Size(100, 21);
-            this.textBoxTV.TabIndex = 4;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(17, 25);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(41, 12);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "上限：";
-            // 
-            // timerCalc
-            // 
-            this.timerCalc.Enabled = true;
-            this.timerCalc.Interval = 2000;
-            this.timerCalc.Tick += new System.EventHandler(this.timerCalc_Tick);
-            // 
             // FormPointSet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1160, 523);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
             this.Name = "FormPointSet";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "点报警设置";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormPointSet_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormPointSet_FormClosed);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
@@ -644,6 +722,10 @@
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -683,7 +765,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton toolStripButtonCalc;
         private System.Windows.Forms.Button buttonCalc;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelf;
         private System.Windows.Forms.CheckBox checkBoxAlarm;
         private System.Windows.Forms.Timer timerCalc;
         private System.Windows.Forms.ToolStripLabel toolStripLabel3;
@@ -691,5 +773,12 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripTextBox tSTB_PN;
         private System.Windows.Forms.ToolStripTextBox tSTB_ED;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel tSSLabel_count;
+        private System.Windows.Forms.Label label_formula;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox tB_boolAlarmInfo;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox checkBoxbool;
     }
 }

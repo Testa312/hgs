@@ -19,10 +19,29 @@ namespace HGS
         Dictionary<GLItem, point> dic_glItemNew = new Dictionary<GLItem, point>();
         HashSet<GLItem> hs_glItemModified = new HashSet<GLItem>();
         HashSet<int> onlysisid = new HashSet<int>();
+        int PointNums = 0;
         public FormPointSet()
         {
             InitializeComponent();
             glacialLisint();
+            label_formula.Text = "";
+        }
+        private void DisplayStats()
+        {
+            tSSLabel_count.Text = string.Format("点数共：{0}个，其中新加点{1}个，已修改点{2}个。",
+               PointNums, dic_glItemNew.Count, hs_glItemModified.Count);
+        }
+        private void AlarmSubItemSet(GLItem item,point pt)
+        {
+            if (pt.pointsrc == pointsrc.sis)
+            {
+                item.SubItems["IsAlarm"].Text = pt.isavalarm || pt.isboolv ? Pref.GetInst().strOk : Pref.GetInst().strNo;
+            }
+            else
+            {
+                item.SubItems["IsAlarm"].Text = pt.isavalarm || pt.isboolv ? Pref.GetInst().strOk : Pref.GetInst().strNo;
+                item.SubItems["IsCalc"].Text = pt.iscalc ? Pref.GetInst().strOk : Pref.GetInst().strNo;
+            }
         }
         private void glacialLisint()
         {
@@ -34,7 +53,7 @@ namespace HGS
                 GLItem itemn;
                 itemtag it = new itemtag();
                 //point Point = Data.Get().cd_Point[];
-                if ((ptx.pointsrc == pointsrc.sis || (Pref.GetInst().OwnerID == 0 || ptx.ownerid == Pref.GetInst().OwnerID)) &&
+                if ((ptx.pointsrc == pointsrc.sis || (Auth.GetInst().LoginID == 0 || ptx.ownerid == Auth.GetInst().LoginID)) &&
                     ptx.nd.Contains(tSCB_ND.Text.Trim()) && ptx.ed.Contains(tSTB_ED.Text.Trim()) &&
                     ptx.pn.Contains(tSTB_PN.Text.Trim()) && ptx.orgformula.Contains(tSTB_F.Text.Trim()))
                 {
@@ -58,19 +77,14 @@ namespace HGS
                     if (ptx.pointsrc == pointsrc.sis)
                     {
                         onlysisid.Add(it.sisid);//唯一性
-                        itemn.SubItems["IsAlarm"].Text = ptx.isalarm ? Pref.GetInst().strOk : Pref.GetInst().strNo;
                     }
-                    else
-                    {
-                        itemn.SubItems["IsAlarm"].Text = ptx.isalarm ? Pref.GetInst().strOk : Pref.GetInst().strNo;
-                        itemn.SubItems["IsCalc"].Text = ptx.iscalc ? Pref.GetInst().strOk : Pref.GetInst().strNo;
-                    }
-
+                    AlarmSubItemSet(itemn,ptx);
                     itemn.Tag = it;
                 }
+                PointNums++;
             }
             timerUpdateValue.Enabled = true;
-
+            DisplayStats();
         }
         private void toolStripButtonAddSis_Click(object sender, EventArgs e)//加sis点
         {     
@@ -97,7 +111,7 @@ namespace HGS
                    
                         Point.id = Data.Get().GetNextPointID();
                         Point.pointsrc = pointsrc.sis;
-                        Point.ownerid = Pref.GetInst().OwnerID;
+                        Point.ownerid = Auth.GetInst().LoginID;
 
                         itemtag it = new itemtag();
                         itemn.Tag = it;
@@ -114,6 +128,8 @@ namespace HGS
                             item.SubItems["PN"].Text),"提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
                      };
                 }
+                PointNums++;
+                DisplayStats();
             }
         }
         private void buttonSet_Click(object sender, EventArgs e)
@@ -143,17 +159,11 @@ namespace HGS
                             item.SubItems["HL"].Text = textBoxHL.Text;
                             item.SubItems["ZL"].Text = textBoxZL.Text;
                             item.SubItems["ZH"].Text = textBoxZH.Text;
-                            pt.isalarm = checkBoxAlarm.Checked;
-                            if (pt.pointsrc == pointsrc.sis)
-                            {
-                                item.SubItems["IsAlarm"].Text = pt.isalarm ? Pref.GetInst().strOk : Pref.GetInst().strNo;
-                            }
-                            else
-                            {
-                                item.SubItems["IsAlarm"].Text = pt.isalarm ? Pref.GetInst().strOk : Pref.GetInst().strNo;
-                                item.SubItems["IsCalc"].Text = pt.iscalc ? Pref.GetInst().strOk : Pref.GetInst().strNo;
-                            }
-                            //glItemModified.Add(item);
+                            pt.isavalarm = checkBoxAlarm.Checked;
+                            pt.isboolv = checkBoxbool.Checked;
+                            pt.boolalarminfo = tB_boolAlarmInfo.Text;
+                            AlarmSubItemSet(item, pt);
+                           
                             if (!dic_glItemNew.ContainsKey(item))
                                 hs_glItemModified.Add(item);
 
@@ -165,29 +175,35 @@ namespace HGS
                 {
                     MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+                DisplayStats();
             }
         }   
+        private void Save()
+        {
+            foreach (GLItem item in hs_glItemModified)
+            {
+                Data.Get().Update(Data.Get().cd_Point[((itemtag)(item.Tag)).id]);
+            }
+            foreach (point pt in dic_glItemNew.Values)
+            {
+                Data.Get().Add(pt);
+            }
+            Data.Get().SavetoPG();
+            hs_glItemModified.Clear();
+            dic_glItemNew.Clear();
+            toolStripButtonFind.Enabled = true;
+        }
         private void toolStripButtonSave_Click(object sender, EventArgs e)
         {
             try
             {
-                foreach(GLItem item in hs_glItemModified)
-                {
-                    Data.Get().Update(Data.Get().cd_Point[((itemtag)(item.Tag)).id]);
-                }
-                foreach(point pt in dic_glItemNew.Values)
-                {
-                    Data.Get().Add(pt);
-                }
-                Data.Get().SavetoPG();
-                hs_glItemModified.Clear();
-                dic_glItemNew.Clear();
-                toolStripButtonFind.Enabled = true;
+                Save();
             }
             catch(Exception ee)
             {
                 MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            DisplayStats();
         }
 
         private void FormPointSet_FormClosed(object sender, FormClosedEventArgs e)
@@ -209,6 +225,7 @@ namespace HGS
                     item.SubItems["DS"].Text = pt.ps.ToString();
                 }
             }
+            DisplayStats();
         }
         private void glacialList1_Click(object sender, EventArgs e)
         {
@@ -223,9 +240,14 @@ namespace HGS
                 textBoxZL.Text = item.SubItems["ZL"].Text;
                 textBoxZH.Text = item.SubItems["ZH"].Text;
                 itemtag it = (itemtag)(item.Tag);
-                checkBoxAlarm.Checked = dic_glItemNew.ContainsKey(item) 
-                    ?  dic_glItemNew[item].isalarm : Data.Get().cd_Point[it.id].isalarm;
+
+                point Point = dic_glItemNew.ContainsKey(item) ? dic_glItemNew[item] : Data.Get().cd_Point[it.id];
+                checkBoxAlarm.Checked = Point.isavalarm;
+                checkBoxbool.Checked = Point.isboolv;
+                tB_boolAlarmInfo.Text = Point.boolalarminfo;
                 buttonCalc.Enabled = (it.PointSrc == pointsrc.calc) ? true : false;
+
+                label_formula.Text = Point.orgformula;
             }
         }
         private void toolStripButtonAddNewCalc_Click(object sender, EventArgs e)
@@ -242,26 +264,16 @@ namespace HGS
                 itemn.SubItems["ND"].Text = fcps.CalcPoint.nd;
                 itemn.SubItems["ED"].Text = fcps.CalcPoint.ed;
                 itemn.SubItems["EU"].Text = fcps.CalcPoint.eu;
-                //itemn.SubItems["ID"].Text = Pref.GetInst().GetVarName(fcps.CalcPoint);
 
                 itemtag it = new itemtag();
-                //it.isNew = true;
                 it.id = fcps.CalcPoint.id;
                 it.fm = fcps.CalcPoint.fm;
                 it.PointSrc = fcps.CalcPoint.pointsrc ;
-                //it.Point = fcps.CalcPoint;
                 itemn.Tag = it;
-                if (fcps.CalcPoint.pointsrc == pointsrc.sis)
-                {
-                    itemn.SubItems["IsAlarm"].Text = fcps.CalcPoint.isalarm ? Pref.GetInst().strOk : Pref.GetInst().strNo;
-                }
-                else
-                {
-                    itemn.SubItems["IsAlarm"].Text = fcps.CalcPoint.isalarm ? Pref.GetInst().strOk : Pref.GetInst().strNo;
-                    itemn.SubItems["IsCalc"].Text = fcps.CalcPoint.iscalc ? Pref.GetInst().strOk : Pref.GetInst().strNo;
-                }
-                //Data.Get().Add(it.Point);
+                AlarmSubItemSet(itemn, fcps.CalcPoint);
                 dic_glItemNew.Add(itemn, fcps.CalcPoint);
+                PointNums++;
+                DisplayStats();
             }
         }
 
@@ -280,20 +292,12 @@ namespace HGS
                     toolStripButtonFind.Enabled = false;
                     itemn.SubItems["ED"].Text = fcps.CalcPoint.ed;
                     itemn.SubItems["EU"].Text = fcps.CalcPoint.eu;
-                    if (fcps.CalcPoint.pointsrc == pointsrc.sis)
-                    {
-                        itemn.SubItems["IsAlarm"].Text = fcps.CalcPoint.isalarm ? Pref.GetInst().strOk : Pref.GetInst().strNo;
-                    }
-                    else
-                    {
-                        itemn.SubItems["IsAlarm"].Text = fcps.CalcPoint.isalarm ? Pref.GetInst().strOk : Pref.GetInst().strNo;
-                        itemn.SubItems["IsCalc"].Text = fcps.CalcPoint.iscalc ? Pref.GetInst().strOk : Pref.GetInst().strNo;
-                    }
+                    AlarmSubItemSet(itemn, fcps.CalcPoint);
                 }
                 //itemn.Tag = it;
                 if(!dic_glItemNew.ContainsKey(itemn))
                     hs_glItemModified.Add(itemn);
-                //glItemModified.Add(itemn);
+                DisplayStats();
             }
         }
         private void GetSisValue()
@@ -373,6 +377,8 @@ namespace HGS
                     calcpt.calciserror = true;
                 }
             }
+            tSSLabel_count.Text = string.Format("点数共：{0}个，其中新加点{1}个，已修改点{2}个。", 
+                PointNums,dic_glItemNew.Count, hs_glItemModified.Count);
         }
 
         private void toolStripButtonDelete_Click(object sender, EventArgs e)
@@ -415,6 +421,34 @@ namespace HGS
                     glacialList1.Items.Remove(itemn);
                 }
             }
+        }
+        private void FormPointSet_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!toolStripButtonFind.Enabled &&
+                DialogResult.OK == MessageBox.Show("已修改，是否保存？", "提示",
+                        MessageBoxButtons.OKCancel, MessageBoxIcon.Question))
+            {
+                try
+                {
+                    Save();
+                }
+                catch (Exception ee)
+                {
+                    MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void checkBoxbool_Click(object sender, EventArgs e)
+        {
+            if (checkBoxbool.Checked)
+                checkBoxAlarm.Checked = false;
+        }
+
+        private void checkBoxAlarm_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxAlarm.Checked)
+                checkBoxbool.Checked = false;
         }
     }
 }

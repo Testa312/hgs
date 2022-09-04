@@ -126,5 +126,10 @@ namespace HGS
             sw.Stop();
             textBoxCE.Text = sw.ElapsedMilliseconds.ToString();
         }
+
+        private void buttonbool_Click(object sender, EventArgs e)
+        {
+            CalcEngine.CalcEngine ce = new CalcEngine.CalcEngine();
+        }
     }
 }

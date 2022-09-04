@@ -44,7 +44,7 @@
             this.tSCBED = new System.Windows.Forms.ToolStripComboBox();
             this.tSBFind = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tSSLabel_nums = new System.Windows.Forms.ToolStripStatusLabel();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -113,18 +113,18 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1});
+            this.tSSLabel_nums});
             this.statusStrip1.Location = new System.Drawing.Point(0, 402);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(701, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "点数：";
             // 
-            // toolStripStatusLabel1
+            // tSSLabel_nums
             // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(44, 17);
-            this.toolStripStatusLabel1.Text = "点数：";
+            this.tSSLabel_nums.Name = "tSSLabel_nums";
+            this.tSSLabel_nums.Size = new System.Drawing.Size(44, 17);
+            this.tSSLabel_nums.Text = "点数：";
             // 
             // timer
             // 
@@ -282,7 +282,7 @@
         private System.Windows.Forms.ToolStripButton tSBFind;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripLabel toolStripLabel4;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel tSSLabel_nums;
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;

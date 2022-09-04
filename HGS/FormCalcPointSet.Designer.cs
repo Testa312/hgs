@@ -56,6 +56,8 @@
             this.textBoxFormula = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.tSSLabel_varnums = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -64,6 +66,7 @@
             this.tabControl1.SuspendLayout();
             this.tabPageCalc.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown)).BeginInit();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -380,11 +383,28 @@
             this.label14.TabIndex = 0;
             this.label14.Text = "描述：";
             // 
+            // statusStrip
+            // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tSSLabel_varnums});
+            this.statusStrip.Location = new System.Drawing.Point(0, 501);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(728, 22);
+            this.statusStrip.TabIndex = 2;
+            this.statusStrip.Text = "statusStrip";
+            // 
+            // tSSLabel_varnums
+            // 
+            this.tSSLabel_varnums.Name = "tSSLabel_varnums";
+            this.tSSLabel_varnums.Size = new System.Drawing.Size(56, 17);
+            this.tSSLabel_varnums.Text = "变量数：";
+            // 
             // FormCalcPointSet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(728, 523);
+            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
             this.Name = "FormCalcPointSet";
@@ -401,6 +421,8 @@
             this.tabPageCalc.ResumeLayout(false);
             this.tabPageCalc.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown)).EndInit();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -426,5 +448,7 @@
         private GlacialComponents.Controls.GlacialList glacialList1;
         private System.Windows.Forms.NumericUpDown numericUpDown;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel tSSLabel_varnums;
     }
 }

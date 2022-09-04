@@ -15,7 +15,7 @@ namespace HGS
         public FormLogin()
         {
             InitializeComponent();
-            comboBoxUser.DataSource = Data.Get().GetUser();
+            comboBoxUser.DataSource = Auth.GetInst().GetUser();
             label_hint.Text = "";
         }
         private void UserAuthor()
@@ -25,9 +25,8 @@ namespace HGS
         private void buttonOK_Click(object sender, EventArgs e)
         {
             int id = comboBoxUser.SelectedIndex;
-            if (Data.Get().UserAuthorization(id, textBoxPW.Text))
+            if (Auth.GetInst().UserAuthorization(id, textBoxPW.Text))
             {
-                Pref.GetInst().OwnerID = id;
                 this.DialogResult = System.Windows.Forms.DialogResult.OK;
                 return;
             }

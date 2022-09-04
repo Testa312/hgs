@@ -104,61 +104,7 @@ namespace HGS
         {
             return ++MAXOFPOINTID;
         }
-        //取得可登录的专业；
-        public List<string> GetUser()
-        {
-            List<string> ls_user = new List<string>();
-            var pgconn = new NpgsqlConnection(Pref.GetInst().pgConnString);
-            try
-            {
-                pgconn.Open();
-                string strsql = "select name,id  from owner order by id";
-                var cmd = new NpgsqlCommand(strsql, pgconn);
-                NpgsqlDataReader pgreader = cmd.ExecuteReader();
-                while (pgreader.Read())
-                {
-                    
-                    ls_user.Add(pgreader["Name"].ToString());
-                }
 
-                pgconn.Close();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
-                pgconn.Close();
-            }
-            return ls_user;
-        }
-        //用户授权
-        public bool  UserAuthorization(int userid,string pw)
-        {
-            var pgconn = new NpgsqlConnection(Pref.GetInst().pgConnString);
-            bool rsl = false;
-            try
-            {          
-                pgconn.Open();
-                string strsql = string.Format("select (password = crypt('{0}', password)) as password from owner where id = {1}"
-                    , pw,userid);
-                var cmd = new NpgsqlCommand(strsql, pgconn);
-                NpgsqlDataReader pgreader = cmd.ExecuteReader();
-                pgreader.Read();
-                rsl = (bool)pgreader["password"];
-                pgconn.Close();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
-                pgconn.Close();
-            }
-            return rsl;
-        }
         //取得计算点的相关点列表。
         public List<int> GetDeletePointIdList(int pointid)
         {
@@ -398,9 +344,11 @@ namespace HGS
                     Point.ownerid = (int)pgreader["ownerid"];
                     Point.orgformula = pgreader["orgformula"].ToString();
                     Point.expformula = pgreader["expformula"].ToString();
-                    Point.isalarm = (bool)pgreader["isalarm"];
+                    Point.isavalarm = (bool)pgreader["isavalarm"];
                     Point.iscalc = (bool)pgreader["iscalc"];
                     Point.fm = (short)pgreader["fm"];
+                    Point.isboolv = (bool)pgreader["isboolv"];
+                    Point.boolalarminfo = pgreader["boolalarminfo"].ToString();
                     //
 
                     Point.lsCalcOrgSubPoint = GetSubPointList(Point);
@@ -458,10 +406,10 @@ namespace HGS
 
                 sb.AppendLine(string.Format(@"update point set tv={0},bv={1},ll={2},hl={3},zl={4},zh={5},mt='{6}',eu='{7}',"+
                                                    "ownerid={8},orgformula='{9}',expformula='{10}',fm={11},iscalc = {12}," +
-                                                   "isalarm = {13 },ed = '{14}' where id = {15};",
+                                                   "isavalarm = {13 },ed = '{14}',isboolv = {15},boolalarminfo = '{16}' where id = {17};",
                                                 dtoNULL(pt.tv), dtoNULL(pt.bv), dtoNULL(pt.ll), dtoNULL(pt.hl), dtoNULL(pt.zl), dtoNULL(pt.zh),
                                                 DateTime.Now,pt.eu, pt.ownerid, pt.orgformula,pt.expformula,pt.fm,
-                                                pt.iscalc,pt.isalarm, pt.ed,pt.id)); 
+                                                pt.iscalc,pt.isavalarm, pt.ed,pt.isboolv,pt.boolalarminfo,pt.id)); 
                 if (pt.pointsrc == pointsrc.calc && pt.lsCalcOrgSubPoint.Count > 0)
                 {
                     sb.AppendLine(string.Format("delete  from formula_point where id = {0};", pt.id));
@@ -477,12 +425,12 @@ namespace HGS
                 pt.listSisCalaExpPointID = ExpandOrgPointToSisPoint(pt);
 
                 sb.AppendLine(string.Format(@"insert into point (id,nd,pn,ed,eu,tv,bv,ll,hl,zl,"+
-                                            "zh,id_sis,pointsrc,mt,ownerid,orgformula,expformula,fm,iscalc,isalarm) "+ 
+                                            "zh,id_sis,pointsrc,mt,ownerid,orgformula,expformula,fm,iscalc,isavalarm,isboolv,boolalarminfo) "+ 
                                     "values ({0},'{1}','{2}','{3}','{4}',{5},{6},{7},{8},{9},"+
-                                            "{10},{11},{12},'{13}',{14},'{15}','{16}',{17},{18},{19});",
+                                            "{10},{11},{12},'{13}',{14},'{15}','{16}',{17},{18},{19},{20},'{21}');",
                                     pt.id, pt.nd, pt.pn, pt.ed, pt.eu, dtoNULL(pt.tv), dtoNULL(pt.bv), dtoNULL(pt.ll),dtoNULL(pt.hl), dtoNULL(pt.zl), 
-                                    dtoNULL(pt.zh), pt.id_sis,(int)pt.pointsrc, DateTime.Now, Pref.GetInst().OwnerID, pt.orgformula,
-                                    pt.expformula,pt.fm,pt.iscalc,pt.isalarm));
+                                    dtoNULL(pt.zh), pt.id_sis,(int)pt.pointsrc, DateTime.Now, Auth.GetInst().LoginID, pt.orgformula,
+                                    pt.expformula,pt.fm,pt.iscalc,pt.isavalarm,pt.isboolv,pt.boolalarminfo));
                 if (pt.pointsrc == pointsrc.calc && pt.lsCalcOrgSubPoint.Count > 0)
                 {
                     //sb.AppendLine(string.Format("delete  from formula_point where id = {0};", MAXOFPOINTID));//????????????????
