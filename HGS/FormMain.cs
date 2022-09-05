@@ -70,6 +70,18 @@ namespace HGS
             //FormLogin fl = new FormLogin();
             //if (DialogResult.Cancel == fl.ShowDialog()) this.Close();
             //this.Text = string.Format("HGS-{0}", Auth.GetInst().UserName);
+
+            FormPointSet frm1 = new FormPointSet();     //创建form2窗体的对象
+
+            frm1.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
+            frm1.WindowState = FormWindowState.Maximized;
+            frm1.Show();
+
+            FormAlarmSet frm2 = new FormAlarmSet();     //创建form2窗体的对象
+
+            frm2.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
+            frm2.WindowState = FormWindowState.Maximized;
+            frm2.Show();
         }
         private void 报警信息ToolStripMenuItem_Click(object sender, EventArgs e)
         {

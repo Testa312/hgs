@@ -21,12 +21,13 @@ namespace HGS
         public FormCalcPointList()
         {
             InitializeComponent();
-            InitList();
+            //InitList();
         }
          ~FormCalcPointList()
         {
             //sisconn.close();
         }
+        /*
         //初始化节点列表。
         public void InitList()
         {
@@ -51,7 +52,7 @@ namespace HGS
             {
                 MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
+        }*/
         public void glacialLisint(HashSet<int> Onlyid)
         {
             onlyid = Onlyid;
@@ -68,6 +69,7 @@ namespace HGS
                 NpgsqlDataReader pgreader = cmd.ExecuteReader();
                 */
                 timer.Enabled = false;
+                HashSet<string> hs_ND = new HashSet<string>();
                 glacialList.Items.Clear();
                 int count = 0;
                 foreach (point ptx in Data.inst().lsAllPoint)
@@ -94,8 +96,16 @@ namespace HGS
                         it.PointSrc = ptx.pointsrc;         
 
                         itemn.Tag = it;
+
+                        hs_ND.Add(ptx.nd);
                         count++;
                     }
+                }
+                //
+                tSCBNode.Items.Add("");
+                foreach (string citem in hs_ND)
+                {
+                    tSCBNode.Items.Add(citem);
                 }
                 tSSLabel_nums.Text = string.Format("点数：{0}", count);
             }

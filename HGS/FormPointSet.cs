@@ -47,7 +47,8 @@ namespace HGS
         {
             timerUpdateValue.Enabled = false;
             glacialList1.Items.Clear();
-
+            PointNums = 0;
+            HashSet<string> hs_ND = new HashSet<string>();
             foreach (point ptx in Data.inst().lsAllPoint)
             {
                 GLItem itemn;
@@ -81,7 +82,13 @@ namespace HGS
                     AlarmSubItemSet(itemn,ptx);
                     itemn.Tag = it;
                 }
+                hs_ND.Add(ptx.nd);
                 PointNums++;
+            }
+            tSCB_ND.Items.Add("");
+            foreach (string citem in hs_ND)
+            {
+                tSCB_ND.Items.Add(citem);
             }
             timerUpdateValue.Enabled = true;
             DisplayStats();
@@ -128,7 +135,6 @@ namespace HGS
                             item.SubItems["PN"].Text),"提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
                      };
                 }
-                PointNums++;
                 DisplayStats();
             }
         }
@@ -189,6 +195,7 @@ namespace HGS
                 Data.inst().Add(pt);
             }
             Data.inst().SavetoPG();
+            PointNums += dic_glItemNew.Count;
             hs_glItemModified.Clear();
             dic_glItemNew.Clear();
             toolStripButtonFind.Enabled = true;
@@ -273,7 +280,6 @@ namespace HGS
                 itemn.Tag = it;
                 AlarmSubItemSet(itemn, fcps.CalcPoint);
                 dic_glItemNew.Add(itemn, fcps.CalcPoint);
-                PointNums++;
                 DisplayStats();
             }
         }
@@ -431,6 +437,7 @@ namespace HGS
                     toolStripButtonFind.Enabled = false;
                     Data.inst().Delete(Data.inst().cd_Point[it.id]);
                     glacialList1.Items.Remove(itemn);
+                    PointNums--;
                 }
             }
         }
