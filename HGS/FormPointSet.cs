@@ -358,6 +358,7 @@ namespace HGS
             foreach (point calcpt in Data.inst().lsAllPoint)
             {
                 bool lastAlam = calcpt.alarming;
+                //计算计算点。
                 if (calcpt.pointsrc == pointsrc.calc)
                 {
                     if (calcpt.calciserror) continue;

@@ -70,12 +70,7 @@ namespace HGS
         public PointState ps = PointState.Error;//点状态
         public double av = -1;//点值，实时或计算。
         public short fm = 0;//保留小数点位数。
-        public bool calciserror = false;
-        //
-        public bool alarming = false;
-        public DateTime lastalarmdatetime = DateTime.Now;
-        public string alarmininfo = "";
-        //
+       
         public bool isboolv = false;
         public string boolalarminfo = "";//isbool 为真时的报警信息。
         //
@@ -85,6 +80,14 @@ namespace HGS
         //
         //计算子点id用于进行计算点状态计算。
         public List<point> listSisCalaExpPointID = new List<point>();//展开成sis点的参与计算点列表。
+                                                                     //
+        //报警用，不存入数据库                                                             //
+        public bool calciserror = false;
+        public bool alarming = false;
+        public DateTime lastalarmdatetime = DateTime.Now;
+        public string alarmininfo = "";
+        public double alarmingav = -1;
+        //-------------------
         private string AlarmPrx()
         {
             if (pointsrc == pointsrc.sis)
@@ -96,26 +99,29 @@ namespace HGS
             string rsl = "";
             if (isboolv)
             {
-                if (Convert.ToBoolean(av))
+                bool blv = Convert.ToBoolean(av);
+                if (blv)
                 {
+                    alarmingav = Convert.ToDouble(blv);
                     rsl = boolalarminfo;// string.Format("{0}, boolalarminfo);
                 }
             }
             else if (isavalarm)
             {
                 if (zh != null && av > zh)
-                    rsl = string.Format("值={0}{1}-越报警高2限！({2}{3})！", av, eu, zh, eu);
+                    rsl = string.Format("越报警高2限[{0}{1}]！", zh, eu);
                 if (hl != null && av > hl)
-                    rsl = string.Format("值={0}{1}-越报警高限！({2}{3})", av, eu, hl, eu);
+                    rsl = string.Format("越报警高限[{0}{1}]！", av, eu);
                 if (tv != null && av > tv)
-                    rsl = string.Format("值={0}{1}-越量程上限！({2}{3})", av, eu, tv, eu);
+                    rsl = string.Format("越量程上限[{0}{1}]！", tv, eu);
 
                 if (bv != null && av < bv)
-                    rsl = string.Format("值={0}{1}-越量程下限！({2}{3})", av, eu, bv, eu);
+                    rsl = string.Format("越量程下限[{0}{1}]！", bv, eu);
                 if (ll != null && av < ll)
-                    rsl = string.Format("值={0}{1}-越报警低限！({2}{3})", av, eu, ll, eu);
+                    rsl = string.Format("越报警低限[{0}{1}]！", ll, eu);
                 if (zl != null && av < zl)
-                    rsl = string.Format("值={0}{1}-越报警低2限！({2}{3})}", av, eu, zl, eu);
+                    rsl = string.Format("越报警低2限[{0}{1}]！", zl, eu);
+                alarmingav = av;
             }
             else rsl = "";
             if (rsl.Length > 0)

@@ -29,33 +29,9 @@ namespace HGS
             }
             return inst;
         }
-        /*
-        const int initdicCapacity = 1009;
-        //报警点----------------------------------
-        public ConcurrentDictionary<int, point> cd_Point { set; get; }
-        private void Initcd_dicCapacity()
-        {
-            //-------------------------------------------------------------
-            //点字典,用于计算
-            // We know how many items we want to insert into the ConcurrentDictionary.
-            // So set the initial capacity to some prime number above that, to ensure that
-            // the ConcurrentDictionary does not need to be resized while initializing it.
-            //static int NUMITEMS = 20000;
-            int initialCapacity = Functions.inst().AbovePrimes(initdicCapacity);//素数
-            initialCapacity = initialCapacity > 1009 ? initialCapacity : 1009;
-
-            // The higher the concurrencyLevel, the higher the theoretical number of operations
-            // that could be performed concurrently on the ConcurrentDictionary.  However, global
-            // operations like resizing the dictionary take longer as the concurrencyLevel rises.
-            // For the purposes of this example, we'll compromise at numCores * 2.
-            int numProcs = Environment.ProcessorCount;
-            int concurrencyLevel = numProcs * 2;
-            cd_Point = new ConcurrentDictionary<int, point>(concurrencyLevel, initialCapacity);
-            //         
-        }
-        */
-        SortedSet<point> ssalarmPoint = new SortedSet<point>(new ByDateTime());
-        public SortedSet<point> ssAlarmPoint
+        //SortedSet<point> ssalarmPoint = new SortedSet<point>(new ByDateTime());//有问题，未查清，出现幻读。
+        HashSet<point> ssalarmPoint = new HashSet<point>();
+        public HashSet<point> ssAlarmPoint
         {
             //set { ssalarmPoint = value; }
             get { return ssalarmPoint; }
