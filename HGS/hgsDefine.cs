@@ -48,10 +48,10 @@ namespace HGS
     {
         //
         public int id_sis = 0;//sis点id
-        public string nd;//节点名。
-        public string pn;//点名
+        public string nd = "";//节点名。
+        public string pn = "";//点名
         //public int rt = 0;//点类型
-        public string ed;//点描述
+        public string ed = "";//点描述
         //可null
         public double? tv = null;//量程上限
         public double? bv = null;//量程下限
@@ -64,9 +64,9 @@ namespace HGS
         public string orgformula = "";//计算公式
         public string expformula = "";//展开成点的计算公式
         public int id = -1;//点id
-        public string eu;//点单位
-        public bool iscalc;//是否进行计算
-        public bool isavalarm;//是否报警
+        public string eu = "";//点单位
+        public bool iscalc= false;//是否进行计算
+        public bool isavalarm = false;//是否报警
         public PointState ps = PointState.Error;//点状态
         public double av = -1;//点值，实时或计算。
         public short fm = 0;//保留小数点位数。
@@ -111,7 +111,7 @@ namespace HGS
                 if (zh != null && av > zh)
                     rsl = string.Format("越报警高2限[{0}{1}]！", zh, eu);
                 if (hl != null && av > hl)
-                    rsl = string.Format("越报警高限[{0}{1}]！", av, eu);
+                    rsl = string.Format("越报警高限[{0}{1}]！", hl, eu);
                 if (tv != null && av > tv)
                     rsl = string.Format("越量程上限[{0}{1}]！", tv, eu);
 

@@ -44,7 +44,7 @@
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.tSTBPN = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
-            this.tSCBED = new System.Windows.Forms.ToolStripComboBox();
+            this.tSTBED = new System.Windows.Forms.ToolStripTextBox();
             this.tSBFind = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -66,7 +66,7 @@
             this.toolStripLabel2,
             this.tSTBPN,
             this.toolStripLabel3,
-            this.tSCBED,
+            this.tSTBED,
             this.tSBFind});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
@@ -84,6 +84,7 @@
             // 
             this.tSCBNode.Name = "tSCBNode";
             this.tSCBNode.Size = new System.Drawing.Size(121, 25);
+            this.tSCBNode.SelectedIndexChanged += new System.EventHandler(this.tSBFind_Click);
             // 
             // toolStripLabel1
             // 
@@ -117,10 +118,10 @@
             this.toolStripLabel3.Size = new System.Drawing.Size(44, 22);
             this.toolStripLabel3.Text = "描述：";
             // 
-            // tSCBED
+            // tSTBED
             // 
-            this.tSCBED.Name = "tSCBED";
-            this.tSCBED.Size = new System.Drawing.Size(121, 25);
+            this.tSTBED.Name = "tSTBED";
+            this.tSTBED.Size = new System.Drawing.Size(100, 25);
             // 
             // tSBFind
             // 
@@ -292,6 +293,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Sis点选择";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormSisPointList_FormClosed);
+            this.Shown += new System.EventHandler(this.FormSisPointList_Shown);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
@@ -309,7 +311,6 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel2;
         private System.Windows.Forms.ToolStripTextBox tSTBPN;
         private System.Windows.Forms.ToolStripLabel toolStripLabel3;
-        private System.Windows.Forms.ToolStripComboBox tSCBED;
         private System.Windows.Forms.ToolStripButton tSBFind;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripLabel toolStripLabel4;
@@ -319,5 +320,6 @@
         private System.Windows.Forms.Button button2;
         internal GlacialComponents.Controls.GlacialList glacialList;
         public System.Windows.Forms.ToolStripComboBox tSCBNode;
+        private System.Windows.Forms.ToolStripTextBox tSTBED;
     }
 }

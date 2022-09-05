@@ -38,9 +38,6 @@ namespace HGS
             GlacialComponents.Controls.GLColumn glColumn5 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn6 = new GlacialComponents.Controls.GLColumn();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.tSLabel_Nums = new System.Windows.Forms.ToolStripStatusLabel();
-            this.timer_GetAlarm = new System.Windows.Forms.Timer(this.components);
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.tsCB_class = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
@@ -50,8 +47,11 @@ namespace HGS
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
             this.tsTB_ED = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripLabel5 = new System.Windows.Forms.ToolStripLabel();
-            this.tSButton_Find = new System.Windows.Forms.ToolStripButton();
             this.tsTB_AI = new System.Windows.Forms.ToolStripTextBox();
+            this.tSButton_Find = new System.Windows.Forms.ToolStripButton();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.tSLabel_Nums = new System.Windows.Forms.ToolStripStatusLabel();
+            this.timer_GetAlarm = new System.Windows.Forms.Timer(this.components);
             this.glacialList1 = new GlacialComponents.Controls.GlacialList();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -77,28 +77,6 @@ namespace HGS
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tSLabel_Nums});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 503);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(902, 22);
-            this.statusStrip1.TabIndex = 1;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // tSLabel_Nums
-            // 
-            this.tSLabel_Nums.Name = "tSLabel_Nums";
-            this.tSLabel_Nums.Size = new System.Drawing.Size(44, 17);
-            this.tSLabel_Nums.Text = "点数：";
-            // 
-            // timer_GetAlarm
-            // 
-            this.timer_GetAlarm.Enabled = true;
-            this.timer_GetAlarm.Interval = 5000;
-            this.timer_GetAlarm.Tick += new System.EventHandler(this.timer_GetAlarm_Tick);
-            // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
@@ -109,6 +87,7 @@ namespace HGS
             // 
             this.tsCB_class.Name = "tsCB_class";
             this.tsCB_class.Size = new System.Drawing.Size(90, 25);
+            this.tsCB_class.SelectedIndexChanged += new System.EventHandler(this.tsCB_class_SelectedIndexChanged);
             // 
             // toolStripLabel2
             // 
@@ -149,6 +128,11 @@ namespace HGS
             this.toolStripLabel5.Size = new System.Drawing.Size(68, 22);
             this.toolStripLabel5.Text = "报警信息：";
             // 
+            // tsTB_AI
+            // 
+            this.tsTB_AI.Name = "tsTB_AI";
+            this.tsTB_AI.Size = new System.Drawing.Size(100, 25);
+            // 
             // tSButton_Find
             // 
             this.tSButton_Find.Image = ((System.Drawing.Image)(resources.GetObject("tSButton_Find.Image")));
@@ -156,11 +140,29 @@ namespace HGS
             this.tSButton_Find.Name = "tSButton_Find";
             this.tSButton_Find.Size = new System.Drawing.Size(52, 22);
             this.tSButton_Find.Text = "查询";
+            this.tSButton_Find.Click += new System.EventHandler(this.tsCB_class_SelectedIndexChanged);
             // 
-            // tsTB_AI
+            // statusStrip1
             // 
-            this.tsTB_AI.Name = "tsTB_AI";
-            this.tsTB_AI.Size = new System.Drawing.Size(100, 25);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tSLabel_Nums});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 503);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(902, 22);
+            this.statusStrip1.TabIndex = 1;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // tSLabel_Nums
+            // 
+            this.tSLabel_Nums.Name = "tSLabel_Nums";
+            this.tSLabel_Nums.Size = new System.Drawing.Size(44, 17);
+            this.tSLabel_Nums.Text = "点数：";
+            // 
+            // timer_GetAlarm
+            // 
+            this.timer_GetAlarm.Enabled = true;
+            this.timer_GetAlarm.Interval = 5000;
+            this.timer_GetAlarm.Tick += new System.EventHandler(this.timer_GetAlarm_Tick);
             // 
             // glacialList1
             // 
@@ -267,6 +269,7 @@ namespace HGS
             this.Controls.Add(this.toolStrip1);
             this.Name = "FormAlarmSet";
             this.Text = "报警信息";
+            this.Shown += new System.EventHandler(this.FormAlarmSet_Shown);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);

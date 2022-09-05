@@ -15,8 +15,6 @@ namespace HGS
         public FormLogin()
         {
             InitializeComponent();
-            comboBoxUser.DataSource = Auth.GetInst().GetUser();
-            label_hint.Text = "";
         }
         private void UserAuthor()
         {
@@ -38,6 +36,17 @@ namespace HGS
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+        }
+
+        private void FormLogin_Activated(object sender, EventArgs e)
+        {
+            textBoxPW.Focus();
+        }
+
+        private void FormLogin_Shown(object sender, EventArgs e)
+        {
+            comboBoxUser.DataSource = Auth.GetInst().GetUser();
+            label_hint.Text = "";
         }
     }
 }

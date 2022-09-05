@@ -20,8 +20,6 @@ namespace HGS
         public FormPointSet()
         {
             InitializeComponent();
-            glacialLisint();
-            label_formula.Text = "";
         }
         private void DisplayHints()
         {
@@ -52,7 +50,8 @@ namespace HGS
                 GLItem itemn;
                 itemtag it = new itemtag();
                 //point Point = Data.Get().cd_Point[];
-                if ((ptx.pointsrc == pointsrc.sis || (Auth.GetInst().LoginID == 0 || ptx.ownerid == Auth.GetInst().LoginID)) &&
+                if ((ptx.pointsrc == pointsrc.sis || (Auth.GetInst().LoginID == 0 || ptx.ownerid == Auth.GetInst().LoginID || 
+                    ptx.ownerid == 0)) &&
                     ptx.nd.Contains(tSCB_ND.Text.Trim()) && ptx.ed.Contains(tSTB_ED.Text.Trim()) &&
                     ptx.pn.Contains(tSTB_PN.Text.Trim()) && ptx.orgformula.Contains(tSTB_F.Text.Trim()))
                 {
@@ -84,9 +83,10 @@ namespace HGS
                 PointNums++;
             }
             //tSCB_ND.Items.Add("");
+            tSCB_ND.Items.Clear();
             foreach (string citem in hs_ND)
             {
-                tSCB_ND.Items.Add(citem);
+                tSCB_ND.Items.Add(citem.Trim());
             }
             timerUpdateValue.Enabled = true;
             DisplayHints();
@@ -299,8 +299,11 @@ namespace HGS
                     AlarmSubItemSet(itemn, fcps.CalcPoint);
                 }
                 //itemn.Tag = it;
-                if(!dic_glItemNew.ContainsKey(itemn))
+                if (!dic_glItemNew.ContainsKey(itemn))
+                {
                     hs_glItemModified.Add(itemn);
+                    Data.inst().hs_FormulaErrorPoint.Remove(fcps.CalcPoint);
+                }
                 DisplayHints();
             }
         }
@@ -421,6 +424,13 @@ namespace HGS
         {
             if (checkBoxAlarm.Checked)
                 checkBoxbool.Checked = false;
+        }
+
+        private void FormPointSet_Shown(object sender, EventArgs e)
+        {
+            glacialLisint();
+            if (tSCB_ND.Items.Count > 0) tSCB_ND.SelectedIndex = 0;
+            label_formula.Text = "";
         }
     }
 }

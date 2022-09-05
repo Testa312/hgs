@@ -31,16 +31,12 @@
             this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.form1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.点表ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.测试ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.计算点ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.testLuaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.报警信息ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.form1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.timerCalc = new System.Windows.Forms.Timer(this.components);
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tssL_error_nums = new System.Windows.Forms.ToolStripStatusLabel();
+            this.timerCalc = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -58,57 +54,25 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.form1ToolStripMenuItem,
-            this.点表ToolStripMenuItem,
-            this.测试ToolStripMenuItem,
-            this.计算点ToolStripMenuItem,
-            this.testLuaToolStripMenuItem,
-            this.报警信息ToolStripMenuItem});
+            this.报警信息ToolStripMenuItem,
+            this.form1ToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(44, 21);
             this.toolStripMenuItem1.Text = "文件";
-            // 
-            // form1ToolStripMenuItem
-            // 
-            this.form1ToolStripMenuItem.Name = "form1ToolStripMenuItem";
-            this.form1ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.form1ToolStripMenuItem.Text = "点设置";
-            this.form1ToolStripMenuItem.Click += new System.EventHandler(this.form1ToolStripMenuItem_Click);
-            // 
-            // 点表ToolStripMenuItem
-            // 
-            this.点表ToolStripMenuItem.Name = "点表ToolStripMenuItem";
-            this.点表ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.点表ToolStripMenuItem.Text = "点表";
-            this.点表ToolStripMenuItem.Click += new System.EventHandler(this.点表ToolStripMenuItem_Click);
-            // 
-            // 测试ToolStripMenuItem
-            // 
-            this.测试ToolStripMenuItem.Name = "测试ToolStripMenuItem";
-            this.测试ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.测试ToolStripMenuItem.Text = "测试";
-            this.测试ToolStripMenuItem.Click += new System.EventHandler(this.测试ToolStripMenuItem_Click);
-            // 
-            // 计算点ToolStripMenuItem
-            // 
-            this.计算点ToolStripMenuItem.Name = "计算点ToolStripMenuItem";
-            this.计算点ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.计算点ToolStripMenuItem.Text = "计算点";
-            this.计算点ToolStripMenuItem.Click += new System.EventHandler(this.计算点ToolStripMenuItem_Click);
-            // 
-            // testLuaToolStripMenuItem
-            // 
-            this.testLuaToolStripMenuItem.Name = "testLuaToolStripMenuItem";
-            this.testLuaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.testLuaToolStripMenuItem.Text = "测试pg 数据源";
-            this.testLuaToolStripMenuItem.Click += new System.EventHandler(this.testLuaToolStripMenuItem_Click);
             // 
             // 报警信息ToolStripMenuItem
             // 
             this.报警信息ToolStripMenuItem.Name = "报警信息ToolStripMenuItem";
             this.报警信息ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.报警信息ToolStripMenuItem.Text = "报警信息";
+            this.报警信息ToolStripMenuItem.Text = "打开报警信息...";
             this.报警信息ToolStripMenuItem.Click += new System.EventHandler(this.报警信息ToolStripMenuItem_Click);
+            // 
+            // form1ToolStripMenuItem
+            // 
+            this.form1ToolStripMenuItem.Name = "form1ToolStripMenuItem";
+            this.form1ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.form1ToolStripMenuItem.Text = "打开设置...";
+            this.form1ToolStripMenuItem.Click += new System.EventHandler(this.点设置ToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
@@ -121,12 +85,6 @@
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // timerCalc
-            // 
-            this.timerCalc.Enabled = true;
-            this.timerCalc.Interval = 3000;
-            this.timerCalc.Tick += new System.EventHandler(this.timerCalc_Tick);
-            // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
@@ -138,6 +96,12 @@
             this.tssL_error_nums.Name = "tssL_error_nums";
             this.tssL_error_nums.Size = new System.Drawing.Size(131, 17);
             this.tssL_error_nums.Text = "toolStripStatusLabel2";
+            // 
+            // timerCalc
+            // 
+            this.timerCalc.Enabled = true;
+            this.timerCalc.Interval = 3000;
+            this.timerCalc.Tick += new System.EventHandler(this.timerCalc_Tick);
             // 
             // FormMain
             // 
@@ -167,10 +131,6 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem form1ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 点表ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 测试ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 计算点ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem testLuaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 报警信息ToolStripMenuItem;
         private System.Windows.Forms.Timer timerCalc;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;

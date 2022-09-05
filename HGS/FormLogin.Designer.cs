@@ -45,6 +45,7 @@ namespace HGS
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Enabled = false;
             this.pictureBox1.Image = global::HGS.Properties.Resources.s_l1600;
             this.pictureBox1.Location = new System.Drawing.Point(21, 28);
             this.pictureBox1.Name = "pictureBox1";
@@ -70,7 +71,7 @@ namespace HGS
             this.comboBoxUser.Location = new System.Drawing.Point(57, 20);
             this.comboBoxUser.Name = "comboBoxUser";
             this.comboBoxUser.Size = new System.Drawing.Size(95, 20);
-            this.comboBoxUser.TabIndex = 0;
+            this.comboBoxUser.TabIndex = 1;
             // 
             // label3
             // 
@@ -96,7 +97,7 @@ namespace HGS
             this.textBoxPW.Name = "textBoxPW";
             this.textBoxPW.PasswordChar = '*';
             this.textBoxPW.Size = new System.Drawing.Size(95, 21);
-            this.textBoxPW.TabIndex = 1;
+            this.textBoxPW.TabIndex = 0;
             this.textBoxPW.WordWrap = false;
             // 
             // buttonCancel
@@ -120,7 +121,8 @@ namespace HGS
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(277, 187);
+            this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.buttonOK.Location = new System.Drawing.Point(308, 187);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(60, 23);
             this.buttonOK.TabIndex = 2;
@@ -156,6 +158,8 @@ namespace HGS
             this.Name = "FormLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "登录";
+            this.Activated += new System.EventHandler(this.FormLogin_Activated);
+            this.Shown += new System.EventHandler(this.FormLogin_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

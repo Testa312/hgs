@@ -16,10 +16,6 @@ namespace HGS
         public FormAlarmSet()
         {
             InitializeComponent();
-            foreach (string it in Auth.GetInst().GetUser())
-            {
-                tsCB_class.Items.Add(it);
-            }
         }
         private void timer_GetAlarm_Tick(object sender, EventArgs e)
         {
@@ -27,8 +23,7 @@ namespace HGS
             HashSet<point> lss = AlarmSet.GetInst().ssAlarmPoint;
             foreach (point pt in lss)
             {
-                StringComparison comp = StringComparison.Ordinal;
-                if ((pt.pointsrc == pointsrc.sis || pt.ownerid == tsCB_class.SelectedIndex) &&
+                if ((pt.ownerid == tsCB_class.SelectedIndex || tsCB_class.SelectedIndex == 0) &&
                     pt.nd.Contains(tsCB_ND.Text.Trim()) && pt.ed.Contains(tsTB_ED.Text.Trim()) &&
                     pt.pn.Contains(tsTB_PN.Text.Trim()) && pt.alarmininfo.Contains(tsTB_AI.Text.Trim()))
                 {
@@ -65,6 +60,23 @@ namespace HGS
             deleitem.Clear();
 
             tSLabel_Nums.Text = string.Format("报警点数：{0}个", AlarmSet.GetInst().ssAlarmPoint.Count);
+        }
+
+        private void tsCB_class_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            dic_rec.Clear();
+            glacialList1.Items.Clear();
+            timer_GetAlarm_Tick(sender, e);
+        }
+
+        private void FormAlarmSet_Shown(object sender, EventArgs e)
+        {
+            tsCB_class.Items.Clear();
+            foreach (string it in Auth.GetInst().GetUser())
+            {
+                tsCB_class.Items.Add(it);
+            }
+            tsCB_class.SelectedIndex = Auth.GetInst().LoginID;
         }
     }
 }

@@ -21,7 +21,6 @@ namespace HGS
         public FormSisPointList()
         {
             InitializeComponent();
-            if (tSCBNode.Items.Count > 0) tSCBNode.SelectedIndex = 1;
         }
          ~FormSisPointList()
         {
@@ -31,6 +30,7 @@ namespace HGS
         //初始化node列表框。
         private void findnode()
         {
+            tSCBNode.Items.Clear();
             string sql = "select ID,PN  from Node";
             OPAPI.ResultSet resultSet = sisconn.executeQuery(sql);//执行SQL
             try
@@ -39,12 +39,15 @@ namespace HGS
                 {
                     string pn = resultSet.getObject(1).ToString();
                     dicnodeid[pn] = resultSet.getObject(0).ToString();
-                    tSCBNode.Items.Add(pn);
+                    tSCBNode.Items.Add(pn.Trim());
 
                 }
             }
             catch (Exception ee)
             {
+                MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.DialogResult = System.Windows.Forms.DialogResult.None;
+                this.Close();
             }
             finally
             {
@@ -66,7 +69,7 @@ namespace HGS
             }
             if (tSpCBRT.SelectedIndex > 1)
             {
-                wh = string.Format("{0} and RT > 0", wh);
+                wh = string.Format("{0} and RT > 0", wh); 
 
             }
             if (tSTBPN.Text.Length > 0)
@@ -88,7 +91,7 @@ namespace HGS
                     GLItem item;
                     string colValue = resultSet.getString(4);
                     int id = resultSet.getInt(5);
-                    if (!colValue.Contains(tSCBED.Text) || onlysisid.Contains(id))
+                    if (!colValue.Contains(tSTBED.Text) || onlysisid.Contains(id))
                     {
                         continue;
                     }                
@@ -113,11 +116,21 @@ namespace HGS
                     it.fm = (byte)resultSet.getInt(6);
                     item.Tag = it;                   
                     total++;
+                    if (total > 500)
+                    {
+                        MessageBox.Show("数量太多，筛选一下！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        while (resultSet.next()) ;//有bug，没有报错。
+                            break;
+                    }
+                    this.DialogResult = System.Windows.Forms.DialogResult.None;
                 }
                 toolStripStatusLabel1.Text = string.Format("点数：{0}", total.ToString());
             }
             catch (Exception ee)
             {
+                MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.DialogResult = System.Windows.Forms.DialogResult.None;
+                this.Close();
             }
             finally
             {
@@ -183,12 +196,8 @@ namespace HGS
                     resultSet.close(); //释放内存
                 }
             }
-            catch (Exception ee)
-            {
-            }
             finally
-            {
-                
+            {              
             }
            // conn.close(); //关闭连接，千万要记住！！！
         }
@@ -197,6 +206,13 @@ namespace HGS
         {
             timer.Enabled = false;
             sisconn.close();
+        }
+
+        private void FormSisPointList_Shown(object sender, EventArgs e)
+        {
+            findnode();
+            if (tSCBNode.Items.Count > 0) tSCBNode.SelectedIndex = 0;
+            tSpCBRT.SelectedIndex = 1;
         }
     }
 }

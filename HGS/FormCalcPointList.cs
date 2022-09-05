@@ -103,9 +103,10 @@ namespace HGS
                 }
                 //
                 //tSCBNode.Items.Add("");
+                tSCBNode.Items.Clear();
                 foreach (string citem in hs_ND)
                 {
-                    tSCBNode.Items.Add(citem);
+                    tSCBNode.Items.Add(citem.Trim());
                 }
                 //if (tSCBNode.Items.Count > 0) tSCBNode.SelectedIndex = 1;
 
@@ -139,6 +140,11 @@ namespace HGS
         {
             timer.Enabled = false;
             //sisconn.close();
+        }
+
+        private void FormCalcPointList_Shown(object sender, EventArgs e)
+        {
+            if (tSCBNode.Items.Count > 0) tSCBNode.SelectedIndex = 0;
         }
     }
 }

@@ -155,6 +155,7 @@
             // 
             this.tSCB_ND.Name = "tSCB_ND";
             this.tSCB_ND.Size = new System.Drawing.Size(100, 25);
+            this.tSCB_ND.SelectedIndexChanged += new System.EventHandler(this.toolStripButtonSelect_Click);
             // 
             // toolStripLabel1
             // 
@@ -720,6 +721,7 @@
             this.Text = "点报警设置";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormPointSet_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormPointSet_FormClosed);
+            this.Shown += new System.EventHandler(this.FormPointSet_Shown);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);

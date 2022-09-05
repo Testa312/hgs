@@ -208,18 +208,6 @@
     <Compile Include="FormSisPointList.Designer.cs">
       <DependentUpon>FormSisPointList.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormTestCE.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormTestCE.Designer.cs">
-      <DependentUpon>FormTestCE.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormErrorFormulaList.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormErrorFormulaList.Designer.cs">
-      <DependentUpon>FormErrorFormulaList.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormAlarmSet.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -401,12 +389,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormSisPointList.resx">
       <DependentUpon>FormSisPointList.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormTestCE.resx">
-      <DependentUpon>FormTestCE.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormErrorFormulaList.resx">
-      <DependentUpon>FormErrorFormulaList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormAlarmSet.resx">
       <DependentUpon>FormAlarmSet.cs</DependentUpon>

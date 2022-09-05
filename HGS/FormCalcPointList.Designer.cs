@@ -79,6 +79,7 @@
             // 
             this.tSCBNode.Name = "tSCBNode";
             this.tSCBNode.Size = new System.Drawing.Size(121, 25);
+            this.tSCBNode.SelectedIndexChanged += new System.EventHandler(this.tSBFind_Click);
             // 
             // toolStripLabel2
             // 
@@ -263,6 +264,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "计算点选择";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormSisPointList_FormClosed);
+            this.Shown += new System.EventHandler(this.FormCalcPointList_Shown);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);

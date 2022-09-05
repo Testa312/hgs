@@ -14,88 +14,65 @@ namespace HGS
     {
         OPAPI.Connect sisconn = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
           Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
+        FormAlarmSet formAlarmSet;
+        FormPointSet formPointSet;
         public FormMain()
         {
             InitializeComponent();
-            //
-            CalcEngine.CalcEngine cd = new CalcEngine.CalcEngine();
-            Data.inst().LoadFromPG();
             tssL_error_nums.Text = "";
         }
          ~FormMain()
         {
             sisconn.close();
         }
-            private void form1ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void 点设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormPointSet frm1 = new FormPointSet();     //创建form2窗体的对象
+            if (formPointSet == null || formPointSet.IsDisposed) formPointSet = new FormPointSet();
 
-            frm1.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
-            frm1.WindowState = FormWindowState.Maximized;
-            frm1.Show();
-        }
+            formPointSet.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
+            formPointSet.WindowState = FormWindowState.Maximized;
+            formPointSet.Show();
+            
 
-        private void 点表ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FormSisPointList frm1 = new FormSisPointList();     //创建form2窗体的对象
-
-            frm1.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
-            frm1.WindowState = FormWindowState.Maximized;
-            frm1.Show();
-        }
-
-        private void 测试ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FormTestCE frm1 = new FormTestCE();     //创建form2窗体的对象
-
-            frm1.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
-            frm1.WindowState = FormWindowState.Maximized;
-            frm1.Show();
-        }
-
-        private void 计算点ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FormCalcPointSet frm1 = new FormCalcPointSet();     //创建form2窗体的对象
-
-            frm1.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
-            frm1.WindowState = FormWindowState.Maximized;
-            frm1.Show();
-        }
-
-        private void testLuaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FormFormulaErrorList frm1 = new FormFormulaErrorList();     //创建form2窗体的对象
-
-            frm1.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
-            frm1.WindowState = FormWindowState.Maximized;
-            frm1.Show();
         }
         //登录窗口
         private void FormMain_Shown(object sender, EventArgs e)
         {
-            //FormLogin fl = new FormLogin();
-            //if (DialogResult.Cancel == fl.ShowDialog()) this.Close();
-            //this.Text = string.Format("HGS-{0}", Auth.GetInst().UserName);
+            FormLogin fl = new FormLogin();
+            if (DialogResult.OK == fl.ShowDialog())
+            {
+                try
+                {
+                    Data.inst().LoadFromPG();
+                }
+                catch (Exception ee)
+                {
+                    MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.DialogResult = System.Windows.Forms.DialogResult.None;
+                    this.Close();
+                }
+                formAlarmSet = new FormAlarmSet();
+                formPointSet = new FormPointSet();
 
-            FormPointSet frm1 = new FormPointSet();     //创建form2窗体的对象
+                this.Text = string.Format("HGS-{0}", Auth.GetInst().UserName);
+                if (formPointSet != null || !formPointSet.IsDisposed)
+                {
+                    formAlarmSet.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
+                    formAlarmSet.WindowState = FormWindowState.Maximized;
+                    formAlarmSet.Show();
+                }
 
-            frm1.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
-            frm1.WindowState = FormWindowState.Maximized;
-            frm1.Show();
-
-            FormAlarmSet frm2 = new FormAlarmSet();     //创建form2窗体的对象
-
-            frm2.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
-            frm2.WindowState = FormWindowState.Maximized;
-            frm2.Show();
+            }
+            else this.Close();
         }
         private void 报警信息ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormAlarmSet frm1 = new FormAlarmSet();     //创建form2窗体的对象
+            if (formAlarmSet == null || formAlarmSet.IsDisposed) formAlarmSet = new FormAlarmSet();
 
-            frm1.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
-            frm1.WindowState = FormWindowState.Maximized;
-            frm1.Show();
+            formAlarmSet.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
+            formAlarmSet.WindowState = FormWindowState.Maximized;
+            formAlarmSet.Show();
+
         }
         private void GetSisValue()
         {

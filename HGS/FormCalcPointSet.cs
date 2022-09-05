@@ -183,6 +183,7 @@ namespace HGS
             Point.ownerid = Auth.GetInst().LoginID;
             Point.pointsrc = pointsrc.calc;
             Point.nd = Pref.Inst().CalcPointNodeName;
+            Point.pn = "";
             //if (CalcPoint.id <= 0) CalcPoint.id = Data.Get().GetNextPointID();
             Point.iscalc = checkBoxCalc.Checked;
             Point.fm = (byte)numericUpDown.Value;
@@ -191,15 +192,15 @@ namespace HGS
             //
             Point.expformula = Data.inst().ExpandOrgFormula(Point);
             //
-            double orgv = Point.orgformula.Length > 0 ? (double)ce.Evaluate(Point.orgformula) : -1; //验证表达式的合法性
+            double orgv = Point.orgformula.Length > 0 ? Math.Round((double)ce.Evaluate(Point.orgformula), Point.fm) : -1; //验证表达式的合法性
                                                //
             ce.Variables.Clear();
             foreach (point pt in Data.inst().hsSisPoint)
             {
                 //point Ptx = Data.Get().cd_Point[pid];
                 ce.Variables.Add(Pref.Inst().GetVarName(pt), pt.av);
-            }
-            double expv = Point.orgformula.Length > 0 ? (double)ce.Evaluate(Point.expformula) : -1;//验证表达式展开sis点的合法性。
+            }        
+            double expv = Point.orgformula.Length > 0 ? Math.Round((double)ce.Evaluate(Point.expformula), Point.fm)  : -1;//验证表达式展开sis点的合法性。
             if(rsl)
                 MessageBox.Show(string.Format("原公式计算值＝{0}\n展开公式计算值＝{1}",orgv,expv), 
                     "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
