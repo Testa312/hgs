@@ -208,11 +208,11 @@
     <Compile Include="FormSisPointList.Designer.cs">
       <DependentUpon>FormSisPointList.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormAlarmSet.cs">
+    <Compile Include="FormAlarmSetList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormAlarmSet.Designer.cs">
-      <DependentUpon>FormAlarmSet.cs</DependentUpon>
+    <Compile Include="FormAlarmSetList.Designer.cs">
+      <DependentUpon>FormAlarmSetList.cs</DependentUpon>
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="GlacialList\BorderStrip.cs">
@@ -390,8 +390,8 @@
     <EmbeddedResource Include="FormSisPointList.resx">
       <DependentUpon>FormSisPointList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormAlarmSet.resx">
-      <DependentUpon>FormAlarmSet.cs</DependentUpon>
+    <EmbeddedResource Include="FormAlarmSetList.resx">
+      <DependentUpon>FormAlarmSetList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GlacialList\BorderStrip.resx" />
     <EmbeddedResource Include="GlacialList\GlacialList.resx" />

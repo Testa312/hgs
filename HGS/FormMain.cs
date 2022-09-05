@@ -14,7 +14,7 @@ namespace HGS
     {
         OPAPI.Connect sisconn = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
           Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
-        FormAlarmSet formAlarmSet;
+        FormAlarmSetList formAlarmSet;
         FormPointSet formPointSet;
         public FormMain()
         {
@@ -51,7 +51,7 @@ namespace HGS
                     this.DialogResult = System.Windows.Forms.DialogResult.None;
                     this.Close();
                 }
-                formAlarmSet = new FormAlarmSet();
+                formAlarmSet = new FormAlarmSetList();
                 formPointSet = new FormPointSet();
 
                 this.Text = string.Format("HGS-{0}", Auth.GetInst().UserName);
@@ -67,7 +67,7 @@ namespace HGS
         }
         private void 报警信息ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (formAlarmSet == null || formAlarmSet.IsDisposed) formAlarmSet = new FormAlarmSet();
+            if (formAlarmSet == null || formAlarmSet.IsDisposed) formAlarmSet = new FormAlarmSetList();
 
             formAlarmSet.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
             formAlarmSet.WindowState = FormWindowState.Maximized;
@@ -125,7 +125,7 @@ namespace HGS
             GetSisValue();//到得sis值；
             foreach (point calcpt in Data.inst().hsAllPoint)
             {
-                bool lastAlam = calcpt.alarming;
+                bool b_lastAlarm = calcpt.alarming;
                 //计算计算点。
                 if (calcpt.pointsrc == pointsrc.calc)
                 {
@@ -152,12 +152,20 @@ namespace HGS
                     }
                 }
                 //加报警
+                /*
                 if (calcpt.AlarmCalc())
                     AlarmSet.GetInst().ssAlarmPoint.Add(calcpt);
-                else if (!calcpt.AlarmCalc() && lastAlam)
+                else if (!calcpt.AlarmCalc() && b_lastAlarm)
                     AlarmSet.GetInst().ssAlarmPoint.Remove(calcpt);
+                */
+                AlarmSet.GetInst().Add(calcpt, b_lastAlarm);              
                 tssL_error_nums.Text = Data.inst().hs_FormulaErrorPoint.Count.ToString();
             }
+            try
+            {
+                AlarmSet.GetInst().SaveAlarmInfo();
+            }
+            catch { };
         }
     }
 }

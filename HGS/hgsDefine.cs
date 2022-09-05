@@ -15,18 +15,6 @@ namespace HGS
         public short fm = 2;
         public pointsrc PointSrc = pointsrc.sis;
     }
-    /*/-----------------------------
-    public class AlarmInfo
-    {
-        public int id = -1;//点id
-        public int id_sis = 0;//sis点id
-        public string nd = "";//节点名。
-        public string pn = "";//点名
-
-        public string ed = "";//点描述 
-        public DateTime lastalarmdatetime = DateTime.Now;
-    }
-    */
     public class subpoint
     {
         public int id {set;get;}
@@ -103,24 +91,24 @@ namespace HGS
                 if (blv)
                 {
                     alarmingav = Convert.ToDouble(blv);
-                    rsl = boolalarminfo;// string.Format("{0}, boolalarminfo);
+                    rsl = string.Format(" {0}", boolalarminfo);
                 }
             }
             else if (isavalarm)
             {
                 if (zh != null && av > zh)
-                    rsl = string.Format("越报警高2限[{0}{1}]！", zh, eu);
+                    rsl = string.Format(" 越报警高2限[{0}{1}]！", zh, eu);
                 if (hl != null && av > hl)
-                    rsl = string.Format("越报警高限[{0}{1}]！", hl, eu);
+                    rsl = string.Format(" 越报警高限[{0}{1}]！", hl, eu);
                 if (tv != null && av > tv)
-                    rsl = string.Format("越量程上限[{0}{1}]！", tv, eu);
+                    rsl = string.Format(" 越量程上限[{0}{1}]！", tv, eu);
 
                 if (bv != null && av < bv)
-                    rsl = string.Format("越量程下限[{0}{1}]！", bv, eu);
+                    rsl = string.Format(" 越量程下限[{0}{1}]！", bv, eu);
                 if (ll != null && av < ll)
-                    rsl = string.Format("越报警低限[{0}{1}]！", ll, eu);
+                    rsl = string.Format(" 越报警低限[{0}{1}]！", ll, eu);
                 if (zl != null && av < zl)
-                    rsl = string.Format("越报警低2限[{0}{1}]！", zl, eu);
+                    rsl = string.Format(" 越报警低2限[{0}{1}]！", zl, eu);
                 alarmingav = av;
             }
             else rsl = "";

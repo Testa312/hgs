@@ -70,7 +70,6 @@ namespace HGS
         //公式错误点。-------------------------------
         HashSet<point> hs_formulaErrorPoint = new HashSet<point>();
 
-
         //计算
         CalcEngine.CalcEngine _ce = new CalcEngine.CalcEngine();
         //

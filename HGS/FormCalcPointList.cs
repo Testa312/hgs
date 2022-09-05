@@ -15,59 +15,22 @@ namespace HGS
 {
     public partial class FormCalcPointList : Form
     {
-        //OPAPI.Connect sisconn = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60, 
-            //Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
+        bool isFirst = true;
         private HashSet<int> onlyid;
         public FormCalcPointList()
         {
             InitializeComponent();
-            //InitList();
         }
          ~FormCalcPointList()
         {
-            //sisconn.close();
+  
         }
-        /*
-        //初始化节点列表。
-        public void InitList()
-        {
-            try
-            {
-                tSCBNode.Items.Add("");
-               var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
-                pgconn.Open();
-
-                string strsql = "select distinct nd from point order by nd";
-                var cmd = new NpgsqlCommand(strsql, pgconn);
-                NpgsqlDataReader pgreader = cmd.ExecuteReader();
-                while (pgreader.Read())
-                {
-                    tSCBNode.Items.Add(pgreader.GetString(0));
-                }
-                pgreader.Close();
-                pgconn.Close();
-                if (tSCBNode.Items.Count > 0) tSCBNode.SelectedIndex = 0;
-            }
-            catch(Exception ee)
-            {
-                MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }*/
+    
         public void glacialLisint(HashSet<int> Onlyid)
         {
             onlyid = Onlyid;
             try
             {
-                /*
-                var pgconn = new NpgsqlConnection(Pref.GetInst().pgConnString);
-                pgconn.Open();
-     
-                string strsql = string.Format("select * from point where nd like '%{0}%' and pn like '%{1}%' and ed like '%{2}%'", 
-                    tSCBNode.Text.Trim(), tSTBPN.Text.Trim(), tSCBED.Text.Trim());
-
-                var cmd = new NpgsqlCommand(strsql, pgconn);
-                NpgsqlDataReader pgreader = cmd.ExecuteReader();
-                */
                 timer.Enabled = false;
                 HashSet<string> hs_ND = new HashSet<string>();
                 glacialList.Items.Clear();
@@ -103,12 +66,14 @@ namespace HGS
                 }
                 //
                 //tSCBNode.Items.Add("");
-                tSCBNode.Items.Clear();
-                foreach (string citem in hs_ND)
+                if (isFirst)
                 {
-                    tSCBNode.Items.Add(citem.Trim());
+                    foreach (string citem in hs_ND)
+                    {
+                        tSCBNode.Items.Add(citem.Trim());
+                    }
                 }
-                //if (tSCBNode.Items.Count > 0) tSCBNode.SelectedIndex = 1;
+                isFirst = false;
 
                 tSSLabel_nums.Text = string.Format("点数：{0}", count);
             }
@@ -139,12 +104,11 @@ namespace HGS
         private void FormSisPointList_FormClosed(object sender, FormClosedEventArgs e)
         {
             timer.Enabled = false;
-            //sisconn.close();
         }
 
         private void FormCalcPointList_Shown(object sender, EventArgs e)
         {
-            if (tSCBNode.Items.Count > 0) tSCBNode.SelectedIndex = 0;
+            //if (tSCBNode.Items.Count > 0) tSCBNode.SelectedIndex = 0;这样写有问题。
         }
     }
 }

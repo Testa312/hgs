@@ -90,7 +90,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxTV = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.timerCalc = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tSSLabel_count = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip1.SuspendLayout();
@@ -686,12 +685,6 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "上限：";
             // 
-            // timerCalc
-            // 
-            this.timerCalc.Enabled = true;
-            this.timerCalc.Interval = 2000;
-            this.timerCalc.Tick += new System.EventHandler(this.timerCalc_Tick);
-            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -780,7 +773,6 @@
         private System.Windows.Forms.Button buttonCalc;
         private System.Windows.Forms.Label labelf;
         private System.Windows.Forms.CheckBox checkBoxAlarm;
-        private System.Windows.Forms.Timer timerCalc;
         private System.Windows.Forms.ToolStripLabel toolStripLabel3;
         private System.Windows.Forms.ToolStripButton toolStripButtonDelete;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;

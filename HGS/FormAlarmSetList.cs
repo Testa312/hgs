@@ -10,10 +10,10 @@ using System.Windows.Forms;
 using GlacialComponents.Controls;
 namespace HGS
 {
-    public partial class FormAlarmSet : Form
+    public partial class FormAlarmSetList : Form
     {
         Dictionary<int, GLItem> dic_rec = new Dictionary<int, GLItem>();
-        public FormAlarmSet()
+        public FormAlarmSetList()
         {
             InitializeComponent();
         }

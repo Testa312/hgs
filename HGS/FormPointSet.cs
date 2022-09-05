@@ -16,7 +16,9 @@ namespace HGS
         Dictionary<GLItem, point> dic_glItemNew = new Dictionary<GLItem, point>();
         HashSet<GLItem> hs_glItemModified = new HashSet<GLItem>();
         HashSet<int> onlysisid = new HashSet<int>();
+        HashSet<string> hs_ND = new HashSet<string>();
         int PointNums = 0;
+        bool isFirst = true;
         public FormPointSet()
         {
             InitializeComponent();
@@ -44,7 +46,6 @@ namespace HGS
             timerUpdateValue.Enabled = false;
             glacialList1.Items.Clear();
             PointNums = 0;
-            HashSet<string> hs_ND = new HashSet<string>();
             foreach (point ptx in Data.inst().hsAllPoint)
             {
                 GLItem itemn;
@@ -72,21 +73,24 @@ namespace HGS
                     it.sisid = ptx.id_sis;
                     it.fm = ptx.fm;
                     it.PointSrc = ptx.pointsrc;
+                    /*
                     if (ptx.pointsrc == pointsrc.sis)
                     {
                         onlysisid.Add(it.sisid);//唯一性
-                    }
+                    }*/
                     AlarmSubItemSet(itemn,ptx);
                     itemn.Tag = it;
                 }
                 hs_ND.Add(ptx.nd);
                 PointNums++;
             }
-            //tSCB_ND.Items.Add("");
-            tSCB_ND.Items.Clear();
-            foreach (string citem in hs_ND)
+            if (isFirst)
             {
-                tSCB_ND.Items.Add(citem.Trim());
+                foreach (string citem in hs_ND)
+                {
+                    tSCB_ND.Items.Add(citem.Trim());
+                }
+                isFirst = false;
             }
             timerUpdateValue.Enabled = true;
             DisplayHints();
@@ -191,6 +195,10 @@ namespace HGS
             foreach (point pt in dic_glItemNew.Values)
             {
                 Data.inst().Add(pt);
+                if (!hs_ND.Contains(pt.nd))
+                {
+                    tSCB_ND.Items.Add(pt.nd);
+                }
             }
             Data.inst().SavetoPG();
             PointNums += dic_glItemNew.Count;
@@ -312,49 +320,6 @@ namespace HGS
         {
             glacialLisint();
         }
-
-        private void timerCalc_Tick(object sender, EventArgs e)
-        {
-            /*GetSisValue();//到得sis值；
-            foreach (point calcpt in Data.inst().lsAllPoint)
-            {
-                bool lastAlam = calcpt.alarming;
-                //计算计算点。
-                if (calcpt.pointsrc == pointsrc.calc)
-                {
-                    if (hs_CalcErrorPoint.Contains(calcpt.id)) continue;
-                    //point Point = Data.Get().cd_Point[calcid];
-                    foreach (point pt in calcpt.listSisCalaExpPointID)
-                    {
-                        if (pt.ps != PointState.Good)
-                        {
-                            calcpt.ps = PointState.Error;
-                            break;
-                        }
-                        calcpt.ps = PointState.Good;
-                    }
-                    try
-                    {
-                        calcpt.av = Math.Round(calcpt.expformula.Length > 0 ? (double)calcpt.expression.Evaluate() : -1, calcpt.fm);
-
-                    }
-                    catch (Exception)
-                    {
-                        calcpt.ps = PointState.Error;
-                        hs_CalcErrorPoint.Add(calcpt.id);
-                    }
-                }
-                //加报警
-                if (calcpt.AlarmCalc())
-                    AlarmSet.GetInst().ssAlarmPoint.Add(calcpt);
-                else if (!calcpt.AlarmCalc() && lastAlam)
-                    AlarmSet.GetInst().ssAlarmPoint.Remove(calcpt);
-            
-            }
-            */
-            
-        }
-
         private void toolStripButtonDelete_Click(object sender, EventArgs e)
         {
             if (glacialList1.SelectedItems.Count == 1)
@@ -429,6 +394,10 @@ namespace HGS
         private void FormPointSet_Shown(object sender, EventArgs e)
         {
             glacialLisint();
+            foreach(point pt in Data.inst().hsSisPoint)
+            {
+                onlysisid.Add(pt.id_sis);
+            }
             if (tSCB_ND.Items.Count > 0) tSCB_ND.SelectedIndex = 0;
             label_formula.Text = "";
         }

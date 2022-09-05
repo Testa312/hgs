@@ -15,8 +15,6 @@ namespace HGS
 {
     public partial class FormCalcPointSet : Form
     {
-        //OPAPI.Connect sisconn = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
-           // Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
         HashSet<int> onlyid = new HashSet<int>();
         public point CalcPoint;
         int PointNums = 0;
