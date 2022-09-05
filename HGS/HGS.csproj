@@ -214,11 +214,11 @@
     <Compile Include="FormTestCE.Designer.cs">
       <DependentUpon>FormTestCE.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormTestpgDataset.cs">
+    <Compile Include="FormErrorFormulaList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormTestpgDataset.Designer.cs">
-      <DependentUpon>FormTestpgDataset.cs</DependentUpon>
+    <Compile Include="FormErrorFormulaList.Designer.cs">
+      <DependentUpon>FormErrorFormulaList.cs</DependentUpon>
     </Compile>
     <Compile Include="FormAlarmSet.cs">
       <SubType>Form</SubType>
@@ -405,8 +405,8 @@
     <EmbeddedResource Include="FormTestCE.resx">
       <DependentUpon>FormTestCE.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormTestpgDataset.resx">
-      <DependentUpon>FormTestpgDataset.cs</DependentUpon>
+    <EmbeddedResource Include="FormErrorFormulaList.resx">
+      <DependentUpon>FormErrorFormulaList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormAlarmSet.resx">
       <DependentUpon>FormAlarmSet.cs</DependentUpon>

@@ -82,7 +82,7 @@ namespace HGS
         public List<point> listSisCalaExpPointID = new List<point>();//展开成sis点的参与计算点列表。
                                                                      //
         //报警用，不存入数据库                                                             //
-        public bool calciserror = false;
+        //public bool calciserror = false;
         public bool alarming = false;
         public DateTime lastalarmdatetime = DateTime.Now;
         public string alarmininfo = "";

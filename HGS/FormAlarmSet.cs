@@ -12,38 +12,45 @@ namespace HGS
 {
     public partial class FormAlarmSet : Form
     {
+        Dictionary<int, GLItem> dic_rec = new Dictionary<int, GLItem>();
         public FormAlarmSet()
         {
             InitializeComponent();
+            foreach (string it in Auth.GetInst().GetUser())
+            {
+                tsCB_class.Items.Add(it);
+            }
         }
-        Dictionary<int, GLItem> dic_rec = new Dictionary<int, GLItem>(); 
         private void timer_GetAlarm_Tick(object sender, EventArgs e)
         {
             int count = 0;
             HashSet<point> lss = AlarmSet.GetInst().ssAlarmPoint;
             foreach (point pt in lss)
             {
-                //if (count > 2000) break;
-
-                GLItem itemn;
-                if (!dic_rec.ContainsKey(pt.id))
+                StringComparison comp = StringComparison.Ordinal;
+                if ((pt.pointsrc == pointsrc.sis || pt.ownerid == tsCB_class.SelectedIndex) &&
+                    pt.nd.Contains(tsCB_ND.Text.Trim()) && pt.ed.Contains(tsTB_ED.Text.Trim()) &&
+                    pt.pn.Contains(tsTB_PN.Text.Trim()) && pt.alarmininfo.Contains(tsTB_AI.Text.Trim()))
                 {
-                    itemn =glacialList1.Items.Add("");
-                    dic_rec.Add(pt.id,itemn);
-                    itemn.Tag = pt.id;
+                    GLItem itemn;
+                    if (!dic_rec.ContainsKey(pt.id))
+                    {
+                        itemn = glacialList1.Items.Add("");
+                        dic_rec.Add(pt.id, itemn);
+                        itemn.Tag = pt.id;
+                    }
+                    itemn = dic_rec[pt.id];
+
+                    itemn.SubItems["ND"].Text = pt.nd;
+                    itemn.SubItems["PN"].Text = pt.pn;
+
+                    itemn.SubItems["ED"].Text = pt.ed;
+                    itemn.SubItems["AlarmingAV"].Text = pt.alarmingav.ToString();
+                    itemn.SubItems["AlarmInfo"].Text = pt.alarmininfo;
+                    itemn.SubItems["Time"].Text = pt.lastalarmdatetime.ToString();
+                    count++;
                 }
-                itemn = dic_rec[pt.id];
-
-                itemn.SubItems["ND"].Text = pt.nd;
-                itemn.SubItems["PN"].Text = pt.pn;
-
-                itemn.SubItems["ED"].Text = pt.ed;
-                itemn.SubItems["AlarmingAV"].Text = pt.alarmingav.ToString();
-                itemn.SubItems["AlarmInfo"].Text = pt.alarmininfo;
-                itemn.SubItems["Time"].Text = pt.lastalarmdatetime.ToString();     
-                count++;
             }
-            //删除报警消失的?????????????
             List<GLItem> deleitem = new List<GLItem>(); 
             foreach(GLItem item in glacialList1.Items)
             {

@@ -21,8 +21,7 @@ namespace HGS
         public FormSisPointList()
         {
             InitializeComponent();
-            findnode();
-            tSpCBRT.SelectedIndex = 1;
+            if (tSCBNode.Items.Count > 0) tSCBNode.SelectedIndex = 1;
         }
          ~FormSisPointList()
         {
@@ -54,7 +53,7 @@ namespace HGS
                     resultSet.close(); //释放内存
                 }
             }
-            tSCBNode.SelectedIndex = 0;
+           // tSCBNode.SelectedIndex = 0;
             //conn.close(); //关闭连接，千万要记住！！！
         }
         private void tSBFind_Click(object sender, EventArgs e)

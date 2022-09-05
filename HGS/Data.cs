@@ -44,9 +44,9 @@ namespace HGS
 
         HashSet<point> hs_sispoint = new HashSet<point>();
 
-        //计算点列表，用于取得实时计算------------------------------------------------------------------
+        //计算点列表，用于取得计算值------------------------------------------------------------------
 
-        HashSet<point> hs_calcpoint = new HashSet<point>();
+        //HashSet<point> hs_calcpoint = new HashSet<point>();
 
         //所点列表，用于进行计算，不使用并发字典的foreach(得到所有锁后才能进行)---------------------
 
@@ -66,7 +66,10 @@ namespace HGS
         //sis id和point id转换字典。------------------------------------
 
         Dictionary<int, int> dic_sisIdtoPointId = new Dictionary<int, int>();
-        //IDictionary<string, object> variables;
+
+        //公式错误点。-------------------------------
+        HashSet<point> hs_formulaErrorPoint = new HashSet<point>();
+
 
         //计算
         CalcEngine.CalcEngine _ce = new CalcEngine.CalcEngine();
@@ -80,21 +83,23 @@ namespace HGS
 
         DataTable dtTempPoint = new DataTable();
         //-----------------------------------------------
-        public HashSet<point> lsAllPoint
+        public HashSet<point> hsAllPoint
         {
             set { hs_allpoint = value; }
             get { return hs_allpoint; }
         }
-        public HashSet<point> lsSisPoint
+        public HashSet<point> hsSisPoint
         {
             set { hs_sispoint = value; }
             get { return hs_sispoint; }
         }
+        /*
         public HashSet<point> hsCalcPoint
         {
             set { hs_calcpoint = value; }
             get { return hs_calcpoint; }
         }
+        */
         public IDictionary<string, object> Variables
         {
             get { return _ce.Variables; }
@@ -104,7 +109,11 @@ namespace HGS
         {
             return ++MAXOFPOINTID;
         }
-
+        public HashSet<point> hs_FormulaErrorPoint
+        {
+            set { hs_formulaErrorPoint = value; }
+            get { return hs_formulaErrorPoint; }
+        }
         //取得计算点的相关点列表。
         public List<int> GetDeletePointIdList(int pointid)
         {
@@ -337,10 +346,10 @@ namespace HGS
                         dic_sisIdtoPointId.Add(Point.id_sis, Point.id);
                         _ce.Variables.Add(Pref.Inst().GetVarName(Point), Point.av);
                     }
-                    else
+                    /*else
                     {
                         hs_calcpoint.Add(Point);
-                    }
+                    }*/
                 }
                 ///展开计算点到sis点。
                 foreach (point v in cd_Point.Values)
@@ -440,7 +449,7 @@ namespace HGS
                     else
                     {
                         pt.expression = pt.expformula.Length > 0 ? _ce.Parse(pt.expformula) : new Expression();
-                        hs_calcpoint.Add(pt);
+                        //hs_calcpoint.Add(pt);
                     }
                 }
                 foreach (point pt in hs_DeletePoint)
@@ -448,7 +457,7 @@ namespace HGS
                     point rpt;
                     cd_Point.TryRemove(pt.id, out rpt);//???????????????
                     hs_allpoint.Remove(pt);
-                    hs_calcpoint.Remove(pt);
+                    //hs_calcpoint.Remove(pt);
                     if (pt.pointsrc == pointsrc.sis)
                     {
                         hs_sispoint.Remove(pt);

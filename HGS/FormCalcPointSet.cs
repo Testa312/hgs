@@ -194,7 +194,7 @@ namespace HGS
             double orgv = Point.orgformula.Length > 0 ? (double)ce.Evaluate(Point.orgformula) : -1; //验证表达式的合法性
                                                //
             ce.Variables.Clear();
-            foreach (point pt in Data.inst().lsSisPoint)
+            foreach (point pt in Data.inst().hsSisPoint)
             {
                 //point Ptx = Data.Get().cd_Point[pid];
                 ce.Variables.Add(Pref.Inst().GetVarName(pt), pt.av);

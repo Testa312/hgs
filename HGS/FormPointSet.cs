@@ -13,9 +13,6 @@ namespace HGS
 {
     public partial class FormPointSet : Form
     {
-        OPAPI.Connect sisconn = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
-           Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
-
         Dictionary<GLItem, point> dic_glItemNew = new Dictionary<GLItem, point>();
         HashSet<GLItem> hs_glItemModified = new HashSet<GLItem>();
         HashSet<int> onlysisid = new HashSet<int>();
@@ -26,9 +23,9 @@ namespace HGS
             glacialLisint();
             label_formula.Text = "";
         }
-        private void DisplayStats()
+        private void DisplayHints()
         {
-            tSSLabel_count.Text = string.Format("点数共：{0}个，其中新加点{1}个，已修改点{2}个。",
+            tSSLabel_count.Text = string.Format("点数共：{0}，其中新加点{1}，已修改点{2}。",
                PointNums, dic_glItemNew.Count, hs_glItemModified.Count);
         }
         private void AlarmSubItemSet(GLItem item,point pt)
@@ -36,6 +33,7 @@ namespace HGS
             if (pt.pointsrc == pointsrc.sis)
             {
                 item.SubItems["IsAlarm"].Text = pt.isavalarm || pt.isboolv ? Pref.Inst().strOk : Pref.Inst().strNo;
+                if (Data.inst().hs_FormulaErrorPoint.Contains(pt)) item.SubItems["FError"].Text = Pref.Inst().strNo; 
             }
             else
             {
@@ -49,7 +47,7 @@ namespace HGS
             glacialList1.Items.Clear();
             PointNums = 0;
             HashSet<string> hs_ND = new HashSet<string>();
-            foreach (point ptx in Data.inst().lsAllPoint)
+            foreach (point ptx in Data.inst().hsAllPoint)
             {
                 GLItem itemn;
                 itemtag it = new itemtag();
@@ -85,13 +83,13 @@ namespace HGS
                 hs_ND.Add(ptx.nd);
                 PointNums++;
             }
-            tSCB_ND.Items.Add("");
+            //tSCB_ND.Items.Add("");
             foreach (string citem in hs_ND)
             {
                 tSCB_ND.Items.Add(citem);
             }
             timerUpdateValue.Enabled = true;
-            DisplayStats();
+            DisplayHints();
         }
         private void toolStripButtonAddSis_Click(object sender, EventArgs e)//加sis点
         {     
@@ -135,7 +133,7 @@ namespace HGS
                             item.SubItems["PN"].Text),"提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
                      };
                 }
-                DisplayStats();
+                DisplayHints();
             }
         }
         private void buttonSet_Click(object sender, EventArgs e)
@@ -181,7 +179,7 @@ namespace HGS
                 {
                     MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                DisplayStats();
+                DisplayHints();
             }
         }   
         private void Save()
@@ -210,14 +208,13 @@ namespace HGS
             {
                 MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            DisplayStats();
+            DisplayHints();
         }
 
         private void FormPointSet_FormClosed(object sender, FormClosedEventArgs e)
         {
             glacialList1.Dispose();
             timerUpdateValue.Enabled = false;
-            sisconn.close();
         }
         private void timerUpdateValue_Tick(object sender, EventArgs e)
         {
@@ -232,7 +229,7 @@ namespace HGS
                     item.SubItems["DS"].Text = pt.ps.ToString();
                 }
             }
-            DisplayStats();
+            DisplayHints();
         }
         private void glacialList1_Click(object sender, EventArgs e)
         {
@@ -280,7 +277,7 @@ namespace HGS
                 itemn.Tag = it;
                 AlarmSubItemSet(itemn, fcps.CalcPoint);
                 dic_glItemNew.Add(itemn, fcps.CalcPoint);
-                DisplayStats();
+                DisplayHints();
             }
         }
 
@@ -304,55 +301,10 @@ namespace HGS
                 //itemn.Tag = it;
                 if(!dic_glItemNew.ContainsKey(itemn))
                     hs_glItemModified.Add(itemn);
-                DisplayStats();
+                DisplayHints();
             }
         }
-        private void GetSisValue()
-        {
-            StringBuilder sbid = new StringBuilder();
-            foreach (point pt in Data.inst().lsSisPoint )
-            {
-                sbid.Append(pt.id_sis);
-                sbid.Append(",");
-            }
-            if (sbid.Length > 0)
-                sbid.Remove(sbid.Length - 1, 1);
-            else return;
-            //
-            string sql = string.Format("select ID,TM,DS,AV from Realtime where ID in ({0})", sbid.ToString());
-            try
-            {
-                OPAPI.ResultSet resultSet = sisconn.executeQuery(sql);//执行SQL
-
-                const short gb1 = -32256;
-                const short gb2 = -32768;
-                while (resultSet.next())//next()执行一次，游标下移一行
-                {
-                    point Point = Data.inst().cd_Point[Data.inst().dic_SisIdtoPointId[resultSet.getInt(0)]];
-                    Point.av = Math.Round(resultSet.getDouble(3),Point.fm);
-                    Data.inst().Variables[Pref.Inst().GetVarName(Point)] = Point.av; 
-                    short ds = resultSet.getShort(2);
-                    if ((ds & gb1) == 0)
-                    {
-                        Point.ps = PointState.Good;
-                    }
-                    else if ((ds & gb2) == gb2)
-                    {
-                        Point.ps = PointState.Timeout;
-                    }
-                    else
-                        Point.ps = PointState.Bad;
-                }
-                if (resultSet != null)
-                {
-                    resultSet.close(); //释放内存
-                }
-            }
-            catch (Exception)
-            {
-            }
-
-        }
+       
         private void toolStripButtonSelect_Click(object sender, EventArgs e)
         {
             glacialLisint();
@@ -360,14 +312,14 @@ namespace HGS
 
         private void timerCalc_Tick(object sender, EventArgs e)
         {
-            GetSisValue();//到得sis值；
+            /*GetSisValue();//到得sis值；
             foreach (point calcpt in Data.inst().lsAllPoint)
             {
                 bool lastAlam = calcpt.alarming;
                 //计算计算点。
                 if (calcpt.pointsrc == pointsrc.calc)
                 {
-                    if (calcpt.calciserror) continue;
+                    if (hs_CalcErrorPoint.Contains(calcpt.id)) continue;
                     //point Point = Data.Get().cd_Point[calcid];
                     foreach (point pt in calcpt.listSisCalaExpPointID)
                     {
@@ -386,7 +338,7 @@ namespace HGS
                     catch (Exception)
                     {
                         calcpt.ps = PointState.Error;
-                        calcpt.calciserror = true;//需进一步处理?????????????????
+                        hs_CalcErrorPoint.Add(calcpt.id);
                     }
                 }
                 //加报警
@@ -394,9 +346,10 @@ namespace HGS
                     AlarmSet.GetInst().ssAlarmPoint.Add(calcpt);
                 else if (!calcpt.AlarmCalc() && lastAlam)
                     AlarmSet.GetInst().ssAlarmPoint.Remove(calcpt);
+            
             }
-            tSSLabel_count.Text = string.Format("点数共：{0}个，其中新加点{1}个，已修改点{2}个。", 
-                PointNums,dic_glItemNew.Count, hs_glItemModified.Count);
+            */
+            
         }
 
         private void toolStripButtonDelete_Click(object sender, EventArgs e)

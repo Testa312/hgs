@@ -72,7 +72,7 @@ namespace HGS
                 HashSet<string> hs_ND = new HashSet<string>();
                 glacialList.Items.Clear();
                 int count = 0;
-                foreach (point ptx in Data.inst().lsAllPoint)
+                foreach (point ptx in Data.inst().hsAllPoint)
                 {
                     //point Point = Data.Get().cd_Point[ipt];
                     if (ptx.nd.Contains(tSCBNode.Text.Trim()) && ptx.ed.Contains(tSCBED.Text.Trim()) &&
@@ -102,11 +102,13 @@ namespace HGS
                     }
                 }
                 //
-                tSCBNode.Items.Add("");
+                //tSCBNode.Items.Add("");
                 foreach (string citem in hs_ND)
                 {
                     tSCBNode.Items.Add(citem);
                 }
+                //if (tSCBNode.Items.Count > 0) tSCBNode.SelectedIndex = 1;
+
                 tSSLabel_nums.Text = string.Format("点数：{0}", count);
             }
             catch (Exception ee)
