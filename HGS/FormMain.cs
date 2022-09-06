@@ -95,7 +95,7 @@ namespace HGS
                 const short gb2 = -32768;
                 while (resultSet.next())//next()执行一次，游标下移一行
                 {
-                    point Point = Data.inst().cd_Point[Data.inst().dic_SisIdtoPointId[resultSet.getInt(0)]];
+                    point Point = Data.inst().dic_SisIdtoPointId[resultSet.getInt(0)];
                     if (Point.isforce)
                     {
                         Point.av = Point.forceav;

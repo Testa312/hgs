@@ -37,7 +37,7 @@ namespace HGS
         {
             get { return MAXOFPOINTID; }
         }
-        //所有点的字典。----------------------------------
+        //所有点的字典,用于数据库中保存的公式id-varname查找point----------------------------------
         public ConcurrentDictionary<int, point> cd_Point { set; get; }
 
         //sis点列表，用于取得实时值------------------------------------------------------------------
@@ -65,7 +65,7 @@ namespace HGS
 
         //sis id和point id转换字典。------------------------------------
 
-        Dictionary<int, int> dic_sisIdtoPointId = new Dictionary<int, int>();
+        Dictionary<int, point> dic_sisIdtoPointId = new Dictionary<int, point>();
 
         //公式错误点。-------------------------------
         HashSet<point> hs_formulaErrorPoint = new HashSet<point>();
@@ -73,7 +73,7 @@ namespace HGS
         //计算
         CalcEngine.CalcEngine _ce = new CalcEngine.CalcEngine();
         //
-        public Dictionary<int, int> dic_SisIdtoPointId
+        public Dictionary<int, point> dic_SisIdtoPointId
         {
             //set { dic_sisIdtoPointId = value; }
             get { return dic_sisIdtoPointId; }
@@ -126,15 +126,15 @@ namespace HGS
             return lsptid;
         }
         //取得计算点的相关点列表。
-        private List<subpoint> GetSubPointList(point pt)
+        private List<varlinktopoint> GetSubPointList(point pt)
         {
             if (pt.pointsrc != pointsrc.calc) return null;
-            List<subpoint> lssubpt = new List<subpoint>();
+            List<varlinktopoint> lssubpt = new List<varlinktopoint>();
             string strexp = string.Format("id={0}", pt.id);
             DataRow[] frow = dtTempPoint.Select(strexp);
             foreach (DataRow dr in frow)
             {
-                subpoint subpt = new subpoint();
+                varlinktopoint subpt = new varlinktopoint();
                 subpt.id = (int)dr["pointid"];
                 subpt.varname = dr["varname"].ToString();
                 //subpt.PointSrc = (pointsrc)(short)dr["pointsrc"];
@@ -209,7 +209,7 @@ namespace HGS
             loopvar.Add(pt.id);
             string orgf = pt.orgformula;
             Dictionary<string, int> Var = new Dictionary<string, int>();
-            foreach (subpoint subpt in pt.lsCalcOrgSubPoint)
+            foreach (varlinktopoint subpt in pt.lsCalcOrgSubPoint)
             {
                 point Point = cd_Point[subpt.id];
                 if(Point.pointsrc == pointsrc.calc)
@@ -257,7 +257,7 @@ namespace HGS
             }
             xloopvar.Add(pt.id);
             //point Point = cd_Point[id];
-            foreach (subpoint subpt in pt.lsCalcOrgSubPoint)
+            foreach (varlinktopoint subpt in pt.lsCalcOrgSubPoint)
             {
                 point Pointx = cd_Point[subpt.id];
                 if (Pointx.pointsrc == pointsrc.calc)
@@ -344,7 +344,7 @@ namespace HGS
                     if (Point.pointsrc == pointsrc.sis)
                     {
                         hs_sispoint.Add(Point);
-                        dic_sisIdtoPointId.Add(Point.id_sis, Point.id);
+                        dic_sisIdtoPointId.Add(Point.id_sis, Point);
                         _ce.Variables.Add(Pref.Inst().GetVarName(Point), Point.av);
                     }
                     else
@@ -400,7 +400,7 @@ namespace HGS
                 if (pt.pointsrc == pointsrc.calc && pt.lsCalcOrgSubPoint.Count > 0)
                 {
                     sb.AppendLine(string.Format("delete  from formula_point where id = {0};", pt.id));
-                    foreach (subpoint supt in pt.lsCalcOrgSubPoint)
+                    foreach (varlinktopoint supt in pt.lsCalcOrgSubPoint)
                     {
                         sb.AppendLine(string.Format("insert into formula_point (id,pointid,varname) values({0},{1},'{2}');", pt.id, supt.id,supt.varname));
                     }
@@ -421,7 +421,7 @@ namespace HGS
                 if (pt.pointsrc == pointsrc.calc && pt.lsCalcOrgSubPoint.Count > 0)
                 {
                     //sb.AppendLine(string.Format("delete  from formula_point where id = {0};", MAXOFPOINTID));//????????????????
-                    foreach (subpoint subpt in pt.lsCalcOrgSubPoint)
+                    foreach (varlinktopoint subpt in pt.lsCalcOrgSubPoint)
                     {
                         sb.AppendLine(string.Format("insert into formula_point (id,pointid,varname) values({0},{1},'{2}');", pt.id, subpt.id,subpt.varname));
                     }
@@ -448,7 +448,7 @@ namespace HGS
                     if (pt.pointsrc == pointsrc.sis)
                     {
                         hs_sispoint.Add(pt);
-                        dic_sisIdtoPointId.Add(pt.id_sis, pt.id);
+                        dic_sisIdtoPointId.Add(pt.id_sis, pt);
                     }
                     else
                     {

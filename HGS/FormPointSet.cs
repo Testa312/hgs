@@ -56,7 +56,7 @@ namespace HGS
                     ptx.nd.Contains(tSCB_ND.Text.Trim()) && ptx.ed.Contains(tSTB_ED.Text.Trim()) &&
                     ptx.pn.Contains(tSTB_PN.Text.Trim()) && ptx.orgformula.Contains(tSTB_F.Text.Trim()))
                 {
-                    itemn = glacialList1.Items.Add("");
+                    itemn = glacialList1.Items.Insert(0,"");
                     it.id = ptx.id;
 
                     itemn.SubItems["ND"].Text = ptx.nd;
@@ -111,7 +111,7 @@ namespace HGS
                         point Point = new point();
                         GLItem itemn;
 
-                        itemn = glacialList1.Items.Add("");
+                        itemn = glacialList1.Items.Insert(0, "");
                         Point.nd = itemn.SubItems["ND"].Text = fspl.tSCBNode.Text;
                         Point.pn = itemn.SubItems["PN"].Text = item.SubItems["PN"].Text;
                         Point.ed = itemn.SubItems["ED"].Text = item.SubItems["ED"].Text;
@@ -293,7 +293,7 @@ namespace HGS
             {
                 toolStripButtonFind.Enabled = false;
 
-                GLItem itemn = glacialList1.Items.Add("");
+                GLItem itemn = glacialList1.Items.Insert(0, "");
                 GLColumnCollection glcols = glacialList1.Columns;
 
                 itemn.SubItems["ND"].Text = fcps.CalcPoint.nd;

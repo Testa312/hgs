@@ -31,7 +31,7 @@ namespace HGS
         {
             PointNums = 0;
             timer1.Enabled = false;
-            foreach (subpoint subpt in CalcPoint.lsCalcOrgSubPoint)
+            foreach (varlinktopoint subpt in CalcPoint.lsCalcOrgSubPoint)
             {
                 GLItem itemn;
                 itemtag it = new itemtag();
@@ -167,7 +167,7 @@ namespace HGS
                     throw new Exception("计算点的的描述不能为空！");
                 }
                 itemtag it = (itemtag)item.Tag;
-                subpoint subpt = new subpoint();
+                varlinktopoint subpt = new varlinktopoint();
                 subpt.varname = item.SubItems["VarName"].Text;
                 subpt.id = it.id;
                 Point.lsCalcOrgSubPoint.Add(subpt);
@@ -223,7 +223,7 @@ namespace HGS
                 foreach (GLItem item in glacialList1.Items)
                 {
                     itemtag it = (itemtag)item.Tag;
-                    subpoint subpt = new subpoint();
+                    varlinktopoint subpt = new varlinktopoint();
                     subpt.varname = item.SubItems["VarName"].Text;
                     subpt.id = it.id;
                     CalcPoint.lsCalcOrgSubPoint.Add(subpt);

@@ -20,10 +20,10 @@ namespace HGS
     {
         ok,tv,hl,zh,bv,ll,zl,sw
     }
-    public class subpoint
+    public class varlinktopoint
     {
-        public int id {set;get;}
-        public pointsrc PointSrc { set; get; }
+        public int id {set;get;}//点id
+        //public pointsrc PointSrc { set; get; }
         public string varname { set; get; }
     }
     //点来源。
@@ -69,7 +69,7 @@ namespace HGS
         //
         public Expression expression = new Expression();//优化计算速度。
         //计算子点id
-        public List<subpoint> lsCalcOrgSubPoint = new List<subpoint>();//原始参能与计算点列表
+        public List<varlinktopoint> lsCalcOrgSubPoint = new List<varlinktopoint>();//原始参能与计算点列表
         //
         //计算子点id用于进行计算点状态计算。
         public List<point> listSisCalaExpPointID = new List<point>();//展开成sis点的参与计算点列表。
