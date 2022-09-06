@@ -38,7 +38,7 @@ namespace HGS
             get { return MAXOFPOINTID; }
         }
         //所有点的字典,用于数据库中保存的公式id-varname查找point----------------------------------
-        public ConcurrentDictionary<int, point> cd_Point { set; get; }
+        public Dictionary<int, point> cd_Point = new Dictionary<int, point>();
 
         //sis点列表，用于取得实时值------------------------------------------------------------------
 
@@ -168,6 +168,7 @@ namespace HGS
                 pgconn.Close();
             }
         }
+        /*
         private void Initcd_dicCapacity()
         {
             //-------------------------------------------------------------
@@ -188,6 +189,7 @@ namespace HGS
             cd_Point = new ConcurrentDictionary<int, point>(concurrencyLevel, initialCapacity);
             //         
         }
+        */
         static HashSet<int> loopvar = new HashSet<int>();
         public string  ExpandOrgFormula(point pt)
         {
@@ -373,9 +375,8 @@ namespace HGS
             hs_sispoint.Clear();
             hs_calcpoint.Clear();
             dic_sisIdtoPointId.Clear();
-            if(cd_Point != null) cd_Point.Clear();
+            cd_Point.Clear();
             GetPointsStat();
-            Initcd_dicCapacity();
             LoadSubPointTable();
             LoadData();
         }
@@ -459,10 +460,9 @@ namespace HGS
                 foreach (point pt in hs_DeletePoint)
                 {
                     flagpt = pt;
-                    point rpt;
-                    cd_Point.TryRemove(pt.id, out rpt);//???????????????
+                    cd_Point.Remove(pt.id);
                     hs_allpoint.Remove(pt);
-                    //hs_calcpoint.Remove(pt);
+                    hs_calcpoint.Remove(pt);
                     if (pt.pointsrc == pointsrc.sis)
                     {
                         hs_sispoint.Remove(pt);
