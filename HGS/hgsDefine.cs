@@ -15,6 +15,11 @@ namespace HGS
         public short fm = 2;
         public pointsrc PointSrc = pointsrc.sis;
     }
+    //sw开关量。
+    public enum alarmlevel
+    {
+        ok,tv,hl,zh,bv,ll,zl,sw
+    }
     public class subpoint
     {
         public int id {set;get;}
@@ -68,10 +73,11 @@ namespace HGS
         //
         //计算子点id用于进行计算点状态计算。
         public List<point> listSisCalaExpPointID = new List<point>();//展开成sis点的参与计算点列表。
-                                                                     //
-        //报警用，不存入数据库                                                             //
+        //
+        //报警用，不存入数据库                                                            
+        //
         //public bool calciserror = false;
-        public bool alarming = false;
+        public alarmlevel alarmLevel = alarmlevel.ok;
         public DateTime lastalarmdatetime = DateTime.Now;
         public string alarmininfo = "";
         public double alarmingav = -1;
@@ -85,47 +91,64 @@ namespace HGS
                 return string.Format("SIS点[{0}]-{1}",pn,ed);
             return string.Format("计算点[{0]}]", ed);
         }
-        public bool AlarmCalc()
+        public alarmlevel AlarmCalc()
         {
-            string rsl = "";
+            alarmininfo = "";
+            alarmlevel last_al = alarmLevel;
+            alarmLevel = alarmlevel.ok;
             if (isboolv)
             {
                 bool blv = Convert.ToBoolean(av);
                 if (blv)
                 {
                     alarmingav = Convert.ToDouble(blv);
-                    rsl = string.Format(" {0}", boolalarminfo);
+                    alarmLevel = alarmlevel.sw;
+                    alarmininfo = string.Format(" {0}", boolalarminfo);
                 }
             }
             else if (isavalarm)
             {
                 if (zh != null && av > zh)
-                    rsl = string.Format(" 越报警高2限[{0}{1}]！", zh, eu);
-                if (hl != null && av > hl)
-                    rsl = string.Format(" 越报警高限[{0}{1}]！", hl, eu);
-                if (tv != null && av > tv)
-                    rsl = string.Format(" 越量程上限[{0}{1}]！", tv, eu);
+                {
+                    alarmLevel = alarmlevel.zh;
+                    alarmininfo = string.Format("越报警高2限[{0}{1}]！", zh, eu);
+                }
+                else if (hl != null && av > hl)
+                {
+                    alarmLevel = alarmlevel.hl;
+                    alarmininfo = string.Format("越报警高限[{0}{1}]！", hl, eu);
+                }
+                else if (tv != null && av > tv)
+                {
+                    alarmLevel = alarmlevel.tv;
+                    alarmininfo = string.Format("越量程上限[{0}{1}]！", tv, eu);
+                }
 
-                if (bv != null && av < bv)
-                    rsl = string.Format(" 越量程下限[{0}{1}]！", bv, eu);
-                if (ll != null && av < ll)
-                    rsl = string.Format(" 越报警低限[{0}{1}]！", ll, eu);
-                if (zl != null && av < zl)
-                    rsl = string.Format(" 越报警低2限[{0}{1}]！", zl, eu);
+                else if (zl != null && av < zl)
+                {
+                    alarmLevel = alarmlevel.zl;
+                    alarmininfo = string.Format("越报警低2限[{0}{1}]！", zl, eu);
+                }         
+                else if (ll != null && av < ll)
+                {
+                    alarmLevel = alarmlevel.ll;
+                    alarmininfo = string.Format("越报警低限[{0}{1}]！", ll, eu);
+                }
+                else if (bv != null && av < bv)
+                {
+                    alarmLevel = alarmlevel.bv;
+                    alarmininfo = string.Format("越量程下限[{0}{1}]！", bv, eu);
+                }
+
                 alarmingav = av;
             }
-            else rsl = "";
-            if (rsl.Length > 0)
+            if(alarmLevel == alarmlevel.ok && last_al != alarmLevel)
+                alarmininfo = string.Format("报警消失！");
+            if (last_al == alarmlevel.ok && alarmLevel != alarmlevel.ok)
             {
-                if (!alarming)
-                {
-                    lastalarmdatetime = DateTime.Now;
-                    alarming = true;
-                }
+                lastalarmdatetime = DateTime.Now;
             }
-            else alarming = false;
-            alarmininfo = rsl;
-            return alarming;
+            return alarmLevel;
         }
     }
    

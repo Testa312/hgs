@@ -114,6 +114,9 @@ namespace HGS
                     }
                     else
                         Point.ps = PointState.Bad;
+                    //
+                    //加报警
+                    AlarmSet.GetInst().Add(Point);
                 }
                 if (resultSet != null)
                 {
@@ -135,7 +138,7 @@ namespace HGS
                     calcpt.av = calcpt.forceav;
                     continue;
                 }
-                bool b_lastAlarm = calcpt.alarming;
+                //bool b_lastAlarm = calcpt.alarming;
                 //计算计算点。
                 //if (calcpt.pointsrc == pointsrc.calc)
                 //{
@@ -162,7 +165,7 @@ namespace HGS
                 }
                 //}
                 //加报警
-                AlarmSet.GetInst().Add(calcpt, b_lastAlarm);              
+                AlarmSet.GetInst().Add(calcpt);              
                 tssL_error_nums.Text = Data.inst().hs_FormulaErrorPoint.Count.ToString();
             }
             try

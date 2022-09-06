@@ -21,6 +21,7 @@ namespace HGS
         private static AlarmSet inst;
         private static NpgsqlConnection pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
         private static NpgsqlCommand cmd;
+        private StringBuilder sb_alarmsql = new StringBuilder();
         private AlarmSet() { }
 
         public static AlarmSet GetInst()
@@ -43,37 +44,35 @@ namespace HGS
             //set { ssalarmPoint = value; }
             get { return ssalarmPoint; }
         }
-        public void Add(point pt,bool blastAlarm)
+        public void Add(point pt)
         {
-            //没必要这样，直接即可，hashset速度极快。
-            /*
-            if (pt.AlarmCalc())
-                AlarmSet.GetInst().ssAlarmPoint.Add(pt);
-            else if (!pt.AlarmCalc() && blastAlarm)
-                AlarmSet.GetInst().ssAlarmPoint.Remove(pt);
-            */
-            bool rsl = pt.AlarmCalc();
-            if (rsl)
+            alarmlevel la_stal = pt.alarmLevel;
+
+            alarmlevel al = pt.AlarmCalc();
+
+            if (al != alarmlevel.ok)
                 AlarmSet.GetInst().ssAlarmPoint.Add(pt);
             else
                 AlarmSet.GetInst().ssAlarmPoint.Remove(pt);
+            //
+            if (al != la_stal)
+            {
+
+                sb_alarmsql.AppendLine(string.Format(@"insert into alarmhistory (id,alarminfo,alarmav,datetime) values ({0},'{1}',{2},'{3}');",
+                               pt.id, pt.alarmininfo, pt.alarmingav, DateTime.Now));
+            }
         }
         public void SaveAlarmInfo()
         {
-            StringBuilder sb = new StringBuilder();
-            foreach (point pt in ssalarmPoint)
-            {
-                sb.AppendLine(string.Format(@"insert into alarmhistory (id,alarminfo,alarmav,datetime) values ({0},'{1}',{2},'{3}');",
-                                    pt.id, pt.alarmininfo,pt.alarmingav, DateTime.Now));
-
-            }
+           
             try
             {
-                if (sb.Length < 5) return;
+                if (sb_alarmsql.Length < 5) return;
                 if (pgconn.State == System.Data.ConnectionState.Closed) 
                     pgconn.Open();
-                cmd.CommandText = sb.ToString();
+                cmd.CommandText = sb_alarmsql.ToString();
                 cmd.ExecuteNonQuery();
+                sb_alarmsql.Clear();
 
             }
             catch(Exception e) { throw new Exception(string.Format("保存报警信息时发生错误！"),e); }
