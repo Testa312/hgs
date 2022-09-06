@@ -96,6 +96,11 @@ namespace HGS
                 while (resultSet.next())//next()执行一次，游标下移一行
                 {
                     point Point = Data.inst().cd_Point[Data.inst().dic_SisIdtoPointId[resultSet.getInt(0)]];
+                    if (Point.isforce)
+                    {
+                        Point.av = Point.forceav;
+                        continue;
+                    }
                     Point.av = Math.Round(resultSet.getDouble(3), Point.fm);
                     Data.inst().Variables[Pref.Inst().GetVarName(Point)] = Point.av;
                     short ds = resultSet.getShort(2);
@@ -118,46 +123,45 @@ namespace HGS
             catch (Exception)
             {
             }
-
         }
         private void timerCalc_Tick(object sender, EventArgs e)
         {
             GetSisValue();//到得sis值；
-            foreach (point calcpt in Data.inst().hsAllPoint)
+            foreach (point calcpt in Data.inst().hsCalcPoint)
             {
+                //
+                if (calcpt.isforce)
+                {
+                    calcpt.av = calcpt.forceav;
+                    continue;
+                }
                 bool b_lastAlarm = calcpt.alarming;
                 //计算计算点。
-                if (calcpt.pointsrc == pointsrc.calc)
+                //if (calcpt.pointsrc == pointsrc.calc)
+                //{
+                if (Data.inst().hs_FormulaErrorPoint.Contains(calcpt)) continue;
+                //point Point = Data.Get().cd_Point[calcid];
+                foreach (point pt in calcpt.listSisCalaExpPointID)
                 {
-                    if (Data.inst().hs_FormulaErrorPoint.Contains(calcpt)) continue;
-                    //point Point = Data.Get().cd_Point[calcid];
-                    foreach (point pt in calcpt.listSisCalaExpPointID)
-                    {
-                        if (pt.ps != PointState.Good)
-                        {
-                            calcpt.ps = PointState.Error;
-                            break;
-                        }
-                        calcpt.ps = PointState.Good;
-                    }
-                    try
-                    {
-                        calcpt.av = Math.Round(calcpt.expformula.Length > 0 ? (double)calcpt.expression.Evaluate() : -1, calcpt.fm);
-
-                    }
-                    catch (Exception)
+                    if (pt.ps != PointState.Good)
                     {
                         calcpt.ps = PointState.Error;
-                        Data.inst().hs_FormulaErrorPoint.Add(calcpt);
+                        break;
                     }
+                    calcpt.ps = PointState.Good;
                 }
+                try
+                {
+                    calcpt.av = Math.Round(calcpt.expformula.Length > 0 ? (double)calcpt.expression.Evaluate() : -1, calcpt.fm);
+
+                }
+                catch (Exception)
+                {
+                    calcpt.ps = PointState.Error;
+                    Data.inst().hs_FormulaErrorPoint.Add(calcpt);
+                }
+                //}
                 //加报警
-                /*
-                if (calcpt.AlarmCalc())
-                    AlarmSet.GetInst().ssAlarmPoint.Add(calcpt);
-                else if (!calcpt.AlarmCalc() && b_lastAlarm)
-                    AlarmSet.GetInst().ssAlarmPoint.Remove(calcpt);
-                */
                 AlarmSet.GetInst().Add(calcpt, b_lastAlarm);              
                 tssL_error_nums.Text = Data.inst().hs_FormulaErrorPoint.Count.ToString();
             }
@@ -165,7 +169,11 @@ namespace HGS
             {
                 AlarmSet.GetInst().SaveAlarmInfo();
             }
-            catch { };
+            catch(Exception ee) {
+#if DEBUG
+            MessageBox.Show("保存历史出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+#endif
+            };
         }
     }
 }

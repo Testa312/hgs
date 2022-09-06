@@ -254,12 +254,12 @@ namespace HGS
             this.glacialList1.ShowBorder = true;
             this.glacialList1.ShowFocusRect = false;
             this.glacialList1.Size = new System.Drawing.Size(902, 478);
-            this.glacialList1.SortType = GlacialComponents.Controls.SortTypes.InsertionSort;
+            this.glacialList1.SortType = GlacialComponents.Controls.SortTypes.QuickSort;
             this.glacialList1.SuperFlatHeaderColor = System.Drawing.Color.White;
             this.glacialList1.TabIndex = 2;
             this.glacialList1.Text = "glacialList1";
             // 
-            // FormAlarmSet
+            // FormAlarmSetList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -267,7 +267,7 @@ namespace HGS
             this.Controls.Add(this.glacialList1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
-            this.Name = "FormAlarmSet";
+            this.Name = "FormAlarmSetList";
             this.Text = "报警信息";
             this.Shown += new System.EventHandler(this.FormAlarmSet_Shown);
             this.toolStrip1.ResumeLayout(false);

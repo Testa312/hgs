@@ -291,7 +291,7 @@
             this.Name = "FormSisPointList";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Sis点选择";
+            this.Text = "新加SIS点";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormSisPointList_FormClosed);
             this.Shown += new System.EventHandler(this.FormSisPointList_Shown);
             this.toolStrip1.ResumeLayout(false);

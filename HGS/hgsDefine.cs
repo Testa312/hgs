@@ -29,7 +29,7 @@ namespace HGS
     }
     public enum PointState
     {
-        Good, Timeout, Bad, Error
+        Good, Timeout, Bad, Error,Force
     }
     
     public class point
@@ -75,6 +75,9 @@ namespace HGS
         public DateTime lastalarmdatetime = DateTime.Now;
         public string alarmininfo = "";
         public double alarmingav = -1;
+        //强制值，不存数据库
+        public bool isforce = false;
+        public double forceav = -1;//强制的数值。
         //-------------------
         private string AlarmPrx()
         {

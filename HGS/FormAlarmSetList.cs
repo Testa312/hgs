@@ -12,7 +12,7 @@ namespace HGS
 {
     public partial class FormAlarmSetList : Form
     {
-        Dictionary<int, GLItem> dic_rec = new Dictionary<int, GLItem>();
+        Dictionary<point, GLItem> dic_rec = new Dictionary<point, GLItem>();
         public FormAlarmSetList()
         {
             InitializeComponent();
@@ -28,17 +28,15 @@ namespace HGS
                     pt.pn.Contains(tsTB_PN.Text.Trim()) && pt.alarmininfo.Contains(tsTB_AI.Text.Trim()))
                 {
                     GLItem itemn;
-                    if (!dic_rec.ContainsKey(pt.id))
+                    if (!dic_rec.ContainsKey(pt))
                     {
                         itemn = glacialList1.Items.Add("");
-                        dic_rec.Add(pt.id, itemn);
-                        itemn.Tag = pt.id;
+                        dic_rec.Add(pt, itemn);
+                        itemn.Tag = pt;
+                        itemn.SubItems["ND"].Text = pt.nd;
+                        itemn.SubItems["PN"].Text = pt.pn;
                     }
-                    itemn = dic_rec[pt.id];
-
-                    itemn.SubItems["ND"].Text = pt.nd;
-                    itemn.SubItems["PN"].Text = pt.pn;
-
+                    itemn = dic_rec[pt];
                     itemn.SubItems["ED"].Text = pt.ed;
                     itemn.SubItems["AlarmingAV"].Text = pt.alarmingav.ToString();
                     itemn.SubItems["AlarmInfo"].Text = pt.alarmininfo;
@@ -49,13 +47,13 @@ namespace HGS
             List<GLItem> deleitem = new List<GLItem>(); 
             foreach(GLItem item in glacialList1.Items)
             {
-                if(!AlarmSet.GetInst().ssAlarmPoint.Contains(Data.inst().cd_Point[(int)item.Tag]))
+                if(!AlarmSet.GetInst().ssAlarmPoint.Contains((point)item.Tag))
                     deleitem.Add(item);                   
             }
             foreach (GLItem item in deleitem)
             {
                 glacialList1.Items.Remove(item);
-                dic_rec.Remove((int)item.Tag);
+                dic_rec.Remove((point)item.Tag);
             }
             deleitem.Clear();
 

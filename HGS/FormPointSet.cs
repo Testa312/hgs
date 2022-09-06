@@ -70,6 +70,8 @@ namespace HGS
                     itemn.SubItems["HL"].Text = ptx.hl.ToString();
                     itemn.SubItems["ZL"].Text = ptx.zl.ToString();
                     itemn.SubItems["ZH"].Text = ptx.zh.ToString();
+                    itemn.SubItems["AlarmInfo"].Text = ptx.alarmininfo;
+                    itemn.SubItems["DS"].Text = ptx.ps.ToString();
                     it.sisid = ptx.id_sis;
                     it.fm = ptx.fm;
                     it.PointSrc = ptx.pointsrc;
@@ -152,15 +154,34 @@ namespace HGS
                     {
                         foreach (GLItem item in glacialList1.SelectedItems)
                         {
+                            List<double> lsav = new List<double>();
                             itemtag it = (itemtag)item.Tag;
                             point pt = dic_glItemNew.ContainsKey(item) ? dic_glItemNew[item] : Data.inst().cd_Point[it.id];
-                            if (textBoxTV.Text.Length > 0) pt.tv = double.Parse(textBoxTV.Text); else pt.tv = null;
-                            if (textBoxBV.Text.Length > 0) pt.bv = double.Parse(textBoxBV.Text); else pt.bv = null;
-                            if (textBoxLL.Text.Length > 0) pt.ll = double.Parse(textBoxLL.Text); else pt.ll = null;
-                            if (textBoxHL.Text.Length > 0) pt.hl = double.Parse(textBoxHL.Text); else pt.hl = null;
-                            if (textBoxZL.Text.Length > 0) pt.zl = double.Parse(textBoxZL.Text); else pt.zl = null;
-                            if (textBoxZH.Text.Length > 0) pt.zh = double.Parse(textBoxZH.Text); else pt.zh = null;
-                        
+
+                            if (textBoxZL.Text.Length > 0)
+                            { pt.zl = double.Parse(textBoxZL.Text); lsav.Add(Convert.ToDouble(pt.zl)); }
+                            else pt.zl = null;
+
+                            if (textBoxLL.Text.Length > 0) { pt.ll = double.Parse(textBoxLL.Text); lsav.Add(Convert.ToDouble(pt.ll)); }
+                            else pt.ll = null;
+
+                            if (textBoxBV.Text.Length > 0) { pt.bv = double.Parse(textBoxBV.Text); lsav.Add(Convert.ToDouble(pt.bv)); }
+                            else pt.bv = null;
+
+                            if (textBoxTV.Text.Length > 0)
+                            { pt.tv = double.Parse(textBoxTV.Text);lsav.Add(Convert.ToDouble(pt.tv));}
+                            else pt.tv = null;                         
+
+                            if (textBoxHL.Text.Length > 0){pt.hl = double.Parse(textBoxHL.Text); lsav.Add(Convert.ToDouble(pt.hl)); }
+                            else pt.hl = null;
+
+                            if (textBoxZH.Text.Length > 0)
+                            { pt.zh = double.Parse(textBoxZH.Text); lsav.Add(Convert.ToDouble(pt.zh)); }
+                            else pt.zh = null;
+                            for(int i = 1; i< lsav.Count;i++)
+                            {
+                                if (lsav[i - 1] > lsav[i]) { throw new Exception("报警数值大小应按报警高低限值排序！"); }
+                            }
                             item.SubItems["TV"].Text = textBoxTV.Text;
                             item.SubItems["BV"].Text = textBoxBV.Text;
                             item.SubItems["LL"].Text = textBoxLL.Text;
@@ -233,7 +254,7 @@ namespace HGS
                 {
                     //bool sss = dic_glItemNew.ContainsKey(item);
                     point pt = dic_glItemNew.ContainsKey(item) ? dic_glItemNew[item] : Data.inst().cd_Point[it.id];
-                    item.SubItems["AV"].Text = pt.av.ToString();
+                    item.SubItems["AV"].Text = pt.isforce ? pt.forceav.ToString() : pt.av.ToString();
                     item.SubItems["DS"].Text = pt.ps.ToString();
                 }
             }
@@ -267,6 +288,7 @@ namespace HGS
         {          
             FormCalcPointSet fcps = new FormCalcPointSet();
             fcps.CalcPoint = new point();
+            fcps.Text = "新加计算点";
             if (fcps.ShowDialog() == DialogResult.OK)
             {
                 toolStripButtonFind.Enabled = false;
@@ -299,6 +321,7 @@ namespace HGS
 
                 fcps.CalcPoint = dic_glItemNew.ContainsKey(itemn) ? dic_glItemNew[itemn] : Data.inst().cd_Point[it.id];
                 fcps.glacialLisint();
+                fcps.Text = string.Format("点[{0}]公式",fcps.CalcPoint.ed);
                 if (fcps.ShowDialog() == DialogResult.OK)
                 {
                     toolStripButtonFind.Enabled = false;
@@ -400,6 +423,33 @@ namespace HGS
             }
             if (tSCB_ND.Items.Count > 0) tSCB_ND.SelectedIndex = 0;
             label_formula.Text = "";
+        }
+
+        private void 强制点ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (glacialList1.SelectedItems.Count == 1)
+            {
+                FormForceValue ffv = new FormForceValue();
+
+                GLItem itemn = (GLItem)glacialList1.SelectedItems[0];
+                itemtag it = (itemtag)itemn.Tag;
+
+                point Point = dic_glItemNew.ContainsKey(itemn) ? dic_glItemNew[itemn] : Data.inst().cd_Point[it.id];
+                ffv.Text = string.Format("强制{0}点",Point.ed);
+                ffv.textBoxValue.Text = Point.forceav.ToString();
+                ffv.checkBoxForce.Checked = Point.isforce;
+                if(DialogResult.OK == ffv.ShowDialog())
+                {
+                    Point.isforce = ffv.checkBoxForce.Checked;
+                    Point.forceav = Convert.ToDouble(ffv.textBoxValue.Text);
+                    Point.ps = PointState.Force;
+                }
+            }
+        }
+
+        private void contextMenuStrip_gl_Opening(object sender, CancelEventArgs e)
+        {
+            强制点ToolStripMenuItem.Visible = glacialList1.SelectedItems.Count == 1;
         }
     }
 }

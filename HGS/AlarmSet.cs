@@ -45,9 +45,17 @@ namespace HGS
         }
         public void Add(point pt,bool blastAlarm)
         {
+            //没必要这样，直接即可，hashset速度极快。
+            /*
             if (pt.AlarmCalc())
                 AlarmSet.GetInst().ssAlarmPoint.Add(pt);
             else if (!pt.AlarmCalc() && blastAlarm)
+                AlarmSet.GetInst().ssAlarmPoint.Remove(pt);
+            */
+            bool rsl = pt.AlarmCalc();
+            if (rsl)
+                AlarmSet.GetInst().ssAlarmPoint.Add(pt);
+            else
                 AlarmSet.GetInst().ssAlarmPoint.Remove(pt);
         }
         public void SaveAlarmInfo()
@@ -62,11 +70,13 @@ namespace HGS
             try
             {
                 if (sb.Length < 5) return;
+                if (pgconn.State == System.Data.ConnectionState.Closed) 
+                    pgconn.Open();
                 cmd.CommandText = sb.ToString();
                 cmd.ExecuteNonQuery();
 
             }
-            catch { throw new Exception(string.Format("保存报警信息时发生错误！")); }
+            catch(Exception e) { throw new Exception(string.Format("保存报警信息时发生错误！"),e); }
         }
     }
 }

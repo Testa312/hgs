@@ -46,7 +46,7 @@ namespace HGS
 
         //计算点列表，用于取得计算值------------------------------------------------------------------
 
-        //HashSet<point> hs_calcpoint = new HashSet<point>();
+        HashSet<point> hs_calcpoint = new HashSet<point>();
 
         //所点列表，用于进行计算，不使用并发字典的foreach(得到所有锁后才能进行)---------------------
 
@@ -92,13 +92,13 @@ namespace HGS
             set { hs_sispoint = value; }
             get { return hs_sispoint; }
         }
-        /*
+        
         public HashSet<point> hsCalcPoint
         {
             set { hs_calcpoint = value; }
             get { return hs_calcpoint; }
         }
-        */
+        
         public IDictionary<string, object> Variables
         {
             get { return _ce.Variables; }
@@ -347,13 +347,13 @@ namespace HGS
                         dic_sisIdtoPointId.Add(Point.id_sis, Point.id);
                         _ce.Variables.Add(Pref.Inst().GetVarName(Point), Point.av);
                     }
-                    /*else
+                    else
                     {
                         hs_calcpoint.Add(Point);
-                    }*/
+                    }
                 }
                 ///展开计算点到sis点。
-                foreach (point v in cd_Point.Values)
+                foreach (point v in hs_calcpoint)
                 {
                     flagpt = v;
                     v.expformula = ExpandOrgFormula(v);
@@ -371,6 +371,7 @@ namespace HGS
             hs_ModifyPoint.Clear();
             hs_NewPoint.Clear();
             hs_sispoint.Clear();
+            hs_calcpoint.Clear();
             dic_sisIdtoPointId.Clear();
             if(cd_Point != null) cd_Point.Clear();
             GetPointsStat();
@@ -452,7 +453,7 @@ namespace HGS
                     else
                     {
                         pt.expression = pt.expformula.Length > 0 ? _ce.Parse(pt.expformula) : new Expression();
-                        //hs_calcpoint.Add(pt);
+                        hs_calcpoint.Add(pt);
                     }
                 }
                 foreach (point pt in hs_DeletePoint)
