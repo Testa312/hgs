@@ -196,7 +196,7 @@ namespace HGS
             glColumn3.NumericSort = false;
             glColumn3.Text = "  描述";
             glColumn3.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn3.Width = 150;
+            glColumn3.Width = 250;
             glColumn4.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn4.CheckBoxes = false;
             glColumn4.ImageIndex = -1;

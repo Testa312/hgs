@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using GlacialComponents.Controls;
 using Npgsql;
+using System.Diagnostics;
 namespace HGS
 {
     public partial class FormPointSet : Form
@@ -25,7 +26,7 @@ namespace HGS
         }
         private void DisplayHints()
         {
-            tSSLabel_count.Text = string.Format("点数共：{0}，其中新加点{1}，已修改点{2}。",
+            tSSLabel_count.Text = string.Format("点数：{0}，其中新加点{1}，已修改点{2}。",
                PointNums, dic_glItemNew.Count, hs_glItemModified.Count);
         }
         private void AlarmSubItemSet(GLItem item,point pt)
@@ -43,20 +44,25 @@ namespace HGS
         }
         private void glacialLisint()
         {
+            //Stopwatch sw1 = new Stopwatch();//???????????
+            //Stopwatch sw2 = new Stopwatch();//???????????
+
             timerUpdateValue.Enabled = false;
             glacialList1.Items.Clear();
             PointNums = 0;
+            this.Cursor = Cursors.WaitCursor;
+            //sw1.Start();
             foreach (point ptx in Data.inst().hsAllPoint)
             {
-                GLItem itemn;
                 itemtag it = new itemtag();
-                //point Point = Data.Get().cd_Point[];
+
                 if ((ptx.pointsrc == pointsrc.sis || (Auth.GetInst().LoginID == 0 || ptx.ownerid == Auth.GetInst().LoginID || 
                     ptx.ownerid == 0)) &&
                     ptx.nd.Contains(tSCB_ND.Text.Trim()) && ptx.ed.Contains(tSTB_ED.Text.Trim()) &&
                     ptx.pn.Contains(tSTB_PN.Text.Trim()) && ptx.orgformula.Contains(tSTB_F.Text.Trim()))
                 {
-                    itemn = glacialList1.Items.Insert(0,"");
+                   // sw2.Start();
+                    GLItem itemn = glacialList1.Items.Add("");//insert 慢
                     it.id = ptx.id;
 
                     itemn.SubItems["ND"].Text = ptx.nd;
@@ -82,10 +88,12 @@ namespace HGS
                     }*/
                     AlarmSubItemSet(itemn,ptx);
                     itemn.Tag = it;
+                    PointNums++;
+                    //sw2.Stop();
                 }
-                hs_ND.Add(ptx.nd);
-                PointNums++;
+                if (isFirst) hs_ND.Add(ptx.nd);              
             }
+            //sw1.Stop();
             if (isFirst)
             {
                 foreach (string citem in hs_ND)
@@ -94,6 +102,7 @@ namespace HGS
                 }
                 isFirst = false;
             }
+            this.Cursor = Cursors.Default;
             timerUpdateValue.Enabled = true;
             DisplayHints();
         }
@@ -299,6 +308,7 @@ namespace HGS
                 itemn.SubItems["ND"].Text = fcps.CalcPoint.nd;
                 itemn.SubItems["ED"].Text = fcps.CalcPoint.ed;
                 itemn.SubItems["EU"].Text = fcps.CalcPoint.eu;
+                itemn.SubItems["PN"].Text = fcps.CalcPoint.pn;
 
                 itemtag it = new itemtag();
                 it.id = fcps.CalcPoint.id;
@@ -327,6 +337,7 @@ namespace HGS
                     toolStripButtonFind.Enabled = false;
                     itemn.SubItems["ED"].Text = fcps.CalcPoint.ed;
                     itemn.SubItems["EU"].Text = fcps.CalcPoint.eu;
+                    itemn.SubItems["PN"].Text = fcps.CalcPoint.pn;
                     AlarmSubItemSet(itemn, fcps.CalcPoint);
                 }
                 //itemn.Tag = it;
@@ -421,7 +432,7 @@ namespace HGS
             {
                 onlysisid.Add(pt.id_sis);
             }
-            if (tSCB_ND.Items.Count > 0) tSCB_ND.SelectedIndex = 0;
+            //if (tSCB_ND.Items.Count > 0) tSCB_ND.SelectedIndex = 0;
             label_formula.Text = "";
         }
 

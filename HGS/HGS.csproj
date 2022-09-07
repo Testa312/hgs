@@ -172,6 +172,18 @@
     <Compile Include="EasyMail.Designer.cs">
       <DependentUpon>EasyMail.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormAlarmInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAlarmInfo.Designer.cs">
+      <DependentUpon>FormAlarmInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormAlarmHistoryList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAlarmHistoryList.Designer.cs">
+      <DependentUpon>FormAlarmHistoryList.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormForceValue.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -378,6 +390,9 @@
     <Compile Include="ZedGraph\ZedGraphException.cs" />
     <Compile Include="ZedGraph\ZoomState.cs" />
     <Compile Include="ZedGraph\ZoomStateStack.cs" />
+    <EmbeddedResource Include="FormAlarmHistoryList.resx">
+      <DependentUpon>FormAlarmHistoryList.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormCalcPointSet.resx">
       <DependentUpon>FormCalcPointSet.cs</DependentUpon>
     </EmbeddedResource>

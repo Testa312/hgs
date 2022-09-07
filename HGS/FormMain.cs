@@ -14,12 +14,22 @@ namespace HGS
     {
         OPAPI.Connect sisconn = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
           Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
-        FormAlarmSetList formAlarmSet;
-        FormPointSet formPointSet;
+        FormAlarmSetList formAlarmSet = null;
+        FormPointSet formPointSet = null;
+        FormAlarmHistoryList formAlarmList = null;
         public FormMain()
         {
             InitializeComponent();
             tssL_error_nums.Text = "";
+            try
+            {
+                Data.inst().LoadFromPG();
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+            }
         }
          ~FormMain()
         {
@@ -41,26 +51,19 @@ namespace HGS
             FormLogin fl = new FormLogin();
             if (DialogResult.OK == fl.ShowDialog())
             {
-                try
-                {
-                    Data.inst().LoadFromPG();
-                }
-                catch (Exception ee)
-                {
-                    MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.DialogResult = System.Windows.Forms.DialogResult.None;
-                    this.Close();
-                }
+                
                 formAlarmSet = new FormAlarmSetList();
-                formPointSet = new FormPointSet();
+                
+                //formPointSet = new FormPointSet();
 
                 this.Text = string.Format("HGS-{0}", Auth.GetInst().UserName);
-                if (formPointSet != null || !formPointSet.IsDisposed)
+                if (formAlarmSet != null || !formAlarmSet.IsDisposed)
                 {
                     formAlarmSet.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
                     formAlarmSet.WindowState = FormWindowState.Maximized;
                     formAlarmSet.Show();
                 }
+                
 
             }
             else this.Close();
@@ -177,6 +180,16 @@ namespace HGS
             MessageBox.Show("保存历史出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 #endif
             };
+        }
+
+        private void 报警记录ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+            if (formAlarmList == null || formAlarmList.IsDisposed) formAlarmList = new FormAlarmHistoryList();
+
+            formAlarmList.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
+            formAlarmList.WindowState = FormWindowState.Maximized;
+            formAlarmList.Show();
         }
     }
 }

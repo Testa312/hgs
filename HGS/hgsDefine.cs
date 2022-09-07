@@ -60,7 +60,7 @@ namespace HGS
         public string eu = "";//点单位
         public bool iscalc= false;//是否进行计算
         public bool isavalarm = false;//是否报警
-        public PointState ps = PointState.Error;//点状态
+        public PointState ps = PointState.Good;//点状态
         public double av = -1;//点值，实时或计算。
         public short fm = 0;//保留小数点位数。
        

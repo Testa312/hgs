@@ -24,8 +24,7 @@ namespace HGS
          ~FormCalcPointList()
         {
   
-        }
-    
+        }  
         public void glacialLisint(HashSet<int> Onlyid)
         {
             onlyid = Onlyid;
@@ -60,7 +59,7 @@ namespace HGS
 
                         itemn.Tag = it;
 
-                        hs_ND.Add(ptx.nd);
+                        if (isFirst)  hs_ND.Add(ptx.nd);
                         count++;
                     }
                 }

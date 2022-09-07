@@ -393,10 +393,10 @@ namespace HGS
                 pt.listSisCalaExpPointID = ExpandOrgPointToSisPoint(pt);
 
                 sb.AppendLine(string.Format(@"update point set tv={0},bv={1},ll={2},hl={3},zl={4},zh={5},mt='{6}',eu='{7}',"+
-                                                   "ownerid={8},orgformula='{9}',fm={10},iscalc = {11}," +
+                                                   "pn='{8}',orgformula='{9}',fm={10},iscalc = {11}," +
                                                    "isavalarm = {12},ed = '{13}',isboolv = {14},boolalarminfo = '{15}' where id = {16};",
                                                 dtoNULL(pt.tv), dtoNULL(pt.bv), dtoNULL(pt.ll), dtoNULL(pt.hl), dtoNULL(pt.zl), dtoNULL(pt.zh),
-                                                DateTime.Now,pt.eu, pt.ownerid, pt.orgformula,pt.fm,
+                                                DateTime.Now,pt.eu, pt.pn, pt.orgformula,pt.fm,
                                                 pt.iscalc,pt.isavalarm, pt.ed,pt.isboolv,pt.boolalarminfo,pt.id)); 
                 if (pt.pointsrc == pointsrc.calc && pt.lsCalcOrgSubPoint.Count > 0)
                 {

@@ -178,6 +178,7 @@ namespace HGS
             //CalcPoint.ed = textBoxmDiscription.Text;
             Point.orgformula = textBoxFormula.Text;
             Point.eu = comboBox_eu.Text;
+            Point.pn = textBoxPN.Text;
             Point.ownerid = Auth.GetInst().LoginID;
             Point.pointsrc = pointsrc.calc;
             Point.nd = Pref.Inst().CalcPointNodeName;
@@ -211,6 +212,7 @@ namespace HGS
                 CalcPoint.ed = textBoxmDiscription.Text;
                 CalcPoint.orgformula = textBoxFormula.Text;
                 CalcPoint.eu = comboBox_eu.Text;
+                CalcPoint.pn = textBoxPN.Text;
                 CalcPoint.ownerid = Auth.GetInst().LoginID;
                 CalcPoint.pointsrc = pointsrc.calc;
                 CalcPoint.nd = Pref.Inst().CalcPointNodeName;

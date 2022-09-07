@@ -37,6 +37,7 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tssL_error_nums = new System.Windows.Forms.ToolStripStatusLabel();
             this.timerCalc = new System.Windows.Forms.Timer(this.components);
+            this.报警记录ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -55,7 +56,8 @@
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.报警信息ToolStripMenuItem,
-            this.form1ToolStripMenuItem});
+            this.form1ToolStripMenuItem,
+            this.报警记录ToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(44, 21);
             this.toolStripMenuItem1.Text = "文件";
@@ -103,6 +105,13 @@
             this.timerCalc.Interval = 3000;
             this.timerCalc.Tick += new System.EventHandler(this.timerCalc_Tick);
             // 
+            // 报警记录ToolStripMenuItem
+            // 
+            this.报警记录ToolStripMenuItem.Name = "报警记录ToolStripMenuItem";
+            this.报警记录ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.报警记录ToolStripMenuItem.Text = "报警记录...";
+            this.报警记录ToolStripMenuItem.Click += new System.EventHandler(this.报警记录ToolStripMenuItem_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -135,6 +144,7 @@
         private System.Windows.Forms.Timer timerCalc;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel tssL_error_nums;
+        private System.Windows.Forms.ToolStripMenuItem 报警记录ToolStripMenuItem;
     }
 }
 
