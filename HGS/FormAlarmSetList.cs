@@ -21,6 +21,7 @@ namespace HGS
         {
             int count = 0;
             HashSet<point> lss = AlarmSet.GetInst().ssAlarmPoint;
+            List<GLItem> lsItems = new List<GLItem>();
             foreach (point pt in lss)
             {
                 if ((pt.ownerid == tsCB_class.SelectedIndex || tsCB_class.SelectedIndex == 0) &&
@@ -30,11 +31,12 @@ namespace HGS
                     GLItem itemn;
                     if (!dic_rec.ContainsKey(pt))
                     {
-                        itemn = glacialList1.Items.Add("");
-                        dic_rec.Add(pt, itemn);
-                        itemn.Tag = pt;
-                        itemn.SubItems["ND"].Text = pt.nd;
-                        itemn.SubItems["PN"].Text = pt.pn;
+                        GLItem itemx = new GLItem(glacialList1);
+                        dic_rec.Add(pt, itemx);
+                        itemx.Tag = pt;
+                        itemx.SubItems["ND"].Text = pt.nd;
+                        itemx.SubItems["PN"].Text = pt.pn;
+                        lsItems.Add(itemx);
                     }
                     itemn = dic_rec[pt];
                     itemn.SubItems["ED"].Text = pt.ed;
@@ -44,6 +46,7 @@ namespace HGS
                     count++;
                 }
             }
+            glacialList1.Items.AddRange(lsItems.ToArray());
             List<GLItem> deleitem = new List<GLItem>(); 
             foreach(GLItem item in glacialList1.Items)
             {

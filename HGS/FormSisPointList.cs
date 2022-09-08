@@ -85,17 +85,18 @@ namespace HGS
 
                 timer.Enabled = false;
                 glacialList.Items.Clear();
-
+                List<GLItem> lsItem = new List<GLItem>();
+                Cursor = Cursors.WaitCursor;
                 while (resultSet.next())//next()执行一次，游标下移一行
                 {
-                    GLItem item;
                     string colValue = resultSet.getString(4);
                     int id = resultSet.getInt(5);
                     if (!colValue.Contains(tSTBED.Text) || onlysisid.Contains(id))
                     {
                         continue;
-                    }                
-                    item = glacialList.Items.Add("");                  
+                    }
+                    GLItem item = new GLItem(glacialList);
+                    lsItem.Add(item);
                     //item.SubItems[0].Text = total.ToString();
                     item.SubItems["ED"].Text = colValue;
 
@@ -116,14 +117,17 @@ namespace HGS
                     it.fm = (byte)resultSet.getInt(6);
                     item.Tag = it;                   
                     total++;
-                    if (total > 500)
+                    /*
+                    if (total > 5000)
                     {
                         MessageBox.Show("数量太多，筛选一下！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         while (resultSet.next()) ;//有bug，没有报错。
                             break;
                     }
-                    this.DialogResult = System.Windows.Forms.DialogResult.None;
+                    */
+                    //this.DialogResult = System.Windows.Forms.DialogResult.None;
                 }
+                glacialList.Items.AddRange(lsItem.ToArray());
                 toolStripStatusLabel1.Text = string.Format("点数：{0}", total.ToString());
             }
             catch (Exception ee)
@@ -139,6 +143,7 @@ namespace HGS
                     resultSet.close(); //释放内存
                 }
                 timer.Enabled = true;
+                Cursor = Cursors.Default;
             }
             // conn.close(); //关闭连接，千万要记住！！！
         }

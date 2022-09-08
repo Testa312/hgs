@@ -37,12 +37,12 @@ namespace HGS
 
                 var cmd = new NpgsqlCommand(strsql, pgconn);
                 NpgsqlDataReader pgreader = cmd.ExecuteReader();
+                List<GLItem> lsItems = new List<GLItem>();
                 while (pgreader.Read())
                 {
-                    GLItem itemn;
-                    //itemtag it = new itemtag();
 
-                    itemn = glacialList_UP.Items.Add("");
+                    GLItem itemn = new GLItem(glacialList_UP);
+                    lsItems.Add(itemn);
                     itemn.Tag = (int)pgreader["id"];
 
                     itemn.SubItems["ND"].Text = pgreader["nd"].ToString();
@@ -51,7 +51,7 @@ namespace HGS
                     itemn.SubItems["LastAlarmInfo"].Text = pgreader["alarminfo"].ToString();
                     itemn.SubItems["LastTime"].Text = pgreader["datetime"].ToString();
                 }
-
+                glacialList_UP.Items.AddRange(lsItems.ToArray());
                 pgconn.Close();
             }
             catch (Exception)
@@ -80,7 +80,6 @@ namespace HGS
             }
             tsCB_class.SelectedIndex = Auth.GetInst().LoginID;
         }
-
         private void glacialList_UP_Click(object sender, EventArgs e)
         {
             if (glacialList_UP.SelectedItems.Count == 1)
@@ -100,16 +99,19 @@ namespace HGS
                         ((int)((GLItem)glacialList_UP.SelectedItems[0]).Tag));
                     var cmd = new NpgsqlCommand(strsql,pgconn);
                     NpgsqlDataReader pgreader = cmd.ExecuteReader();
+                    List<GLItem> lsItems = new List<GLItem>();
                     while (pgreader.Read())
                     {
-                        GLItem itemn = glacialList_Down.Items.Add("");
+                        GLItem itemn = new GLItem(glacialList_Down);
+                        lsItems.Add(itemn);
 
                         itemn.SubItems["Time"].Text = pgreader["datetime"].ToString();
                         itemn.SubItems["AlarmInfo"].Text = pgreader["alarminfo"].ToString();
                         itemn.SubItems["eu"].Text = pgreader["eu"].ToString();
                         itemn.SubItems["AlarmAv"].Text = pgreader["alarmav"].ToString();
                     }
-
+                    glacialList_Down.Items.AddRange(lsItems.ToArray());
+                    glacialList_Down.Invalidate();
                     pgconn.Close();
                 }
                 catch (Exception)

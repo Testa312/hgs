@@ -104,9 +104,9 @@ namespace HGS
                         Point.av = Point.forceav;
                         continue;
                     }
-                    double rsl = resultSet.getDouble(3);
-                    Point.av = Math.Round(rsl, Point.fm);
-                    Data.inst().Variables[Pref.Inst().GetVarName(Point)] = rsl;
+                    //double rsl = resultSet.getDouble(3);
+                   // Point.av =rsl;
+                    Data.inst().Variables[Pref.Inst().GetVarName(Point)] = Point.av = resultSet.getDouble(3);
                     short ds = resultSet.getShort(2);
                     if ((ds & gb1) == 0)
                     {
@@ -159,7 +159,9 @@ namespace HGS
                 }
                 try
                 {
-                    calcpt.av = Math.Round(calcpt.expformula.Length > 0 ? Convert.ToDouble(calcpt.expression.Evaluate()) : -1, calcpt.fm);
+                    if (calcpt.expformula.Length > 0)
+                        calcpt.av = Convert.ToDouble(calcpt.expression.Evaluate());
+                    else calcpt.av = null;
 
                 }
                 catch (Exception)
@@ -192,6 +194,29 @@ namespace HGS
             formAlarmList.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
             formAlarmList.WindowState = FormWindowState.Maximized;
             formAlarmList.Show();
+        }
+
+        private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_SYSCOMMAND = 0x112;//命令操作
+            const int SC_CLOSE = 0xF060;//命令类型
+            const int SC_MINIMIZE = 0xF020;//命令类型
+            if (m.Msg == WM_SYSCOMMAND && ((int)m.WParam == SC_CLOSE || (int)m.WParam == SC_MINIMIZE))
+            {
+                this.Hide();
+                return;
+
+            }
+            base.WndProc(ref m);
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.Show();
         }
     }
 }

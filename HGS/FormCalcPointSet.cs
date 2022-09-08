@@ -31,11 +31,13 @@ namespace HGS
         {
             PointNums = 0;
             timer1.Enabled = false;
+            List<GLItem> lsItmems = new List<GLItem>();
             foreach (varlinktopoint subpt in CalcPoint.lsCalcOrgSubPoint)
             {
-                GLItem itemn;
+                GLItem itemn = new GLItem(glacialList1);
+                lsItmems.Add(itemn);
                 itemtag it = new itemtag();
-                itemn = glacialList1.Items.Add("");
+               
                 point Point = Data.inst().cd_Point[subpt.id];
 
                 it.id = subpt.id;
@@ -54,6 +56,7 @@ namespace HGS
                 itemn.Tag = it;
                 PointNums++;
             }
+            glacialList1.Items.AddRange(lsItmems.ToArray());
             onlyid.Add(CalcPoint.id);//排除自已。
             textBoxFormula.Text = CalcPoint.orgformula;
             textBoxmDiscription.Text = CalcPoint.ed;

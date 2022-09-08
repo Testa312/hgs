@@ -54,15 +54,18 @@ namespace HGS
             //sw1.Start();
             foreach (point ptx in Data.inst().hsAllPoint)
             {
+
                 itemtag it = new itemtag();
 
+                List<GLItem> lsItem = new List<GLItem>();
                 if ((ptx.pointsrc == pointsrc.sis || (Auth.GetInst().LoginID == 0 || ptx.ownerid == Auth.GetInst().LoginID || 
                     ptx.ownerid == 0)) &&
                     ptx.nd.Contains(tSCB_ND.Text.Trim()) && ptx.ed.Contains(tSTB_ED.Text.Trim()) &&
                     ptx.pn.Contains(tSTB_PN.Text.Trim()) && ptx.orgformula.Contains(tSTB_F.Text.Trim()))
                 {
-                   // sw2.Start();
-                    GLItem itemn = glacialList1.Items.Add("");//insert 慢
+                    // sw2.Start();
+                    GLItem itemn = new GLItem(glacialList1);// glacialList1.Items.Add("");//insert 慢
+                    lsItem.Add(itemn);
                     it.id = ptx.id;
 
                     itemn.SubItems["ND"].Text = ptx.nd;
@@ -91,6 +94,7 @@ namespace HGS
                     PointNums++;
                     //sw2.Stop();
                 }
+                glacialList1.Items.AddRange(lsItem.ToArray());
                 if (isFirst) hs_ND.Add(ptx.nd);              
             }
             //sw1.Stop();
@@ -263,7 +267,13 @@ namespace HGS
                 {
                     //bool sss = dic_glItemNew.ContainsKey(item);
                     point pt = dic_glItemNew.ContainsKey(item) ? dic_glItemNew[item] : Data.inst().cd_Point[it.id];
-                    item.SubItems["AV"].Text = pt.isforce ? pt.forceav.ToString() : pt.av.ToString();
+                    if (pt.av != null)
+                    {
+                        double dAV = pt.av ?? 0;
+                        item.SubItems["AV"].Text = pt.isforce ? pt.forceav.ToString() : Math.Round(dAV,pt.fm).ToString();
+                    }
+                    else
+                        item.SubItems["AV"].Text = pt.isforce ? pt.forceav.ToString() :pt.av.ToString();
                     item.SubItems["DS"].Text = pt.ps.ToString();
                 }
             }

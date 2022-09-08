@@ -27,6 +27,7 @@ namespace HGS
         }  
         public void glacialLisint(HashSet<int> Onlyid)
         {
+            Cursor = Cursors.WaitCursor;
             onlyid = Onlyid;
             try
             {
@@ -34,16 +35,17 @@ namespace HGS
                 HashSet<string> hs_ND = new HashSet<string>();
                 glacialList.Items.Clear();
                 int count = 0;
+                List<GLItem> lsItmems = new List<GLItem>();
                 foreach (point ptx in Data.inst().hsAllPoint)
                 {
                     //point Point = Data.Get().cd_Point[ipt];
                     if (ptx.nd.Contains(tSCBNode.Text.Trim()) && ptx.ed.Contains(tSTBED.Text.Trim()) &&
                         ptx.pn.Contains(tSTBPN.Text.Trim()))
-                    {                    
+                    {
                         if (onlyid.Contains(ptx.id)) continue;
 
-                        GLItem itemn = glacialList.Items.Add("");
-                        ;
+                        GLItem itemn = new GLItem(glacialList);
+                        lsItmems.Add(itemn);
                         itemtag it = new itemtag();
                         it.id = ptx.id;
 
@@ -55,14 +57,15 @@ namespace HGS
 
                         it.sisid = ptx.id_sis;
 
-                        it.PointSrc = ptx.pointsrc;         
+                        it.PointSrc = ptx.pointsrc;
 
                         itemn.Tag = it;
 
-                        if (isFirst)  hs_ND.Add(ptx.nd);
+                        if (isFirst) hs_ND.Add(ptx.nd);
                         count++;
                     }
                 }
+                glacialList.Items.AddRange(lsItmems.ToArray());
                 //
                 //tSCBNode.Items.Add("");
                 if (isFirst)
@@ -79,6 +82,10 @@ namespace HGS
             catch (Exception ee)
             {
                 MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
             }
             timer.Enabled = true;
         }

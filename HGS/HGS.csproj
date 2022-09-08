@@ -172,12 +172,6 @@
     <Compile Include="EasyMail.Designer.cs">
       <DependentUpon>EasyMail.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormAlarmInfo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormAlarmInfo.Designer.cs">
-      <DependentUpon>FormAlarmInfo.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormAlarmHistoryList.cs">
       <SubType>Form</SubType>
     </Compile>
