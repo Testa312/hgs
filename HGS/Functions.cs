@@ -8,6 +8,7 @@ namespace HGS
 {
     class Functions
     {
+        /*
         private static Functions instance;
 
         private Functions() { }
@@ -20,8 +21,9 @@ namespace HGS
             }
             return instance;
         }
+        */
         //返回大于n的素数。
-        public int AbovePrimes(int n)
+        public static int AbovePrimes(int n)
         {
             int i = (n % 2) == 0 ? ++n : n + 2;
             int j = 0;
@@ -43,6 +45,10 @@ namespace HGS
             }
             //最大100003
             return 100003;
+        }
+        public static string dtoNULL(double? d)
+        {
+            return d.HasValue ? d.ToString() : "NULL";
         }
     }
 }

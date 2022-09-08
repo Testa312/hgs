@@ -46,23 +46,35 @@ namespace HGS
         }
         public void Add(point pt)
         {
-            alarmlevel la_stal = pt.alarmLevel;
-
-            alarmlevel al = pt.AlarmCalc();
-
-            if (al != alarmlevel.ok)
-                AlarmSet.GetInst().ssAlarmPoint.Add(pt);
-            else
-                AlarmSet.GetInst().ssAlarmPoint.Remove(pt);
-            //
-            if (al != la_stal)
+            
+            if (pt.isavalarm || pt.isboolvalarm)
             {
+                alarmlevel la_stal = pt.alarmLevel;
+                alarmlevel al = pt.AlarmCalc();
 
-                sb_alarmsql.AppendLine(string.Format(@"insert into alarmhistory (id,alarminfo,alarmav,datetime) values ({0},'{1}',{2},'{3}');",
-                               pt.id, pt.alarmininfo, pt.alarmingav, DateTime.Now));
+                if (al != alarmlevel.no)
+                    ssAlarmPoint.Add(pt);
+                else
+                    ssAlarmPoint.Remove(pt);
+                //
+                if (al != la_stal)
+                {
+
+                    sb_alarmsql.AppendLine(string.Format(@"insert into alarmhistory (id,alarminfo,alarmav,datetime) values ({0},'{1}',{2},'{3}');",
+                                   pt.id, pt.alarmininfo, Functions.dtoNULL(pt.alarmingav), DateTime.Now));
+                }
             }
+            else
+                ssAlarmPoint.Remove(pt);
         }
-        public void SaveAlarmInfo()
+        public void Remove(point pt)
+        {
+            if(ssAlarmPoint.Contains(pt))
+                sb_alarmsql.AppendLine(string.Format(@"insert into alarmhistory (id,alarminfo,alarmav,datetime) values ({0},'{1}',{2},'{3}');",
+                                  pt.id, "人工取消了报警！", Functions.dtoNULL(pt.alarmingav), DateTime.Now));
+            ssAlarmPoint.Remove(pt);
+        }
+            public void SaveAlarmInfo()
         {
            
             try

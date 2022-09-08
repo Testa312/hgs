@@ -41,7 +41,6 @@
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.tSTBPN = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
-            this.tSCBED = new System.Windows.Forms.ToolStripComboBox();
             this.tSBFind = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tSSLabel_nums = new System.Windows.Forms.ToolStripStatusLabel();
@@ -49,6 +48,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.glacialList = new GlacialComponents.Controls.GlacialList();
+            this.tSTBED = new System.Windows.Forms.ToolStripTextBox();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -61,7 +61,7 @@
             this.toolStripLabel2,
             this.tSTBPN,
             this.toolStripLabel3,
-            this.tSCBED,
+            this.tSTBED,
             this.tSBFind});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
@@ -97,11 +97,6 @@
             this.toolStripLabel3.Name = "toolStripLabel3";
             this.toolStripLabel3.Size = new System.Drawing.Size(44, 22);
             this.toolStripLabel3.Text = "描述：";
-            // 
-            // tSCBED
-            // 
-            this.tSCBED.Name = "tSCBED";
-            this.tSCBED.Size = new System.Drawing.Size(121, 25);
             // 
             // tSBFind
             // 
@@ -247,6 +242,11 @@
             this.glacialList.TabIndex = 1;
             this.glacialList.Text = "glacialList";
             // 
+            // tSTBED
+            // 
+            this.tSTBED.Name = "tSTBED";
+            this.tSTBED.Size = new System.Drawing.Size(100, 25);
+            // 
             // FormCalcPointList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -280,7 +280,6 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel2;
         private System.Windows.Forms.ToolStripTextBox tSTBPN;
         private System.Windows.Forms.ToolStripLabel toolStripLabel3;
-        private System.Windows.Forms.ToolStripComboBox tSCBED;
         private System.Windows.Forms.ToolStripButton tSBFind;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripLabel toolStripLabel4;
@@ -290,5 +289,6 @@
         private System.Windows.Forms.Button button2;
         internal GlacialComponents.Controls.GlacialList glacialList;
         public System.Windows.Forms.ToolStripComboBox tSCBNode;
+        private System.Windows.Forms.ToolStripTextBox tSTBED;
     }
 }

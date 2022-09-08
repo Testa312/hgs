@@ -33,12 +33,12 @@ namespace HGS
         {
             if (pt.pointsrc == pointsrc.sis)
             {
-                item.SubItems["IsAlarm"].Text = pt.isavalarm || pt.isboolv ? Pref.Inst().strOk : Pref.Inst().strNo;
+                item.SubItems["IsAlarm"].Text = pt.isavalarm || pt.isboolvalarm ? Pref.Inst().strOk : Pref.Inst().strNo;
                 if (Data.inst().hs_FormulaErrorPoint.Contains(pt)) item.SubItems["FError"].Text = Pref.Inst().strNo; 
             }
             else
             {
-                item.SubItems["IsAlarm"].Text = pt.isavalarm || pt.isboolv ? Pref.Inst().strOk : Pref.Inst().strNo;
+                item.SubItems["IsAlarm"].Text = pt.isavalarm || pt.isboolvalarm ? Pref.Inst().strOk : Pref.Inst().strNo;
                 item.SubItems["IsCalc"].Text = pt.iscalc ? Pref.Inst().strOk : Pref.Inst().strNo;
             }
         }
@@ -198,7 +198,7 @@ namespace HGS
                             item.SubItems["ZL"].Text = textBoxZL.Text;
                             item.SubItems["ZH"].Text = textBoxZH.Text;
                             pt.isavalarm = checkBoxAlarm.Checked;
-                            pt.isboolv = checkBoxbool.Checked;
+                            pt.isboolvalarm = checkBoxbool.Checked;
                             pt.boolalarminfo = tB_boolAlarmInfo.Text;
                             AlarmSubItemSet(item, pt);
                            
@@ -285,7 +285,7 @@ namespace HGS
 
                 point Point = dic_glItemNew.ContainsKey(item) ? dic_glItemNew[item] : Data.inst().cd_Point[it.id];
                 checkBoxAlarm.Checked = Point.isavalarm;
-                checkBoxbool.Checked = Point.isboolv;
+                checkBoxbool.Checked = Point.isboolvalarm;
                 tB_boolAlarmInfo.Text = Point.boolalarminfo;
                 buttonCalc.Enabled = (it.PointSrc == pointsrc.calc) ? true : false;
 
@@ -417,6 +417,7 @@ namespace HGS
         {
             if (checkBoxbool.Checked)
                 checkBoxAlarm.Checked = false;
+
         }
 
         private void checkBoxAlarm_CheckedChanged(object sender, EventArgs e)
@@ -461,6 +462,12 @@ namespace HGS
         private void contextMenuStrip_gl_Opening(object sender, CancelEventArgs e)
         {
             强制点ToolStripMenuItem.Visible = glacialList1.SelectedItems.Count == 1;
+        }
+
+        private void tSTB_ED_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                glacialLisint();
         }
     }
 }

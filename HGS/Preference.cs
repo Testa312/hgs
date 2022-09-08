@@ -38,7 +38,8 @@ namespace HGS
         //-----
         const char strCalcVarPfx = 'C';
         const char strSisVarPfx = 'S';
-    
+        //计算错误时的结果值
+        //public double errorvalue = -1;
         pointsrc Pointsrc = pointsrc.sis;
         //-------------------------
         public string sisHost

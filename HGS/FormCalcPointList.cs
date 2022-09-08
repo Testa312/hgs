@@ -37,7 +37,7 @@ namespace HGS
                 foreach (point ptx in Data.inst().hsAllPoint)
                 {
                     //point Point = Data.Get().cd_Point[ipt];
-                    if (ptx.nd.Contains(tSCBNode.Text.Trim()) && ptx.ed.Contains(tSCBED.Text.Trim()) &&
+                    if (ptx.nd.Contains(tSCBNode.Text.Trim()) && ptx.ed.Contains(tSTBED.Text.Trim()) &&
                         ptx.pn.Contains(tSTBPN.Text.Trim()))
                     {                    
                         if (onlyid.Contains(ptx.id)) continue;

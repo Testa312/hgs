@@ -335,7 +335,7 @@ namespace HGS
                     Point.isavalarm = (bool)pgreader["isavalarm"];
                     Point.iscalc = (bool)pgreader["iscalc"];
                     Point.fm = (short)pgreader["fm"];
-                    Point.isboolv = (bool)pgreader["isboolv"];
+                    Point.isboolvalarm = (bool)pgreader["isboolv"];
                     Point.boolalarminfo = pgreader["boolalarminfo"].ToString();
                     //
 
@@ -380,10 +380,11 @@ namespace HGS
             LoadSubPointTable();
             LoadData();
         }
+        /*
         private string dtoNULL(double? d)
         {
             return d.HasValue ? d.ToString() : "NULL";
-        }
+        }*/
         public void SavetoPG()
         {
             StringBuilder sb = new StringBuilder();
@@ -395,9 +396,10 @@ namespace HGS
                 sb.AppendLine(string.Format(@"update point set tv={0},bv={1},ll={2},hl={3},zl={4},zh={5},mt='{6}',eu='{7}',"+
                                                    "pn='{8}',orgformula='{9}',fm={10},iscalc = {11}," +
                                                    "isavalarm = {12},ed = '{13}',isboolv = {14},boolalarminfo = '{15}' where id = {16};",
-                                                dtoNULL(pt.tv), dtoNULL(pt.bv), dtoNULL(pt.ll), dtoNULL(pt.hl), dtoNULL(pt.zl), dtoNULL(pt.zh),
+                                                Functions.dtoNULL(pt.tv), Functions.dtoNULL(pt.bv), Functions.dtoNULL(pt.ll), Functions.dtoNULL(pt.hl),
+                                                Functions.dtoNULL(pt.zl), Functions.dtoNULL(pt.zh),
                                                 DateTime.Now,pt.eu, pt.pn, pt.orgformula,pt.fm,
-                                                pt.iscalc,pt.isavalarm, pt.ed,pt.isboolv,pt.boolalarminfo,pt.id)); 
+                                                pt.iscalc,pt.isavalarm, pt.ed,pt.isboolvalarm,pt.boolalarminfo,pt.id)); 
                 if (pt.pointsrc == pointsrc.calc && pt.lsCalcOrgSubPoint.Count > 0)
                 {
                     sb.AppendLine(string.Format("delete  from formula_point where id = {0};", pt.id));
@@ -416,9 +418,10 @@ namespace HGS
                                             "zh,id_sis,pointsrc,mt,ownerid,orgformula,fm,iscalc,isavalarm,isboolv,boolalarminfo) "+ 
                                     "values ({0},'{1}','{2}','{3}','{4}',{5},{6},{7},{8},{9},"+
                                             "{10},{11},{12},'{13}',{14},'{15}',{16},{17},{18},{19},'{20}');",
-                                    pt.id, pt.nd, pt.pn, pt.ed, pt.eu, dtoNULL(pt.tv), dtoNULL(pt.bv), dtoNULL(pt.ll),dtoNULL(pt.hl), dtoNULL(pt.zl), 
-                                    dtoNULL(pt.zh), pt.id_sis,(int)pt.pointsrc, DateTime.Now, Auth.GetInst().LoginID, pt.orgformula,
-                                    pt.fm,pt.iscalc,pt.isavalarm,pt.isboolv,pt.boolalarminfo));
+                                    pt.id, pt.nd, pt.pn, pt.ed, pt.eu, Functions.dtoNULL(pt.tv), Functions.dtoNULL(pt.bv), 
+                                    Functions.dtoNULL(pt.ll), Functions.dtoNULL(pt.hl), Functions.dtoNULL(pt.zl),
+                                    Functions.dtoNULL(pt.zh), pt.id_sis,(int)pt.pointsrc, DateTime.Now, Auth.GetInst().LoginID, pt.orgformula,
+                                    pt.fm,pt.iscalc,pt.isavalarm,pt.isboolvalarm,pt.boolalarminfo));
                 if (pt.pointsrc == pointsrc.calc && pt.lsCalcOrgSubPoint.Count > 0)
                 {
                     //sb.AppendLine(string.Format("delete  from formula_point where id = {0};", MAXOFPOINTID));//????????????????

@@ -191,7 +191,7 @@ namespace HGS
             //
             Point.expformula = Data.inst().ExpandOrgFormula(Point);
             //
-            double orgv = Point.orgformula.Length > 0 ? Math.Round((double)ce.Evaluate(Point.orgformula), Point.fm) : -1; //验证表达式的合法性
+            double orgv = Point.orgformula.Length > 0 ? Math.Round(Convert.ToDouble(ce.Evaluate(Point.orgformula)), Point.fm) : -1; //验证表达式的合法性
                                                //
             ce.Variables.Clear();
             foreach (point pt in Data.inst().hsSisPoint)
@@ -199,7 +199,7 @@ namespace HGS
                 //point Ptx = Data.Get().cd_Point[pid];
                 ce.Variables.Add(Pref.Inst().GetVarName(pt), pt.av);
             }        
-            double expv = Point.orgformula.Length > 0 ? Math.Round((double)ce.Evaluate(Point.expformula), Point.fm)  : -1;//验证表达式展开sis点的合法性。
+            double expv = Point.orgformula.Length > 0 ? Math.Round(Convert.ToDouble(ce.Evaluate(Point.expformula)), Point.fm)  : -1;//验证表达式展开sis点的合法性。
             if(rsl)
                 MessageBox.Show(string.Format("原公式计算值＝{0}\n展开公式计算值＝{1}",orgv,expv), 
                     "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);

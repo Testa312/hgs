@@ -104,8 +104,9 @@ namespace HGS
                         Point.av = Point.forceav;
                         continue;
                     }
-                    Point.av = Math.Round(resultSet.getDouble(3), Point.fm);
-                    Data.inst().Variables[Pref.Inst().GetVarName(Point)] = Point.av;
+                    double rsl = resultSet.getDouble(3);
+                    Point.av = Math.Round(rsl, Point.fm);
+                    Data.inst().Variables[Pref.Inst().GetVarName(Point)] = rsl;
                     short ds = resultSet.getShort(2);
                     if ((ds & gb1) == 0)
                     {
@@ -158,7 +159,7 @@ namespace HGS
                 }
                 try
                 {
-                    calcpt.av = Math.Round(calcpt.expformula.Length > 0 ? (double)calcpt.expression.Evaluate() : -1, calcpt.fm);
+                    calcpt.av = Math.Round(calcpt.expformula.Length > 0 ? Convert.ToDouble(calcpt.expression.Evaluate()) : -1, calcpt.fm);
 
                 }
                 catch (Exception)
@@ -177,7 +178,8 @@ namespace HGS
             }
             catch(Exception ee) {
 #if DEBUG
-            MessageBox.Show("保存历史出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                timerCalc.Enabled = false;
+                MessageBox.Show("保存历史出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);            
 #endif
             };
         }
