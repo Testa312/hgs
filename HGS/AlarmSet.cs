@@ -45,8 +45,7 @@ namespace HGS
             get { return ssalarmPoint; }
         }
         public void Add(point pt)
-        {
-            
+        {          
             if (pt.isavalarm || pt.isboolvalarm)
             {
                 alarmlevel la_stal = pt.alarmLevel;

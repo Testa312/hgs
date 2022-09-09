@@ -134,6 +134,7 @@ namespace HGS
         private void timerCalc_Tick(object sender, EventArgs e)
         {
             GetSisValue();//到得sis值；
+            VartoPointTable.DelayClear();//释放表；
             foreach (point calcpt in Data.inst().hsCalcPoint)
             {
                 //
@@ -159,7 +160,7 @@ namespace HGS
                 }
                 try
                 {
-                    if (calcpt.expformula_main.Length > 0)
+                    if (calcpt.expression_main != null)
                         calcpt.av = Convert.ToDouble(calcpt.expression_main.Evaluate());
                     else calcpt.av = null;
 

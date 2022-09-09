@@ -609,6 +609,7 @@
             this.button_HL.TabIndex = 8;
             this.button_HL.Text = "...";
             this.button_HL.UseVisualStyleBackColor = true;
+            this.button_HL.Click += new System.EventHandler(this.button_HL_Click);
             // 
             // textBoxZH
             // 

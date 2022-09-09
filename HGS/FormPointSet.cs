@@ -133,7 +133,7 @@ namespace HGS
 
                         onlysisid.Add(Point.id_sis);
                    
-                        Point.id = Data.inst().GetNextPointID();
+                        //Point.id = Data.inst().GetNextPointID();
                         Point.pointsrc = pointsrc.sis;
                         Point.ownerid = Auth.GetInst().LoginID;
 
@@ -353,14 +353,14 @@ namespace HGS
                     itemn.SubItems["EU"].Text = fcps.CalcPoint.eu;
                     itemn.SubItems["PN"].Text = fcps.CalcPoint.pn;
                     AlarmSubItemSet(itemn, fcps.CalcPoint);
-                }
-                //itemn.Tag = it;
-                if (!dic_glItemNew.ContainsKey(itemn))
-                {
-                    hs_glItemModified.Add(itemn);
-                    Data.inst().hs_FormulaErrorPoint.Remove(fcps.CalcPoint);
-                }
-                DisplayHints();
+                    //itemn.Tag = it;
+                    if (!dic_glItemNew.ContainsKey(itemn))
+                    {
+                        hs_glItemModified.Add(itemn);
+                        Data.inst().hs_FormulaErrorPoint.Remove(fcps.CalcPoint);
+                    }
+                    DisplayHints();
+                }                
             }
         }
        
@@ -375,7 +375,7 @@ namespace HGS
                 GLItem itemn = (GLItem)glacialList1.SelectedItems[0];
                 itemtag it = (itemtag)itemn.Tag;
 
-                List<int> lspid = Data.inst().GetDeletePointIdList(it.id);
+                List<int> lspid = VartoPointTable.GetDeletePointIdList(it.id);
                 if (dic_glItemNew.ContainsKey(itemn))
                 {
                     if (DialogResult.OK == MessageBox.Show(string.Format("是否删除点[{0}]-{1}？",
@@ -482,6 +482,32 @@ namespace HGS
         {
             if (e.KeyCode == Keys.Enter)
                 glacialLisint();
+        }
+
+        private void button_HL_Click(object sender, EventArgs e)
+        {
+            if (glacialList1.SelectedItems.Count == 1)
+            {
+                FormCalcAlarmHlSet fcps = new FormCalcAlarmHlSet();
+                GLItem itemn = (GLItem)glacialList1.SelectedItems[0];
+                itemtag it = (itemtag)itemn.Tag;
+
+                fcps.CalcPoint = dic_glItemNew.ContainsKey(itemn) ? dic_glItemNew[itemn] : Data.inst().cd_Point[it.id];
+                fcps.glacialLisint();
+                fcps.Text = string.Format("点[{0}]高报警值计算", fcps.CalcPoint.ed);
+                //fcps.CellId = cellid.main;
+                if (fcps.ShowDialog() == DialogResult.OK)
+                {
+                    if (!dic_glItemNew.ContainsKey(itemn))
+                    {
+                        hs_glItemModified.Add(itemn);
+                        Data.inst().hs_FormulaErrorPoint.Remove(fcps.CalcPoint);
+                    }
+                   // DisplayHints();
+                }
+                //itemn.Tag = it;
+                
+            }
         }
     }
 }

@@ -13,13 +13,13 @@ using System.Text.RegularExpressions;
 using Npgsql;
 namespace HGS
 {
-    public partial class FormCalcPointSet : Form
+    public partial class FormCalcAlarmHlSet : Form
     {
         HashSet<int> onlyid = new HashSet<int>();
         public point CalcPoint;
         int PointNums = 0;
         //--------------------------------
-        public FormCalcPointSet()
+        public FormCalcAlarmHlSet()
         {
             InitializeComponent();
         }
@@ -32,7 +32,7 @@ namespace HGS
             PointNums = 0;
             timer1.Enabled = false;
             List<GLItem> lsItmems = new List<GLItem>();
-            foreach (varlinktopoint subpt in CalcPoint.lsCalcOrgSubPoint_main)
+            foreach (varlinktopoint subpt in CalcPoint.lsCalcOrgSubPoint_hl)
             {
                 GLItem itemn = new GLItem(glacialList1);
                 lsItmems.Add(itemn);
@@ -58,7 +58,7 @@ namespace HGS
             }
             glacialList1.Items.AddRange(lsItmems.ToArray());
             onlyid.Add(CalcPoint.id);//排除自已。
-            textBoxFormula.Text = CalcPoint.orgformula_main;
+            textBoxFormula.Text = CalcPoint.orgformula_hl;
             textBoxmDiscription.Text = CalcPoint.ed;
             comboBox_eu.Text = CalcPoint.eu;
             checkBoxCalc.Checked = CalcPoint.iscalc;
@@ -86,7 +86,7 @@ namespace HGS
                         item.SubItems["AV"].Text = Math.Round(dAV, pt.fm).ToString();
                     }
                     else
-                    item.SubItems["AV"].Text = pt.av.ToString();
+                        item.SubItems["AV"].Text = pt.av.ToString();
                     item.SubItems["DS"].Text = pt.ps.ToString();
                 }
             }
@@ -179,19 +179,20 @@ namespace HGS
                 varlinktopoint subpt = new varlinktopoint();
                 subpt.varname = item.SubItems["VarName"].Text;
                 subpt.sub_id = it.id;
-                Point.lsCalcOrgSubPoint_main.Add(subpt);
+                Point.lsCalcOrgSubPoint_hl.Add(subpt);
 
                 ce.Variables[subpt.varname] = Data.inst().cd_Point[it.id].av;//测试用。
-            }          
-            Point.orgformula_main = textBoxFormula.Text;
-            Point.fm = (byte)numericUpDown.Value;
-            double orgv = Point.orgformula_main.Length > 0 ? 
-                Math.Round(Convert.ToDouble(ce.Evaluate(Point.orgformula_main)), Point.fm) : -1; //验证表达式的合法性
-                                               //
+            }
+            
+            Point.orgformula_hl = textBoxFormula.Text;
+            //
+            double orgv = Point.orgformula_hl.Length > 0 ? 
+                Math.Round(Convert.ToDouble(ce.Evaluate(Point.orgformula_hl)), Point.fm) : -1; //验证表达式的合法性
+                                                                                               //
             ce.Variables = Data.inst().Variables;
-            double expv = Point.orgformula_main.Length > 0 ?
-                Math.Round(Convert.ToDouble(ce.Evaluate(Data.inst().ExpandOrgFormula(Point))), Point.fm)  : -1;//验证表达式展开sis点的合法性。
-            if(rsl)
+            double expv = Point.orgformula_hl.Length > 0 ? 
+                Math.Round(Convert.ToDouble(ce.Evaluate(Data.inst().ExpandOrgFormula_HL(Point))), Point.fm)  : -1;//验证表达式展开sis点的合法性。
+            if (rsl)
                 MessageBox.Show(string.Format("原公式计算值＝{0}\n展开公式计算值＝{1}",orgv,expv), 
                     "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
@@ -200,18 +201,9 @@ namespace HGS
             try
             {
                 Dovalidity(false);
-                CalcPoint.ed = textBoxmDiscription.Text;
-                CalcPoint.orgformula_main = textBoxFormula.Text;
-                CalcPoint.eu = comboBox_eu.Text;
-                CalcPoint.pn = textBoxPN.Text;
-                CalcPoint.ownerid = Auth.GetInst().LoginID;
-                CalcPoint.pointsrc = pointsrc.calc;
-                CalcPoint.nd = Pref.Inst().CalcPointNodeName;
-                //if(CalcPoint.id <= 0) CalcPoint.id = Data.inst().GetNextPointId();
-                CalcPoint.iscalc = checkBoxCalc.Checked;
-                CalcPoint.fm = (byte)numericUpDown.Value;
+                CalcPoint.orgformula_hl = textBoxFormula.Text;
 
-                CalcPoint.lsCalcOrgSubPoint_main.Clear();
+                CalcPoint.lsCalcOrgSubPoint_hl.Clear();
 
                 foreach (GLItem item in glacialList1.Items)
                 {
@@ -219,7 +211,7 @@ namespace HGS
                     varlinktopoint subpt = new varlinktopoint();
                     subpt.varname = item.SubItems["VarName"].Text;
                     subpt.sub_id = it.id;
-                    CalcPoint.lsCalcOrgSubPoint_main.Add(subpt);
+                    CalcPoint.lsCalcOrgSubPoint_hl.Add(subpt);
                 }
             }
             catch (Exception ee)
