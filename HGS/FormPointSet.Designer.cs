@@ -77,7 +77,9 @@
             this.labelf = new System.Windows.Forms.Label();
             this.buttonSet = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.button_LL = new System.Windows.Forms.Button();
             this.checkBoxAlarm = new System.Windows.Forms.CheckBox();
+            this.button_HL = new System.Windows.Forms.Button();
             this.textBoxZH = new System.Windows.Forms.TextBox();
             this.textBoxZL = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -97,7 +99,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tSSLabel_count = new System.Windows.Forms.ToolStripStatusLabel();
-            this.button1 = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -323,7 +324,7 @@
             glColumn5.NumericSort = false;
             glColumn5.Text = "  描述";
             glColumn5.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn5.Width = 150;
+            glColumn5.Width = 260;
             glColumn6.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn6.CheckBoxes = false;
             glColumn6.ImageIndex = -1;
@@ -331,7 +332,7 @@
             glColumn6.NumericSort = true;
             glColumn6.Text = "量程上限  ";
             glColumn6.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
-            glColumn6.Width = 70;
+            glColumn6.Width = 60;
             glColumn7.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn7.CheckBoxes = false;
             glColumn7.ImageIndex = -1;
@@ -339,7 +340,7 @@
             glColumn7.NumericSort = true;
             glColumn7.Text = "量程下限";
             glColumn7.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
-            glColumn7.Width = 70;
+            glColumn7.Width = 60;
             glColumn8.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn8.CheckBoxes = false;
             glColumn8.ImageIndex = -1;
@@ -347,7 +348,7 @@
             glColumn8.NumericSort = true;
             glColumn8.Text = "报警低限";
             glColumn8.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
-            glColumn8.Width = 70;
+            glColumn8.Width = 60;
             glColumn9.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn9.CheckBoxes = false;
             glColumn9.ImageIndex = -1;
@@ -355,7 +356,7 @@
             glColumn9.NumericSort = true;
             glColumn9.Text = "报警高限";
             glColumn9.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
-            glColumn9.Width = 70;
+            glColumn9.Width = 60;
             glColumn10.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn10.CheckBoxes = false;
             glColumn10.ImageIndex = -1;
@@ -371,7 +372,7 @@
             glColumn11.NumericSort = true;
             glColumn11.Text = "报警高2限";
             glColumn11.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
-            glColumn11.Width = 80;
+            glColumn11.Width = 70;
             glColumn12.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn12.CheckBoxes = false;
             glColumn12.ImageIndex = -1;
@@ -507,7 +508,6 @@
             // tabPageBase
             // 
             this.tabPageBase.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.tabPageBase.Controls.Add(this.button1);
             this.tabPageBase.Controls.Add(this.buttonCalc);
             this.tabPageBase.Controls.Add(this.label_formula);
             this.tabPageBase.Controls.Add(this.labelf);
@@ -563,7 +563,9 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.button_LL);
             this.groupBox3.Controls.Add(this.checkBoxAlarm);
+            this.groupBox3.Controls.Add(this.button_HL);
             this.groupBox3.Controls.Add(this.textBoxZH);
             this.groupBox3.Controls.Add(this.textBoxZL);
             this.groupBox3.Controls.Add(this.label13);
@@ -572,17 +574,26 @@
             this.groupBox3.Controls.Add(this.label12);
             this.groupBox3.Controls.Add(this.textBoxLL);
             this.groupBox3.Controls.Add(this.label10);
-            this.groupBox3.Location = new System.Drawing.Point(216, 14);
+            this.groupBox3.Location = new System.Drawing.Point(217, 14);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(434, 100);
+            this.groupBox3.Size = new System.Drawing.Size(468, 100);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "报警";
+            this.groupBox3.Text = "模拟量";
+            // 
+            // button_LL
+            // 
+            this.button_LL.Location = new System.Drawing.Point(166, 58);
+            this.button_LL.Name = "button_LL";
+            this.button_LL.Size = new System.Drawing.Size(33, 23);
+            this.button_LL.TabIndex = 7;
+            this.button_LL.Text = "...";
+            this.button_LL.UseVisualStyleBackColor = true;
             // 
             // checkBoxAlarm
             // 
             this.checkBoxAlarm.AutoSize = true;
-            this.checkBoxAlarm.Location = new System.Drawing.Point(366, 64);
+            this.checkBoxAlarm.Location = new System.Drawing.Point(396, 33);
             this.checkBoxAlarm.Name = "checkBoxAlarm";
             this.checkBoxAlarm.Size = new System.Drawing.Size(48, 16);
             this.checkBoxAlarm.TabIndex = 10;
@@ -590,16 +601,25 @@
             this.checkBoxAlarm.UseVisualStyleBackColor = true;
             this.checkBoxAlarm.CheckedChanged += new System.EventHandler(this.checkBoxAlarm_CheckedChanged);
             // 
+            // button_HL
+            // 
+            this.button_HL.Location = new System.Drawing.Point(166, 23);
+            this.button_HL.Name = "button_HL";
+            this.button_HL.Size = new System.Drawing.Size(33, 23);
+            this.button_HL.TabIndex = 8;
+            this.button_HL.Text = "...";
+            this.button_HL.UseVisualStyleBackColor = true;
+            // 
             // textBoxZH
             // 
-            this.textBoxZH.Location = new System.Drawing.Point(265, 25);
+            this.textBoxZH.Location = new System.Drawing.Point(304, 28);
             this.textBoxZH.Name = "textBoxZH";
             this.textBoxZH.Size = new System.Drawing.Size(74, 21);
             this.textBoxZH.TabIndex = 9;
             // 
             // textBoxZL
             // 
-            this.textBoxZL.Location = new System.Drawing.Point(265, 59);
+            this.textBoxZL.Location = new System.Drawing.Point(304, 62);
             this.textBoxZL.Name = "textBoxZL";
             this.textBoxZL.Size = new System.Drawing.Size(74, 21);
             this.textBoxZL.TabIndex = 7;
@@ -607,7 +627,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(196, 25);
+            this.label13.Location = new System.Drawing.Point(235, 28);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(83, 12);
             this.label13.TabIndex = 0;
@@ -616,7 +636,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(196, 59);
+            this.label11.Location = new System.Drawing.Point(235, 62);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(83, 12);
             this.label11.TabIndex = 0;
@@ -659,7 +679,7 @@
             this.groupBox1.Controls.Add(this.checkBoxbool);
             this.groupBox1.Controls.Add(this.tB_boolAlarmInfo);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(681, 14);
+            this.groupBox1.Location = new System.Drawing.Point(713, 14);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(413, 100);
             this.groupBox1.TabIndex = 1;
@@ -701,7 +721,7 @@
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Location = new System.Drawing.Point(8, 14);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(174, 100);
+            this.groupBox2.Size = new System.Drawing.Size(173, 100);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "量程";
@@ -753,15 +773,6 @@
             this.tSSLabel_count.Name = "tSSLabel_count";
             this.tSSLabel_count.Size = new System.Drawing.Size(44, 17);
             this.tSSLabel_count.Text = "点数：";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(968, 137);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
             // 
             // FormPointSet
             // 
@@ -852,6 +863,7 @@
         private System.Windows.Forms.ToolStripMenuItem 填加计算点ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 填加SIS点ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 强制点ToolStripMenuItem;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button_LL;
+        private System.Windows.Forms.Button button_HL;
     }
 }

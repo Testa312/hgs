@@ -102,7 +102,13 @@ namespace HGS
                 {
                     itemtag it = (itemtag)(item.Tag);
                     point pt = Data.inst().cd_Point[it.id];
-                    item.SubItems["AV"].Text = pt.av.ToString();
+                    if (pt.av != null)
+                    {
+                        double dAV = pt.av ?? 0;
+                        item.SubItems["AV"].Text = Math.Round(dAV, pt.fm).ToString();
+                    }
+                    else
+                        item.SubItems["AV"].Text = "";
                     item.SubItems["DS"].Text = pt.ps.ToString();
                 }
             }

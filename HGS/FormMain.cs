@@ -148,7 +148,7 @@ namespace HGS
                 //{
                 if (Data.inst().hs_FormulaErrorPoint.Contains(calcpt)) continue;
                 //point Point = Data.Get().cd_Point[calcid];
-                foreach (point pt in calcpt.listSisCalaExpPointID)
+                foreach (point pt in calcpt.listSisCalaExpPointID_main)
                 {
                     if (pt.ps != PointState.Good)
                     {
@@ -159,8 +159,8 @@ namespace HGS
                 }
                 try
                 {
-                    if (calcpt.expformula.Length > 0)
-                        calcpt.av = Convert.ToDouble(calcpt.expression.Evaluate());
+                    if (calcpt.expformula_main.Length > 0)
+                        calcpt.av = Convert.ToDouble(calcpt.expression_main.Evaluate());
                     else calcpt.av = null;
 
                 }
@@ -202,6 +202,7 @@ namespace HGS
         }
         protected override void WndProc(ref Message m)
         {
+#if !DEBUG
             const int WM_SYSCOMMAND = 0x112;//命令操作
             const int SC_CLOSE = 0xF060;//命令类型
             const int SC_MINIMIZE = 0xF020;//命令类型
@@ -211,6 +212,7 @@ namespace HGS
                 return;
 
             }
+#endif
             base.WndProc(ref m);
         }
 

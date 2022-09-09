@@ -61,7 +61,7 @@ namespace HGS
                 if ((ptx.pointsrc == pointsrc.sis || (Auth.GetInst().LoginID == 0 || ptx.ownerid == Auth.GetInst().LoginID || 
                     ptx.ownerid == 0)) &&
                     ptx.nd.Contains(tSCB_ND.Text.Trim()) && ptx.ed.Contains(tSTB_ED.Text.Trim()) &&
-                    ptx.pn.Contains(tSTB_PN.Text.Trim()) && ptx.orgformula.Contains(tSTB_F.Text.Trim()))
+                    ptx.pn.Contains(tSTB_PN.Text.Trim()) && ptx.orgformula_main.Contains(tSTB_F.Text.Trim()))
                 {
                     // sw2.Start();
                     GLItem itemn = new GLItem(glacialList1);// glacialList1.Items.Add("");//insert 慢
@@ -270,10 +270,10 @@ namespace HGS
                     if (pt.av != null)
                     {
                         double dAV = pt.av ?? 0;
-                        item.SubItems["AV"].Text = pt.isforce ? pt.forceav.ToString() : Math.Round(dAV,pt.fm).ToString();
+                        item.SubItems["AV"].Text =  Math.Round(dAV,pt.fm).ToString();
                     }
                     else
-                        item.SubItems["AV"].Text = pt.isforce ? pt.forceav.ToString() :pt.av.ToString();
+                        item.SubItems["AV"].Text = "";
                     item.SubItems["DS"].Text = pt.ps.ToString();
                 }
             }
@@ -297,9 +297,11 @@ namespace HGS
                 checkBoxAlarm.Checked = Point.isavalarm;
                 checkBoxbool.Checked = Point.isboolvalarm;
                 tB_boolAlarmInfo.Text = Point.boolalarminfo;
+                if(Point.boolalarminfo.Length<=0)
+                    tB_boolAlarmInfo.Text = item.SubItems["PN"].Text;
                 buttonCalc.Enabled = (it.PointSrc == pointsrc.calc) ? true : false;
 
-                label_formula.Text = Point.orgformula;
+                label_formula.Text = Point.orgformula_main;
             }
             tabControl.Enabled = glacialList1.SelectedItems.Count > 0;
         }
@@ -308,6 +310,7 @@ namespace HGS
             FormCalcPointSet fcps = new FormCalcPointSet();
             fcps.CalcPoint = new point();
             fcps.Text = "新加计算点";
+            //fcps.CellId = cellid.main;
             if (fcps.ShowDialog() == DialogResult.OK)
             {
                 toolStripButtonFind.Enabled = false;
@@ -342,6 +345,7 @@ namespace HGS
                 fcps.CalcPoint = dic_glItemNew.ContainsKey(itemn) ? dic_glItemNew[itemn] : Data.inst().cd_Point[it.id];
                 fcps.glacialLisint();
                 fcps.Text = string.Format("点[{0}]公式",fcps.CalcPoint.ed);
+                //fcps.CellId = cellid.main;
                 if (fcps.ShowDialog() == DialogResult.OK)
                 {
                     toolStripButtonFind.Enabled = false;

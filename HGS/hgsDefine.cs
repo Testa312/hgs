@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GlacialComponents.Controls;
 using CalcEngine;
+using System.Data;
 namespace HGS
 {
     //Tag of GalcialList'item 
@@ -23,7 +24,7 @@ namespace HGS
     public class varlinktopoint
     {
         public int id {set;get;}//点id
-        //public pointsrc PointSrc { set; get; }
+        //public int cellid { set; get; }
         public string varname { set; get; }
     }
     //点来源。
@@ -36,7 +37,11 @@ namespace HGS
     {
         Good, Timeout, Bad, Error,Force
     }
-    
+    //点计算用，用于分清计算点、高报警和低报警计算公式引用点
+    public enum cellid
+    {
+        main,hl,ll
+    }
     public class point
     {
         //
@@ -48,14 +53,33 @@ namespace HGS
         //可null
         public double? tv = null;//量程上限
         public double? bv = null;//量程下限
+        //------------------------------------
         public double? ll = null;//报警低限
+        public string orgformula_ll = "";//计算公式
+        public string expformula_ll = "";//展开成点的计算公式
+        public Expression expression_ll = new Expression();//优化计算速度。
+        //计算子点id
+        public List<varlinktopoint> lsCalcOrgSubPoint_ll = new List<varlinktopoint>();//原始参与计算点列表
+        //
+        //计算子点id用于进行计算点状态计算。
+        public List<point> listSisCalaExpPointID_ll = new List<point>();//展开成sis点的参与计算点列表。
+        //------------------------------------------
         public double? hl = null;//报警高限
+        public string orgformula_hl = "";//计算公式
+        public string expformula_hl = "";//展开成点的计算公式
+        public Expression expression_hl = new Expression();//优化计算速度。
+        //计算子点id
+        public List<varlinktopoint> lsCalcOrgSubPoint_hl = new List<varlinktopoint>();//原始参与计算点列表
+        //
+        //用于进行计算点点状态计算。
+        public List<point> listSisCalaExpPointID_hl = new List<point>();
+        //-----------------------------------------
         public double? zh = null;//报警高2限
         public double? zl = null;//报警低2限
         public pointsrc pointsrc = 0;//点源0:sis,1:计算点
         public int ownerid = 0;//专业id
-        public string orgformula = "";//计算公式
-        public string expformula = "";//展开成点的计算公式
+        public string orgformula_main = "";//计算公式
+        public string expformula_main = "";//展开成点的计算公式
         public int id = -1;//点id
         public string eu = "";//点单位
         public bool iscalc= false;//是否进行计算
@@ -67,12 +91,12 @@ namespace HGS
         public bool isboolvalarm = false;
         public string boolalarminfo = "";//isbool 为真时的报警信息。
         //
-        public Expression expression = new Expression();//优化计算速度。
+        public Expression expression_main = new Expression();//优化计算速度。
         //计算子点id
-        public List<varlinktopoint> lsCalcOrgSubPoint = new List<varlinktopoint>();//原始参能与计算点列表
+        public List<varlinktopoint> lsCalcOrgSubPoint_main = new List<varlinktopoint>();//原始参与计算点列表
         //
         //计算子点id用于进行计算点状态计算。
-        public List<point> listSisCalaExpPointID = new List<point>();//展开成sis点的参与计算点列表。
+        public List<point> listSisCalaExpPointID_main = new List<point>();
         //
         //报警用，不存入数据库                                                            
         //
@@ -141,13 +165,18 @@ namespace HGS
                     {
                         alarmLevel = alarmlevel.bv;
                         alarmininfo = string.Format("越量程下限[{0}{1}]！", bv, eu);
-                    }
-
-                    alarmingav = av;
+                    }                       
                 }
+                if (av != null)
+                {
+                    double dAV = av ?? 0;
+                    alarmingav = Math.Round(dAV, fm);
+                }
+                //else
+                //alarmingav = av;
                 if (alarmLevel == alarmlevel.no && last_al != alarmLevel)
                     alarmininfo = string.Format("报警消失！");
-                if (last_al == alarmlevel.no && alarmLevel != alarmlevel.no)
+                if (last_al == alarmlevel.no && alarmLevel != last_al)
                 {
                     lastalarmdatetime = DateTime.Now;
                 }
