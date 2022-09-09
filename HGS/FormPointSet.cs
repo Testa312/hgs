@@ -509,5 +509,31 @@ namespace HGS
                 
             }
         }
+
+        private void button_LL_Click(object sender, EventArgs e)
+        {
+            if (glacialList1.SelectedItems.Count == 1)
+            {
+                FormCalcAlarmLLSet fcps = new FormCalcAlarmLLSet();
+                GLItem itemn = (GLItem)glacialList1.SelectedItems[0];
+                itemtag it = (itemtag)itemn.Tag;
+
+                fcps.CalcPoint = dic_glItemNew.ContainsKey(itemn) ? dic_glItemNew[itemn] : Data.inst().cd_Point[it.id];
+                fcps.glacialLisint();
+                fcps.Text = string.Format("点[{0}]高报警值计算", fcps.CalcPoint.ed);
+                //fcps.CellId = cellid.main;
+                if (fcps.ShowDialog() == DialogResult.OK)
+                {
+                    if (!dic_glItemNew.ContainsKey(itemn))
+                    {
+                        hs_glItemModified.Add(itemn);
+                        Data.inst().hs_FormulaErrorPoint.Remove(fcps.CalcPoint);
+                    }
+                    // DisplayHints();
+                }
+                //itemn.Tag = it;
+
+            }
+        }
     }
 }

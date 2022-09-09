@@ -589,6 +589,7 @@
             this.button_LL.TabIndex = 7;
             this.button_LL.Text = "...";
             this.button_LL.UseVisualStyleBackColor = true;
+            this.button_LL.Click += new System.EventHandler(this.button_LL_Click);
             // 
             // checkBoxAlarm
             // 

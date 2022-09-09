@@ -178,6 +178,12 @@
     <Compile Include="FormAlarmHistoryList.Designer.cs">
       <DependentUpon>FormAlarmHistoryList.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormCalcAlarmLLSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCalcAlarmLLSet.Designer.cs">
+      <DependentUpon>FormCalcAlarmLLSet.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormCalcAlarmHlSet.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -393,6 +399,9 @@
     <Compile Include="ZedGraph\ZoomStateStack.cs" />
     <EmbeddedResource Include="FormAlarmHistoryList.resx">
       <DependentUpon>FormAlarmHistoryList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCalcAlarmLLSet.resx">
+      <DependentUpon>FormCalcAlarmLLSet.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormCalcAlarmHlSet.resx">
       <DependentUpon>FormCalcAlarmHlSet.cs</DependentUpon>
