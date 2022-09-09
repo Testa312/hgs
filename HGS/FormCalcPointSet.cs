@@ -185,12 +185,14 @@ namespace HGS
             }          
             Point.orgformula_main = textBoxFormula.Text;
             Point.fm = (byte)numericUpDown.Value;
-            double orgv = Point.orgformula_main.Length > 0 ? 
-                Math.Round(Convert.ToDouble(ce.Evaluate(Point.orgformula_main)), Point.fm) : -1; //验证表达式的合法性
+            double? orgv = null;
+            if(Point.orgformula_main.Length > 0)
+                orgv = Math.Round(Convert.ToDouble(ce.Evaluate(Point.orgformula_main)), Point.fm); //验证表达式的合法性
                                                //
             ce.Variables = Data.inst().Variables;
-            double expv = Point.orgformula_main.Length > 0 ?
-                Math.Round(Convert.ToDouble(ce.Evaluate(Data.inst().ExpandOrgFormula(Point))), Point.fm)  : -1;//验证表达式展开sis点的合法性。
+            double? expv = null;
+            if(Point.orgformula_main.Length > 0)
+                expv = Math.Round(Convert.ToDouble(ce.Evaluate(Data.inst().ExpandOrgFormula(Point))), Point.fm);//验证表达式展开sis点的合法性。
             if(rsl)
                 MessageBox.Show(string.Format("原公式计算值＝{0}\n展开公式计算值＝{1}",orgv,expv), 
                     "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);

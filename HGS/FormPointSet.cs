@@ -275,7 +275,34 @@ namespace HGS
                     else
                         item.SubItems["AV"].Text = "";
                     item.SubItems["DS"].Text = pt.ps.ToString();
+                }             
+            }
+            if (tabControl.Enabled)
+            {
+                GLItem item = (GLItem)glacialList1.SelectedItems[0];
+                itemtag it = (itemtag)(item.Tag);
+                point Point = dic_glItemNew.ContainsKey(item) ? dic_glItemNew[item] : Data.inst().cd_Point[it.id];
+                if(Point.orgformula_hl.Length > 0)
+                {
+                    if (Point.hl != null)
+                    {
+                        double dAV = Point.hl ?? 0;
+                        textBoxHL.Text = Math.Round(dAV, Point.fm).ToString();
+                    }
+                    else
+                        textBoxHL.Text = "";
                 }
+                if (Point.orgformula_ll.Length > 0)
+                {
+                    if (Point.ll != null)
+                    {
+                        double dAV = Point.ll ?? 0;
+                        textBoxLL.Text = Math.Round(dAV, Point.fm).ToString();
+                    }
+                    else
+                        textBoxLL.Text = "";
+                }
+
             }
             DisplayHints();
         }

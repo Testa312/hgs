@@ -307,26 +307,32 @@ namespace HGS
         //公式解析---------------------------------
         public void Parse(point pt)
         {
-            if (pt.pointsrc == pointsrc.calc && pt.orgformula_main.Length > 0)
-            {               
+            pt.expression_main = null;
+            pt.expression_hl = null;
+            pt.expression_hl = null;
+            if (pt.pointsrc == pointsrc.calc)
+            {
                 pt.lsCalcOrgSubPoint_main = VartoPointTable.Sub_PointtoVarList(pt, cellid.main);
                 pt.listSisCalaExpPointID_main = ExpandOrgPointToSisPoint(pt);
-                pt.expression_main = _ce.Parse(ExpandOrgFormula(pt));
+                if (pt.orgformula_main.Length > 0)
+                    pt.expression_main = _ce.Parse(ExpandOrgFormula(pt));
             }
-            if(pt.pointsrc == pointsrc.sis)
+            if (pt.pointsrc == pointsrc.sis)
             {
+                
+                pt.lsCalcOrgSubPoint_hl = VartoPointTable.Sub_PointtoVarList(pt, cellid.hl);
+                pt.listSisCalaExpPointID_hl = ExpandOrgPointToSisPoint_HL(pt);
                 if (pt.orgformula_hl.Length > 0)
-                {                 
-                    pt.lsCalcOrgSubPoint_hl = VartoPointTable.Sub_PointtoVarList(pt, cellid.hl);
-                    pt.listSisCalaExpPointID_hl = ExpandOrgPointToSisPoint_HL(pt);
+                {
                     pt.expression_hl = _ce.Parse(ExpandOrgFormula_HL(pt));
                 }
+                                  
+                pt.lsCalcOrgSubPoint_ll = VartoPointTable.Sub_PointtoVarList(pt, cellid.ll);
+                pt.listSisCalaExpPointID_hl = ExpandOrgPointToSisPoint_LL(pt);
                 if (pt.orgformula_ll.Length > 0)
-                {                   
-                    pt.lsCalcOrgSubPoint_ll = VartoPointTable.Sub_PointtoVarList(pt, cellid.ll);
-                    pt.listSisCalaExpPointID_hl = ExpandOrgPointToSisPoint_LL(pt);
+                {
                     pt.expression_ll = _ce.Parse(ExpandOrgFormula_LL(pt));
-                }
+                }         
             }
         }
         //-------------------------------
@@ -477,7 +483,6 @@ namespace HGS
             int ptid = GetNextPointId();
             foreach (point pt in hs_ModifyPoint)
             {
-                //pt.expformula = ExpandOrgFormula(pt);
                 pt.listSisCalaExpPointID_main = ExpandOrgPointToSisPoint(pt);
 
                 sb.AppendLine(string.Format(@"update point set tv={0},bv={1},ll={2},hl={3},zl={4},zh={5},mt='{6}',eu='{7}',"+
@@ -490,22 +495,9 @@ namespace HGS
                                         pt.iscalc,pt.isavalarm, pt.ed,pt.isboolvalarm,pt.boolalarminfo, pt.orgformula_hl, pt.orgformula_ll, pt.id));
                 sb.AppendLine(string.Format("delete  from formula_point where id = {0};", pt.id));
                 GetinsertsubSql(sb, pt);
-                /*
-                if (pt.pointsrc == pointsrc.calc && pt.lsCalcOrgSubPoint_main.Count > 0)
-                {
-                    /*
-                    foreach (varlinktopoint supt in pt.lsCalcOrgSubPoint_main)
-                    {
-                        sb.AppendLine(string.Format("insert into formula_point (id,pointid,varname) values({0},{1},'{2}',{3});", 
-                            pt.id, supt.id,supt.varname,(int)cellid.main));
-                    }
-                    
-                }           
-                */
             }
             foreach (point pt in hs_NewPoint)
             {
-                //pt.expformula = ExpandOrgFormula(pt);
                 pt.listSisCalaExpPointID_main = ExpandOrgPointToSisPoint(pt);
 
                 sb.AppendLine(string.Format(@"insert into point (id,nd,pn,ed,eu,tv,bv,ll,hl,zl,"+
@@ -519,14 +511,6 @@ namespace HGS
                                     pt.fm,pt.iscalc,pt.isavalarm,pt.isboolvalarm,pt.boolalarminfo, pt.orgformula_hl, pt.orgformula_ll));
                 GetinsertsubSql(sb, pt);
                 ptid++;
-                /*if (pt.pointsrc == pointsrc.calc && pt.lsCalcOrgSubPoint_main.Count > 0)
-                {
-                    //sb.AppendLine(string.Format("delete  from formula_point where id = {0};", MAXOFPOINTID));//????????????????
-                    foreach (varlinktopoint subpt in pt.lsCalcOrgSubPoint_main)
-                    {
-                        sb.AppendLine(string.Format("insert into formula_point (id,pointid,varname) values({0},{1},'{2}');", pt.id, subpt.id,subpt.varname));
-                    }
-                */
             }
             foreach(point pt in hs_DeletePoint)
             {
@@ -556,7 +540,6 @@ namespace HGS
                     }
                     else
                     {
-                        //pt.expression_main = pt.expformula_main.Length > 0 ? _ce.Parse(pt.expformula_main) : new Expression();
                         hs_calcpoint.Add(pt);
                     }
                     Parse(pt);
@@ -578,7 +561,6 @@ namespace HGS
                 {
                     flagpt = pt;
                     Parse(pt);
-                    //pt.expression_main = pt.expformula_main.Length > 0 ? _ce.Parse(pt.expformula_main) : new Expression() ;
                 }
                 hs_NewPoint.Clear();
                 hs_ModifyPoint.Clear();

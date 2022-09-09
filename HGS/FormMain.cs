@@ -137,6 +137,12 @@ namespace HGS
             VartoPointTable.DelayClear();//释放表；
             foreach (point calcpt in Data.inst().hsCalcPoint)
             {
+                if(!calcpt.iscalc)
+                {
+                    calcpt.ps = PointState.Bad;
+                    calcpt.av = null;
+                    break;
+                }
                 //
                 if (calcpt.isforce)
                 {
@@ -158,9 +164,10 @@ namespace HGS
                     }
                     calcpt.ps = PointState.Good;
                 }
+               
                 try
                 {
-                    if (calcpt.expression_main != null)
+                    if (calcpt.expression_main != null && calcpt.ps == PointState.Good)
                         calcpt.av = Convert.ToDouble(calcpt.expression_main.Evaluate());
                     else calcpt.av = null;
 
@@ -170,11 +177,53 @@ namespace HGS
                     calcpt.ps = PointState.Error;
                     Data.inst().hs_FormulaErrorPoint.Add(calcpt);
                 }
-                //}
-                //加报警
-                AlarmSet.GetInst().Add(calcpt);              
-                tssL_error_nums.Text = Data.inst().hs_FormulaErrorPoint.Count.ToString();
             }
+            //计算报警限值
+            foreach (point calcpt in Data.inst().hsAllPoint)
+            {
+                if (calcpt.orgformula_hl.Length <= 0 && calcpt.orgformula_ll.Length <= 0) break;
+                PointState hlps = PointState.Good;
+                foreach (point pt in calcpt.listSisCalaExpPointID_hl)
+                {
+                    if (pt.ps != PointState.Good)
+                    {
+                        hlps = PointState.Error;
+                        break;
+                    }
+                }
+                PointState llps = PointState.Good;
+                foreach (point pt in calcpt.listSisCalaExpPointID_ll)
+                {
+                    if (pt.ps != PointState.Good)
+                    {
+                        llps = PointState.Error;
+                        break;
+                    }
+                }
+                try
+                {
+                    if (calcpt.expression_hl != null && hlps == PointState.Good)
+                        calcpt.hl = Convert.ToDouble(calcpt.expression_hl.Evaluate());
+                    else calcpt.hl = null;
+
+
+                    if (calcpt.expression_ll != null && llps == PointState.Good)
+                        calcpt.ll = Convert.ToDouble(calcpt.expression_ll.Evaluate());
+                    else calcpt.ll = null;
+
+                }
+                catch (Exception)
+                {
+                    calcpt.ps = PointState.Error;
+                    Data.inst().hs_FormulaErrorPoint.Add(calcpt);
+                }
+                //}
+                //计算完成，加报警
+                AlarmSet.GetInst().Add(calcpt);
+                tssL_error_nums.Text = Data.inst().hs_FormulaErrorPoint.Count.ToString();
+                //
+            }
+
             try
             {
                 AlarmSet.GetInst().SaveAlarmInfo();
