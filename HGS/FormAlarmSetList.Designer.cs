@@ -88,7 +88,7 @@ namespace HGS
             this.tsCB_class.Name = "tsCB_class";
             this.tsCB_class.Size = new System.Drawing.Size(90, 25);
             this.tsCB_class.SelectedIndexChanged += new System.EventHandler(this.tsCB_class_SelectedIndexChanged);
-            this.tsCB_class.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tsTB_AI_KeyUp);
+            this.tsCB_class.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tsTB_PN_KeyDown);
             // 
             // toolStripLabel2
             // 
@@ -100,7 +100,7 @@ namespace HGS
             // 
             this.tsCB_ND.Name = "tsCB_ND";
             this.tsCB_ND.Size = new System.Drawing.Size(90, 25);
-            this.tsCB_ND.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tsTB_AI_KeyUp);
+            this.tsCB_ND.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tsTB_PN_KeyDown);
             // 
             // toolStripLabel3
             // 
@@ -110,10 +110,9 @@ namespace HGS
             // 
             // tsTB_PN
             // 
-            this.tsTB_PN.AcceptsReturn = true;
             this.tsTB_PN.Name = "tsTB_PN";
             this.tsTB_PN.Size = new System.Drawing.Size(100, 25);
-            this.tsTB_PN.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tsTB_AI_KeyUp);
+            this.tsTB_PN.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tsTB_PN_KeyDown);
             // 
             // toolStripLabel4
             // 
@@ -125,7 +124,7 @@ namespace HGS
             // 
             this.tsTB_ED.Name = "tsTB_ED";
             this.tsTB_ED.Size = new System.Drawing.Size(100, 25);
-            this.tsTB_ED.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tsTB_AI_KeyUp);
+            this.tsTB_ED.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tsTB_PN_KeyDown);
             // 
             // toolStripLabel5
             // 
@@ -135,10 +134,9 @@ namespace HGS
             // 
             // tsTB_AI
             // 
-            this.tsTB_AI.AcceptsReturn = true;
             this.tsTB_AI.Name = "tsTB_AI";
             this.tsTB_AI.Size = new System.Drawing.Size(100, 25);
-            this.tsTB_AI.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tsTB_AI_KeyUp);
+            this.tsTB_AI.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tsTB_PN_KeyDown);
             // 
             // tSButton_Find
             // 
@@ -229,12 +227,12 @@ namespace HGS
             glColumn6.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             glColumn6.Width = 150;
             this.glacialList1.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
-            ((GlacialComponents.Controls.GLColumn)(glColumn1)),
-            ((GlacialComponents.Controls.GLColumn)(glColumn2)),
-            ((GlacialComponents.Controls.GLColumn)(glColumn3)),
-            ((GlacialComponents.Controls.GLColumn)(glColumn4)),
-            ((GlacialComponents.Controls.GLColumn)(glColumn5)),
-            ((GlacialComponents.Controls.GLColumn)(glColumn6))});
+            glColumn1,
+            glColumn2,
+            glColumn3,
+            glColumn4,
+            glColumn5,
+            glColumn6});
             this.glacialList1.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
             this.glacialList1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.glacialList1.FullRowSelect = true;
@@ -275,8 +273,7 @@ namespace HGS
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.Name = "FormAlarmSetList";
-            this.Text = "报警信息";
-            this.Load += new System.EventHandler(this.FormAlarmSetList_Load);
+            this.Text = "实时报警信息";
             this.Shown += new System.EventHandler(this.FormAlarmSet_Shown);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();

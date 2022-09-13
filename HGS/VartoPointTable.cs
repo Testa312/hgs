@@ -36,16 +36,20 @@ namespace HGS
         {
             Refresh();
             //if (pt.pointsrc != pointsrc.calc) return null;
-            List<varlinktopoint> lssubpt = new List<varlinktopoint>();
+            List<varlinktopoint> lssubpt = null;
             string strexp = string.Format("id={0} and cellId={1}", pt.id, (int)cellId);
             DataRow[] frow = dt_vartoPoint.Select(strexp);
-            foreach (DataRow dr in frow)
+            if (frow.Length > 0)
             {
-                varlinktopoint subpt = new varlinktopoint();
-                subpt.sub_id = (int)dr["pointid"];
-                subpt.varname = dr["varname"].ToString();
-                //subpt.PointSrc = (pointsrc)(short)dr["pointsrc"];
-                lssubpt.Add(subpt);
+                lssubpt = new List<varlinktopoint>();
+                foreach (DataRow dr in frow)
+                {
+                    varlinktopoint subpt = new varlinktopoint();
+                    subpt.sub_id = (int)dr["pointid"];
+                    subpt.varname = dr["varname"].ToString();
+                    //subpt.PointSrc = (pointsrc)(short)dr["pointsrc"];
+                    lssubpt.Add(subpt);
+                }
             }
             return lssubpt;
         }

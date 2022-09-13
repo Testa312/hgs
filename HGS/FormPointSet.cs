@@ -67,7 +67,7 @@ namespace HGS
                     GLItem itemn = new GLItem(glacialList1);// glacialList1.Items.Add("");//insert 慢
                     lsItem.Add(itemn);
                     it.id = ptx.id;
-
+                    itemn.SubItems["ID"].Text = ptx.id.ToString();
                     itemn.SubItems["ND"].Text = ptx.nd;
                     itemn.SubItems["PN"].Text = ptx.pn;
 
@@ -110,7 +110,9 @@ namespace HGS
             }
             this.Cursor = Cursors.Default;
             timerUpdateValue.Enabled = true;
+            tabControl.Enabled = false;
             DisplayHints();
+            glacialList1.Invalidate();
         }
         private void toolStripButtonAddSis_Click(object sender, EventArgs e)//加sis点
         {     
@@ -119,14 +121,15 @@ namespace HGS
             if (fspl.ShowDialog() == DialogResult.OK)
             {
                 toolStripButtonFind.Enabled = fspl.glacialList.SelectedItems.Count == 0;
+                List<GLItem> lsItem = new List<GLItem>();
                 foreach (GLItem item in fspl.glacialList.SelectedItems)
                 {
                     if (!onlysisid.Contains(((itemtag)(item.Tag)).sisid))
                     {
                         point Point = new point();
-                        GLItem itemn;
-
-                        itemn = glacialList1.Items.Insert(0, "");
+                        GLItem itemn = new GLItem(glacialList1); ;
+                        lsItem.Add(item);
+                        //itemn = glacialList1.Items.Add("");//.Insert(0, "");
                         Point.nd = itemn.SubItems["ND"].Text = fspl.tSCBNode.Text;
                         Point.pn = itemn.SubItems["PN"].Text = item.SubItems["PN"].Text;
                         Point.ed = itemn.SubItems["ED"].Text = item.SubItems["ED"].Text;
@@ -154,6 +157,8 @@ namespace HGS
                             item.SubItems["PN"].Text),"提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
                      };
                 }
+                glacialList1.Items.AddRange(lsItem.ToArray());
+                glacialList1.ScrolltoBottom();
                 DisplayHints();
             }
         }
@@ -177,7 +182,8 @@ namespace HGS
                             { pt.zl = double.Parse(textBoxZL.Text); lsav.Add(Convert.ToDouble(pt.zl)); }
                             else pt.zl = null;
 
-                            if (textBoxLL.Text.Length > 0) { pt.ll = double.Parse(textBoxLL.Text); lsav.Add(Convert.ToDouble(pt.ll)); }
+                            if (textBoxLL.Text.Length > 0 && 
+                                pt.orgformula_ll.Length == 0) { pt.ll = double.Parse(textBoxLL.Text); lsav.Add(Convert.ToDouble(pt.ll)); }
                             else pt.ll = null;
 
                             if (textBoxBV.Text.Length > 0) { pt.bv = double.Parse(textBoxBV.Text); lsav.Add(Convert.ToDouble(pt.bv)); }
@@ -187,7 +193,8 @@ namespace HGS
                             { pt.tv = double.Parse(textBoxTV.Text);lsav.Add(Convert.ToDouble(pt.tv));}
                             else pt.tv = null;                         
 
-                            if (textBoxHL.Text.Length > 0){pt.hl = double.Parse(textBoxHL.Text); lsav.Add(Convert.ToDouble(pt.hl)); }
+                            if (textBoxHL.Text.Length > 0 &&
+                                pt.orgformula_hl.Length == 0){pt.hl = double.Parse(textBoxHL.Text); lsav.Add(Convert.ToDouble(pt.hl)); }
                             else pt.hl = null;
 
                             if (textBoxZH.Text.Length > 0)
@@ -228,29 +235,38 @@ namespace HGS
             {
                 Data.inst().Update(Data.inst().cd_Point[((itemtag)(item.Tag)).id]);
             }
+            int ptid = Data.inst().GetNextPointId();
             foreach (point pt in dic_glItemNew.Values)
             {
+                pt.id = ptid;
                 Data.inst().Add(pt);
                 if (!hs_ND.Contains(pt.nd))
                 {
                     tSCB_ND.Items.Add(pt.nd);
                 }
+                ptid++;
             }
             Data.inst().SavetoPG();
             PointNums += dic_glItemNew.Count;
             hs_glItemModified.Clear();
             dic_glItemNew.Clear();
             toolStripButtonFind.Enabled = true;
+            glacialLisint();
         }
         private void toolStripButtonSave_Click(object sender, EventArgs e)
         {
             try
             {
+                //timerUpdateValue.Enabled = false;
                 Save();
             }
-            catch(Exception ee)
+            catch (Exception ee)
             {
                 MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                //timerUpdateValue.Enabled = true;
             }
             DisplayHints();
         }
@@ -283,21 +299,6 @@ namespace HGS
                     }
                 }             
             }
-            if (tabControl.Enabled &&  glacialList1.SelectedItems.Count > 0)
-            {
-                GLItem item = (GLItem)glacialList1.SelectedItems[0];
-                itemtag it = (itemtag)(item.Tag);
-                point Point = dic_glItemNew.ContainsKey(item) ? dic_glItemNew[item] : Data.inst().cd_Point[it.id];
-                if(Point.orgformula_hl.Length > 0)
-                {
-                    textBoxHL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
-                }
-                if (Point.orgformula_ll.Length > 0)
-                {
-                    textBoxLL.Text = Functions.NullDoubleRount(Point.ll, Point.fm).ToString();
-                }
-
-            }
             DisplayHints();
         }
         private void glacialList1_Click(object sender, EventArgs e)
@@ -319,10 +320,26 @@ namespace HGS
                 checkBoxbool.Checked = Point.isboolvalarm;
                 tB_boolAlarmInfo.Text = Point.boolalarminfo;
                 if(Point.boolalarminfo.Length<=0)
-                    tB_boolAlarmInfo.Text = item.SubItems["PN"].Text;
+                    tB_boolAlarmInfo.Text = item.SubItems["ED"].Text;
                 buttonCalc.Enabled = (it.PointSrc == pointsrc.calc) ? true : false;
 
                 label_formula.Text = Point.orgformula_main;
+                //
+                button_HL.ForeColor = Color.Black;
+                button_LL.ForeColor = Color.Black;
+                if (Point.orgformula_hl.Length > 0)
+                {
+                    button_HL.ForeColor = Color.Red;
+                    //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
+                }
+                if (Point.orgformula_ll.Length > 0)
+                {
+                    button_LL.ForeColor = Color.Red;
+                    //button_LL.Text = Functions.NullDoubleRount(Point.ll, Point.fm).ToString();
+                }
+                textBoxHL.Enabled = Point.orgformula_hl.Length == 0;
+                textBoxLL.Enabled = Point.orgformula_ll.Length == 0;
+
             }
             tabControl.Enabled = glacialList1.SelectedItems.Count > 0;
         }
@@ -336,7 +353,7 @@ namespace HGS
             {
                 toolStripButtonFind.Enabled = false;
 
-                GLItem itemn = glacialList1.Items.Insert(0, "");
+                GLItem itemn = glacialList1.Items.Add("");//.Insert(0, "");
                 GLColumnCollection glcols = glacialList1.Columns;
 
                 itemn.SubItems["ND"].Text = fcps.CalcPoint.nd;
@@ -352,7 +369,10 @@ namespace HGS
                 AlarmSubItemSet(itemn, fcps.CalcPoint);
                 dic_glItemNew.Add(itemn, fcps.CalcPoint);
                 DisplayHints();
+                //glacialList1.AutoScrollOffset = new Point(0, glacialList1.Height - glacialList1.AutoScrollOffset.Y);
+                glacialList1.ScrolltoBottom();
             }
+           
         }
 
         private void buttonCalcSet_Click(object sender, EventArgs e)
@@ -391,9 +411,9 @@ namespace HGS
         }
         private void toolStripButtonDelete_Click(object sender, EventArgs e)
         {
-            if (glacialList1.SelectedItems.Count == 1)
+            foreach(GLItem itemn in  glacialList1.SelectedItems)//.Count == 1)
             {
-                GLItem itemn = (GLItem)glacialList1.SelectedItems[0];
+                //GLItem itemn = (GLItem)glacialList1.SelectedItems[0];
                 itemtag it = (itemtag)itemn.Tag;
 
                 List<int> lspid = VartoPointTable.GetDeletePointIdList(it.id);
@@ -406,7 +426,7 @@ namespace HGS
                         dic_glItemNew.Remove(itemn);
                         glacialList1.Items.Remove(itemn);
                     }
-                    return;
+                    continue;
                 }
                 else if (lspid.Count > 0)
                 {
@@ -418,7 +438,7 @@ namespace HGS
                         sb.AppendLine(string.Format("[id:{0}]-{1}", pt.id, pt.ed));
                     }
                     MessageBox.Show(sb.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    continue;
                 }
                 if (DialogResult.OK == MessageBox.Show(string.Format("是否删除点[{0}]-{1}？",
                     itemn.SubItems["PN"].Text,itemn.SubItems["ED"].Text), "提示",
@@ -499,16 +519,6 @@ namespace HGS
             强制点ToolStripMenuItem.Visible = glacialList1.SelectedItems.Count == 1;
         }
 
-        private void tSTB_ED_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                glacialLisint();
-                glacialList1.Invalidate();
-                e.Handled = true;
-            }
-        }
-
         private void button_HL_Click(object sender, EventArgs e)
         {
             if (glacialList1.SelectedItems.Count == 1)
@@ -528,7 +538,13 @@ namespace HGS
                         hs_glItemModified.Add(itemn);
                         Data.inst().hs_FormulaErrorPoint.Remove(fcps.CalcPoint);
                     }
-                   // DisplayHints();
+                    button_HL.ForeColor = Color.Black;
+                    if (fcps.CalcPoint.orgformula_hl.Length > 0)
+                    {
+                        button_HL.ForeColor = Color.Red;
+                        //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
+                    }
+                    textBoxHL.Enabled = fcps.CalcPoint.orgformula_hl.Length == 0;
                 }
                 //itemn.Tag = it;
                 
@@ -554,11 +570,25 @@ namespace HGS
                         hs_glItemModified.Add(itemn);
                         Data.inst().hs_FormulaErrorPoint.Remove(fcps.CalcPoint);
                     }
-                    // DisplayHints();
+                    button_LL.ForeColor = Color.Black;
+                    if (fcps.CalcPoint.orgformula_ll.Length > 0)
+                    {
+                        button_LL.ForeColor = Color.Red;
+                        //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
+                    }
+                    textBoxLL.Enabled = fcps.CalcPoint.orgformula_ll.Length == 0;
                 }
                 //itemn.Tag = it;
 
             }
+        }
+
+        private void tSB_Cancel_Click(object sender, EventArgs e)
+        {
+            hs_glItemModified.Clear();
+            dic_glItemNew.Clear();
+            Data.inst().DeleteClear();
+            toolStripButtonFind.Enabled = true;
         }
     }
 }

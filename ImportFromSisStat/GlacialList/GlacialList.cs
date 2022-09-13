@@ -267,9 +267,9 @@ namespace GlacialComponents.Controls
 
 
 			this.components = new System.ComponentModel.Container();
-            //System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(GlacialList));
-            System.Resources.ResourceManager resources = new System.Resources.ResourceManager("HGS.GlacialList.GlacialList",
-                Assembly.GetExecutingAssembly());
+            System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(GlacialList));
+            ///System.Resources.ResourceManager resources = new System.Resources.ResourceManager("ImportFromSisStat.GlacialList.GlacialList",
+                //Assembly.GetExecutingAssembly());
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 			// 
 			// imageList1

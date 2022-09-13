@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F55A899F-7C03-49BC-8950-8DC89F5732E6}</ProjectGuid>
+    <ProjectGuid>{8CF524C5-EEB8-443A-B1A8-F40A13E4C05A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Login_test</RootNamespace>
-    <AssemblyName>Login_test</AssemblyName>
+    <RootNamespace>ImportFromSisStat</RootNamespace>
+    <AssemblyName>ImportFromSisStat</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -32,19 +32,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Server|AnyCPU'">
-    <OutputPath>bin\Server\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -62,16 +53,60 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormLogin.cs">
-      <SubType>Form</SubType>
+    <Compile Include="GlacialList\BorderStrip.cs">
+      <SubType>Component</SubType>
     </Compile>
-    <Compile Include="FormLogin.Designer.cs">
-      <DependentUpon>FormLogin.cs</DependentUpon>
+    <Compile Include="GlacialList\ColumnCollection.cs" />
+    <Compile Include="GlacialList\GlacialList.cs">
+      <SubType>Component</SubType>
     </Compile>
+    <Compile Include="GlacialList\GLComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GlacialList\GLDateTimePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GlacialList\GLEmbeddedControl.cs" />
+    <Compile Include="GlacialList\GLMergeSort.cs" />
+    <Compile Include="GlacialList\GLQuickSort.cs" />
+    <Compile Include="GlacialList\GLTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GlacialList\HelperFunctions.cs" />
+    <Compile Include="GlacialList\ItemCollection.cs" />
+    <Compile Include="GlacialList\ManagedHScrollBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GlacialList\ManagedVScrollBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GlacialList\ThemeRoutines.cs" />
+    <Compile Include="GlacialList\Win32.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GlacialList\BorderStrip.resx">
+      <DependentUpon>BorderStrip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GlacialList\GlacialList.resx">
+      <DependentUpon>GlacialList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GlacialList\GLComboBox.resx">
+      <DependentUpon>GLComboBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GlacialList\GLDateTimePicker.resx">
+      <DependentUpon>GLDateTimePicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GlacialList\GLTextBox.resx">
+      <DependentUpon>GLTextBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GlacialList\ManagedHScrollBar.resx">
+      <DependentUpon>ManagedHScrollBar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GlacialList\ManagedVScrollBar.resx">
+      <DependentUpon>ManagedVScrollBar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -94,6 +129,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="GlacialList\Readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

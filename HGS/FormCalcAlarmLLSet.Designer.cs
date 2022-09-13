@@ -276,6 +276,8 @@
             // checkBoxCalc
             // 
             this.checkBoxCalc.AutoSize = true;
+            this.checkBoxCalc.Checked = true;
+            this.checkBoxCalc.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxCalc.Enabled = false;
             this.checkBoxCalc.Location = new System.Drawing.Point(153, 57);
             this.checkBoxCalc.Name = "checkBoxCalc";
@@ -375,6 +377,7 @@
             // 
             // textBoxFormula
             // 
+            this.textBoxFormula.AcceptsReturn = true;
             this.textBoxFormula.Location = new System.Drawing.Point(23, 88);
             this.textBoxFormula.Multiline = true;
             this.textBoxFormula.Name = "textBoxFormula";
@@ -426,6 +429,7 @@
             // 
             // FormCalcAlarmLLSet
             // 
+            this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(728, 523);

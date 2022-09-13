@@ -32,29 +32,32 @@ namespace HGS
             PointNums = 0;
             timer1.Enabled = false;
             List<GLItem> lsItmems = new List<GLItem>();
-            foreach (varlinktopoint subpt in CalcPoint.lsCalcOrgSubPoint_ll)
+            if (CalcPoint.lsCalcOrgSubPoint_ll != null)
             {
-                GLItem itemn = new GLItem(glacialList1);
-                lsItmems.Add(itemn);
-                itemtag it = new itemtag();
-               
-                point Point = Data.inst().cd_Point[subpt.sub_id];
+                foreach (varlinktopoint subpt in CalcPoint.lsCalcOrgSubPoint_ll)
+                {
+                    GLItem itemn = new GLItem(glacialList1);
+                    lsItmems.Add(itemn);
+                    itemtag it = new itemtag();
 
-                it.id = subpt.sub_id;
-               
-                itemn.SubItems["ND"].Text = Point.nd;
-                itemn.SubItems["PN"].Text = Point.pn;
+                    point Point = Data.inst().cd_Point[subpt.sub_id];
 
-                itemn.SubItems["EU"].Text = Point.eu;
-                itemn.SubItems["ED"].Text = Point.ed;
-                //itemn.SubItems[1].Text = Pref.GetInst().GetVarName(Point);
-                it.sisid = Point.id_sis;
-                if (onlyid.Contains(CalcPoint.id)) throw new Exception("不能引用自身！");
-                onlyid.Add(it.id);//唯一性
-                //
-                itemn.SubItems["VarName"].Text = subpt.varname;                
-                itemn.Tag = it;
-                PointNums++;
+                    it.id = subpt.sub_id;
+
+                    itemn.SubItems["ND"].Text = Point.nd;
+                    itemn.SubItems["PN"].Text = Point.pn;
+
+                    itemn.SubItems["EU"].Text = Point.eu;
+                    itemn.SubItems["ED"].Text = Point.ed;
+                    //itemn.SubItems[1].Text = Pref.GetInst().GetVarName(Point);
+                    it.sisid = Point.id_sis;
+                    if (onlyid.Contains(CalcPoint.id)) throw new Exception("不能引用自身！");
+                    onlyid.Add(it.id);//唯一性
+                                      //
+                    itemn.SubItems["VarName"].Text = subpt.varname;
+                    itemn.Tag = it;
+                    PointNums++;
+                }
             }
             glacialList1.Items.AddRange(lsItmems.ToArray());
             onlyid.Add(CalcPoint.id);//排除自已。
@@ -149,7 +152,7 @@ namespace HGS
             HashSet<string> hsVar = new HashSet<string>();
             CalcEngine.CalcEngine ce = new CalcEngine.CalcEngine();
             point Point = new point();
-
+            Point.lsCalcOrgSubPoint_ll = new List<varlinktopoint>();
             //-----
             //可加内部变量
             //hsVar.Add(???);
@@ -203,9 +206,9 @@ namespace HGS
             try
             {
                 Dovalidity(false);
-                CalcPoint.orgformula_ll = textBoxFormula.Text;
+                CalcPoint.orgformula_ll = textBoxFormula.Text.Trim().Replace("\r\n", ""); ;
 
-                CalcPoint.lsCalcOrgSubPoint_ll.Clear();
+                CalcPoint.lsCalcOrgSubPoint_ll = new List<varlinktopoint>();
 
                 foreach (GLItem item in glacialList1.Items)
                 {

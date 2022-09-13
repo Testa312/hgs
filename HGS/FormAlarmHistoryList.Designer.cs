@@ -122,7 +122,7 @@ namespace HGS
             // 
             this.tsCB_class.Name = "tsCB_class";
             this.tsCB_class.Size = new System.Drawing.Size(121, 25);
-            this.tsCB_class.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tsTB_ND_KeyUp);
+            this.tsCB_class.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tsTB_ND_KeyDown);
             // 
             // toolStripLabel2
             // 
@@ -134,7 +134,7 @@ namespace HGS
             // 
             this.tsTB_ND.Name = "tsTB_ND";
             this.tsTB_ND.Size = new System.Drawing.Size(100, 25);
-            this.tsTB_ND.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tsTB_ND_KeyUp);
+            this.tsTB_ND.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tsTB_ND_KeyDown);
             // 
             // toolStripLabel3
             // 
@@ -146,7 +146,7 @@ namespace HGS
             // 
             this.tsTB_PN.Name = "tsTB_PN";
             this.tsTB_PN.Size = new System.Drawing.Size(100, 25);
-            this.tsTB_PN.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tsTB_ND_KeyUp);
+            this.tsTB_PN.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tsTB_ND_KeyDown);
             // 
             // toolStripLabel4
             // 
@@ -158,7 +158,7 @@ namespace HGS
             // 
             this.tsTB_ED.Name = "tsTB_ED";
             this.tsTB_ED.Size = new System.Drawing.Size(100, 25);
-            this.tsTB_ED.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tsTB_ND_KeyUp);
+            this.tsTB_ED.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tsTB_ND_KeyDown);
             // 
             // toolStripButton1
             // 

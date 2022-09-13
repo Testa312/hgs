@@ -169,13 +169,14 @@ namespace HGS
             glacialList_UP_Click(sender, e);
         }
 
-        private void tsTB_ND_KeyUp(object sender, KeyEventArgs e)
+        private void tsTB_ND_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
                 glacialListInit();
                 glacialList_UP.Invalidate();
                 e.Handled = true;
+                e.SuppressKeyPress = true;
             }
         }
     }

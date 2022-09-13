@@ -80,7 +80,7 @@ namespace HGS
             tsCB_class.SelectedIndex = Auth.GetInst().LoginID;
         }
 
-        private void tsTB_AI_KeyUp(object sender, KeyEventArgs e)
+        private void tsTB_PN_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -89,12 +89,8 @@ namespace HGS
                 timer_GetAlarm_Tick(sender, e);
                 glacialList1.Invalidate();
                 e.Handled = true;
+                e.SuppressKeyPress = true;
             }
-        }
-
-        private void FormAlarmSetList_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

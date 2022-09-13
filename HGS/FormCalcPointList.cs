@@ -122,5 +122,16 @@ namespace HGS
         {
             //if (tSCBNode.Items.Count > 0) tSCBNode.SelectedIndex = 0;这样写有问题。
         }
+
+        private void tSTBPN_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                glacialLisint(onlyid);
+                glacialList.Invalidate();
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+        }
     }
 }

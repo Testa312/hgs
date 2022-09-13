@@ -134,13 +134,16 @@ namespace HGS
         }
         private PointState GetCalcPointState(List<point> hsp)
         {
-            PointState ps = PointState.Good; ;
-            foreach (point pt in hsp)
-            {
-                if (pt.ps != PointState.Good)
+            PointState ps = PointState.Good; 
+            if (hsp != null)
+            {             
+                foreach (point pt in hsp)
                 {
-                    ps = PointState.Error;
-                    break;
+                    if (pt.ps != PointState.Good)
+                    {
+                        ps = PointState.Error;
+                        break;
+                    }
                 }
             }
             return ps;
@@ -159,7 +162,7 @@ namespace HGS
                 {
                     calcpt.ps = PointState.Bad;
                     calcpt.av = null;
-                    break;
+                    continue;
                 }
                 //
                 if (calcpt.isforce)
@@ -231,6 +234,7 @@ namespace HGS
                 //
             }
             tssL_error_nums.Text = Data.inst().hs_FormulaErrorPoint.Count.ToString();
+#if SERVER
             try
             {
                 AlarmSet.GetInst().SaveAlarmInfo();
@@ -241,6 +245,7 @@ namespace HGS
                 MessageBox.Show("保存历史出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);            
 #endif
             };
+#endif
         }
 
         private void 报警记录ToolStripMenuItem_Click(object sender, EventArgs e)

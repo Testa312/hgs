@@ -46,20 +46,20 @@
             this.tabPageCalc = new System.Windows.Forms.TabPage();
             this.numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.checkBoxCalc = new System.Windows.Forms.CheckBox();
+            this.comboBox_eu = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonCancell = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.buttonTest = new System.Windows.Forms.Button();
+            this.textBoxPN = new System.Windows.Forms.TextBox();
+            this.textBoxmDiscription = new System.Windows.Forms.TextBox();
             this.textBoxFormula = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.tSSLabel_varnums = new System.Windows.Forms.ToolStripStatusLabel();
-            this.textBoxPN = new System.Windows.Forms.TextBox();
-            this.textBoxmDiscription = new System.Windows.Forms.TextBox();
-            this.comboBox_eu = new System.Windows.Forms.ComboBox();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -276,6 +276,8 @@
             // checkBoxCalc
             // 
             this.checkBoxCalc.AutoSize = true;
+            this.checkBoxCalc.Checked = true;
+            this.checkBoxCalc.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxCalc.Enabled = false;
             this.checkBoxCalc.Location = new System.Drawing.Point(153, 57);
             this.checkBoxCalc.Name = "checkBoxCalc";
@@ -283,6 +285,30 @@
             this.checkBoxCalc.TabIndex = 5;
             this.checkBoxCalc.Text = "计算";
             this.checkBoxCalc.UseVisualStyleBackColor = true;
+            // 
+            // comboBox_eu
+            // 
+            this.comboBox_eu.Enabled = false;
+            this.comboBox_eu.FormattingEnabled = true;
+            this.comboBox_eu.Items.AddRange(new object[] {
+            "℃",
+            "A",
+            "kA",
+            "V",
+            "kV",
+            "t/h",
+            "Pa",
+            "kPa",
+            "MPa",
+            "t",
+            "%",
+            "J",
+            "kJ",
+            "MJ"});
+            this.comboBox_eu.Location = new System.Drawing.Point(265, 54);
+            this.comboBox_eu.Name = "comboBox_eu";
+            this.comboBox_eu.Size = new System.Drawing.Size(53, 20);
+            this.comboBox_eu.TabIndex = 3;
             // 
             // label2
             // 
@@ -333,8 +359,25 @@
             this.buttonTest.UseVisualStyleBackColor = true;
             this.buttonTest.Click += new System.EventHandler(this.buttonTest_Click);
             // 
+            // textBoxPN
+            // 
+            this.textBoxPN.Enabled = false;
+            this.textBoxPN.Location = new System.Drawing.Point(375, 18);
+            this.textBoxPN.Name = "textBoxPN";
+            this.textBoxPN.Size = new System.Drawing.Size(100, 21);
+            this.textBoxPN.TabIndex = 2;
+            // 
+            // textBoxmDiscription
+            // 
+            this.textBoxmDiscription.Enabled = false;
+            this.textBoxmDiscription.Location = new System.Drawing.Point(68, 18);
+            this.textBoxmDiscription.Name = "textBoxmDiscription";
+            this.textBoxmDiscription.Size = new System.Drawing.Size(250, 21);
+            this.textBoxmDiscription.TabIndex = 2;
+            // 
             // textBoxFormula
             // 
+            this.textBoxFormula.AcceptsReturn = true;
             this.textBoxFormula.Location = new System.Drawing.Point(23, 88);
             this.textBoxFormula.Multiline = true;
             this.textBoxFormula.Name = "textBoxFormula";
@@ -384,48 +427,9 @@
             this.tSSLabel_varnums.Size = new System.Drawing.Size(56, 17);
             this.tSSLabel_varnums.Text = "变量数：";
             // 
-            // textBoxPN
-            // 
-            this.textBoxPN.Enabled = false;
-            this.textBoxPN.Location = new System.Drawing.Point(375, 18);
-            this.textBoxPN.Name = "textBoxPN";
-            this.textBoxPN.Size = new System.Drawing.Size(100, 21);
-            this.textBoxPN.TabIndex = 2;
-            // 
-            // textBoxmDiscription
-            // 
-            this.textBoxmDiscription.Enabled = false;
-            this.textBoxmDiscription.Location = new System.Drawing.Point(68, 18);
-            this.textBoxmDiscription.Name = "textBoxmDiscription";
-            this.textBoxmDiscription.Size = new System.Drawing.Size(250, 21);
-            this.textBoxmDiscription.TabIndex = 2;
-            // 
-            // comboBox_eu
-            // 
-            this.comboBox_eu.Enabled = false;
-            this.comboBox_eu.FormattingEnabled = true;
-            this.comboBox_eu.Items.AddRange(new object[] {
-            "℃",
-            "A",
-            "kA",
-            "V",
-            "kV",
-            "t/h",
-            "Pa",
-            "kPa",
-            "MPa",
-            "t",
-            "%",
-            "J",
-            "kJ",
-            "MJ"});
-            this.comboBox_eu.Location = new System.Drawing.Point(265, 54);
-            this.comboBox_eu.Name = "comboBox_eu";
-            this.comboBox_eu.Size = new System.Drawing.Size(53, 20);
-            this.comboBox_eu.TabIndex = 3;
-            // 
             // FormCalcAlarmHlSet
             // 
+            this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(728, 523);

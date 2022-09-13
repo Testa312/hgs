@@ -32,29 +32,32 @@ namespace HGS
             PointNums = 0;
             timer1.Enabled = false;
             List<GLItem> lsItmems = new List<GLItem>();
-            foreach (varlinktopoint subpt in CalcPoint.lsCalcOrgSubPoint_main)
+            if (CalcPoint.lsCalcOrgSubPoint_main != null)
             {
-                GLItem itemn = new GLItem(glacialList1);
-                lsItmems.Add(itemn);
-                itemtag it = new itemtag();
-               
-                point Point = Data.inst().cd_Point[subpt.sub_id];
+                foreach (varlinktopoint subpt in CalcPoint.lsCalcOrgSubPoint_main)
+                {
+                    GLItem itemn = new GLItem(glacialList1);
+                    lsItmems.Add(itemn);
+                    itemtag it = new itemtag();
 
-                it.id = subpt.sub_id;
-               
-                itemn.SubItems["ND"].Text = Point.nd;
-                itemn.SubItems["PN"].Text = Point.pn;
+                    point Point = Data.inst().cd_Point[subpt.sub_id];
 
-                itemn.SubItems["EU"].Text = Point.eu;
-                itemn.SubItems["ED"].Text = Point.ed;
-                //itemn.SubItems[1].Text = Pref.GetInst().GetVarName(Point);
-                it.sisid = Point.id_sis;
-                if (onlyid.Contains(CalcPoint.id)) throw new Exception("不能引用自身！");
-                onlyid.Add(it.id);//唯一性
-                //
-                itemn.SubItems["VarName"].Text = subpt.varname;                
-                itemn.Tag = it;
-                PointNums++;
+                    it.id = subpt.sub_id;
+
+                    itemn.SubItems["ND"].Text = Point.nd;
+                    itemn.SubItems["PN"].Text = Point.pn;
+
+                    itemn.SubItems["EU"].Text = Point.eu;
+                    itemn.SubItems["ED"].Text = Point.ed;
+                    //itemn.SubItems[1].Text = Pref.GetInst().GetVarName(Point);
+                    it.sisid = Point.id_sis;
+                    if (onlyid.Contains(CalcPoint.id)) throw new Exception("不能引用自身！");
+                    onlyid.Add(it.id);//唯一性
+                                      //
+                    itemn.SubItems["VarName"].Text = subpt.varname;
+                    itemn.Tag = it;
+                    PointNums++;
+                }
             }
             glacialList1.Items.AddRange(lsItmems.ToArray());
             onlyid.Add(CalcPoint.id);//排除自已。
@@ -149,7 +152,7 @@ namespace HGS
             HashSet<string> hsVar = new HashSet<string>();
             CalcEngine.CalcEngine ce = new CalcEngine.CalcEngine();
             point Point = new point();
-
+            Point.lsCalcOrgSubPoint_main = new List<varlinktopoint>();
             //-----
             //可加内部变量
             //hsVar.Add(???);
@@ -183,7 +186,7 @@ namespace HGS
 
                 ce.Variables[subpt.varname] = Data.inst().cd_Point[it.id].av;//测试用。
             }          
-            Point.orgformula_main = textBoxFormula.Text;
+            Point.orgformula_main = textBoxFormula.Text.Trim().Replace("\r\n","");//去掉回车
             Point.fm = (byte)numericUpDown.Value;
             double? orgv = null;
             if(Point.orgformula_main.Length > 0)
@@ -192,7 +195,7 @@ namespace HGS
             ce.Variables = Data.inst().Variables;
             double? expv = null;
             if(Point.orgformula_main.Length > 0)
-                expv = Math.Round(Convert.ToDouble(ce.Evaluate(Data.inst().ExpandOrgFormula(Point))), Point.fm);//验证表达式展开sis点的合法性。
+                expv = Math.Round(Convert.ToDouble(ce.Evaluate(Data.inst().ExpandOrgFormula_Main(Point))), Point.fm);//验证表达式展开sis点的合法性。
             if(rsl)
                 MessageBox.Show(string.Format("原公式计算值＝{0}\n展开公式计算值＝{1}",orgv,expv), 
                     "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -203,7 +206,7 @@ namespace HGS
             {
                 Dovalidity(false);
                 CalcPoint.ed = textBoxmDiscription.Text;
-                CalcPoint.orgformula_main = textBoxFormula.Text;
+                CalcPoint.orgformula_main = textBoxFormula.Text.Trim().Replace("\r\n", "");//去掉回车
                 CalcPoint.eu = comboBox_eu.Text;
                 CalcPoint.pn = textBoxPN.Text;
                 CalcPoint.ownerid = Auth.GetInst().LoginID;
@@ -213,15 +216,18 @@ namespace HGS
                 CalcPoint.iscalc = checkBoxCalc.Checked;
                 CalcPoint.fm = (byte)numericUpDown.Value;
 
-                CalcPoint.lsCalcOrgSubPoint_main.Clear();
-
-                foreach (GLItem item in glacialList1.Items)
+                if (glacialList1.Items.Count > 0)
                 {
-                    itemtag it = (itemtag)item.Tag;
-                    varlinktopoint subpt = new varlinktopoint();
-                    subpt.varname = item.SubItems["VarName"].Text;
-                    subpt.sub_id = it.id;
-                    CalcPoint.lsCalcOrgSubPoint_main.Add(subpt);
+                    CalcPoint.lsCalcOrgSubPoint_main = new List<varlinktopoint>();
+                    //CalcPoint.lsCalcOrgSubPoint_main.Clear();
+                    foreach (GLItem item in glacialList1.Items)
+                    {
+                        itemtag it = (itemtag)item.Tag;
+                        varlinktopoint subpt = new varlinktopoint();
+                        subpt.varname = item.SubItems["VarName"].Text;
+                        subpt.sub_id = it.id;
+                        CalcPoint.lsCalcOrgSubPoint_main.Add(subpt);
+                    }
                 }
             }
             catch (Exception ee)
