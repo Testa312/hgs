@@ -75,8 +75,10 @@ namespace HGS
                     itemn.SubItems["ED"].Text = ptx.ed;
                     itemn.SubItems["TV"].Text = ptx.tv.ToString();
                     itemn.SubItems["BV"].Text = ptx.bv.ToString();
-                    itemn.SubItems["LL"].Text = ptx.ll.ToString();
-                    itemn.SubItems["HL"].Text = ptx.hl.ToString();
+                    itemn.SubItems["LL"].Text = Functions. NullDoubleRount(ptx.ll,ptx.fm).ToString();
+
+                    itemn.SubItems["HL"].Text = Functions. NullDoubleRount(ptx.hl,ptx.fm).ToString();
+                    
                     itemn.SubItems["ZL"].Text = ptx.zl.ToString();
                     itemn.SubItems["ZH"].Text = ptx.zh.ToString();
                     itemn.SubItems["AlarmInfo"].Text = ptx.alarmininfo;
@@ -267,40 +269,32 @@ namespace HGS
                 {
                     //bool sss = dic_glItemNew.ContainsKey(item);
                     point pt = dic_glItemNew.ContainsKey(item) ? dic_glItemNew[item] : Data.inst().cd_Point[it.id];
-                    if (pt.av != null)
-                    {
-                        double dAV = pt.av ?? 0;
-                        item.SubItems["AV"].Text =  Math.Round(dAV,pt.fm).ToString();
-                    }
-                    else
-                        item.SubItems["AV"].Text = "";
+                    item.SubItems["AV"].Text = Functions.NullDoubleRount(pt.av, pt.fm).ToString();                   
                     item.SubItems["DS"].Text = pt.ps.ToString();
+                    item.SubItems["AlarmInfo"].Text = pt.alarmininfo;
+                    //
+                    if (pt.orgformula_hl.Length > 0)
+                    {
+                        item.SubItems["HL"].Text = Functions.NullDoubleRount(pt.hl, pt.fm).ToString();
+                    }
+                    if (pt.orgformula_ll.Length > 0)
+                    {
+                        item.SubItems["LL"].Text = Functions.NullDoubleRount(pt.ll, pt.fm).ToString();
+                    }
                 }             
             }
-            if (tabControl.Enabled)
+            if (tabControl.Enabled &&  glacialList1.SelectedItems.Count > 0)
             {
                 GLItem item = (GLItem)glacialList1.SelectedItems[0];
                 itemtag it = (itemtag)(item.Tag);
                 point Point = dic_glItemNew.ContainsKey(item) ? dic_glItemNew[item] : Data.inst().cd_Point[it.id];
                 if(Point.orgformula_hl.Length > 0)
                 {
-                    if (Point.hl != null)
-                    {
-                        double dAV = Point.hl ?? 0;
-                        textBoxHL.Text = Math.Round(dAV, Point.fm).ToString();
-                    }
-                    else
-                        textBoxHL.Text = "";
+                    textBoxHL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
                 }
                 if (Point.orgformula_ll.Length > 0)
                 {
-                    if (Point.ll != null)
-                    {
-                        double dAV = Point.ll ?? 0;
-                        textBoxLL.Text = Math.Round(dAV, Point.fm).ToString();
-                    }
-                    else
-                        textBoxLL.Text = "";
+                    textBoxLL.Text = Functions.NullDoubleRount(Point.ll, Point.fm).ToString();
                 }
 
             }
@@ -508,7 +502,11 @@ namespace HGS
         private void tSTB_ED_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
+            {
                 glacialLisint();
+                glacialList1.Invalidate();
+                e.Handled = true;
+            }
         }
 
         private void button_HL_Click(object sender, EventArgs e)

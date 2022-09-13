@@ -45,6 +45,7 @@ namespace HGS
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.tsCB_class = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.tsTB_ND = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
             this.tsTB_PN = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
@@ -52,20 +53,19 @@ namespace HGS
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.glacialList_UP = new GlacialComponents.Controls.GlacialList();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.glacialList_Down = new GlacialComponents.Controls.GlacialList();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.label1 = new System.Windows.Forms.Label();
-            this.dateTimePickerFrom = new System.Windows.Forms.DateTimePicker();
-            this.label2 = new System.Windows.Forms.Label();
-            this.dateTimePickerTo = new System.Windows.Forms.DateTimePicker();
-            this.buttonAlarmFind = new System.Windows.Forms.Button();
-            this.button1H = new System.Windows.Forms.Button();
-            this.button2H = new System.Windows.Forms.Button();
-            this.button1D = new System.Windows.Forms.Button();
             this.button7D = new System.Windows.Forms.Button();
-            this.button8h = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.tsTB_ND = new System.Windows.Forms.ToolStripTextBox();
+            this.button1D = new System.Windows.Forms.Button();
+            this.button8h = new System.Windows.Forms.Button();
+            this.button2H = new System.Windows.Forms.Button();
+            this.button1H = new System.Windows.Forms.Button();
+            this.buttonAlarmFind = new System.Windows.Forms.Button();
+            this.dateTimePickerTo = new System.Windows.Forms.DateTimePicker();
+            this.label2 = new System.Windows.Forms.Label();
+            this.dateTimePickerFrom = new System.Windows.Forms.DateTimePicker();
+            this.label1 = new System.Windows.Forms.Label();
+            this.glacialList_Down = new GlacialComponents.Controls.GlacialList();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -122,12 +122,19 @@ namespace HGS
             // 
             this.tsCB_class.Name = "tsCB_class";
             this.tsCB_class.Size = new System.Drawing.Size(121, 25);
+            this.tsCB_class.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tsTB_ND_KeyUp);
             // 
             // toolStripLabel2
             // 
             this.toolStripLabel2.Name = "toolStripLabel2";
             this.toolStripLabel2.Size = new System.Drawing.Size(44, 22);
             this.toolStripLabel2.Text = "节点：";
+            // 
+            // tsTB_ND
+            // 
+            this.tsTB_ND.Name = "tsTB_ND";
+            this.tsTB_ND.Size = new System.Drawing.Size(100, 25);
+            this.tsTB_ND.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tsTB_ND_KeyUp);
             // 
             // toolStripLabel3
             // 
@@ -139,6 +146,7 @@ namespace HGS
             // 
             this.tsTB_PN.Name = "tsTB_PN";
             this.tsTB_PN.Size = new System.Drawing.Size(100, 25);
+            this.tsTB_PN.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tsTB_ND_KeyUp);
             // 
             // toolStripLabel4
             // 
@@ -150,6 +158,7 @@ namespace HGS
             // 
             this.tsTB_ED.Name = "tsTB_ED";
             this.tsTB_ED.Size = new System.Drawing.Size(100, 25);
+            this.tsTB_ED.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tsTB_ND_KeyUp);
             // 
             // toolStripButton1
             // 
@@ -241,7 +250,7 @@ namespace HGS
             this.glacialList_UP.ShowBorder = true;
             this.glacialList_UP.ShowFocusRect = false;
             this.glacialList_UP.Size = new System.Drawing.Size(906, 199);
-            this.glacialList_UP.SortType = GlacialComponents.Controls.SortTypes.InsertionSort;
+            this.glacialList_UP.SortType = GlacialComponents.Controls.SortTypes.QuickSort;
             this.glacialList_UP.SuperFlatHeaderColor = System.Drawing.Color.White;
             this.glacialList_UP.TabIndex = 2;
             this.glacialList_UP.Text = "glacialList1";
@@ -265,6 +274,141 @@ namespace HGS
             this.splitContainer1.Size = new System.Drawing.Size(906, 403);
             this.splitContainer1.SplitterDistance = 199;
             this.splitContainer1.TabIndex = 3;
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.button7D);
+            this.splitContainer2.Panel1.Controls.Add(this.button1);
+            this.splitContainer2.Panel1.Controls.Add(this.button1D);
+            this.splitContainer2.Panel1.Controls.Add(this.button8h);
+            this.splitContainer2.Panel1.Controls.Add(this.button2H);
+            this.splitContainer2.Panel1.Controls.Add(this.button1H);
+            this.splitContainer2.Panel1.Controls.Add(this.buttonAlarmFind);
+            this.splitContainer2.Panel1.Controls.Add(this.dateTimePickerTo);
+            this.splitContainer2.Panel1.Controls.Add(this.label2);
+            this.splitContainer2.Panel1.Controls.Add(this.dateTimePickerFrom);
+            this.splitContainer2.Panel1.Controls.Add(this.label1);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.glacialList_Down);
+            this.splitContainer2.Size = new System.Drawing.Size(906, 200);
+            this.splitContainer2.SplitterDistance = 40;
+            this.splitContainer2.TabIndex = 1;
+            // 
+            // button7D
+            // 
+            this.button7D.Location = new System.Drawing.Point(810, 10);
+            this.button7D.Name = "button7D";
+            this.button7D.Size = new System.Drawing.Size(43, 23);
+            this.button7D.TabIndex = 2;
+            this.button7D.Text = "1周";
+            this.button7D.UseVisualStyleBackColor = true;
+            this.button7D.Click += new System.EventHandler(this.button7D_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(758, 10);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(43, 23);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "2天";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button1D
+            // 
+            this.button1D.Location = new System.Drawing.Point(706, 10);
+            this.button1D.Name = "button1D";
+            this.button1D.Size = new System.Drawing.Size(43, 23);
+            this.button1D.TabIndex = 2;
+            this.button1D.Text = "1天";
+            this.button1D.UseVisualStyleBackColor = true;
+            this.button1D.Click += new System.EventHandler(this.button1D_Click);
+            // 
+            // button8h
+            // 
+            this.button8h.Location = new System.Drawing.Point(654, 10);
+            this.button8h.Name = "button8h";
+            this.button8h.Size = new System.Drawing.Size(43, 23);
+            this.button8h.TabIndex = 2;
+            this.button8h.Text = "8h";
+            this.button8h.UseVisualStyleBackColor = true;
+            this.button8h.Click += new System.EventHandler(this.button8h_Click);
+            // 
+            // button2H
+            // 
+            this.button2H.Location = new System.Drawing.Point(602, 10);
+            this.button2H.Name = "button2H";
+            this.button2H.Size = new System.Drawing.Size(43, 23);
+            this.button2H.TabIndex = 2;
+            this.button2H.Text = "2h";
+            this.button2H.UseVisualStyleBackColor = true;
+            this.button2H.Click += new System.EventHandler(this.button2H_Click);
+            // 
+            // button1H
+            // 
+            this.button1H.Location = new System.Drawing.Point(550, 10);
+            this.button1H.Name = "button1H";
+            this.button1H.Size = new System.Drawing.Size(43, 23);
+            this.button1H.TabIndex = 2;
+            this.button1H.Text = "1h";
+            this.button1H.UseVisualStyleBackColor = true;
+            this.button1H.Click += new System.EventHandler(this.button1H_Click);
+            // 
+            // buttonAlarmFind
+            // 
+            this.buttonAlarmFind.Location = new System.Drawing.Point(469, 11);
+            this.buttonAlarmFind.Name = "buttonAlarmFind";
+            this.buttonAlarmFind.Size = new System.Drawing.Size(75, 23);
+            this.buttonAlarmFind.TabIndex = 2;
+            this.buttonAlarmFind.Text = "查询";
+            this.buttonAlarmFind.UseVisualStyleBackColor = true;
+            this.buttonAlarmFind.Click += new System.EventHandler(this.glacialList_UP_Click);
+            // 
+            // dateTimePickerTo
+            // 
+            this.dateTimePickerTo.CustomFormat = "yyyy年MM月dd日 HH时";
+            this.dateTimePickerTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePickerTo.Location = new System.Drawing.Point(282, 12);
+            this.dateTimePickerTo.Name = "dateTimePickerTo";
+            this.dateTimePickerTo.Size = new System.Drawing.Size(181, 21);
+            this.dateTimePickerTo.TabIndex = 1;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(256, 16);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(29, 12);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "到：";
+            // 
+            // dateTimePickerFrom
+            // 
+            this.dateTimePickerFrom.CustomFormat = "yyyy年MM月dd日 HH时";
+            this.dateTimePickerFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePickerFrom.Location = new System.Drawing.Point(40, 12);
+            this.dateTimePickerFrom.Name = "dateTimePickerFrom";
+            this.dateTimePickerFrom.Size = new System.Drawing.Size(181, 21);
+            this.dateTimePickerFrom.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(29, 12);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "从：";
             // 
             // glacialList_Down
             // 
@@ -338,150 +482,10 @@ namespace HGS
             this.glacialList_Down.ShowBorder = true;
             this.glacialList_Down.ShowFocusRect = false;
             this.glacialList_Down.Size = new System.Drawing.Size(906, 156);
-            this.glacialList_Down.SortType = GlacialComponents.Controls.SortTypes.InsertionSort;
+            this.glacialList_Down.SortType = GlacialComponents.Controls.SortTypes.QuickSort;
             this.glacialList_Down.SuperFlatHeaderColor = System.Drawing.Color.White;
             this.glacialList_Down.TabIndex = 0;
             this.glacialList_Down.Text = "glacialList2";
-            // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.button7D);
-            this.splitContainer2.Panel1.Controls.Add(this.button1);
-            this.splitContainer2.Panel1.Controls.Add(this.button1D);
-            this.splitContainer2.Panel1.Controls.Add(this.button8h);
-            this.splitContainer2.Panel1.Controls.Add(this.button2H);
-            this.splitContainer2.Panel1.Controls.Add(this.button1H);
-            this.splitContainer2.Panel1.Controls.Add(this.buttonAlarmFind);
-            this.splitContainer2.Panel1.Controls.Add(this.dateTimePickerTo);
-            this.splitContainer2.Panel1.Controls.Add(this.label2);
-            this.splitContainer2.Panel1.Controls.Add(this.dateTimePickerFrom);
-            this.splitContainer2.Panel1.Controls.Add(this.label1);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.glacialList_Down);
-            this.splitContainer2.Size = new System.Drawing.Size(906, 200);
-            this.splitContainer2.SplitterDistance = 40;
-            this.splitContainer2.TabIndex = 1;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 16);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(29, 12);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "从：";
-            // 
-            // dateTimePickerFrom
-            // 
-            this.dateTimePickerFrom.CustomFormat = "yyyy年MM月dd日 HH时";
-            this.dateTimePickerFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePickerFrom.Location = new System.Drawing.Point(40, 12);
-            this.dateTimePickerFrom.Name = "dateTimePickerFrom";
-            this.dateTimePickerFrom.Size = new System.Drawing.Size(181, 21);
-            this.dateTimePickerFrom.TabIndex = 1;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(256, 16);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(29, 12);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "到：";
-            // 
-            // dateTimePickerTo
-            // 
-            this.dateTimePickerTo.CustomFormat = "yyyy年MM月dd日 HH时";
-            this.dateTimePickerTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePickerTo.Location = new System.Drawing.Point(282, 12);
-            this.dateTimePickerTo.Name = "dateTimePickerTo";
-            this.dateTimePickerTo.Size = new System.Drawing.Size(181, 21);
-            this.dateTimePickerTo.TabIndex = 1;
-            // 
-            // buttonAlarmFind
-            // 
-            this.buttonAlarmFind.Location = new System.Drawing.Point(469, 11);
-            this.buttonAlarmFind.Name = "buttonAlarmFind";
-            this.buttonAlarmFind.Size = new System.Drawing.Size(75, 23);
-            this.buttonAlarmFind.TabIndex = 2;
-            this.buttonAlarmFind.Text = "查询";
-            this.buttonAlarmFind.UseVisualStyleBackColor = true;
-            this.buttonAlarmFind.Click += new System.EventHandler(this.glacialList_UP_Click);
-            // 
-            // button1H
-            // 
-            this.button1H.Location = new System.Drawing.Point(550, 10);
-            this.button1H.Name = "button1H";
-            this.button1H.Size = new System.Drawing.Size(43, 23);
-            this.button1H.TabIndex = 2;
-            this.button1H.Text = "1h";
-            this.button1H.UseVisualStyleBackColor = true;
-            this.button1H.Click += new System.EventHandler(this.button1H_Click);
-            // 
-            // button2H
-            // 
-            this.button2H.Location = new System.Drawing.Point(602, 10);
-            this.button2H.Name = "button2H";
-            this.button2H.Size = new System.Drawing.Size(43, 23);
-            this.button2H.TabIndex = 2;
-            this.button2H.Text = "2h";
-            this.button2H.UseVisualStyleBackColor = true;
-            this.button2H.Click += new System.EventHandler(this.button2H_Click);
-            // 
-            // button1D
-            // 
-            this.button1D.Location = new System.Drawing.Point(706, 10);
-            this.button1D.Name = "button1D";
-            this.button1D.Size = new System.Drawing.Size(43, 23);
-            this.button1D.TabIndex = 2;
-            this.button1D.Text = "1天";
-            this.button1D.UseVisualStyleBackColor = true;
-            this.button1D.Click += new System.EventHandler(this.button1D_Click);
-            // 
-            // button7D
-            // 
-            this.button7D.Location = new System.Drawing.Point(810, 10);
-            this.button7D.Name = "button7D";
-            this.button7D.Size = new System.Drawing.Size(43, 23);
-            this.button7D.TabIndex = 2;
-            this.button7D.Text = "1周";
-            this.button7D.UseVisualStyleBackColor = true;
-            this.button7D.Click += new System.EventHandler(this.button7D_Click);
-            // 
-            // button8h
-            // 
-            this.button8h.Location = new System.Drawing.Point(654, 10);
-            this.button8h.Name = "button8h";
-            this.button8h.Size = new System.Drawing.Size(43, 23);
-            this.button8h.TabIndex = 2;
-            this.button8h.Text = "8h";
-            this.button8h.UseVisualStyleBackColor = true;
-            this.button8h.Click += new System.EventHandler(this.button8h_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(758, 10);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(43, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "2天";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // tsTB_ND
-            // 
-            this.tsTB_ND.Name = "tsTB_ND";
-            this.tsTB_ND.Size = new System.Drawing.Size(100, 25);
             // 
             // FormAlarmHistoryList
             // 

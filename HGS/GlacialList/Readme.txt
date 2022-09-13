@@ -2,3 +2,4 @@
 是因为命名空间的问题。在GlacialList.cs 271行。
 增加滚轮滚动。
 2022.9.3 GLSubItemCollection增加this[列名]。
+2022.9.13 修订GLQuickSort.cs行183，出错问题。GLMergeSort.cs行129.

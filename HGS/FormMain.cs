@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GlacialComponents.Controls;
+using System.Diagnostics;
 namespace HGS
 {
     public partial class FormMain : Form
@@ -120,7 +121,7 @@ namespace HGS
                         Point.ps = PointState.Bad;
                     //
                     //加报警
-                    AlarmSet.GetInst().Add(Point);
+                   // AlarmSet.GetInst().Add(Point);
                 }
                 if (resultSet != null)
                 {
@@ -131,10 +132,27 @@ namespace HGS
             {
             }
         }
+        private PointState GetCalcPointState(List<point> hsp)
+        {
+            PointState ps = PointState.Good; ;
+            foreach (point pt in hsp)
+            {
+                if (pt.ps != PointState.Good)
+                {
+                    ps = PointState.Error;
+                    break;
+                }
+            }
+            return ps;
+        }
         private void timerCalc_Tick(object sender, EventArgs e)
         {
+            //Stopwatch sW = new Stopwatch();
+
             GetSisValue();//到得sis值；
+
             VartoPointTable.DelayClear();//释放表；
+
             foreach (point calcpt in Data.inst().hsCalcPoint)
             {
                 if(!calcpt.iscalc)
@@ -155,16 +173,8 @@ namespace HGS
                 //{
                 if (Data.inst().hs_FormulaErrorPoint.Contains(calcpt)) continue;
                 //point Point = Data.Get().cd_Point[calcid];
-                foreach (point pt in calcpt.listSisCalaExpPointID_main)
-                {
-                    if (pt.ps != PointState.Good)
-                    {
-                        calcpt.ps = PointState.Error;
-                        break;
-                    }
-                    calcpt.ps = PointState.Good;
-                }
-               
+                calcpt.ps = GetCalcPointState(calcpt.listSisCalaExpPointID_main);
+
                 try
                 {
                     if (calcpt.expression_main != null && calcpt.ps == PointState.Good)
@@ -179,51 +189,48 @@ namespace HGS
                 }
             }
             //计算报警限值
-            foreach (point calcpt in Data.inst().hsAllPoint)
+            foreach (point pt in Data.inst().hsAllPoint)
             {
-                if (calcpt.orgformula_hl.Length <= 0 && calcpt.orgformula_ll.Length <= 0) break;
-                PointState hlps = PointState.Good;
-                foreach (point pt in calcpt.listSisCalaExpPointID_hl)
+                if (pt.orgformula_hl.Trim().Length > 0)
                 {
-                    if (pt.ps != PointState.Good)
+                    PointState hlps = GetCalcPointState(pt.listSisCalaExpPointID_hl);
+
+                    try
                     {
-                        hlps = PointState.Error;
-                        break;
+                        if (pt.expression_hl != null && hlps == PointState.Good)
+                            pt.hl = Convert.ToDouble(pt.expression_hl.Evaluate());
+                        else pt.hl = null;
+
+                    }
+                    catch (Exception)
+                    {
+                        pt.ps = PointState.Error;
+                        Data.inst().hs_FormulaErrorPoint.Add(pt);
                     }
                 }
-                PointState llps = PointState.Good;
-                foreach (point pt in calcpt.listSisCalaExpPointID_ll)
+                if (pt.orgformula_ll.Trim().Length > 0)
                 {
-                    if (pt.ps != PointState.Good)
+                    PointState llps = GetCalcPointState(pt.listSisCalaExpPointID_ll);
+
+                    try
                     {
-                        llps = PointState.Error;
-                        break;
+                        if (pt.expression_ll != null && llps == PointState.Good)
+                            pt.ll = Convert.ToDouble(pt.expression_ll.Evaluate());
+                        else pt.ll = null;
+
                     }
-                }
-                try
-                {
-                    if (calcpt.expression_hl != null && hlps == PointState.Good)
-                        calcpt.hl = Convert.ToDouble(calcpt.expression_hl.Evaluate());
-                    else calcpt.hl = null;
-
-
-                    if (calcpt.expression_ll != null && llps == PointState.Good)
-                        calcpt.ll = Convert.ToDouble(calcpt.expression_ll.Evaluate());
-                    else calcpt.ll = null;
-
-                }
-                catch (Exception)
-                {
-                    calcpt.ps = PointState.Error;
-                    Data.inst().hs_FormulaErrorPoint.Add(calcpt);
+                    catch (Exception)
+                    {
+                        pt.ps = PointState.Error;
+                        Data.inst().hs_FormulaErrorPoint.Add(pt);
+                    }
                 }
                 //}
                 //计算完成，加报警
-                AlarmSet.GetInst().Add(calcpt);
-                tssL_error_nums.Text = Data.inst().hs_FormulaErrorPoint.Count.ToString();
+                AlarmSet.GetInst().Add(pt);
                 //
             }
-
+            tssL_error_nums.Text = Data.inst().hs_FormulaErrorPoint.Count.ToString();
             try
             {
                 AlarmSet.GetInst().SaveAlarmInfo();

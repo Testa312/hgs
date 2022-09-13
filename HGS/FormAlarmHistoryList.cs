@@ -168,5 +168,15 @@ namespace HGS
             dateTimePickerFrom.Value = DateTime.Now.AddDays(-7);
             glacialList_UP_Click(sender, e);
         }
+
+        private void tsTB_ND_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                glacialListInit();
+                glacialList_UP.Invalidate();
+                e.Handled = true;
+            }
+        }
     }
 }

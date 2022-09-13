@@ -309,7 +309,7 @@ namespace HGS
         {
             pt.expression_main = null;
             pt.expression_hl = null;
-            pt.expression_hl = null;
+            pt.expression_ll = null;
             if (pt.pointsrc == pointsrc.calc)
             {
                 pt.lsCalcOrgSubPoint_main = VartoPointTable.Sub_PointtoVarList(pt, cellid.main);

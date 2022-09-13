@@ -79,5 +79,22 @@ namespace HGS
             }
             tsCB_class.SelectedIndex = Auth.GetInst().LoginID;
         }
+
+        private void tsTB_AI_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                dic_rec.Clear();
+                glacialList1.Items.Clear();
+                timer_GetAlarm_Tick(sender, e);
+                glacialList1.Invalidate();
+                e.Handled = true;
+            }
+        }
+
+        private void FormAlarmSetList_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -52,14 +52,14 @@
             this.buttonCancell = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.buttonTest = new System.Windows.Forms.Button();
+            this.textBoxPN = new System.Windows.Forms.TextBox();
             this.textBoxmDiscription = new System.Windows.Forms.TextBox();
             this.textBoxFormula = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.tSSLabel_varnums = new System.Windows.Forms.ToolStripStatusLabel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textBoxPN = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -354,8 +354,17 @@
             this.buttonTest.UseVisualStyleBackColor = true;
             this.buttonTest.Click += new System.EventHandler(this.buttonTest_Click);
             // 
+            // textBoxPN
+            // 
+            this.textBoxPN.AcceptsReturn = true;
+            this.textBoxPN.Location = new System.Drawing.Point(375, 18);
+            this.textBoxPN.Name = "textBoxPN";
+            this.textBoxPN.Size = new System.Drawing.Size(100, 21);
+            this.textBoxPN.TabIndex = 2;
+            // 
             // textBoxmDiscription
             // 
+            this.textBoxmDiscription.AcceptsReturn = true;
             this.textBoxmDiscription.Location = new System.Drawing.Point(68, 18);
             this.textBoxmDiscription.Name = "textBoxmDiscription";
             this.textBoxmDiscription.Size = new System.Drawing.Size(250, 21);
@@ -363,11 +372,21 @@
             // 
             // textBoxFormula
             // 
+            this.textBoxFormula.AcceptsReturn = true;
             this.textBoxFormula.Location = new System.Drawing.Point(23, 88);
             this.textBoxFormula.Multiline = true;
             this.textBoxFormula.Name = "textBoxFormula";
             this.textBoxFormula.Size = new System.Drawing.Size(670, 86);
             this.textBoxFormula.TabIndex = 4;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(328, 22);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(41, 12);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "点名：";
             // 
             // label15
             // 
@@ -403,24 +422,9 @@
             this.tSSLabel_varnums.Size = new System.Drawing.Size(56, 17);
             this.tSSLabel_varnums.Text = "变量数：";
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(328, 22);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 12);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "点名：";
-            // 
-            // textBoxPN
-            // 
-            this.textBoxPN.Location = new System.Drawing.Point(375, 18);
-            this.textBoxPN.Name = "textBoxPN";
-            this.textBoxPN.Size = new System.Drawing.Size(100, 21);
-            this.textBoxPN.TabIndex = 2;
-            // 
             // FormCalcPointSet
             // 
+            this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(728, 523);

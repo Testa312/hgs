@@ -50,5 +50,15 @@ namespace HGS
         {
             return d.HasValue ? d.ToString() : "NULL";
         }
+        public static  double? NullDoubleRount(double? d, int fm)
+        {
+            double? r = null;
+            if (d != null)
+            {
+                double dAV = d ?? 0;
+                r = Math.Round(dAV, fm);
+            }
+            return r;
+        }
     }
 }

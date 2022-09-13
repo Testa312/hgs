@@ -125,9 +125,16 @@ namespace GlacialComponents.Controls
 			{
 				try
 				{
-					double n1 = Double.Parse( item1.SubItems[SortColumn].Text );
-					double n2 = Double.Parse( item2.SubItems[SortColumn].Text );
+					//double n1 = Double.Parse( item1.SubItems[SortColumn].Text );
+					//double n2 = Double.Parse( item2.SubItems[SortColumn].Text );
 
+					string sitm1 = item1.SubItems[SortColumn].Text;
+					string sitm2 = item2.SubItems[SortColumn].Text;
+
+					double n1 = double.MaxValue;
+					double.TryParse(sitm1, out n1);//空值会出错。2022.09，13
+					double n2 = double.MaxValue;
+					double.TryParse(sitm2, out n2);//空值会出错。2022.09，13;
 
 					if ( dir )
 						return ( n1 < n2 );

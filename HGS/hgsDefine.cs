@@ -57,22 +57,22 @@ namespace HGS
         public double? ll = null;//报警低限
         public string orgformula_ll = "";//计算公式
         //public string expformula_ll = "";//展开成点的计算公式
-        public Expression expression_ll = new Expression();//优化计算速度。
+        public Expression expression_ll = null;// new Expression();//优化计算速度。
         //计算子点id
         public List<varlinktopoint> lsCalcOrgSubPoint_ll = new List<varlinktopoint>();//原始参与计算点列表
         //
         //计算子点id用于进行计算点状态计算。
-        public List<point> listSisCalaExpPointID_ll = new List<point>();//展开成sis点的参与计算点列表。
+        public List<point> listSisCalaExpPointID_ll =  new List<point>();//展开成sis点的参与计算点列表。
         //------------------------------------------
         public double? hl = null;//报警高限
         public string orgformula_hl = "";//计算公式
         //public string expformula_hl = "";//展开成点的计算公式
-        public Expression expression_hl = new Expression();//优化计算速度。
+        public Expression expression_hl = null;// new Expression();//优化计算速度。
         //计算子点id
-        public List<varlinktopoint> lsCalcOrgSubPoint_hl = new List<varlinktopoint>();//原始参与计算点列表
+        public List<varlinktopoint> lsCalcOrgSubPoint_hl =  new List<varlinktopoint>();//原始参与计算点列表
         //
         //用于进行计算点点状态计算。
-        public List<point> listSisCalaExpPointID_hl = new List<point>();
+        public List<point> listSisCalaExpPointID_hl =  new List<point>();
         //-----------------------------------------
         public double? zh = null;//报警高2限
         public double? zl = null;//报警低2限
@@ -91,7 +91,7 @@ namespace HGS
         public bool isboolvalarm = false;
         public string boolalarminfo = "";//isbool 为真时的报警信息。
         //
-        public Expression expression_main = new Expression();//优化计算速度。
+        public Expression expression_main = null;// new Expression();//优化计算速度。
         //计算子点id
         public List<varlinktopoint> lsCalcOrgSubPoint_main = new List<varlinktopoint>();//原始参与计算点列表
         //

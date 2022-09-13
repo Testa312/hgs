@@ -76,7 +76,7 @@ namespace HGS
         }
         public static void DelayClear()
         {
-            if ((DateTime.Now - filltime).TotalMinutes >= 15)
+            if ((DateTime.Now - filltime).TotalMinutes >= 15 && dt_vartoPoint !=null)
             {
                 dt_vartoPoint.Clear();
                 dt_vartoPoint = null;
