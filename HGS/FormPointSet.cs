@@ -15,8 +15,8 @@ namespace HGS
     public partial class FormPointSet : Form
     {
         Dictionary<GLItem, point> dic_glItemNew = new Dictionary<GLItem, point>();
-        HashSet<GLItem> hs_glItemModified = new HashSet<GLItem>();
-        HashSet<int> onlysisid = new HashSet<int>();
+        Dictionary<point, GLItem> dic_glItemModified = new Dictionary<point, GLItem>();
+        Dictionary<int, GLItem> onlysisid = new Dictionary<int,GLItem>();
         HashSet<string> hs_ND = new HashSet<string>();
         int PointNums = 0;
         bool isFirst = true;
@@ -27,9 +27,9 @@ namespace HGS
         private void DisplayHints()
         {
             tSSLabel_count.Text = string.Format("点数：{0}，其中新加点{1}，已修改点{2}。",
-               PointNums, dic_glItemNew.Count, hs_glItemModified.Count);
+               PointNums, dic_glItemNew.Count, dic_glItemModified.Count);
         }
-        private void AlarmSubItemSet(GLItem item,point pt)
+        private void AlarmSubItemSymbol(GLItem item,point pt)
         {
             if (pt.pointsrc == pointsrc.sis)
             {
@@ -44,61 +44,31 @@ namespace HGS
         }
         private void glacialLisint()
         {
-            //Stopwatch sw1 = new Stopwatch();//???????????
-            //Stopwatch sw2 = new Stopwatch();//???????????
-
             timerUpdateValue.Enabled = false;
             glacialList1.Items.Clear();
             PointNums = 0;
             this.Cursor = Cursors.WaitCursor;
-            //sw1.Start();
+            onlysisid.Clear();
+            List<GLItem> lsItem = new List<GLItem>();
             foreach (point ptx in Data.inst().hsAllPoint)
             {
-
-                itemtag it = new itemtag();
-
-                List<GLItem> lsItem = new List<GLItem>();
+                if (ptx.pointsrc == pointsrc.sis)
+                {
+                    onlysisid.Add(ptx.id_sis,null);//唯一性
+                }
                 if ((ptx.pointsrc == pointsrc.sis || (Auth.GetInst().LoginID == 0 || ptx.ownerid == Auth.GetInst().LoginID || 
                     ptx.ownerid == 0)) &&
                     ptx.nd.Contains(tSCB_ND.Text.Trim()) && ptx.ed.Contains(tSTB_ED.Text.Trim()) &&
                     ptx.pn.Contains(tSTB_PN.Text.Trim()) && ptx.orgformula_main.Contains(tSTB_F.Text.Trim()))
                 {
-                    // sw2.Start();
-                    GLItem itemn = new GLItem(glacialList1);// glacialList1.Items.Add("");//insert 慢
-                    lsItem.Add(itemn);
-                    it.id = ptx.id;
-                    itemn.SubItems["ID"].Text = ptx.id.ToString();
-                    itemn.SubItems["ND"].Text = ptx.nd;
-                    itemn.SubItems["PN"].Text = ptx.pn;
-
-                    itemn.SubItems["EU"].Text = ptx.eu;
-                    itemn.SubItems["ED"].Text = ptx.ed;
-                    itemn.SubItems["TV"].Text = ptx.tv.ToString();
-                    itemn.SubItems["BV"].Text = ptx.bv.ToString();
-                    itemn.SubItems["LL"].Text = Functions. NullDoubleRount(ptx.ll,ptx.fm).ToString();
-
-                    itemn.SubItems["HL"].Text = Functions. NullDoubleRount(ptx.hl,ptx.fm).ToString();
-                    
-                    itemn.SubItems["ZL"].Text = ptx.zl.ToString();
-                    itemn.SubItems["ZH"].Text = ptx.zh.ToString();
-                    itemn.SubItems["AlarmInfo"].Text = ptx.alarmininfo;
-                    itemn.SubItems["DS"].Text = ptx.ps.ToString();
-                    it.sisid = ptx.id_sis;
-                    it.fm = ptx.fm;
-                    it.PointSrc = ptx.pointsrc;
-                    /*
-                    if (ptx.pointsrc == pointsrc.sis)
-                    {
-                        onlysisid.Add(it.sisid);//唯一性
-                    }*/
-                    AlarmSubItemSet(itemn,ptx);
-                    itemn.Tag = it;
-                    PointNums++;
-                    //sw2.Stop();
+                    GLItem item = new GLItem(glacialList1);
+                    gllistInitItemText(ptx,item);
+                    onlysisid[ptx.id_sis] = item;
+                    lsItem.Add(item);
                 }
-                glacialList1.Items.AddRange(lsItem.ToArray());
                 if (isFirst) hs_ND.Add(ptx.nd);              
             }
+            glacialList1.Items.AddRange(lsItem.ToArray());
             //sw1.Stop();
             if (isFirst)
             {
@@ -114,48 +84,82 @@ namespace HGS
             DisplayHints();
             glacialList1.Invalidate();
         }
+        private void gllistInitItemText(point ptx , GLItem itemn)
+        {
+            //if (ptx.id != ((itemtag)(itemn).Tag).id) throw new Exception("更换点和项目不同！");
+
+            itemtag it = new itemtag();
+            itemn.Tag = it;
+            it.id = ptx.id;
+            itemn.SubItems["ID"].Text = ptx.id.ToString();
+            itemn.SubItems["ND"].Text = ptx.nd;
+            itemn.SubItems["PN"].Text = ptx.pn;
+
+            itemn.SubItems["EU"].Text = ptx.eu;
+            itemn.SubItems["ED"].Text = ptx.ed;
+            itemn.SubItems["TV"].Text = ptx.tv.ToString();
+            itemn.SubItems["BV"].Text = ptx.bv.ToString();
+            itemn.SubItems["LL"].Text = Functions.NullDoubleRount(ptx.ll, ptx.fm).ToString();
+
+            itemn.SubItems["HL"].Text = Functions.NullDoubleRount(ptx.hl, ptx.fm).ToString();
+
+            itemn.SubItems["ZL"].Text = ptx.zl.ToString();
+            itemn.SubItems["ZH"].Text = ptx.zh.ToString();
+            itemn.SubItems["AlarmInfo"].Text = ptx.alarmininfo;
+            itemn.SubItems["DS"].Text = ptx.ps.ToString();
+
+            it.sisid = ptx.id_sis;
+            it.fm = ptx.fm;
+            it.PointSrc = ptx.pointsrc;
+
+            AlarmSubItemSymbol(itemn, ptx);
+            PointNums++;
+            DisplayHints();
+        }
+        private void gllistUpateItemText(GLItem item,point pt)
+        {
+            if (pt.id != ((itemtag)(item).Tag).id) throw new Exception("更换点和项目不同！");
+            item.SubItems["TV"].Text = pt.tv.ToString();
+            item.SubItems["BV"].Text = pt.bv.ToString();
+            item.SubItems["LL"].Text = pt.ll.ToString();
+            item.SubItems["HL"].Text = pt.hl.ToString();
+            item.SubItems["ZL"].Text = pt.zl.ToString();
+            item.SubItems["ZH"].Text = pt.zh.ToString();
+            //item.SubItems["ND"].Text = pt.nd;
+            item.SubItems["ED"].Text = pt.ed;
+            item.SubItems["EU"].Text = pt.eu;
+            item.SubItems["PN"].Text = pt.pn;
+            if (!dic_glItemNew.ContainsKey(item))
+            {
+                dic_glItemModified[pt] = item;
+                Data.inst().hs_FormulaErrorPoint.Remove(pt);
+            }
+
+            DisplayHints();
+            AlarmSubItemSymbol(item, pt);
+        }
         private void toolStripButtonAddSis_Click(object sender, EventArgs e)//加sis点
         {     
             FormSisPointList fspl = new FormSisPointList();
             fspl.onlysisid = onlysisid;
             if (fspl.ShowDialog() == DialogResult.OK)
             {
-                toolStripButtonFind.Enabled = fspl.glacialList.SelectedItems.Count == 0;
+                toolStripButtonFind.Enabled = fspl.lsitem.Count == 0;
                 List<GLItem> lsItem = new List<GLItem>();
-                foreach (GLItem item in fspl.glacialList.SelectedItems)
+                foreach (point pt in fspl.lsitem)
                 {
-                    if (!onlysisid.Contains(((itemtag)(item.Tag)).sisid))
+                    if (!onlysisid.ContainsKey(pt.id_sis))
                     {
-                        point Point = new point();
-                        GLItem itemn = new GLItem(glacialList1); ;
-                        lsItem.Add(item);
-                        //itemn = glacialList1.Items.Add("");//.Insert(0, "");
-                        Point.nd = itemn.SubItems["ND"].Text = fspl.tSCBNode.Text;
-                        Point.pn = itemn.SubItems["PN"].Text = item.SubItems["PN"].Text;
-                        Point.ed = itemn.SubItems["ED"].Text = item.SubItems["ED"].Text;
-                        Point.eu = itemn.SubItems["EU"].Text = item.SubItems["EU"].Text;
-                        Point.id_sis = ((itemtag)(item.Tag)).sisid;
-
-                        onlysisid.Add(Point.id_sis);
-                   
-                        //Point.id = Data.inst().GetNextPointID();
-                        Point.pointsrc = pointsrc.sis;
-                        Point.ownerid = Auth.GetInst().LoginID;
-
-                        itemtag it = new itemtag();
-                        itemn.Tag = it;
-                        Point.fm = it.fm = ((itemtag)(item.Tag)).fm;
-                        it.id = Point.id;
-                        it.PointSrc = Point.pointsrc;
-                        it.sisid = Point.id_sis;
-                        //Data.Get().Add(Point);
-                        dic_glItemNew.Add(itemn, Point);
+                        GLItem itemn = new GLItem(glacialList1);
+                        gllistInitItemText(pt,itemn);
+                        lsItem.Add(itemn);
+                        dic_glItemNew.Add(itemn, pt);
                     }
                     else 
                     {
-                        MessageBox.Show(string.Format("点:{0}-{1}已存在！",item.SubItems["ND"].Text, 
-                            item.SubItems["PN"].Text),"提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
-                     };
+                        MessageBox.Show(string.Format("点:{0}-{1}已存在！",pt.nd, 
+                            pt.pn),"提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                     }
                 }
                 glacialList1.Items.AddRange(lsItem.ToArray());
                 glacialList1.ScrolltoBottom();
@@ -204,20 +208,11 @@ namespace HGS
                             {
                                 if (lsav[i - 1] > lsav[i]) { throw new Exception("报警数值大小应按报警高低限值排序！"); }
                             }
-                            item.SubItems["TV"].Text = textBoxTV.Text;
-                            item.SubItems["BV"].Text = textBoxBV.Text;
-                            item.SubItems["LL"].Text = textBoxLL.Text;
-                            item.SubItems["HL"].Text = textBoxHL.Text;
-                            item.SubItems["ZL"].Text = textBoxZL.Text;
-                            item.SubItems["ZH"].Text = textBoxZH.Text;
+                            gllistUpateItemText(item, pt);
+                           
                             pt.isavalarm = checkBoxAlarm.Checked;
                             pt.isboolvalarm = checkBoxbool.Checked;
-                            pt.boolalarminfo = tB_boolAlarmInfo.Text;
-                            AlarmSubItemSet(item, pt);
-                           
-                            if (!dic_glItemNew.ContainsKey(item))
-                                hs_glItemModified.Add(item);
-
+                            pt.boolalarminfo = tB_boolAlarmInfo.Text;                           
                         }
                         toolStripButtonFind.Enabled = glc == 0;
                     }                  
@@ -226,14 +221,13 @@ namespace HGS
                 {
                     MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                DisplayHints();
             }
         }   
         private void Save()
         {
-            foreach (GLItem item in hs_glItemModified)
+            foreach (point pt in dic_glItemModified.Keys)
             {
-                Data.inst().Update(Data.inst().cd_Point[((itemtag)(item.Tag)).id]);
+                Data.inst().Update(pt);
             }
             int ptid = Data.inst().GetNextPointId();
             foreach (point pt in dic_glItemNew.Values)
@@ -248,10 +242,10 @@ namespace HGS
             }
             Data.inst().SavetoPG();
             PointNums += dic_glItemNew.Count;
-            hs_glItemModified.Clear();
+            dic_glItemModified.Clear();
             dic_glItemNew.Clear();
             toolStripButtonFind.Enabled = true;
-            glacialLisint();
+           
         }
         private void toolStripButtonSave_Click(object sender, EventArgs e)
         {
@@ -268,6 +262,7 @@ namespace HGS
             {
                 //timerUpdateValue.Enabled = true;
             }
+            glacialLisint();
             DisplayHints();
         }
 
@@ -307,20 +302,20 @@ namespace HGS
             if (glacialList1.SelectedItems.Count == 1)
             {
                 GLItem item = (GLItem)glacialList1.SelectedItems[0];
-                textBoxTV.Text = item.SubItems["TV"].Text;
-                textBoxBV.Text = item.SubItems["BV"].Text;
-                textBoxLL.Text = item.SubItems["LL"].Text;
-                textBoxHL.Text = item.SubItems["HL"].Text;
-                textBoxZL.Text = item.SubItems["ZL"].Text;
-                textBoxZH.Text = item.SubItems["ZH"].Text;
                 itemtag it = (itemtag)(item.Tag);
 
                 point Point = dic_glItemNew.ContainsKey(item) ? dic_glItemNew[item] : Data.inst().cd_Point[it.id];
+                textBoxTV.Text = Point.tv.ToString();
+                textBoxBV.Text = Point.bv.ToString();
+                textBoxLL.Text = Point.ll.ToString();
+                textBoxHL.Text = Point.hl.ToString();
+                textBoxZL.Text = Point.zl.ToString();
+                textBoxZH.Text = Point.zh.ToString();
                 checkBoxAlarm.Checked = Point.isavalarm;
                 checkBoxbool.Checked = Point.isboolvalarm;
                 tB_boolAlarmInfo.Text = Point.boolalarminfo;
                 if(Point.boolalarminfo.Length<=0)
-                    tB_boolAlarmInfo.Text = item.SubItems["ED"].Text;
+                    tB_boolAlarmInfo.Text = Point.ed;
                 buttonCalc.Enabled = (it.PointSrc == pointsrc.calc) ? true : false;
 
                 label_formula.Text = Point.orgformula_main;
@@ -352,24 +347,11 @@ namespace HGS
             if (fcps.ShowDialog() == DialogResult.OK)
             {
                 toolStripButtonFind.Enabled = false;
+                GLItem item = new GLItem(glacialList1);
+                gllistInitItemText(fcps.CalcPoint, item);
+                glacialList1.Items.Add(item);
+                dic_glItemNew.Add(item, fcps.CalcPoint);
 
-                GLItem itemn = glacialList1.Items.Add("");//.Insert(0, "");
-                GLColumnCollection glcols = glacialList1.Columns;
-
-                itemn.SubItems["ND"].Text = fcps.CalcPoint.nd;
-                itemn.SubItems["ED"].Text = fcps.CalcPoint.ed;
-                itemn.SubItems["EU"].Text = fcps.CalcPoint.eu;
-                itemn.SubItems["PN"].Text = fcps.CalcPoint.pn;
-
-                itemtag it = new itemtag();
-                it.id = fcps.CalcPoint.id;
-                it.fm = fcps.CalcPoint.fm;
-                it.PointSrc = fcps.CalcPoint.pointsrc ;
-                itemn.Tag = it;
-                AlarmSubItemSet(itemn, fcps.CalcPoint);
-                dic_glItemNew.Add(itemn, fcps.CalcPoint);
-                DisplayHints();
-                //glacialList1.AutoScrollOffset = new Point(0, glacialList1.Height - glacialList1.AutoScrollOffset.Y);
                 glacialList1.ScrolltoBottom();
             }
            
@@ -390,17 +372,8 @@ namespace HGS
                 if (fcps.ShowDialog() == DialogResult.OK)
                 {
                     toolStripButtonFind.Enabled = false;
-                    itemn.SubItems["ED"].Text = fcps.CalcPoint.ed;
-                    itemn.SubItems["EU"].Text = fcps.CalcPoint.eu;
-                    itemn.SubItems["PN"].Text = fcps.CalcPoint.pn;
-                    AlarmSubItemSet(itemn, fcps.CalcPoint);
-                    //itemn.Tag = it;
-                    if (!dic_glItemNew.ContainsKey(itemn))
-                    {
-                        hs_glItemModified.Add(itemn);
-                        Data.inst().hs_FormulaErrorPoint.Remove(fcps.CalcPoint);
-                    }
-                    DisplayHints();
+
+                    gllistUpateItemText(itemn, fcps.CalcPoint);                  
                 }                
             }
         }
@@ -454,8 +427,8 @@ namespace HGS
         private void FormPointSet_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!toolStripButtonFind.Enabled &&
-                DialogResult.OK == MessageBox.Show("已修改，是否保存？", "提示",
-                        MessageBoxButtons.OKCancel, MessageBoxIcon.Question))
+                DialogResult.Yes == MessageBox.Show("已修改，是否保存？", "提示",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question))
             {
                 try
                 {
@@ -484,10 +457,12 @@ namespace HGS
         private void FormPointSet_Shown(object sender, EventArgs e)
         {
             glacialLisint();
+            /*
             foreach(point pt in Data.inst().hsSisPoint)
             {
                 onlysisid.Add(pt.id_sis);
             }
+            */
             //if (tSCB_ND.Items.Count > 0) tSCB_ND.SelectedIndex = 0;
             label_formula.Text = "";
         }
@@ -535,7 +510,7 @@ namespace HGS
                 {
                     if (!dic_glItemNew.ContainsKey(itemn))
                     {
-                        hs_glItemModified.Add(itemn);
+                        dic_glItemModified[fcps.CalcPoint] = itemn;
                         Data.inst().hs_FormulaErrorPoint.Remove(fcps.CalcPoint);
                     }
                     button_HL.ForeColor = Color.Black;
@@ -567,7 +542,7 @@ namespace HGS
                 {
                     if (!dic_glItemNew.ContainsKey(itemn))
                     {
-                        hs_glItemModified.Add(itemn);
+                        dic_glItemModified[fcps.CalcPoint] = itemn;
                         Data.inst().hs_FormulaErrorPoint.Remove(fcps.CalcPoint);
                     }
                     button_LL.ForeColor = Color.Black;
@@ -582,13 +557,49 @@ namespace HGS
 
             }
         }
-
         private void tSB_Cancel_Click(object sender, EventArgs e)
         {
-            hs_glItemModified.Clear();
+            dic_glItemModified.Clear();
             dic_glItemNew.Clear();
             Data.inst().DeleteClear();
+            glacialLisint();
             toolStripButtonFind.Enabled = true;
+        }
+
+        private void tSB_ImportFromFile_Click(object sender, EventArgs e)
+        {
+            FormImportFromFile fiff = new FormImportFromFile();
+            if (DialogResult.OK == fiff.ShowDialog())
+            {
+                toolStripButtonFind.Enabled = fiff.lspt.Count == 0;
+                List<GLItem> lsItem = new List<GLItem>();
+                foreach (point pt in fiff.lspt)
+                {
+                    if (onlysisid.ContainsKey(pt.id_sis))
+                    {
+                        if (DialogResult.Yes == MessageBox.Show(string.Format("点[{0}]-{1}已存在，是否修改报警限值？",
+                            pt.pn, pt.ed), "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                        {
+                            point ptx = Data.inst().dic_SisIdtoPoint[pt.id_sis];
+                            ptx.hl = pt.hl;
+                            ptx.ll = pt.ll;
+                            GLItem item = onlysisid[pt.id_sis];
+                            if (item != null) 
+                                gllistUpateItemText(item,ptx);
+                        }
+                    }
+                    else
+                    {
+                        GLItem itemn = new GLItem(glacialList1);
+                        gllistInitItemText(pt,itemn);
+                        lsItem.Add(itemn);
+                        dic_glItemNew.Add(itemn, pt);
+                    }
+                }
+                glacialList1.Items.AddRange(lsItem.ToArray());
+                glacialList1.ScrolltoBottom();
+                DisplayHints();
+            }
         }
     }
 }

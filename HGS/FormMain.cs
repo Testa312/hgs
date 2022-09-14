@@ -99,7 +99,7 @@ namespace HGS
                 const short gb2 = -32768;
                 while (resultSet.next())//next()执行一次，游标下移一行
                 {
-                    point Point = Data.inst().dic_SisIdtoPointId[resultSet.getInt(0)];
+                    point Point = Data.inst().dic_SisIdtoPoint[resultSet.getInt(0)];
                     if (Point.isforce)
                     {
                         Point.av = Point.forceav;
@@ -281,6 +281,11 @@ namespace HGS
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             this.Show();
+        }
+
+        private void 从文件导入ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }

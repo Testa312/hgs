@@ -174,10 +174,7 @@ namespace HGS
                 {
                     throw new Exception(string.Format("第{0}行,变量只能由英文字母开头，只能是英文字母、数字和下划线！",i));
                 }
-                if (textBoxmDiscription.Text.Length < 1)
-                {
-                    throw new Exception("计算点的的描述不能为空！");
-                }
+                
                 itemtag it = (itemtag)item.Tag;
                 varlinktopoint subpt = new varlinktopoint();
                 subpt.varname = item.SubItems["VarName"].Text;
@@ -186,7 +183,10 @@ namespace HGS
 
                 ce.Variables[subpt.varname] = Data.inst().cd_Point[it.id].av;//测试用。
             }
-            
+            if (textBoxmDiscription.Text.Length < 1)
+            {
+                throw new Exception("计算点的的描述不能为空！");
+            }
             Point.orgformula_hl = textBoxFormula.Text;
             //
             double? orgv = null;

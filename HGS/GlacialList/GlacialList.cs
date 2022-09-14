@@ -497,8 +497,11 @@ namespace GlacialComponents.Controls
 		private System.Windows.Forms.ImageList imageList1;
 		public void ScrolltoBottom()
         {
-			vPanelScrollBar.Value = vPanelScrollBar.Maximum;
-
+			if (vPanelScrollBar.Visible)
+			{
+				vPanelScrollBar.Value = vPanelScrollBar.Maximum;
+				Invalidate();
+			}
 		}
 
 		#region Hover

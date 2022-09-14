@@ -17,16 +17,18 @@ namespace HGS
     {
         OPAPI.Connect sisconn = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60, 
             Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
-        public HashSet<int> onlysisid;
+        public Dictionary<int, GLItem> onlysisid = new Dictionary<int, GLItem>();
+        public List<point> lsitem = new List<point>();
         public FormSisPointList()
         {
             InitializeComponent();
+            findnode();
         }
          ~FormSisPointList()
         {
             sisconn.close();
         }
-        Dictionary<string, string> dicnodeid = new Dictionary<string, string>();
+        Dictionary<string, int> dicnodeid = new Dictionary<string, int>();
         //初始化node列表框。
         private void findnode()
         {
@@ -37,8 +39,8 @@ namespace HGS
             {
                 while (resultSet.next())//next()执行一次，游标下移一行
                 {
-                    string pn = resultSet.getObject(1).ToString();
-                    dicnodeid[pn] = resultSet.getObject(0).ToString();
+                    string pn = resultSet.getString(1);
+                    dicnodeid[pn] = resultSet.getInt(0);
                     tSCBNode.Items.Add(pn.Trim());
 
                 }
@@ -61,7 +63,7 @@ namespace HGS
         }
         private void tSBFind_Click(object sender, EventArgs e)
         {
-            string wh = string.Format("ND = {0}", dicnodeid[tSCBNode.SelectedItem.ToString()]); ;
+            string wh = string.Format("ND = {0}", dicnodeid[tSCBNode.SelectedItem.ToString()]); 
             if (tSpCBRT.SelectedIndex == 1)
             {
                 wh = string.Format("{0} and RT = 0", wh);
@@ -91,7 +93,7 @@ namespace HGS
                 {
                     string colValue = resultSet.getString(4);
                     int id = resultSet.getInt(5);
-                    if (!colValue.Contains(tSTBED.Text) || onlysisid.Contains(id))
+                    if (!colValue.Contains(tSTBED.Text) || onlysisid.ContainsKey(id))
                     {
                         continue;
                     }
@@ -215,9 +217,32 @@ namespace HGS
 
         private void FormSisPointList_Shown(object sender, EventArgs e)
         {
-            findnode();
-            if (tSCBNode.Items.Count > 0) tSCBNode.SelectedIndex = 0;
             tSpCBRT.SelectedIndex = 1;
+            tSCBNode.SelectedIndex = 0;
+            //if (tSCBNode.Items.Count > 0) 
+              //  tSCBNode.SelectedIndex = 0;
+            tSBFind_Click(null, null);
+
+        }
+
+        private void buttonOK_Click(object sender, EventArgs e)
+        {
+            foreach (GLItem item in glacialList.SelectedItems)
+            {
+                point Point = new point();
+                lsitem.Add(Point);
+
+                Point.nd = tSCBNode.Text;
+                Point.pn = item.SubItems["PN"].Text;
+                Point.ed = item.SubItems["ED"].Text;
+                Point.eu = item.SubItems["EU"].Text;
+
+                Point.id_sis = ((itemtag)(item.Tag)).sisid;
+
+                Point.pointsrc = pointsrc.sis;
+                Point.ownerid = Auth.GetInst().LoginID;
+
+            }
         }
     }
 }

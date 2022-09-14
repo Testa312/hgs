@@ -32,3 +32,4 @@ select crypt('this is a pwd source', password)=password from userpwd where useri
 -------------
 UPDATE owner SET password = crypt('123456', gen_salt('bf',10));
 --------------------------------------
+2022.9.14 文件导入只支持从sis导出的统计csv文件。

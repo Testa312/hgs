@@ -74,7 +74,7 @@ namespace HGS
         //计算
         CalcEngine.CalcEngine _ce = new CalcEngine.CalcEngine();
         //
-        public Dictionary<int, point> dic_SisIdtoPointId
+        public Dictionary<int, point> dic_SisIdtoPoint
         {
             //set { dic_sisIdtoPointId = value; }
             get { return dic_sisIdtoPointId; }
