@@ -59,12 +59,18 @@ namespace HGS
                     PointNums++;
                 }
             }
+            //排除循环引用点。
+            foreach(int id in VartoPointTable.GetDeletePointIdList(CalcPoint.id))
+            {
+                onlyid.Add(id);
+            }
             glacialList1.Items.AddRange(lsItmems.ToArray());
             onlyid.Add(CalcPoint.id);//排除自已。
             textBoxFormula.Text = CalcPoint.orgformula_main;
             textBoxmDiscription.Text = CalcPoint.ed;
             comboBox_eu.Text = CalcPoint.eu;
             checkBoxCalc.Checked = CalcPoint.iscalc;
+            textBoxPN.Text = CalcPoint.pn;
             numericUpDown.Value = CalcPoint.fm;
             timer1.Enabled = true;
             DisplayStats();
@@ -152,6 +158,7 @@ namespace HGS
             HashSet<string> hsVar = new HashSet<string>();
             CalcEngine.CalcEngine ce = new CalcEngine.CalcEngine();
             point Point = new point();
+            Point.id = CalcPoint.id;
             Point.lsCalcOrgSubPoint_main = new List<varlinktopoint>();
             //-----
             //可加内部变量

@@ -238,6 +238,34 @@ namespace HGS
             }
             return orgf;
         }
+        //展开alarmif公式为Sis点-------------------------------------------------
+        public string ExpandOrgFormula_AlarmIf(point pt)
+        {
+            if (pt.alarmif.Length == 0) return "";
+            string orgf = pt.alarmif;
+            //List<varlinktopoint> lsvpt = VartoPointTable.Sub_PointtoVarList(pt, cellid.ll);
+            if (pt.lsCalcOrgSubPoint_alarmif != null)
+            {
+                foreach (varlinktopoint subpt in pt.lsCalcOrgSubPoint_alarmif)
+                {
+                    point Point = cd_Point[subpt.sub_id];
+                    if (Point.pointsrc == pointsrc.calc)
+                    {
+                        string rpl = string.Format("({0})", ExpandOrgFormula_Main(Point));
+                        string pat = string.Format(@"\b{0}\b(?=[^(])|\b{0}$", subpt.varname);
+
+                        orgf = Regex.Replace(orgf, pat, rpl);
+                    }
+                    else
+                    {
+                        string rpl = string.Format("{0}", Pref.Inst().GetVarName(Point));
+                        string pat = string.Format(@"\b{0}\b(?=[^(])|\b{0}$", subpt.varname);
+                        orgf = Regex.Replace(orgf, pat, rpl);
+                    }
+                }
+            }
+            return orgf;
+        }
         //------------------------------------------------------------
         static HashSet<int> xloopvar = new HashSet<int>();
         //返回计算点展开成sis点的列表,用于检查循环引用问题。

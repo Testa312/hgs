@@ -63,6 +63,7 @@ namespace HGS
             onlyid.Add(CalcPoint.id);//排除自已。
             textBoxFormula.Text = CalcPoint.orgformula_hl;
             textBoxmDiscription.Text = CalcPoint.ed;
+            textBoxPN.Text = CalcPoint.pn;
             comboBox_eu.Text = CalcPoint.eu;
             checkBoxCalc.Checked = CalcPoint.iscalc;
             numericUpDown.Value = CalcPoint.fm;

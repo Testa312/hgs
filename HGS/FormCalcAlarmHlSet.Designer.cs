@@ -364,7 +364,7 @@
             this.textBoxPN.Enabled = false;
             this.textBoxPN.Location = new System.Drawing.Point(375, 18);
             this.textBoxPN.Name = "textBoxPN";
-            this.textBoxPN.Size = new System.Drawing.Size(100, 21);
+            this.textBoxPN.Size = new System.Drawing.Size(209, 21);
             this.textBoxPN.TabIndex = 2;
             // 
             // textBoxmDiscription

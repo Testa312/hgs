@@ -73,7 +73,7 @@ namespace HGS
             this.tSButton_Find});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(902, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1015, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -153,7 +153,7 @@ namespace HGS
             this.tSLabel_Nums});
             this.statusStrip1.Location = new System.Drawing.Point(0, 503);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(902, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1015, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -193,7 +193,7 @@ namespace HGS
             glColumn2.NumericSort = false;
             glColumn2.Text = "  SIS点名";
             glColumn2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn2.Width = 100;
+            glColumn2.Width = 150;
             glColumn3.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn3.CheckBoxes = false;
             glColumn3.ImageIndex = -1;
@@ -258,7 +258,7 @@ namespace HGS
             this.glacialList1.SelectionColor = System.Drawing.Color.DarkBlue;
             this.glacialList1.ShowBorder = true;
             this.glacialList1.ShowFocusRect = false;
-            this.glacialList1.Size = new System.Drawing.Size(902, 478);
+            this.glacialList1.Size = new System.Drawing.Size(1015, 478);
             this.glacialList1.SortType = GlacialComponents.Controls.SortTypes.QuickSort;
             this.glacialList1.SuperFlatHeaderColor = System.Drawing.Color.White;
             this.glacialList1.TabIndex = 2;
@@ -268,7 +268,7 @@ namespace HGS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(902, 525);
+            this.ClientSize = new System.Drawing.Size(1015, 525);
             this.Controls.Add(this.glacialList1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);

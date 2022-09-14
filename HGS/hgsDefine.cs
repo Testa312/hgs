@@ -40,7 +40,7 @@ namespace HGS
     //点计算用，用于分清计算点、高报警和低报警计算公式引用点
     public enum cellid
     {
-        main,hl,ll
+        main,hl,ll,alarmif
     }
     public class point
     {
@@ -108,6 +108,14 @@ namespace HGS
         //强制值，不存数据库
         public bool isforce = false;
         public double? forceav = null ;//强制的数值。
+        ////报警公式，值为真时才允许报警。
+        public string alarmif = "";
+        public Expression expression_alarmif = null;// new Expression();//优化计算速度。
+        //计算子点id
+        public List<varlinktopoint> lsCalcOrgSubPoint_alarmif = null;// new List<varlinktopoint>();//原始参与计算点列表
+        //
+        //用于进行计算点点状态计算。
+        public List<point> listSisCalaExpPointID_alarmif = null;// new List<point>();
         //-------------------
         public alarmlevel AlarmCalc()
         {

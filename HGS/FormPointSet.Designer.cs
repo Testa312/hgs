@@ -65,6 +65,8 @@
             this.toolStripButtonAdd = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonCalc = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.tSB_ImportFromFile = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonDelete = new System.Windows.Forms.ToolStripButton();
             this.timerUpdateValue = new System.Windows.Forms.Timer(this.components);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -102,8 +104,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tSSLabel_count = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tSB_ImportFromFile = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.buttonAlarmIf = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -116,6 +118,7 @@
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -262,6 +265,20 @@
             this.toolStripButtonCalc.Size = new System.Drawing.Size(88, 22);
             this.toolStripButtonCalc.Text = "填加计算点";
             this.toolStripButtonCalc.Click += new System.EventHandler(this.toolStripButtonAddNewCalc_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
+            // tSB_ImportFromFile
+            // 
+            this.tSB_ImportFromFile.Image = ((System.Drawing.Image)(resources.GetObject("tSB_ImportFromFile.Image")));
+            this.tSB_ImportFromFile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tSB_ImportFromFile.Name = "tSB_ImportFromFile";
+            this.tSB_ImportFromFile.Size = new System.Drawing.Size(88, 22);
+            this.tSB_ImportFromFile.Text = "从文件导入";
+            this.tSB_ImportFromFile.Click += new System.EventHandler(this.tSB_ImportFromFile_Click);
             // 
             // toolStripButtonDelete
             // 
@@ -545,6 +562,7 @@
             this.tabPageBase.Controls.Add(this.buttonSet);
             this.tabPageBase.Controls.Add(this.groupBox3);
             this.tabPageBase.Controls.Add(this.groupBox1);
+            this.tabPageBase.Controls.Add(this.groupBox4);
             this.tabPageBase.Controls.Add(this.groupBox2);
             this.tabPageBase.Location = new System.Drawing.Point(4, 22);
             this.tabPageBase.Name = "tabPageBase";
@@ -556,7 +574,7 @@
             // buttonCalc
             // 
             this.buttonCalc.Enabled = false;
-            this.buttonCalc.Location = new System.Drawing.Point(613, 127);
+            this.buttonCalc.Location = new System.Drawing.Point(613, 134);
             this.buttonCalc.Name = "buttonCalc";
             this.buttonCalc.Size = new System.Drawing.Size(75, 23);
             this.buttonCalc.TabIndex = 3;
@@ -584,7 +602,7 @@
             // 
             // buttonSet
             // 
-            this.buttonSet.Location = new System.Drawing.Point(809, 138);
+            this.buttonSet.Location = new System.Drawing.Point(809, 134);
             this.buttonSet.Name = "buttonSet";
             this.buttonSet.Size = new System.Drawing.Size(75, 23);
             this.buttonSet.TabIndex = 2;
@@ -605,7 +623,7 @@
             this.groupBox3.Controls.Add(this.label12);
             this.groupBox3.Controls.Add(this.textBoxLL);
             this.groupBox3.Controls.Add(this.label10);
-            this.groupBox3.Location = new System.Drawing.Point(217, 14);
+            this.groupBox3.Location = new System.Drawing.Point(365, 14);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(511, 100);
             this.groupBox3.TabIndex = 1;
@@ -712,7 +730,7 @@
             this.groupBox1.Controls.Add(this.checkBoxbool);
             this.groupBox1.Controls.Add(this.tB_boolAlarmInfo);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(762, 14);
+            this.groupBox1.Location = new System.Drawing.Point(895, 14);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(413, 100);
             this.groupBox1.TabIndex = 1;
@@ -752,7 +770,7 @@
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.textBoxTV);
             this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Location = new System.Drawing.Point(8, 14);
+            this.groupBox2.Location = new System.Drawing.Point(171, 14);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(173, 100);
             this.groupBox2.TabIndex = 1;
@@ -807,19 +825,24 @@
             this.tSSLabel_count.Size = new System.Drawing.Size(44, 17);
             this.tSSLabel_count.Text = "点数：";
             // 
-            // tSB_ImportFromFile
+            // groupBox4
             // 
-            this.tSB_ImportFromFile.Image = ((System.Drawing.Image)(resources.GetObject("tSB_ImportFromFile.Image")));
-            this.tSB_ImportFromFile.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tSB_ImportFromFile.Name = "tSB_ImportFromFile";
-            this.tSB_ImportFromFile.Size = new System.Drawing.Size(88, 22);
-            this.tSB_ImportFromFile.Text = "从文件导入";
-            this.tSB_ImportFromFile.Click += new System.EventHandler(this.tSB_ImportFromFile_Click);
+            this.groupBox4.Controls.Add(this.buttonAlarmIf);
+            this.groupBox4.Location = new System.Drawing.Point(20, 14);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(127, 100);
+            this.groupBox4.TabIndex = 1;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "报警条件";
             // 
-            // toolStripSeparator5
+            // buttonAlarmIf
             // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            this.buttonAlarmIf.Location = new System.Drawing.Point(19, 33);
+            this.buttonAlarmIf.Name = "buttonAlarmIf";
+            this.buttonAlarmIf.Size = new System.Drawing.Size(75, 23);
+            this.buttonAlarmIf.TabIndex = 0;
+            this.buttonAlarmIf.Text = "公式";
+            this.buttonAlarmIf.UseVisualStyleBackColor = true;
             // 
             // FormPointSet
             // 
@@ -854,6 +877,7 @@
             this.groupBox2.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -917,5 +941,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripButton tSB_ImportFromFile;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Button buttonAlarmIf;
     }
 }

@@ -87,10 +87,11 @@ namespace HGS
                 {
                     string pn = resultSet.getString(1);
                     point pt = dicpt[pn];
-
+                    pt.pn = pn;
                     pt.id_sis = resultSet.getInt(0);
                     pt.fm = (short)resultSet.getInt(3);
                     pt.eu = resultSet.getString(2);
+                    pt.nd = comboBoxND.Text;
                     num++;
                 }
             }
@@ -150,7 +151,7 @@ private void buttonOpen_Click(object sender, EventArgs e)
                     //
                     pt.isavalarm = true;
                     pt.pointsrc = pointsrc.sis;
-                    pt.nd = comboBoxND.Text;
+                    //pt.nd = comboBoxND.Text;
                     pt.ownerid = Auth.GetInst().LoginID;
                     lspt.Add(pt);
                     c++;
