@@ -33,12 +33,12 @@ namespace HGS
         {
             if (pt.pointsrc == pointsrc.sis)
             {
-                item.SubItems["IsAlarm"].Text = pt.isavalarm || pt.isboolvalarm ? Pref.Inst().strOk : Pref.Inst().strNo;
+                item.SubItems["IsAlarm"].Text = pt.alarmifav && (pt.isavalarm || pt.isboolvalarm) ? Pref.Inst().strOk : Pref.Inst().strNo;
                 if (Data.inst().hs_FormulaErrorPoint.Contains(pt)) item.SubItems["FError"].Text = Pref.Inst().strNo; 
             }
             else
             {
-                item.SubItems["IsAlarm"].Text = pt.isavalarm || pt.isboolvalarm ? Pref.Inst().strOk : Pref.Inst().strNo;
+                item.SubItems["IsAlarm"].Text = pt.alarmifav && (pt.isavalarm || pt.isboolvalarm) ? Pref.Inst().strOk : Pref.Inst().strNo;
                 item.SubItems["IsCalc"].Text = pt.iscalc ? Pref.Inst().strOk : Pref.Inst().strNo;
             }
         }
@@ -335,6 +335,13 @@ namespace HGS
                 textBoxHL.Enabled = Point.orgformula_hl.Length == 0;
                 textBoxLL.Enabled = Point.orgformula_ll.Length == 0;
 
+                buttonAlarmIf.ForeColor = Color.Black;
+                if (Point.alarmif.Length > 0)
+                {
+                    buttonAlarmIf.ForeColor = Color.Red;
+                    //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
+                }
+
             }
             tabControl.Enabled = glacialList1.SelectedItems.Count > 0;
         }
@@ -599,6 +606,38 @@ namespace HGS
                 glacialList1.Items.AddRange(lsItem.ToArray());
                 glacialList1.ScrolltoBottom();
                 DisplayHints();
+            }
+        }
+
+        private void buttonAlarmIf_Click(object sender, EventArgs e)
+        {
+            if (glacialList1.SelectedItems.Count == 1)
+            {
+                FormCalcAlarmIf fcaf = new FormCalcAlarmIf();
+                GLItem itemn = (GLItem)glacialList1.SelectedItems[0];
+                itemtag it = (itemtag)itemn.Tag;
+
+                fcaf.CalcPoint = dic_glItemNew.ContainsKey(itemn) ? dic_glItemNew[itemn] : Data.inst().cd_Point[it.id];
+                fcaf.glacialLisint();
+                fcaf.Text = string.Format("点[{0}]高报警值计算", fcaf.CalcPoint.ed);
+                //fcps.CellId = cellid.main;
+                if (fcaf.ShowDialog() == DialogResult.OK)
+                {
+                    if (!dic_glItemNew.ContainsKey(itemn))
+                    {
+                        dic_glItemModified[fcaf.CalcPoint] = itemn;
+                        Data.inst().hs_FormulaErrorPoint.Remove(fcaf.CalcPoint);
+                    }
+                    buttonAlarmIf.ForeColor = Color.Black;
+                    if (fcaf.CalcPoint.alarmif.Length > 0)
+                    {
+                        buttonAlarmIf.ForeColor = Color.Red;
+                        //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
+                    }
+                    //buttonAlarmIf.Enabled = fcaf.CalcPoint.alarmif.Length == 0;
+                }
+                //itemn.Tag = it;
+
             }
         }
     }

@@ -211,6 +211,7 @@ namespace HGS
                         Data.inst().hs_FormulaErrorPoint.Add(pt);
                     }
                 }
+                //
                 if (pt.orgformula_ll.Trim().Length > 0)
                 {
                     PointState llps = GetCalcPointState(pt.listSisCalaExpPointID_ll);
@@ -220,6 +221,24 @@ namespace HGS
                         if (pt.expression_ll != null && llps == PointState.Good)
                             pt.ll = Convert.ToDouble(pt.expression_ll.Evaluate());
                         else pt.ll = null;
+
+                    }
+                    catch (Exception)
+                    {
+                        pt.ps = PointState.Error;
+                        Data.inst().hs_FormulaErrorPoint.Add(pt);
+                    }
+                }
+                //
+                pt.alarmifav = true;
+                if (pt.alarmif.Trim().Length > 0)
+                {
+                    PointState alarmifps = GetCalcPointState(pt.listSisCalaExpPointID_alarmif);
+
+                    try
+                    {
+                        if (pt.expression_alarmif != null && alarmifps == PointState.Good)
+                            pt.alarmifav = Convert.ToBoolean(pt.expression_alarmif.Evaluate());
 
                     }
                     catch (Exception)
