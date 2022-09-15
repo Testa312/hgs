@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hgs_srv", "hgs_srv\hgs_srv.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Login_test", "Login_test\Login_test.csproj", "{F55A899F-7C03-49BC-8950-8DC89F5732E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportFromSisStat", "ImportFromSisStat\ImportFromSisStat.csproj", "{8CF524C5-EEB8-443A-B1A8-F40A13E4C05A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,12 +34,6 @@ Global
 		{F55A899F-7C03-49BC-8950-8DC89F5732E6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F55A899F-7C03-49BC-8950-8DC89F5732E6}.Server|Any CPU.ActiveCfg = Server|Any CPU
 		{F55A899F-7C03-49BC-8950-8DC89F5732E6}.Server|Any CPU.Build.0 = Server|Any CPU
-		{8CF524C5-EEB8-443A-B1A8-F40A13E4C05A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8CF524C5-EEB8-443A-B1A8-F40A13E4C05A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8CF524C5-EEB8-443A-B1A8-F40A13E4C05A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8CF524C5-EEB8-443A-B1A8-F40A13E4C05A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8CF524C5-EEB8-443A-B1A8-F40A13E4C05A}.Server|Any CPU.ActiveCfg = Debug|Any CPU
-		{8CF524C5-EEB8-443A-B1A8-F40A13E4C05A}.Server|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

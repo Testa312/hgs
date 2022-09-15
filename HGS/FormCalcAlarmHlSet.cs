@@ -63,6 +63,7 @@ namespace HGS
             onlyid.Add(CalcPoint.id);//排除自已。
             textBoxFormula.Text = CalcPoint.orgformula_hl;
             textBoxmDiscription.Text = CalcPoint.ed;
+            textBoxPN.Text = CalcPoint.pn;
             comboBox_eu.Text = CalcPoint.eu;
             checkBoxCalc.Checked = CalcPoint.iscalc;
             numericUpDown.Value = CalcPoint.fm;
@@ -244,6 +245,23 @@ namespace HGS
             catch (Exception ee)
             {
                 MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void tSB_del_Click(object sender, EventArgs e)
+        {
+            if (glacialList1.SelectedItems.Count == 1)
+            {
+                GLItem item = (GLItem)glacialList1.SelectedItems[0];
+                string vn = item.SubItems["VarName"].Text;
+                string pat = string.Format(@"\b{0}\b(?=[^(])|\b{0}$", vn);
+
+                if (Regex.IsMatch(textBoxFormula.Text, pat))
+                {
+                    MessageBox.Show("公式已引用，不能删除！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else glacialList1.Items.Remove(item);
+
             }
         }
     }
