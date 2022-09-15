@@ -212,7 +212,8 @@ namespace HGS
                            
                             pt.isavalarm = checkBoxAlarm.Checked;
                             pt.isboolvalarm = checkBoxbool.Checked;
-                            pt.boolalarminfo = tB_boolAlarmInfo.Text;                           
+                            pt.boolalarminfo = tB_boolAlarmInfo.Text;
+                            pt.boolalarmif = radioButton_true.Checked;
                         }
                         toolStripButtonFind.Enabled = glc == 0;
                     }                  
@@ -319,6 +320,9 @@ namespace HGS
                 buttonCalc.Enabled = (it.PointSrc == pointsrc.calc) ? true : false;
 
                 label_formula.Text = Point.orgformula_main;
+
+                radioButton_true.Checked = Point.boolalarmif;
+                radioButton_false.Checked = !Point.boolalarmif;
                 //
                 button_HL.ForeColor = Color.Black;
                 button_LL.ForeColor = Color.Black;

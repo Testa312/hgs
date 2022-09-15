@@ -35,13 +35,15 @@
             this.报警信息ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.form1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.报警记录ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.从文件导入ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tssL_error_nums = new System.Windows.Forms.ToolStripStatusLabel();
             this.timerCalc = new System.Windows.Forms.Timer(this.components);
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.从文件导入ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.usetime = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -71,28 +73,35 @@
             // 报警信息ToolStripMenuItem
             // 
             this.报警信息ToolStripMenuItem.Name = "报警信息ToolStripMenuItem";
-            this.报警信息ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.报警信息ToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.报警信息ToolStripMenuItem.Text = "打开报警信息...";
             this.报警信息ToolStripMenuItem.Click += new System.EventHandler(this.报警信息ToolStripMenuItem_Click);
             // 
             // form1ToolStripMenuItem
             // 
             this.form1ToolStripMenuItem.Name = "form1ToolStripMenuItem";
-            this.form1ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.form1ToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.form1ToolStripMenuItem.Text = "打开设置...";
             this.form1ToolStripMenuItem.Click += new System.EventHandler(this.点设置ToolStripMenuItem_Click);
             // 
             // 报警记录ToolStripMenuItem
             // 
             this.报警记录ToolStripMenuItem.Name = "报警记录ToolStripMenuItem";
-            this.报警记录ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.报警记录ToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.报警记录ToolStripMenuItem.Text = "报警记录...";
             this.报警记录ToolStripMenuItem.Click += new System.EventHandler(this.报警记录ToolStripMenuItem_Click);
+            // 
+            // 从文件导入ToolStripMenuItem
+            // 
+            this.从文件导入ToolStripMenuItem.Name = "从文件导入ToolStripMenuItem";
+            this.从文件导入ToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.从文件导入ToolStripMenuItem.Text = "从文件导入...";
+            this.从文件导入ToolStripMenuItem.Click += new System.EventHandler(this.从文件导入ToolStripMenuItem_Click);
             // 
             // 退出ToolStripMenuItem
             // 
             this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.退出ToolStripMenuItem.Text = "退出(&X)";
             this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
             // 
@@ -100,7 +109,9 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
-            this.tssL_error_nums});
+            this.tssL_error_nums,
+            this.toolStripStatusLabel3,
+            this.usetime});
             this.statusStrip1.Location = new System.Drawing.Point(0, 410);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(988, 22);
@@ -116,8 +127,8 @@
             // tssL_error_nums
             // 
             this.tssL_error_nums.Name = "tssL_error_nums";
-            this.tssL_error_nums.Size = new System.Drawing.Size(131, 17);
-            this.tssL_error_nums.Text = "toolStripStatusLabel2";
+            this.tssL_error_nums.Size = new System.Drawing.Size(63, 17);
+            this.tssL_error_nums.Text = "errornum";
             // 
             // timerCalc
             // 
@@ -132,12 +143,17 @@
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             // 
-            // 从文件导入ToolStripMenuItem
+            // toolStripStatusLabel3
             // 
-            this.从文件导入ToolStripMenuItem.Name = "从文件导入ToolStripMenuItem";
-            this.从文件导入ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.从文件导入ToolStripMenuItem.Text = "从文件导入...";
-            this.从文件导入ToolStripMenuItem.Click += new System.EventHandler(this.从文件导入ToolStripMenuItem_Click);
+            this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(93, 17);
+            this.toolStripStatusLabel3.Text = "计算用时(ms)：";
+            // 
+            // usetime
+            // 
+            this.usetime.Name = "usetime";
+            this.usetime.Size = new System.Drawing.Size(25, 17);
+            this.usetime.Text = "ms";
             // 
             // FormMain
             // 
@@ -175,6 +191,8 @@
         private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.ToolStripMenuItem 从文件导入ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
+        private System.Windows.Forms.ToolStripStatusLabel usetime;
     }
 }
 

@@ -18,6 +18,8 @@ namespace HGS
         FormAlarmSetList formAlarmSet = null;
         FormPointSet formPointSet = null;
         FormAlarmHistoryList formAlarmList = null;
+
+        Stopwatch sW = new Stopwatch();
         public FormMain()
         {
             InitializeComponent();
@@ -150,7 +152,7 @@ namespace HGS
         }
         private void timerCalc_Tick(object sender, EventArgs e)
         {
-            //Stopwatch sW = new Stopwatch();
+            sW.Restart();
 
             GetSisValue();//到得sis值；
 
@@ -170,12 +172,8 @@ namespace HGS
                     calcpt.av = calcpt.forceav;
                     continue;
                 }
-                //bool b_lastAlarm = calcpt.alarming;
-                //计算计算点。
-                //if (calcpt.pointsrc == pointsrc.calc)
-                //{
                 if (Data.inst().hs_FormulaErrorPoint.Contains(calcpt)) continue;
-                //point Point = Data.Get().cd_Point[calcid];
+
                 calcpt.ps = GetCalcPointState(calcpt.listSisCalaExpPointID_main);
 
                 try
@@ -265,6 +263,8 @@ namespace HGS
 #endif
             };
 #endif
+            sW.Stop();
+            usetime.Text = sW.ElapsedMilliseconds.ToString();
         }
 
         private void 报警记录ToolStripMenuItem_Click(object sender, EventArgs e)

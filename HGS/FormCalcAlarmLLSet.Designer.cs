@@ -39,6 +39,7 @@
             GlacialComponents.Controls.GLColumn glColumn7 = new GlacialComponents.Controls.GLColumn();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonAdd = new System.Windows.Forms.ToolStripButton();
+            this.tSB_del = new System.Windows.Forms.ToolStripButton();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.glacialList1 = new GlacialComponents.Controls.GlacialList();
@@ -74,7 +75,8 @@
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButtonAdd});
+            this.toolStripButtonAdd,
+            this.tSB_del});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(728, 25);
@@ -89,6 +91,15 @@
             this.toolStripButtonAdd.Size = new System.Drawing.Size(52, 22);
             this.toolStripButtonAdd.Text = "填加";
             this.toolStripButtonAdd.Click += new System.EventHandler(this.toolStripButtonAdd_Click_1);
+            // 
+            // tSB_del
+            // 
+            this.tSB_del.Image = ((System.Drawing.Image)(resources.GetObject("tSB_del.Image")));
+            this.tSB_del.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tSB_del.Name = "tSB_del";
+            this.tSB_del.Size = new System.Drawing.Size(52, 22);
+            this.tSB_del.Text = "删除";
+            this.tSB_del.Click += new System.EventHandler(this.tSB_del_Click);
             // 
             // timer1
             // 
@@ -481,5 +492,6 @@
         public System.Windows.Forms.ComboBox comboBox_eu;
         public System.Windows.Forms.TextBox textBoxPN;
         public System.Windows.Forms.TextBox textBoxmDiscription;
+        private System.Windows.Forms.ToolStripButton tSB_del;
     }
 }

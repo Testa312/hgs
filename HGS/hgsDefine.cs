@@ -87,7 +87,9 @@ namespace HGS
         public PointState ps = PointState.Good;//点状态
         public double? av = null;//点值，实时或计算。
         public short fm = 1;//保留小数点位数。
-       
+
+        //----------------------
+        public bool boolalarmif = true;
         public bool isboolvalarm = false;
         public string boolalarminfo = "";//isbool 为真时的报警信息。
         //
@@ -135,7 +137,7 @@ namespace HGS
                 if (isboolvalarm)
                 {
                     bool blv = Convert.ToBoolean(av);
-                    if (blv)
+                    if (blv == boolalarmif)
                     {
                         alarmingav = Convert.ToDouble(blv);
                         alarmLevel = alarmlevel.sw;
