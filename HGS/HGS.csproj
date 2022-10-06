@@ -182,6 +182,7 @@
     <Compile Include="EasyMail.Designer.cs">
       <DependentUpon>EasyMail.cs</DependentUpon>
     </Compile>
+    <Compile Include="FFTWReal.cs" />
     <Compile Include="FormAlarmHistoryList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -290,12 +291,30 @@
     </Compile>
     <Compile Include="GlacialList\ThemeRoutines.cs" />
     <Compile Include="GlacialList\Win32.cs" />
+    <Compile Include="FFTW_Helper.cs" />
     <Compile Include="hgsDefine.cs" />
     <Compile Include="OPAPI.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="Preference.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="queues\Deque.cs" />
+    <Compile Include="queues\DequeSafe.cs" />
+    <Compile Include="SharpFFTW\AbstractArray.cs" />
+    <Compile Include="SharpFFTW\AbstractPlan.cs" />
+    <Compile Include="SharpFFTW\Direction.cs" />
+    <Compile Include="SharpFFTW\Double\ComplexArray.cs" />
+    <Compile Include="SharpFFTW\Double\NativeMethods.cs" />
+    <Compile Include="SharpFFTW\Double\Plan.cs" />
+    <Compile Include="SharpFFTW\Double\RealArray.cs" />
+    <Compile Include="SharpFFTW\Options.cs" />
+    <Compile Include="SharpFFTW\Single\Complex32.cs" />
+    <Compile Include="SharpFFTW\Single\ComplexArray.cs" />
+    <Compile Include="SharpFFTW\Single\NativeMethods.cs" />
+    <Compile Include="SharpFFTW\Single\Plan.cs" />
+    <Compile Include="SharpFFTW\Single\RealArray.cs" />
+    <Compile Include="SharpFFTW\Transform.cs" />
+    <Compile Include="SkipCheck.cs" />
     <Compile Include="VartoPointTable.cs" />
     <Compile Include="XmlConst.cs" />
     <Compile Include="XmlSettings.cs" />
@@ -511,6 +530,9 @@
   <ItemGroup>
     <Content Include="CalcEngine\readme.txt" />
     <Content Include="GlacialList\Readme.txt" />
+    <Content Include="libfftw3f-3.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="opapi4.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

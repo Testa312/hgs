@@ -19,7 +19,7 @@ namespace HGS
     //sw开关量。
     public enum alarmlevel
     {
-        no,tv,hl,zh,bv,ll,zl,sw,bad   //no为未设置报警,bad为坏点
+        no,tv,hl,zh,bv,ll,zl,sw,skip,bad  //no为未设置报警,bad为坏点
     }
     public class varlinktopoint
     {
@@ -110,7 +110,7 @@ namespace HGS
         //强制值，不存数据库
         public bool isforce = false;
         public double? forceav = null ;//强制的数值。
-        ////报警公式，值为真时才允许报警。
+        ////---------------------报警公式，值为真时才允许报警。
         public bool alarmifav = true;
         public string alarmif = "";
         public Expression expression_alarmif = null;// new Expression();//优化计算速度。
@@ -120,6 +120,10 @@ namespace HGS
         //用于进行计算点点状态计算。
         public List<point> listSisCalaExpPointID_alarmif = null;// new List<point>();
         //-------------------
+        public bool balarmskip = false;
+        public bool balarmwave = false;
+        public double? skip_pp = null;
+        //--------------------
         public alarmlevel AlarmCalc()
         {
             alarmininfo = "";
@@ -176,6 +180,13 @@ namespace HGS
                     {
                         alarmLevel = alarmlevel.bv;
                         alarmininfo = string.Format("越量程下限[{0}{1}]！", bv, eu);
+                    }
+                    //
+                    if(skip_pp != null && (balarmskip || balarmwave))
+                    {
+                        alarmLevel = alarmlevel.skip;
+                        if()
+
                     }
                 }
             }
