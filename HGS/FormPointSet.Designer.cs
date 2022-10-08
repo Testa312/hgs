@@ -83,10 +83,14 @@
             this.buttonSet = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.button_LL = new System.Windows.Forms.Button();
+            this.checkBox_isWave = new System.Windows.Forms.CheckBox();
+            this.checkBox_isSkip = new System.Windows.Forms.CheckBox();
             this.checkBoxAlarm = new System.Windows.Forms.CheckBox();
             this.button_HL = new System.Windows.Forms.Button();
+            this.textBox_pp = new System.Windows.Forms.TextBox();
             this.textBoxZH = new System.Windows.Forms.TextBox();
             this.textBoxZL = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.textBoxHL = new System.Windows.Forms.TextBox();
@@ -109,10 +113,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tSSLabel_count = new System.Windows.Forms.ToolStripStatusLabel();
-            this.checkBox_isSkip = new System.Windows.Forms.CheckBox();
-            this.checkBox_isWave = new System.Windows.Forms.CheckBox();
-            this.textBox_pp = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -300,7 +300,7 @@
             // timerUpdateValue
             // 
             this.timerUpdateValue.Enabled = true;
-            this.timerUpdateValue.Interval = 5000;
+            this.timerUpdateValue.Interval = 2000;
             this.timerUpdateValue.Tick += new System.EventHandler(this.timerUpdateValue_Tick);
             // 
             // splitContainer1
@@ -651,6 +651,28 @@
             this.button_LL.UseVisualStyleBackColor = true;
             this.button_LL.Click += new System.EventHandler(this.button_LL_Click);
             // 
+            // checkBox_isWave
+            // 
+            this.checkBox_isWave.AutoSize = true;
+            this.checkBox_isWave.Location = new System.Drawing.Point(443, 58);
+            this.checkBox_isWave.Name = "checkBox_isWave";
+            this.checkBox_isWave.Size = new System.Drawing.Size(48, 16);
+            this.checkBox_isWave.TabIndex = 10;
+            this.checkBox_isWave.Text = "波动";
+            this.checkBox_isWave.UseVisualStyleBackColor = true;
+            this.checkBox_isWave.CheckedChanged += new System.EventHandler(this.checkBoxAlarm_CheckedChanged);
+            // 
+            // checkBox_isSkip
+            // 
+            this.checkBox_isSkip.AutoSize = true;
+            this.checkBox_isSkip.Location = new System.Drawing.Point(443, 23);
+            this.checkBox_isSkip.Name = "checkBox_isSkip";
+            this.checkBox_isSkip.Size = new System.Drawing.Size(48, 16);
+            this.checkBox_isSkip.TabIndex = 10;
+            this.checkBox_isSkip.Text = "跳变";
+            this.checkBox_isSkip.UseVisualStyleBackColor = true;
+            this.checkBox_isSkip.CheckedChanged += new System.EventHandler(this.checkBoxAlarm_CheckedChanged);
+            // 
             // checkBoxAlarm
             // 
             this.checkBoxAlarm.AutoSize = true;
@@ -672,6 +694,13 @@
             this.button_HL.UseVisualStyleBackColor = true;
             this.button_HL.Click += new System.EventHandler(this.button_HL_Click);
             // 
+            // textBox_pp
+            // 
+            this.textBox_pp.Location = new System.Drawing.Point(507, 53);
+            this.textBox_pp.Name = "textBox_pp";
+            this.textBox_pp.Size = new System.Drawing.Size(74, 21);
+            this.textBox_pp.TabIndex = 9;
+            // 
             // textBoxZH
             // 
             this.textBoxZH.Location = new System.Drawing.Point(339, 25);
@@ -685,6 +714,15 @@
             this.textBoxZL.Name = "textBoxZL";
             this.textBoxZL.Size = new System.Drawing.Size(74, 21);
             this.textBoxZL.TabIndex = 7;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(504, 29);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(71, 12);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "阈值（p-p）";
             // 
             // label13
             // 
@@ -889,44 +927,6 @@
             this.tSSLabel_count.Name = "tSSLabel_count";
             this.tSSLabel_count.Size = new System.Drawing.Size(44, 17);
             this.tSSLabel_count.Text = "点数：";
-            // 
-            // checkBox_isSkip
-            // 
-            this.checkBox_isSkip.AutoSize = true;
-            this.checkBox_isSkip.Location = new System.Drawing.Point(443, 23);
-            this.checkBox_isSkip.Name = "checkBox_isSkip";
-            this.checkBox_isSkip.Size = new System.Drawing.Size(48, 16);
-            this.checkBox_isSkip.TabIndex = 10;
-            this.checkBox_isSkip.Text = "跳变";
-            this.checkBox_isSkip.UseVisualStyleBackColor = true;
-            this.checkBox_isSkip.CheckedChanged += new System.EventHandler(this.checkBoxAlarm_CheckedChanged);
-            // 
-            // checkBox_isWave
-            // 
-            this.checkBox_isWave.AutoSize = true;
-            this.checkBox_isWave.Location = new System.Drawing.Point(443, 58);
-            this.checkBox_isWave.Name = "checkBox_isWave";
-            this.checkBox_isWave.Size = new System.Drawing.Size(48, 16);
-            this.checkBox_isWave.TabIndex = 10;
-            this.checkBox_isWave.Text = "摆动";
-            this.checkBox_isWave.UseVisualStyleBackColor = true;
-            this.checkBox_isWave.CheckedChanged += new System.EventHandler(this.checkBoxAlarm_CheckedChanged);
-            // 
-            // textBox_pp
-            // 
-            this.textBox_pp.Location = new System.Drawing.Point(507, 53);
-            this.textBox_pp.Name = "textBox_pp";
-            this.textBox_pp.Size = new System.Drawing.Size(74, 21);
-            this.textBox_pp.TabIndex = 9;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(504, 29);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(71, 12);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "阈值（p-p）";
             // 
             // FormPointSet
             // 

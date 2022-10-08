@@ -214,6 +214,27 @@ namespace HGS
                             pt.isboolvalarm = checkBoxbool.Checked;
                             pt.boolalarminfo = tB_boolAlarmInfo.Text;
                             pt.boolalarmif = radioButton_true.Checked;
+
+                            if (textBox_pp.Text.Length > 0)
+                            { pt.skip_pp = double.Parse(textBox_pp.Text);}
+                            else pt.skip_pp = null;
+                            pt.isalarmskip = checkBox_isSkip.Checked;
+                            pt.isalarmwave = checkBox_isWave.Checked;
+
+                            if ((pt.isalarmwave || pt.isalarmskip) && pt.skip_pp != null)
+                            {
+                                if (pt.skipCheck == null)
+                                {
+                                    pt.skipCheck = new SkipCheck();
+                                }                               
+                            }
+                            else
+                            {
+                                pt.skipCheck = null;
+                                pt.skipCheck.Clear();
+                            }
+                            if ((pt.isalarmwave || pt.isalarmskip) && pt.skip_pp == null)
+                                MessageBox.Show("阈值不应为空！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                         toolStripButtonFind.Enabled = glc == 0;
                     }                  
@@ -281,7 +302,7 @@ namespace HGS
                 {
                     //bool sss = dic_glItemNew.ContainsKey(item);
                     point pt = dic_glItemNew.ContainsKey(item) ? dic_glItemNew[item] : Data.inst().cd_Point[it.id];
-                    item.SubItems["AV"].Text = Functions.NullDoubleRount(pt.av, pt.fm).ToString();                   
+                    item.SubItems["AV"].Text = Functions.NullDoubleRount(pt.Av, pt.fm).ToString();                   
                     item.SubItems["DS"].Text = pt.ps.ToString();
                     item.SubItems["AlarmInfo"].Text = pt.alarmininfo;
                     //
@@ -323,6 +344,10 @@ namespace HGS
 
                 radioButton_true.Checked = Point.boolalarmif;
                 radioButton_false.Checked = !Point.boolalarmif;
+
+                checkBox_isSkip.Checked = Point.isalarmskip;
+                checkBox_isWave.Checked = Point.isalarmwave;
+                textBox_pp.Text = Point.skip_pp.ToString();
                 //
                 button_HL.ForeColor = Color.Black;
                 button_LL.ForeColor = Color.Black;

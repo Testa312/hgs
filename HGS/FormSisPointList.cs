@@ -78,7 +78,7 @@ namespace HGS
             {
                 wh = string.Format("{0} and PN like '%{1}%'", wh, tSTBPN.Text);
             }
-            string sql = string.Format("select PN,RT,EU,KR,ED,ID,FM from Point where {0}", wh);
+            string sql = string.Format("select PN,RT,EU,KR,ED,ID,FM,TV,BV from Point where {0}", wh);
             //bug:如果包含有汉字，查询结果为空。
             OPAPI.ResultSet resultSet = sisconn.executeQuery(sql);//执行SQL
             try
@@ -114,6 +114,8 @@ namespace HGS
                     }         
                     item.SubItems["EU"].Text = resultSet.getString(2);
                     item.SubItems["KR"].Text = resultSet.getString(3);
+                    item.SubItems["TV"].Text = resultSet.getFloat(7).ToString();
+                    item.SubItems["BV"].Text = resultSet.getFloat(8).ToString();
                     itemtag it = new itemtag();
                     it.sisid = id;
                     it.fm = (byte)resultSet.getInt(6);
@@ -236,6 +238,16 @@ namespace HGS
                 Point.pn = item.SubItems["PN"].Text;
                 Point.ed = item.SubItems["ED"].Text;
                 Point.eu = item.SubItems["EU"].Text;
+
+                string v = item.SubItems["TV"].Text;
+                if (v.Length > 0)
+                { Point.tv = double.Parse(v); }
+                else Point.tv = null;
+
+                v = item.SubItems["BV"].Text;
+                if (v.Length > 0)
+                { Point.bv = double.Parse(v); }
+                else Point.bv = null;
 
                 Point.id_sis = ((itemtag)(item.Tag)).sisid;
 

@@ -36,6 +36,8 @@
             GlacialComponents.Controls.GLColumn glColumn5 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn6 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn7 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn8 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn9 = new GlacialComponents.Controls.GLColumn();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
             this.tSCBNode = new System.Windows.Forms.ToolStripComboBox();
@@ -70,7 +72,7 @@
             this.tSBFind});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(760, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(908, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -136,7 +138,7 @@
             this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 402);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(760, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(908, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "点数：";
             // 
@@ -155,7 +157,7 @@
             // buttonCancel
             // 
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(222, 368);
+            this.buttonCancel.Location = new System.Drawing.Point(257, 368);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 3;
@@ -165,7 +167,7 @@
             // buttonOK
             // 
             this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonOK.Location = new System.Drawing.Point(447, 368);
+            this.buttonOK.Location = new System.Drawing.Point(479, 368);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 2;
@@ -238,6 +240,22 @@
             glColumn7.Text = "质量";
             glColumn7.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             glColumn7.Width = 80;
+            glColumn8.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn8.CheckBoxes = false;
+            glColumn8.ImageIndex = -1;
+            glColumn8.Name = "TV";
+            glColumn8.NumericSort = true;
+            glColumn8.Text = "量程上限";
+            glColumn8.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
+            glColumn8.Width = 70;
+            glColumn9.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn9.CheckBoxes = false;
+            glColumn9.ImageIndex = -1;
+            glColumn9.Name = "BV";
+            glColumn9.NumericSort = true;
+            glColumn9.Text = "量程下限";
+            glColumn9.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
+            glColumn9.Width = 70;
             this.glacialList.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
             glColumn1,
             glColumn2,
@@ -245,7 +263,9 @@
             glColumn4,
             glColumn5,
             glColumn6,
-            glColumn7});
+            glColumn7,
+            glColumn8,
+            glColumn9});
             this.glacialList.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
             this.glacialList.FullRowSelect = true;
             this.glacialList.GridColor = System.Drawing.Color.LightGray;
@@ -270,7 +290,7 @@
             this.glacialList.SelectionColor = System.Drawing.Color.DarkBlue;
             this.glacialList.ShowBorder = true;
             this.glacialList.ShowFocusRect = false;
-            this.glacialList.Size = new System.Drawing.Size(736, 303);
+            this.glacialList.Size = new System.Drawing.Size(881, 303);
             this.glacialList.SortType = GlacialComponents.Controls.SortTypes.QuickSort;
             this.glacialList.SuperFlatHeaderColor = System.Drawing.Color.White;
             this.glacialList.TabIndex = 1;
@@ -282,7 +302,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(760, 424);
+            this.ClientSize = new System.Drawing.Size(908, 424);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.glacialList);

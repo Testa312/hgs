@@ -104,12 +104,12 @@ namespace HGS
                     point Point = Data.inst().dic_SisIdtoPoint[resultSet.getInt(0)];
                     if (Point.isforce)
                     {
-                        Point.av = Point.forceav;
+                        Point.Av = Point.forceav;
                         continue;
                     }
                     //double rsl = resultSet.getDouble(3);
                    // Point.av =rsl;
-                    Data.inst().Variables[Pref.Inst().GetVarName(Point)] = Point.av = resultSet.getDouble(3);
+                    Data.inst().Variables[Pref.Inst().GetVarName(Point)] = Point.Av = resultSet.getDouble(3);
                     short ds = resultSet.getShort(2);
                     if ((ds & gb1) == 0)
                     {
@@ -163,13 +163,13 @@ namespace HGS
                 if(!calcpt.iscalc)
                 {
                     calcpt.ps = PointState.Bad;
-                    calcpt.av = null;
+                    calcpt.Av = null;
                     continue;
                 }
                 //
                 if (calcpt.isforce)
                 {
-                    calcpt.av = calcpt.forceav;
+                    calcpt.Av = calcpt.forceav;
                     continue;
                 }
                 if (Data.inst().hs_FormulaErrorPoint.Contains(calcpt)) continue;
@@ -179,8 +179,11 @@ namespace HGS
                 try
                 {
                     if (calcpt.expression_main != null && calcpt.ps == PointState.Good)
-                        calcpt.av = Convert.ToDouble(calcpt.expression_main.Evaluate());
-                    else calcpt.av = null;
+                    {
+                        //double rsl = 
+                        calcpt.Av = Convert.ToDouble(calcpt.expression_main.Evaluate()); ;
+                    }
+                    else calcpt.Av = null;
 
                 }
                 catch (Exception)

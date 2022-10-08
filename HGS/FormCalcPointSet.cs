@@ -89,13 +89,13 @@ namespace HGS
                 {
                     itemtag it = (itemtag)(item.Tag);
                     point pt = Data.inst().cd_Point[it.id];
-                    if (pt.av != null)
+                    if (pt.Av != null)
                     {
-                        double dAV = pt.av ?? 0;
+                        double dAV = pt.Av ?? 0;
                         item.SubItems["AV"].Text = Math.Round(dAV, pt.fm).ToString();
                     }
                     else
-                    item.SubItems["AV"].Text = pt.av.ToString();
+                    item.SubItems["AV"].Text = pt.Av.ToString();
                     item.SubItems["DS"].Text = pt.ps.ToString();
                 }
             }
@@ -187,7 +187,7 @@ namespace HGS
                 subpt.sub_id = it.id;
                 Point.lsCalcOrgSubPoint_main.Add(subpt);
 
-                ce.Variables[subpt.varname] = Data.inst().cd_Point[it.id].av;//测试用。
+                ce.Variables[subpt.varname] = Data.inst().cd_Point[it.id].Av;//测试用。
             }
             if (textBoxmDiscription.Text.Length < 1)
             {

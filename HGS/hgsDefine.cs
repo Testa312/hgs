@@ -85,7 +85,7 @@ namespace HGS
         public bool iscalc= false;//是否进行计算
         public bool isavalarm = false;//是否报警
         public PointState ps = PointState.Good;//点状态
-        public double? av = null;//点值，实时或计算。
+       
         public short fm = 1;//保留小数点位数。
 
         //----------------------
@@ -120,9 +120,27 @@ namespace HGS
         //用于进行计算点点状态计算。
         public List<point> listSisCalaExpPointID_alarmif = null;// new List<point>();
         //-------------------
-        public bool balarmskip = false;
-        public bool balarmwave = false;
+        public bool isalarmskip = false;
+        public bool isalarmwave = false;
         public double? skip_pp = null;
+        public SkipCheck skipCheck = null;
+        private SkipCheck.skipstatus spstatus = SkipCheck.skipstatus.error;
+        private int datanums = -1;
+
+        private double? av = null;//点值，实时或计算。
+        public double? Av
+        {
+            get { return av; }
+            set
+            {
+                av = value;
+                if (skip_pp != null && (isalarmskip || isalarmwave))
+                {
+                    skipCheck.add(av ?? 0);
+                    datanums++;
+                }
+            }
+        }
         //--------------------
         public alarmlevel AlarmCalc()
         {
@@ -140,7 +158,7 @@ namespace HGS
             {
                 if (isboolvalarm)
                 {
-                    bool blv = Convert.ToBoolean(av);
+                    bool blv = Convert.ToBoolean(Av);
                     if (blv == boolalarmif)
                     {
                         alarmingav = Convert.ToDouble(blv);
@@ -150,49 +168,64 @@ namespace HGS
                 }
                 else if (isavalarm)
                 {
-                    if (zh != null && av > zh)
+                    if (zh != null && Av > zh)
                     {
                         alarmLevel = alarmlevel.zh;
                         alarmininfo = string.Format("越报警高2限[{0}{1}]！", zh, eu);
                     }
-                    else if (hl != null && av > hl)
+                    else if (hl != null && Av > hl)
                     {
                         alarmLevel = alarmlevel.hl;
                         alarmininfo = string.Format("越报警高限[{0}{1}]！", hl, eu);
                     }
-                    else if (tv != null && av > tv)
+                    else if (tv != null && Av > tv)
                     {
                         alarmLevel = alarmlevel.tv;
                         alarmininfo = string.Format("越量程上限[{0}{1}]！", tv, eu);
                     }
 
-                    else if (zl != null && av < zl)
+                    else if (zl != null && Av < zl)
                     {
                         alarmLevel = alarmlevel.zl;
                         alarmininfo = string.Format("越报警低2限[{0}{1}]！", zl, eu);
                     }
-                    else if (ll != null && av < ll)
+                    else if (ll != null && Av < ll)
                     {
                         alarmLevel = alarmlevel.ll;
                         alarmininfo = string.Format("越报警低限[{0}{1}]！", ll, eu);
                     }
-                    else if (bv != null && av < bv)
+                    else if (bv != null && Av < bv)
                     {
                         alarmLevel = alarmlevel.bv;
                         alarmininfo = string.Format("越量程下限[{0}{1}]！", bv, eu);
                     }
                     //
-                    if(skip_pp != null && (balarmskip || balarmwave))
+                    if((isalarmskip || isalarmwave) && skip_pp != null && datanums >= skipCheck.Size  
+                        && skip_pp <= skipCheck.DeltaP_P())
                     {
-                        alarmLevel = alarmlevel.skip;
-                        if()
+                        if(id % 10 == datanums % 10 || spstatus == SkipCheck.skipstatus.error)//每10个数据计算一次。
+                        {
+                            spstatus = skipCheck.isSkip();
+                        }
+                        if (spstatus != SkipCheck.skipstatus.error)
+                        {
+                            alarmLevel = alarmlevel.skip;
 
+                            if (spstatus == SkipCheck.skipstatus.skip)
+                            {
+                                alarmininfo += "跳变！";
+                            }
+                            else if (spstatus == SkipCheck.skipstatus.wave)
+                            {
+                                alarmininfo += "波动！";
+                            }
+                        }
                     }
                 }
             }
-            if (av != null)
+            if (Av != null)
             {
-                double dAV = av ?? 0;
+                double dAV = Av ?? 0;
                 alarmingav = Math.Round(dAV, fm);
             }
             //else

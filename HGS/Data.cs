@@ -398,7 +398,12 @@ namespace HGS
                         Point.zh = null;
                     else
                         Point.zh = (double)pgreader["zh"];
- 
+                    //
+                    if (pgreader["skip_pp"] == DBNull.Value)
+                        Point.skip_pp = null;
+                    else
+                        Point.skip_pp = (double)pgreader["skip_pp"];
+
                     Point.id_sis = (int)pgreader["id_sis"];
 
                     //object oo = (int)pgreader["pointsrc"];
@@ -416,6 +421,11 @@ namespace HGS
                     Point.alarmif = pgreader["alarmif"].ToString();
                     Point.boolalarmif = (bool)pgreader["boolalarmif"];
                     //
+                    Point.isalarmskip = (bool)pgreader["isalarmskip"];
+                    Point.isalarmwave = (bool)pgreader["isalarmwave"];
+                    if ((Point.isalarmwave || Point.isalarmskip) && Point.skip_pp != null)
+                        Point.skipCheck = new SkipCheck();
+                    //
 
                     //Point.lsCalcOrgSubPoint_main = VartoPointTable.Sub_PointtoVarList(Point,cellid.main);
 
@@ -425,7 +435,7 @@ namespace HGS
                     {
                         hs_sispoint.Add(Point);
                         dic_sisIdtoPointId.Add(Point.id_sis, Point);
-                        _ce.Variables.Add(Pref.Inst().GetVarName(Point), Point.av);
+                        _ce.Variables.Add(Pref.Inst().GetVarName(Point), Point.Av);
                     }
                     else
                     {
@@ -509,12 +519,13 @@ namespace HGS
                 sb.AppendLine(string.Format(@"update point set tv={0},bv={1},ll={2},hl={3},zl={4},zh={5},mt='{6}',eu='{7}',"+
                                          "pn='{8}',orgformula_main='{9}',fm={10},iscalc = {11}," +
                                         "isavalarm = {12},ed = '{13}',isboolv = {14},boolalarminfo = '{15}'," +
-                                                   " orgformula_hl = '{16}',orgformula_ll = '{17}',alarmif = '{18}' ,boolalarmif = {19} where id = {20};",
+                                                   " orgformula_hl = '{16}',orgformula_ll = '{17}',alarmif = '{18}' ,boolalarmif = {19} ,isalarmskip = {20},isalarmwave = {21}," +
+                                                   "skip_pp = {22} where id = {23};",
                                         Functions.dtoNULL(pt.tv), Functions.dtoNULL(pt.bv), Functions.dtoNULL(pt.ll), Functions.dtoNULL(pt.hl),
                                         Functions.dtoNULL(pt.zl), Functions.dtoNULL(pt.zh),
                                         DateTime.Now,pt.eu, pt.pn, pt.orgformula_main,pt.fm,
                                         pt.iscalc,pt.isavalarm, pt.ed,pt.isboolvalarm,pt.boolalarminfo, pt.orgformula_hl,
-                                        pt.orgformula_ll,pt.alarmif,pt.boolalarmif, pt.id));
+                                        pt.orgformula_ll,pt.alarmif,pt.boolalarmif,pt.isalarmskip,pt.isalarmwave, Functions.dtoNULL(pt.skip_pp), pt.id));
                 sb.AppendLine(string.Format("delete  from formula_point where id = {0};", pt.id));
                 GetinsertsubSql(sb, pt);
             }
@@ -524,13 +535,14 @@ namespace HGS
 
                 sb.AppendLine(string.Format(@"insert into point (id,nd,pn,ed,eu,tv,bv,ll,hl,zl,"+
                                             "zh,id_sis,pointsrc,mt,ownerid,orgformula_main,fm,iscalc,isavalarm,isboolv,boolalarminfo," +
-                                            "orgformula_hl,orgformula_ll,alarmif,boolalarmif) " + 
+                                            "orgformula_hl,orgformula_ll,alarmif,boolalarmif,isalarmskip,isalarmwave,skip_pp) " + 
                                     "values ({0},'{1}','{2}','{3}','{4}',{5},{6},{7},{8},{9},"+
-                                            "{10},{11},{12},'{13}',{14},'{15}',{16},{17},{18},{19},'{20}','{21}','{22}','{23}',{24});",
+                                            "{10},{11},{12},'{13}',{14},'{15}',{16},{17},{18},{19},'{20}','{21}','{22}','{23}',{24},{25},{26},{27});",
                                     pt.id, pt.nd, pt.pn, pt.ed, pt.eu, Functions.dtoNULL(pt.tv), Functions.dtoNULL(pt.bv), 
                                     Functions.dtoNULL(pt.ll), Functions.dtoNULL(pt.hl), Functions.dtoNULL(pt.zl),
                                     Functions.dtoNULL(pt.zh), pt.id_sis,(int)pt.pointsrc, DateTime.Now, Auth.GetInst().LoginID, pt.orgformula_main,
-                                    pt.fm,pt.iscalc,pt.isavalarm,pt.isboolvalarm,pt.boolalarminfo, pt.orgformula_hl, pt.orgformula_ll,pt.alarmif,pt.boolalarmif));
+                                    pt.fm,pt.iscalc,pt.isavalarm,pt.isboolvalarm,pt.boolalarminfo, pt.orgformula_hl, pt.orgformula_ll,pt.alarmif,
+                                    pt.boolalarmif,pt.isalarmskip,pt.isalarmwave, Functions.dtoNULL(pt.skip_pp)));
                 GetinsertsubSql(sb, pt);
                // pt.id = ptid;
                // ptid++;

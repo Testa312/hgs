@@ -40,10 +40,10 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tssL_error_nums = new System.Windows.Forms.ToolStripStatusLabel();
-            this.timerCalc = new System.Windows.Forms.Timer(this.components);
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.usetime = new System.Windows.Forms.ToolStripStatusLabel();
+            this.timerCalc = new System.Windows.Forms.Timer(this.components);
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -130,19 +130,6 @@
             this.tssL_error_nums.Size = new System.Drawing.Size(63, 17);
             this.tssL_error_nums.Text = "errornum";
             // 
-            // timerCalc
-            // 
-            this.timerCalc.Enabled = true;
-            this.timerCalc.Interval = 3000;
-            this.timerCalc.Tick += new System.EventHandler(this.timerCalc_Tick);
-            // 
-            // notifyIcon1
-            // 
-            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "notifyIcon1";
-            this.notifyIcon1.Visible = true;
-            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
-            // 
             // toolStripStatusLabel3
             // 
             this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
@@ -154,6 +141,19 @@
             this.usetime.Name = "usetime";
             this.usetime.Size = new System.Drawing.Size(25, 17);
             this.usetime.Text = "ms";
+            // 
+            // timerCalc
+            // 
+            this.timerCalc.Enabled = true;
+            this.timerCalc.Interval = 1000;
+            this.timerCalc.Tick += new System.EventHandler(this.timerCalc_Tick);
+            // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "notifyIcon1";
+            this.notifyIcon1.Visible = true;
+            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             // 
             // FormMain
             // 

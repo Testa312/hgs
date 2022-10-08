@@ -7,15 +7,16 @@ using Queues;
 namespace HGS
 {
     //滑动窗口取极值
-    class SkipCheck
+    public class SkipCheck
     {
         DequeSafe<double> qdata = new DequeSafe<double>();
         DequeSafe<int> qmax = new DequeSafe<int>();
         DequeSafe<int> qmin = new DequeSafe<int>();
-        private int size = 64;//窗口size.
+        private int size = 128;//窗口size.
 
         FFTWReal fft = new FFTWReal();
         int p = -1;
+        public SkipCheck() { }
         public enum skipstatus
         {
             skip,wave,error
@@ -116,6 +117,13 @@ namespace HGS
                 }
             }
             return imax <= 3 ? skipstatus.skip : skipstatus.wave;
+        }
+        public void Clear()
+        {
+            qdata.Clear();
+            qmax.Clear();
+            qmin.Clear();
+            p = -1;
         }
     }
 }
