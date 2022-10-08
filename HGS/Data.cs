@@ -348,6 +348,13 @@ namespace HGS
                 }
             }
         }
+        private double ? CasttoDouble(object ob)
+        {
+            if (ob == DBNull.Value)
+                return  null;
+            else
+                return (double)ob;
+        }
         //-------------------------------
         private void LoadData()
         {
@@ -370,6 +377,14 @@ namespace HGS
                     Point.eu = pgreader["eu"].ToString();
                     Point.ed = pgreader["ed"].ToString();
 
+                    Point.tv = CasttoDouble(pgreader["tv"]);
+                    Point.bv = CasttoDouble(pgreader["bv"]);
+                    Point.ll = CasttoDouble(pgreader["ll"]);
+                    Point.hl = CasttoDouble(pgreader["hl"]);
+                    Point.zl = CasttoDouble(pgreader["zl"]);
+                    Point.zh = CasttoDouble(pgreader["zh"]);
+                    Point.skip_pp = CasttoDouble(pgreader["skip_pp"]);
+                    /*
                     if (pgreader["tv"] == DBNull.Value)
                         Point.tv = null;
                     else
@@ -403,7 +418,7 @@ namespace HGS
                         Point.skip_pp = null;
                     else
                         Point.skip_pp = (double)pgreader["skip_pp"];
-
+                    */
                     Point.id_sis = (int)pgreader["id_sis"];
 
                     //object oo = (int)pgreader["pointsrc"];
