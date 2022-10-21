@@ -130,22 +130,35 @@ private void buttonOpen_Click(object sender, EventArgs e)
                 {
                     string[] values = l.Split(',');
                     if (values.Length < 9) continue;
-                    if (values[0].Contains("测点")) continue;
+                    if (values[0].Contains("测点") || values[0].Contains("快照")) continue;
 
                     GLItem itemn = new GLItem(glacialList1);
-                    lsItem.Add(itemn);
+                    
                     point pt = new point();
                     double max,min;
-                    if (checkBox_min.Checked && double.TryParse(values[3], out min))
+                    if (checkBox_min.Checked)
                     {
-                        pt.ll = min;
-                        itemn.SubItems["Min"].Text = min.ToString(); 
+                        if (double.TryParse(values[3], out min))
+                        {
+                            pt.ll = min;
+                            itemn.SubItems["Min"].Text = min.ToString();
+                        }
                     }
-                    if (checkBox_min.Checked && double.TryParse(values[5], out max))
+                    if (checkBox_min.Checked)
                     {
-                        pt.hl = max;
-                        itemn.SubItems["Max"].Text = max.ToString();
+                        if (double.TryParse(values[5], out max))
+                        {
+                            pt.hl = max;
+                            itemn.SubItems["Max"].Text = max.ToString();
+                        }
                     }
+                    if(!DateTime.TryParse(values[2], out DateTime dt))
+                    {
+                        //if (DialogResult.No == MessageBox.Show(string.Format("[{0}]{1}没有限值，是否导入？", 
+                            //values[0], values[1]),"提示",MessageBoxButtons.YesNo,MessageBoxIcon.Question))
+                        continue;
+                    }
+                    lsItem.Add(itemn);
                     pt.pn  = itemn.SubItems["PN"].Text =values[0];
                     pt.ed = itemn.SubItems["ED"].Text = values[1];
                     //
@@ -153,6 +166,7 @@ private void buttonOpen_Click(object sender, EventArgs e)
                     pt.pointsrc = pointsrc.sis;
                     //pt.nd = comboBoxND.Text;
                     pt.ownerid = Auth.GetInst().LoginID;
+
                     lspt.Add(pt);
                     c++;
                 }

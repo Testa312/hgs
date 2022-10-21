@@ -7,7 +7,7 @@ using Queues;
 namespace HGS
 {
     //滑动窗口取极值
-    public class SkipCheck
+    public class WaveDetection
     {
         DequeSafe<double> qdata = new DequeSafe<double>();
         DequeSafe<int> qmax = new DequeSafe<int>();
@@ -16,10 +16,10 @@ namespace HGS
 
         FFTWReal fft = new FFTWReal();
         int p = -1;
-        public SkipCheck() { }
-        public enum skipstatus
+        public WaveDetection() { }
+        public enum wavestatus
         {
-            skip,wave,error
+            surge,wave,error
         }
 
         public int Size
@@ -73,37 +73,37 @@ namespace HGS
                 else break;
             qmin.Push(p);
         }
-        public double Max()
+        private double Max()
         {
             if (qdata.Count <= 0) throw new Exception("没有数据！");
             int start = p - size + 1;
             start = start >= 0 ? start : 0;
             return qdata[qmax.PeekFirst() - start];
         }
-        public double Min()
+        private double Min()
         {
             if (qdata.Count <= 0) throw new Exception("没有数据！");
             int start = p - size + 1;
             start = start >= 0 ? start : 0;
             return qdata[qmin.PeekFirst() - start];
         }
-        public double[] Data()
+        private double[] Data()
         {
-            if (qdata.Count <= 0) throw new Exception("没有数据！");
+            if (qdata.Count <= 0) return null;// throw new Exception("没有数据！");
             return qdata.ToArray();
         }
         //返回极差
         public double DeltaP_P()
         {
-            if (qdata.Count <= 0) throw new Exception("没有数据！");
+            if (qdata.Count <= 0) return 0;// throw new Exception("没有数据！");
             return Math.Abs(Max() - Min());
         }
         //数据跳变返回true，数据波动返回false;
         //调用前要保证数据极差异常，否则结果是错的。
-        public skipstatus isSkip()
+        public wavestatus isWave()
         {
             if (size < 64 || qdata.Count != size)
-                return skipstatus.error;
+                return wavestatus.error;
 
             double[] Spectrum = fft.Spectrum(qdata.ToArray(), true);
             int imax = -1;
@@ -116,7 +116,7 @@ namespace HGS
                     imax = i;
                 }
             }
-            return imax <= 3 ? skipstatus.skip : skipstatus.wave;
+            return imax <= 3 ? wavestatus.surge : wavestatus.wave;
         }
         public void Clear()
         {

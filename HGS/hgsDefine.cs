@@ -123,11 +123,12 @@ namespace HGS
         public bool isalarmskip = false;
         public bool isalarmwave = false;
         public double? skip_pp = null;
-        public SkipCheck skipCheck = null;
-        private SkipCheck.skipstatus spstatus = SkipCheck.skipstatus.error;
+        public WaveDetection waveDetection = null;
+        private WaveDetection.wavestatus spstatus = WaveDetection.wavestatus.error;
         private int datanums = -1;
 
         private double? av = null;//点值，实时或计算。
+        //不能多于一次赋值，否则将不对。
         public double? Av
         {
             get { return av; }
@@ -136,7 +137,7 @@ namespace HGS
                 av = value;
                 if (skip_pp != null && (isalarmskip || isalarmwave))
                 {
-                    skipCheck.add(av ?? 0);
+                    waveDetection.add(av ?? 0);
                     datanums++;
                 }
             }
@@ -153,6 +154,7 @@ namespace HGS
                 alarmingav = -1;
                 alarmLevel = alarmlevel.bad;
                 alarmininfo = "坏点或无法计算！"; //string.Format("{0}",boolalarminfo);
+                if (waveDetection != null) waveDetection.Clear();
             }
             else if (alarmifav)
             {
@@ -200,22 +202,22 @@ namespace HGS
                         alarmininfo = string.Format("越量程下限[{0}{1}]！", bv, eu);
                     }
                     //
-                    if((isalarmskip || isalarmwave) && skip_pp != null && datanums >= skipCheck.Size  
-                        && skip_pp <= skipCheck.DeltaP_P())
+                    if((isalarmskip || isalarmwave) && skip_pp != null  
+                        && skip_pp <= waveDetection.DeltaP_P())
                     {
-                        if(id % 10 == datanums % 10 || spstatus == SkipCheck.skipstatus.error)//每10个数据计算一次。
+                        if(id % 10 == datanums % 10 || spstatus == WaveDetection.wavestatus.error)//每10个数据计算一次。
                         {
-                            spstatus = skipCheck.isSkip();
+                            spstatus = waveDetection.isWave();
                         }
-                        if (spstatus != SkipCheck.skipstatus.error)
+                        if (spstatus != WaveDetection.wavestatus.error)
                         {
                             alarmLevel = alarmlevel.skip;
 
-                            if (spstatus == SkipCheck.skipstatus.skip)
+                            if (spstatus == WaveDetection.wavestatus.surge)
                             {
                                 alarmininfo += "跳变！";
                             }
-                            else if (spstatus == SkipCheck.skipstatus.wave)
+                            else if (spstatus == WaveDetection.wavestatus.wave)
                             {
                                 alarmininfo += "波动！";
                             }
@@ -223,11 +225,8 @@ namespace HGS
                     }
                 }
             }
-            if (Av != null)
-            {
-                double dAV = Av ?? 0;
-                alarmingav = Math.Round(dAV, fm);
-            }
+            alarmingav = Math.Round(Av ?? 0, fm);
+
             //else
             //alarmingav = av;
             if (alarmLevel == alarmlevel.no && last_al != alarmLevel)

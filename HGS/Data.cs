@@ -439,7 +439,7 @@ namespace HGS
                     Point.isalarmskip = (bool)pgreader["isalarmskip"];
                     Point.isalarmwave = (bool)pgreader["isalarmwave"];
                     if ((Point.isalarmwave || Point.isalarmskip) && Point.skip_pp != null)
-                        Point.skipCheck = new SkipCheck();
+                        Point.waveDetection = new WaveDetection();
                     //
 
                     //Point.lsCalcOrgSubPoint_main = VartoPointTable.Sub_PointtoVarList(Point,cellid.main);

@@ -585,7 +585,7 @@
             this.buttonCalc.Name = "buttonCalc";
             this.buttonCalc.Size = new System.Drawing.Size(75, 23);
             this.buttonCalc.TabIndex = 3;
-            this.buttonCalc.Text = "公式";
+            this.buttonCalc.Text = "计算点";
             this.buttonCalc.UseVisualStyleBackColor = true;
             this.buttonCalc.Click += new System.EventHandler(this.buttonCalcSet_Click);
             // 

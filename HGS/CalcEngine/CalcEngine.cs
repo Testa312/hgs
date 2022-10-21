@@ -283,6 +283,7 @@ namespace CalcEngine
                 MathTrig.Register(this);
                 Text.Register(this);
                 Statistical.Register(this);
+                Testa.Register(this);
             }
             return _fnTbl;
         }

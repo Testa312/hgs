@@ -3,14 +3,14 @@ using System.Diagnostics;
 using System.Collections.Generic;
 //using System.Linq;
 using System.Text;
-using IF97;
+//using IF97;
 namespace CalcEngine
 {
     static class Testa
     {
         public static void Register(CalcEngine ce)
         {
-            ce.RegisterFunction("H", 2, _h);
+            //ce.RegisterFunction("H", 2, _h);
             ce.RegisterFunction("BinTwoThirdsLog", 3, _BinTwoThirdsLog);
             ce.RegisterFunction("BinOneLog", 1, _BinOneLog);
             ce.RegisterFunction("BinbitOflong", 2, _BinbitOflong);
@@ -24,12 +24,13 @@ namespace CalcEngine
         {
         }
 #endif
+        /*
         static object _h(List<Expression> p)
         {
             FreeSteam.SteamState s = FreeSteam.freesteam_set_pT((double)p[0] * 1e6, (double)p[1] + 273.15);
 
             return FreeSteam.freesteam_h(s) / 1000.0;//kJ/kg
-        }
+        }*/
         //三逻辑值转双精度1和0；
         static object _BinTwoThirdsLog(List<Expression> p)
         {

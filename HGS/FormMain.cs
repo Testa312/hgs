@@ -18,7 +18,7 @@ namespace HGS
         FormAlarmSetList formAlarmSet = null;
         FormPointSet formPointSet = null;
         FormAlarmHistoryList formAlarmList = null;
-
+        int lastTm = -1;//sis点的更新时间，用于处理断线引起的缓冲数据不连续问题。
         Stopwatch sW = new Stopwatch();
         public FormMain()
         {
@@ -99,17 +99,17 @@ namespace HGS
 
                 const short gb1 = -32256;
                 const short gb2 = -32768;
+  
                 while (resultSet.next())//next()执行一次，游标下移一行
                 {
                     point Point = Data.inst().dic_SisIdtoPoint[resultSet.getInt(0)];
                     if (Point.isforce)
                     {
                         Point.Av = Point.forceav;
+                        Point.ps = PointState.Good;
                         continue;
                     }
-                    //double rsl = resultSet.getDouble(3);
-                   // Point.av =rsl;
-                    Data.inst().Variables[Pref.Inst().GetVarName(Point)] = Point.Av = resultSet.getDouble(3);
+                                    
                     short ds = resultSet.getShort(2);
                     if ((ds & gb1) == 0)
                     {
@@ -121,17 +121,28 @@ namespace HGS
                     }
                     else
                         Point.ps = PointState.Bad;
+
+                    int Tm = resultSet.getInt(1);
+                    if (Tm - lastTm >= 5)//超时为5s
+                    {
+                       // Point.Av = -1;不能这样。
+                        Point.ps = PointState.Bad;
+                    }
+                    lastTm = Tm;
                     //
-                    //加报警
-                   // AlarmSet.GetInst().Add(Point);
+                    Data.inst().Variables[Pref.Inst().GetVarName(Point)] = Point.Av = resultSet.getDouble(3);
                 }
+                
                 if (resultSet != null)
                 {
                     resultSet.close(); //释放内存
                 }
             }
-            catch (Exception)
+            catch (Exception ee)
             {
+#if DEBUG
+                MessageBox.Show("取实时出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+#endif
             }
         }
         private PointState GetCalcPointState(List<point> hsp)
@@ -170,6 +181,7 @@ namespace HGS
                 if (calcpt.isforce)
                 {
                     calcpt.Av = calcpt.forceav;
+                    calcpt.ps = PointState.Good;
                     continue;
                 }
                 if (Data.inst().hs_FormulaErrorPoint.Contains(calcpt)) continue;
@@ -254,18 +266,20 @@ namespace HGS
                 //
             }
             tssL_error_nums.Text = Data.inst().hs_FormulaErrorPoint.Count.ToString();
-#if SERVER
+
             try
             {
+#if SERVER
                 AlarmSet.GetInst().SaveAlarmInfo();
+#endif
             }
-            catch(Exception ee) {
+            catch (Exception ee) {
 #if DEBUG
                 timerCalc.Enabled = false;
                 MessageBox.Show("保存历史出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);            
 #endif
             };
-#endif
+
             sW.Stop();
             usetime.Text = sW.ElapsedMilliseconds.ToString();
         }
@@ -294,7 +308,6 @@ namespace HGS
             {
                 this.Hide();
                 return;
-
             }
 #endif
             base.WndProc(ref m);
@@ -308,6 +321,16 @@ namespace HGS
         private void 从文件导入ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            notifyIcon1.Dispose();
+        }
+
+        private void 打开OToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Show();
         }
     }
 }

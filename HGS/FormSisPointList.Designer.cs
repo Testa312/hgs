@@ -38,6 +38,7 @@
             GlacialComponents.Controls.GLColumn glColumn7 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn8 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn9 = new GlacialComponents.Controls.GLColumn();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSisPointList));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
             this.tSCBNode = new System.Windows.Forms.ToolStripComboBox();
@@ -47,13 +48,13 @@
             this.tSTBPN = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
             this.tSTBED = new System.Windows.Forms.ToolStripTextBox();
-            this.tSBFind = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.glacialList = new GlacialComponents.Controls.GlacialList();
+            this.tSBFind = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -123,14 +124,6 @@
             // 
             this.tSTBED.Name = "tSTBED";
             this.tSTBED.Size = new System.Drawing.Size(100, 25);
-            // 
-            // tSBFind
-            // 
-            this.tSBFind.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tSBFind.Name = "tSBFind";
-            this.tSBFind.Size = new System.Drawing.Size(36, 22);
-            this.tSBFind.Text = "查询";
-            this.tSBFind.Click += new System.EventHandler(this.tSBFind_Click);
             // 
             // statusStrip1
             // 
@@ -296,6 +289,15 @@
             this.glacialList.TabIndex = 1;
             this.glacialList.Text = "glacialList";
             // 
+            // tSBFind
+            // 
+            this.tSBFind.Image = ((System.Drawing.Image)(resources.GetObject("tSBFind.Image")));
+            this.tSBFind.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tSBFind.Name = "tSBFind";
+            this.tSBFind.Size = new System.Drawing.Size(52, 22);
+            this.tSBFind.Text = "查询";
+            this.tSBFind.Click += new System.EventHandler(this.tSBFind_Click);
+            // 
             // FormSisPointList
             // 
             this.AcceptButton = this.buttonOK;
@@ -333,7 +335,6 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel2;
         private System.Windows.Forms.ToolStripTextBox tSTBPN;
         private System.Windows.Forms.ToolStripLabel toolStripLabel3;
-        private System.Windows.Forms.ToolStripButton tSBFind;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripLabel toolStripLabel4;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
@@ -343,5 +344,6 @@
         public System.Windows.Forms.ToolStripComboBox tSCBNode;
         private System.Windows.Forms.ToolStripTextBox tSTBED;
         private GlacialComponents.Controls.GlacialList glacialList;
+        private System.Windows.Forms.ToolStripButton tSBFind;
     }
 }

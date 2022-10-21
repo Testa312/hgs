@@ -33,7 +33,7 @@ namespace HGS
         private void findnode()
         {
             tSCBNode.Items.Clear();
-            string sql = "select ID,PN  from Node";
+            string sql = "select ID,PN  from Node order by PN";
             OPAPI.ResultSet resultSet = sisconn.executeQuery(sql);//执行SQL
             try
             {

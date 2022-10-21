@@ -104,8 +104,7 @@ namespace HGS
                     point pt = Data.inst().cd_Point[it.id];
                     if (pt.Av != null)
                     {
-                        double dAV = pt.Av ?? 0;
-                        item.SubItems["AV"].Text = Math.Round(dAV, pt.fm).ToString();
+                        item.SubItems["AV"].Text = Math.Round(pt.Av ?? 0, pt.fm).ToString();
                     }
                     else
                         item.SubItems["AV"].Text = "";

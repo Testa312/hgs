@@ -223,18 +223,18 @@ namespace HGS
 
                             if ((pt.isalarmwave || pt.isalarmskip) && pt.skip_pp != null)
                             {
-                                if (pt.skipCheck == null)
+                                if (pt.waveDetection == null)
                                 {
-                                    pt.skipCheck = new SkipCheck();
+                                    pt.waveDetection = new WaveDetection();
                                 }                               
-                            }
+                            } 
                             else
-                            {
-                                pt.skipCheck = null;
-                                pt.skipCheck.Clear();
+                            {                               
+                                pt.waveDetection.Clear();
+                                pt.waveDetection = null;
                             }
-                            if ((pt.isalarmwave || pt.isalarmskip) && pt.skip_pp == null)
-                                MessageBox.Show("阈值不应为空！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            if ((pt.isalarmwave || pt.isalarmskip) && pt.skip_pp == null && pt.skip_pp > 0)
+                                MessageBox.Show("阈值不应为空且大于0！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                         toolStripButtonFind.Enabled = glc == 0;
                     }                  
@@ -572,7 +572,7 @@ namespace HGS
 
                 fcps.CalcPoint = dic_glItemNew.ContainsKey(itemn) ? dic_glItemNew[itemn] : Data.inst().cd_Point[it.id];
                 fcps.glacialLisint();
-                fcps.Text = string.Format("点[{0}]高报警值计算", fcps.CalcPoint.ed);
+                fcps.Text = string.Format("点[{0}]低报警值计算", fcps.CalcPoint.ed);
                 //fcps.CellId = cellid.main;
                 if (fcps.ShowDialog() == DialogResult.OK)
                 {
@@ -609,32 +609,39 @@ namespace HGS
             {
                 toolStripButtonFind.Enabled = fiff.lspt.Count == 0;
                 List<GLItem> lsItem = new List<GLItem>();
-                foreach (point pt in fiff.lspt)
+                try
                 {
-                    if (onlysisid.ContainsKey(pt.id_sis))
+                    foreach (point pt in fiff.lspt)
                     {
-                        if (DialogResult.Yes == MessageBox.Show(string.Format("点[{0}]-{1}已存在，是否修改报警限值？",
-                            pt.pn, pt.ed), "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                        if (onlysisid.ContainsKey(pt.id_sis))
                         {
-                            point ptx = Data.inst().dic_SisIdtoPoint[pt.id_sis];
-                            ptx.hl = pt.hl;
-                            ptx.ll = pt.ll;
-                            GLItem item = onlysisid[pt.id_sis];
-                            if (item != null) 
-                                gllistUpateItemText(item,ptx);
+                            if (DialogResult.Yes == MessageBox.Show(string.Format("点[{0}]-{1}已存在，是否修改报警限值？",
+                                pt.pn, pt.ed), "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                            {
+                                point ptx = Data.inst().dic_SisIdtoPoint[pt.id_sis];
+                                ptx.hl = pt.hl;
+                                ptx.ll = pt.ll;
+                                GLItem item = onlysisid[pt.id_sis];
+                                if (item != null)
+                                    gllistUpateItemText(item, ptx);
+                            }
+                        }
+                        else
+                        {
+                            GLItem itemn = new GLItem(glacialList1);
+                            gllistInitItemText(pt, itemn);
+                            lsItem.Add(itemn);
+                            dic_glItemNew.Add(itemn, pt);
                         }
                     }
-                    else
-                    {
-                        GLItem itemn = new GLItem(glacialList1);
-                        gllistInitItemText(pt,itemn);
-                        lsItem.Add(itemn);
-                        dic_glItemNew.Add(itemn, pt);
-                    }
+                    glacialList1.Items.AddRange(lsItem.ToArray());
+                    glacialList1.ScrolltoBottom();
+                    DisplayHints();
                 }
-                glacialList1.Items.AddRange(lsItem.ToArray());
-                glacialList1.ScrolltoBottom();
-                DisplayHints();
+                catch(Exception ee )
+                {
+                    MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -648,7 +655,7 @@ namespace HGS
 
                 fcaf.CalcPoint = dic_glItemNew.ContainsKey(itemn) ? dic_glItemNew[itemn] : Data.inst().cd_Point[it.id];
                 fcaf.glacialLisint();
-                fcaf.Text = string.Format("点[{0}]高报警值计算", fcaf.CalcPoint.ed);
+                fcaf.Text = string.Format("点[{0}]报警条件设置", fcaf.CalcPoint.ed);
                 //fcps.CellId = cellid.main;
                 if (fcaf.ShowDialog() == DialogResult.OK)
                 {

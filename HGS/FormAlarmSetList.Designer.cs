@@ -207,7 +207,7 @@ namespace HGS
             glColumn4.ImageIndex = -1;
             glColumn4.Name = "AlarmingAV";
             glColumn4.NumericSort = false;
-            glColumn4.Text = "报警值";
+            glColumn4.Text = "实时值";
             glColumn4.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn4.Width = 60;
             glColumn5.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
