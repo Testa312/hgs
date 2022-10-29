@@ -24,8 +24,16 @@ namespace HGS
             List<GLItem> lsItems = new List<GLItem>();
             foreach (point pt in lss)
             {
+                string[] filtes = tsTB_ED.Text.Split(' ');
+                bool flag = true;
+                for (int i = 0; i < filtes.Length; i++)
+                {
+                    flag = flag && pt.ed.Contains(filtes[i]);
+                    if (!flag) break;
+                }
+
                 if ((pt.ownerid == tsCB_class.SelectedIndex || tsCB_class.SelectedIndex == 0) &&
-                    pt.nd.Contains(tsCB_ND.Text.Trim()) && pt.ed.Contains(tsTB_ED.Text.Trim()) &&
+                    pt.nd.Contains(tsCB_ND.Text.Trim()) && flag &&
                     pt.pn.Contains(tsTB_PN.Text.Trim()) && pt.alarmininfo.Contains(tsTB_AI.Text.Trim()))
                 {
                     GLItem itemn;

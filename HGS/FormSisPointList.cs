@@ -91,16 +91,25 @@ namespace HGS
                 Cursor = Cursors.WaitCursor;
                 while (resultSet.next())//next()执行一次，游标下移一行
                 {
-                    string colValue = resultSet.getString(4);
+                    string ed = resultSet.getString(4);
                     int id = resultSet.getInt(5);
-                    if (!colValue.Contains(tSTBED.Text) || onlysisid.ContainsKey(id))
+                    string[] filtes = tSTBED.Text.Split(' ');
+
+                    bool flag = true;
+                    for (int i = 0; i < filtes.Length; i++)
+                    {
+                        flag = flag && ed.Contains(filtes[i]);
+                        if (!flag) break;
+                    }
+
+                    if (!flag || onlysisid.ContainsKey(id))
                     {
                         continue;
                     }
                     GLItem item = new GLItem(glacialList);
                     lsItem.Add(item);
                     //item.SubItems[0].Text = total.ToString();
-                    item.SubItems["ED"].Text = colValue;
+                    item.SubItems["ED"].Text = ed;
 
                     item.SubItems["PN"].Text = resultSet.getString(0);//速度较慢的原因
                     switch(resultSet.getByte(1))
