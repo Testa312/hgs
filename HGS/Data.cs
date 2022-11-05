@@ -574,7 +574,7 @@ namespace HGS
                 var cmd = new NpgsqlCommand(sb.ToString(), pgconn);
                 pgconn.Open();
                 cmd.ExecuteNonQuery();
-                pgconn.Close();
+                //pgconn.Close();
                 //
                 VartoPointTable.Refresh(true);
                 foreach (point pt in hs_NewPoint)

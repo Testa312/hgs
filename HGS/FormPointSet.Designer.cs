@@ -47,6 +47,7 @@
             GlacialComponents.Controls.GLColumn glColumn15 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn16 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn17 = new GlacialComponents.Controls.GLColumn();
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("全部");
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -113,6 +114,12 @@
             this.label5 = new System.Windows.Forms.Label();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tSSLabel_count = new System.Windows.Forms.ToolStripStatusLabel();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.treeView = new System.Windows.Forms.TreeView();
+            this.contextMenuStrip_tree = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.增加节点ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.删除节点ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.节点属性ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -126,6 +133,11 @@
             this.groupBox4.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
+            this.contextMenuStrip_tree.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -307,7 +319,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 25);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -318,8 +330,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl);
-            this.splitContainer1.Size = new System.Drawing.Size(1359, 498);
-            this.splitContainer1.SplitterDistance = 265;
+            this.splitContainer1.Size = new System.Drawing.Size(1125, 476);
+            this.splitContainer1.SplitterDistance = 243;
             this.splitContainer1.TabIndex = 1;
             // 
             // glacialList1
@@ -511,7 +523,7 @@
             this.glacialList1.SelectionColor = System.Drawing.Color.DarkBlue;
             this.glacialList1.ShowBorder = true;
             this.glacialList1.ShowFocusRect = true;
-            this.glacialList1.Size = new System.Drawing.Size(1359, 265);
+            this.glacialList1.Size = new System.Drawing.Size(1125, 243);
             this.glacialList1.SortType = GlacialComponents.Controls.SortTypes.QuickSort;
             this.glacialList1.SuperFlatHeaderColor = System.Drawing.Color.White;
             this.glacialList1.TabIndex = 1;
@@ -557,11 +569,12 @@
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1359, 229);
+            this.tabControl.Size = new System.Drawing.Size(1125, 229);
             this.tabControl.TabIndex = 0;
             // 
             // tabPageBase
             // 
+            this.tabPageBase.AutoScroll = true;
             this.tabPageBase.BackColor = System.Drawing.Color.WhiteSmoke;
             this.tabPageBase.Controls.Add(this.buttonCalc);
             this.tabPageBase.Controls.Add(this.label_formula);
@@ -574,7 +587,7 @@
             this.tabPageBase.Location = new System.Drawing.Point(4, 22);
             this.tabPageBase.Name = "tabPageBase";
             this.tabPageBase.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageBase.Size = new System.Drawing.Size(1351, 203);
+            this.tabPageBase.Size = new System.Drawing.Size(1117, 203);
             this.tabPageBase.TabIndex = 0;
             this.tabPageBase.Text = "基本";
             // 
@@ -928,14 +941,77 @@
             this.tSSLabel_count.Size = new System.Drawing.Size(44, 17);
             this.tSSLabel_count.Text = "点数：";
             // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 25);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.treeView);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.splitContainer1);
+            this.splitContainer2.Size = new System.Drawing.Size(1359, 476);
+            this.splitContainer2.SplitterDistance = 230;
+            this.splitContainer2.TabIndex = 3;
+            // 
+            // treeView
+            // 
+            this.treeView.ContextMenuStrip = this.contextMenuStrip_tree;
+            this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView.HideSelection = false;
+            this.treeView.Location = new System.Drawing.Point(0, 0);
+            this.treeView.Name = "treeView";
+            treeNode1.Name = "节点0";
+            treeNode1.Text = "全部";
+            this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode1});
+            this.treeView.Size = new System.Drawing.Size(230, 476);
+            this.treeView.TabIndex = 0;
+            this.treeView.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView_BeforeExpand);
+            this.treeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_NodeMouseClick);
+            // 
+            // contextMenuStrip_tree
+            // 
+            this.contextMenuStrip_tree.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.增加节点ToolStripMenuItem,
+            this.删除节点ToolStripMenuItem,
+            this.节点属性ToolStripMenuItem});
+            this.contextMenuStrip_tree.Name = "contextMenuStrip_tree";
+            this.contextMenuStrip_tree.Size = new System.Drawing.Size(181, 92);
+            // 
+            // 增加节点ToolStripMenuItem
+            // 
+            this.增加节点ToolStripMenuItem.Name = "增加节点ToolStripMenuItem";
+            this.增加节点ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.增加节点ToolStripMenuItem.Text = "增加";
+            this.增加节点ToolStripMenuItem.Click += new System.EventHandler(this.增加节点ToolStripMenuItem_Click);
+            // 
+            // 删除节点ToolStripMenuItem
+            // 
+            this.删除节点ToolStripMenuItem.Name = "删除节点ToolStripMenuItem";
+            this.删除节点ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.删除节点ToolStripMenuItem.Text = "删除";
+            this.删除节点ToolStripMenuItem.Click += new System.EventHandler(this.删除节点ToolStripMenuItem_Click);
+            // 
+            // 节点属性ToolStripMenuItem
+            // 
+            this.节点属性ToolStripMenuItem.Name = "节点属性ToolStripMenuItem";
+            this.节点属性ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.节点属性ToolStripMenuItem.Text = "属性";
+            this.节点属性ToolStripMenuItem.Click += new System.EventHandler(this.节点属性ToolStripMenuItem_Click);
+            // 
             // FormPointSet
             // 
             this.AcceptButton = this.buttonSet;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1359, 523);
+            this.Controls.Add(this.splitContainer2);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
             this.Name = "FormPointSet";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -962,6 +1038,11 @@
             this.groupBox2.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
+            this.contextMenuStrip_tree.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1034,5 +1115,11 @@
         private System.Windows.Forms.CheckBox checkBox_isSkip;
         private System.Windows.Forms.TextBox textBox_pp;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.TreeView treeView;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip_tree;
+        private System.Windows.Forms.ToolStripMenuItem 增加节点ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 删除节点ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 节点属性ToolStripMenuItem;
     }
 }

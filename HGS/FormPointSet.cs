@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using GlacialComponents.Controls;
 using Npgsql;
 using System.Diagnostics;
+using System.Collections;
 namespace HGS
 {
     public partial class FormPointSet : Form
@@ -23,6 +24,7 @@ namespace HGS
         public FormPointSet()
         {
             InitializeComponent();
+            FillMyTreeView();
         }
         private void DisplayHints()
         {
@@ -674,6 +676,77 @@ namespace HGS
                 }
                 //itemn.Tag = it;
 
+            }
+        }
+       
+        private void FillMyTreeView()
+        {
+            // Display a wait cursor while the TreeNodes are being created.
+            Cursor.Current = Cursors.WaitCursor;
+
+            // Suppress repainting the TreeView until all the objects have been created.
+            treeView.BeginUpdate();
+            treeView.Nodes.Clear();
+            treeView.Nodes.AddRange(DataDeviceTree.GetAllSubNode(@"").ToArray());
+            // Clear the TreeView each time the method is called.
+            treeView.Nodes[0].Nodes.AddRange(DataDeviceTree.GetAllSubNode(@"/1").ToArray());
+            //treeView.Nodes[0].Expand();
+            // Reset the cursor to the default for all controls.
+            Cursor.Current = Cursors.Default;
+
+            // Begin repainting the TreeView.
+            treeView.EndUpdate();
+        }
+
+        private void treeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            // Display a wait cursor while the TreeNodes are being created.
+            Cursor.Current = Cursors.WaitCursor;
+
+            // Suppress repainting the TreeView until all the objects have been created.
+            treeView.BeginUpdate();
+            TreeNode tn = e.Node;
+            // Clear the TreeView each time the method is called.
+            tn.Nodes.Clear();
+            tn.Nodes.AddRange(DataDeviceTree.GetAllSubNode(((TreeTag)tn.Tag).path).ToArray());
+            foreach(TreeNode ttn in tn.Nodes)
+            {
+                ttn.Nodes.Clear();
+                ttn.Nodes.AddRange(DataDeviceTree.GetAllSubNode(((TreeTag)ttn.Tag).path).ToArray());
+            }
+            // Reset the cursor to the default for all controls.
+            Cursor.Current = Cursors.Default;
+
+            // Begin repainting the TreeView.
+            treeView.EndUpdate();
+        }
+        private void treeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+                treeView.SelectedNode = e.Node;
+        }
+
+        private void 增加节点ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TreeNode tn = treeView.SelectedNode;
+            FormTreeNode ftn = new FormTreeNode(null);
+            ftn.Text = "增加节点";
+            if (ftn.ShowDialog() == DialogResult.OK)
+            { 
+            }
+        }
+
+        private void 删除节点ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void 节点属性ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TreeNode tn = treeView.SelectedNode;
+            FormTreeNode ftn = new FormTreeNode((TreeTag)tn.Tag);
+            if (ftn.ShowDialog() == DialogResult.OK)
+            {
             }
         }
     }

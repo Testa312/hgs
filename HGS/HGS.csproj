@@ -176,6 +176,7 @@
     <Compile Include="CalcEngine\Functions\Text.cs" />
     <Compile Include="CalcEngine\Tester.cs" />
     <Compile Include="CalcEngine\Token.cs" />
+    <Compile Include="DataDeviceTree.cs" />
     <Compile Include="EasyMail.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -206,6 +207,12 @@
     </Compile>
     <Compile Include="FormCalcAlarmHlSet.Designer.cs">
       <DependentUpon>FormCalcAlarmHlSet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormCorrelation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCorrelation.Designer.cs">
+      <DependentUpon>FormCorrelation.cs</DependentUpon>
     </Compile>
     <Compile Include="FormForceValue.cs">
       <SubType>Form</SubType>
@@ -261,6 +268,12 @@
     <Compile Include="FormAlarmSetList.Designer.cs">
       <DependentUpon>FormAlarmSetList.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormTreeNode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTreeNode.Designer.cs">
+      <DependentUpon>FormTreeNode.cs</DependentUpon>
+    </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="GlacialList\BorderStrip.cs">
       <SubType>Component</SubType>
@@ -293,6 +306,9 @@
     <Compile Include="GlacialList\Win32.cs" />
     <Compile Include="FFTW_Helper.cs" />
     <Compile Include="hgsDefine.cs" />
+    <Compile Include="MaskedTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="OPAPI.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="Preference.cs" />
@@ -334,6 +350,9 @@
     <EmbeddedResource Include="FormCalcPointSet.resx">
       <DependentUpon>FormCalcPointSet.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormCorrelation.resx">
+      <DependentUpon>FormCorrelation.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormForceValue.resx">
       <DependentUpon>FormForceValue.cs</DependentUpon>
     </EmbeddedResource>
@@ -357,6 +376,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormAlarmSetList.resx">
       <DependentUpon>FormAlarmSetList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormTreeNode.resx">
+      <DependentUpon>FormTreeNode.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GlacialList\BorderStrip.resx" />
     <EmbeddedResource Include="GlacialList\GlacialList.resx" />

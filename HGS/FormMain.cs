@@ -51,8 +51,9 @@ namespace HGS
         //登录窗口
         private void FormMain_Shown(object sender, EventArgs e)
         {
+            /*
             FormLogin fl = new FormLogin();
-            if (DialogResult.OK == fl.ShowDialog())
+            if (DialogResult.OK == fl.ShowDialog()) 
             {
                 
                 formAlarmSet = new FormAlarmSetList();
@@ -70,6 +71,7 @@ namespace HGS
 
             }
             else this.Close();
+            */
         }
         private void 报警信息ToolStripMenuItem_Click(object sender, EventArgs e)
         {
