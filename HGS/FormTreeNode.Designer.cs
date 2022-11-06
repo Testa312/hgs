@@ -63,11 +63,11 @@
             this.label3 = new System.Windows.Forms.Label();
             this.ratio = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btn_Fill_statis = new System.Windows.Forms.Button();
+            this.glacialList1 = new GlacialComponents.Controls.GlacialList();
             this.mtb_alarm_th_dis = new MaskedTextBox.MaskedTextBox();
             this.mtb_sort = new MaskedTextBox.MaskedTextBox();
             this.mtb_start_th = new MaskedTextBox.MaskedTextBox();
-            this.glacialList1 = new GlacialComponents.Controls.GlacialList();
-            this.btn_Fill_statis = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -154,29 +154,15 @@
             this.panel1.Size = new System.Drawing.Size(372, 354);
             this.panel1.TabIndex = 0;
             // 
-            // mtb_alarm_th_dis
+            // btn_Fill_statis
             // 
-            this.mtb_alarm_th_dis.Location = new System.Drawing.Point(139, 99);
-            this.mtb_alarm_th_dis.Masked = MaskedTextBox.Mask.Decimal;
-            this.mtb_alarm_th_dis.Name = "mtb_alarm_th_dis";
-            this.mtb_alarm_th_dis.Size = new System.Drawing.Size(148, 21);
-            this.mtb_alarm_th_dis.TabIndex = 13;
-            // 
-            // mtb_sort
-            // 
-            this.mtb_sort.Location = new System.Drawing.Point(139, 45);
-            this.mtb_sort.Masked = MaskedTextBox.Mask.Digit;
-            this.mtb_sort.Name = "mtb_sort";
-            this.mtb_sort.Size = new System.Drawing.Size(148, 21);
-            this.mtb_sort.TabIndex = 13;
-            // 
-            // mtb_start_th
-            // 
-            this.mtb_start_th.Location = new System.Drawing.Point(139, 72);
-            this.mtb_start_th.Masked = MaskedTextBox.Mask.Decimal;
-            this.mtb_start_th.Name = "mtb_start_th";
-            this.mtb_start_th.Size = new System.Drawing.Size(148, 21);
-            this.mtb_start_th.TabIndex = 13;
+            this.btn_Fill_statis.Location = new System.Drawing.Point(278, 148);
+            this.btn_Fill_statis.Name = "btn_Fill_statis";
+            this.btn_Fill_statis.Size = new System.Drawing.Size(75, 23);
+            this.btn_Fill_statis.TabIndex = 15;
+            this.btn_Fill_statis.Text = "统计...";
+            this.btn_Fill_statis.UseVisualStyleBackColor = true;
+            this.btn_Fill_statis.Click += new System.EventHandler(this.btn_Fill_statis_Click);
             // 
             // glacialList1
             // 
@@ -432,14 +418,29 @@
             this.glacialList1.TabIndex = 14;
             this.glacialList1.Text = "glacialList1";
             // 
-            // btn_Fill_statis
+            // mtb_alarm_th_dis
             // 
-            this.btn_Fill_statis.Location = new System.Drawing.Point(278, 148);
-            this.btn_Fill_statis.Name = "btn_Fill_statis";
-            this.btn_Fill_statis.Size = new System.Drawing.Size(75, 23);
-            this.btn_Fill_statis.TabIndex = 15;
-            this.btn_Fill_statis.Text = "统计...";
-            this.btn_Fill_statis.UseVisualStyleBackColor = true;
+            this.mtb_alarm_th_dis.Location = new System.Drawing.Point(139, 99);
+            this.mtb_alarm_th_dis.Masked = MaskedTextBox.Mask.Decimal;
+            this.mtb_alarm_th_dis.Name = "mtb_alarm_th_dis";
+            this.mtb_alarm_th_dis.Size = new System.Drawing.Size(148, 21);
+            this.mtb_alarm_th_dis.TabIndex = 13;
+            // 
+            // mtb_sort
+            // 
+            this.mtb_sort.Location = new System.Drawing.Point(139, 45);
+            this.mtb_sort.Masked = MaskedTextBox.Mask.Digit;
+            this.mtb_sort.Name = "mtb_sort";
+            this.mtb_sort.Size = new System.Drawing.Size(148, 21);
+            this.mtb_sort.TabIndex = 13;
+            // 
+            // mtb_start_th
+            // 
+            this.mtb_start_th.Location = new System.Drawing.Point(139, 72);
+            this.mtb_start_th.Masked = MaskedTextBox.Mask.Decimal;
+            this.mtb_start_th.Name = "mtb_start_th";
+            this.mtb_start_th.Size = new System.Drawing.Size(148, 21);
+            this.mtb_start_th.TabIndex = 13;
             // 
             // FormTreeNode
             // 

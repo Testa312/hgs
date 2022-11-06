@@ -183,6 +183,7 @@
     <Compile Include="CalcEngine\Tester.cs" />
     <Compile Include="CalcEngine\Token.cs" />
     <Compile Include="DataDeviceTree.cs" />
+    <Compile Include="DTW\Dtw.cs" />
     <Compile Include="EasyMail.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -336,6 +337,7 @@
     <Compile Include="SharpFFTW\Single\Plan.cs" />
     <Compile Include="SharpFFTW\Single\RealArray.cs" />
     <Compile Include="SharpFFTW\Transform.cs" />
+    <Compile Include="SisConnect.cs" />
     <Compile Include="WaveDetection.cs" />
     <Compile Include="VartoPointTable.cs" />
     <Compile Include="XmlConst.cs" />

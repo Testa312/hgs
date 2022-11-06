@@ -63,5 +63,16 @@ namespace HGS
                 this.DialogResult = DialogResult.Cancel;
             }
         }
+
+        private void btn_Fill_statis_Click(object sender, EventArgs e)
+        {
+            if (this.tt != null)
+            {
+                FormThSet fts = new FormThSet(tt);
+                if (DialogResult.OK == fts.ShowDialog())
+                { 
+                }
+            }
+        }
     }
 }

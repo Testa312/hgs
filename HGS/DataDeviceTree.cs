@@ -19,8 +19,9 @@ namespace HGS
         public float? start_th = null;
         public float? alarm_th_dis = null;
         public int sort = 0;
-        public NodeStatus treenodestatus = NodeStatus.no;
+        //public NodeStatus treenodestatus = NodeStatus.no;
         public HashSet<int> pointid_set = null;
+        public HashSet<object> sisid_set = null;
     }
     static class DataDeviceTree
     {
@@ -146,6 +147,8 @@ namespace HGS
                     if (ob != DBNull.Value)
                     {
                         ttag.pointid_set = new HashSet<int>((int[])ob);
+                        ttag.sisid_set = new HashSet<object>();
+                        ttag.sisid_set.UnionWith(Data.inst().GetSisIdSet(ttag.pointid_set));
                     }
                     ltn.Add(tn);
                     //

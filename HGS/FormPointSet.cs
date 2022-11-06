@@ -905,11 +905,14 @@ namespace HGS
                     if (ttg.pointid_set == null)
                         ttg.pointid_set = new HashSet<int>();
                     ttg.pointid_set.UnionWith(myData);
+                    if (ttg.sisid_set == null)
+                        ttg.sisid_set = new HashSet<object>();
+                    ttg.sisid_set.UnionWith(Data.inst().GetSisIdSet(ttg.pointid_set));
+
                     DataDeviceTree.UpdateNode(DropNode);
                     TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(DropNode,MouseButtons.Left,0,0,0);
                     treeView_NodeMouseClick(null, ee);
                 }
-
             }
         }
 
@@ -931,7 +934,9 @@ namespace HGS
                 HashSet<int> hs_pointid = new HashSet<int>();
                 foreach (GLItem it in glacialList1.SelectedItems)
                 {
-                    hs_pointid.Add(((itemtag)it.Tag).id);
+                    itemtag tag = (itemtag)it.Tag;
+                    if (tag.PointSrc == pointsrc.sis)//计算点无曲线，没法比较。
+                        hs_pointid.Add(tag.id);
                 }
                 glacialList1.DoDragDrop(hs_pointid,DragDropEffects.Copy);
             }
