@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
-namespace SisCorrelation
+namespace HGS
 {
     public static class Dtw
     {
-
         public static double GetScore(double[] arrayA, double[] arrayB)
         {
             var (aLength, bLength) = (arrayA.Length + 1, arrayB.Length + 1);
@@ -48,11 +47,8 @@ namespace SisCorrelation
         public static float GetScoreF(float[] arrayA, float[] arrayB)
         {
             var (aLength, bLength) = (arrayA.Length + 1, arrayB.Length + 1);
-            //
-
-            //
-            var spanA = Preprocess(arrayA);
-            var spanB = Preprocess(arrayB);
+            var spanA = arrayA;
+            var spanB = arrayB;
 
             float[][] dtw = new float[aLength][];
             dtw[0] = new float[bLength];
@@ -84,23 +80,6 @@ namespace SisCorrelation
                 previousDtwRow = currentDtwRow;
             }
             return dtw[aLength - 1][bLength - 1];
-        }
-        private static double[] Preprocess(double[] data)
-        {
-            //var min = data.Min();
-            //var max = data.Max();
-            //var constFactor = (100) / (max - min);
-
-            //return data.Select(x => (x - min) * constFactor).ToArray();
-            return data.Select(x => x).ToArray();// (x - min) * constFactor).ToArray();
-        }
-        private static float[] Preprocess(float[] data)
-        {
-            //var min = data.Min();
-           // var max = data.Max();
-            // var constFactor = (100) / (max - min);
-            return data.Select(x =>x).ToArray();
-            // return data.Select(x => (x - min) * constFactor).ToArray();
         }
     }
 }

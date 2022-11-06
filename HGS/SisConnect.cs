@@ -19,8 +19,8 @@ namespace HGS
     public class PointData
     {
         //public int ID = -1;
-        public double MaxAv = double.MinValue;
-        public double MinAv = double.MaxValue;
+        public float MaxAv = float.MinValue;
+        public float MinAv = float.MaxValue;
         public float MeanAV = 0;
         public List<DateValue> data = new List<DateValue>();
     }
@@ -36,7 +36,7 @@ namespace HGS
             string[] colnames = new string[] { "ID", "TM", "DS", "AV" };
 
             Dictionary<string, object> options = new Dictionary<string, object>();
-
+            span = (int)(end - begin).TotalSeconds / 120;
             options.Add("end", end);
             options.Add("begin", begin);
             options.Add("mode", "span");
@@ -84,5 +84,43 @@ namespace HGS
             }
             return dic_data;
         }
+        public static float GetDtw(PointData pd1, PointData pd2)
+        {
+            if (pd1.data.Count != pd2.data.Count)
+                throw new ArgumentException("数组长度应相等！");
+            double x2 = 0, y2 = 0, cost = 0; //矢量长度的平方。
+
+            float[] x = new float[pd1.data.Count];
+            float[] y = new float[pd1.data.Count];
+            for (int i = 0; i < pd1.data.Count; i++)
+            {
+                x[i] = (pd1.data[i].Value - pd1.MinAv);
+                y[i] = (pd2.data[i].Value - pd2.MinAv);
+                x2 += x[i] * x[i];
+                y2 += y[i] * y[i];
+            }
+            if (x2 > y2 && y2 >= 0.01)
+            {
+                float c = (float)Math.Sqrt(x2 / y2);
+                for (int i = 0; i < x.Length; i++)
+                {
+                    y[i] *= c;
+                    double d = x[i] - y[i];
+                    cost += d * d;
+                }
+            }
+            else if (y2 > x2 && x2 >= 0.01)
+            {
+                float c = (float)Math.Sqrt(y2 / x2);
+                for (int i = 0; i < x.Length; i++)
+                {
+                    x[i] *= c;
+                    double d = x[i] - y[i];
+                    cost += d * d;
+                }
+            }
+            return (float)Math.Sqrt(cost);// (float) (Dtw.GetScoreF(x, y) / Math.Sqrt(2 * x.Length* x.Length)); ;
+        }
+      
     }
 }

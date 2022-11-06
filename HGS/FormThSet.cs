@@ -12,6 +12,7 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 using System.Globalization;
 using OxyPlot.Annotations;
+using System.Diagnostics;
 namespace HGS
 {
     public partial class FormThSet : Form
@@ -107,8 +108,33 @@ namespace HGS
         {
             try
             {
-                plotView1.Model = PlotPoint(SisConnect.GetsisData(ttg.sisid_set.ToArray(),
-                                        dateTimePicker1.Value, dateTimePicker2.Value));
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                for (int c = 0; c < 100; c++)
+                {
+                    Dictionary<int, PointData> dic_pd = SisConnect.GetsisData(ttg.sisid_set.ToArray(),
+                                            dateTimePicker1.Value, dateTimePicker2.Value);
+                
+                    float cost = 0;
+                    List<PointData> lspd = new List<PointData>(dic_pd.Values.ToArray());
+                    if (lspd.Count > 0)
+                    {
+                        PointData pt_main = lspd[0];
+                        lspd.RemoveAt(0);
+                        while (lspd.Count > 0)
+                        {
+                            for (int i = 0; i < lspd.Count; i++)
+                            {
+                                cost = Math.Max(cost, SisConnect.GetDtw(pt_main, lspd[i]));
+                            }
+                            pt_main = lspd[0];
+                            lspd.RemoveAt(0);
+                        }
+                    }
+                }
+                sw.Stop();
+                toolStripStatusLabel1.Text = sw.ElapsedMilliseconds.ToString();
+                //plotView1.Model = PlotPoint(dic_pd);
             }
             catch(Exception ee)
             {
