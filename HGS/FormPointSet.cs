@@ -21,6 +21,8 @@ namespace HGS
         HashSet<string> hs_ND = new HashSet<string>();
         int PointNums = 0;
         bool isFirst = true;
+
+        bool isAltKeyDown = false;
         public FormPointSet()
         {
             InitializeComponent();
@@ -929,7 +931,7 @@ namespace HGS
 
         private void glacialList1_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right && glacialList1.SelectedItems.Count > 0)
+            if (isAltKeyDown && e.Button == MouseButtons.Left && glacialList1.SelectedItems.Count > 0)
             {
                 HashSet<int> hs_pointid = new HashSet<int>();
                 foreach (GLItem it in glacialList1.SelectedItems)
@@ -939,6 +941,35 @@ namespace HGS
                         hs_pointid.Add(tag.id);
                 }
                 glacialList1.DoDragDrop(hs_pointid,DragDropEffects.Copy);
+            }
+        }
+
+        private void glacialList1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Alt)
+                isAltKeyDown = true;
+        }
+
+        private void glacialList1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Alt)
+                isAltKeyDown = false;
+        }
+
+        private void 从分组中移除ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TreeNode tn = treeView.SelectedNode;
+            if (tn != null)
+            {
+                TreeTag tt = (TreeTag)tn.Tag;
+                foreach (GLItem item in glacialList1.SelectedItems)
+                {                 
+                    tt.pointid_set.Remove(((itemtag)item.Tag).id);
+                }
+                tt.sisid_set = Data.inst().GetSisIdSet(tt.pointid_set);
+                DataDeviceTree.UpdateNode(tn);
+                TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(tn, MouseButtons.Left, 0, 0, 0);
+                treeView_NodeMouseClick(null, ee);
             }
         }
     }

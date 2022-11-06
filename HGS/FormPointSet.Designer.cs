@@ -120,6 +120,8 @@
             this.删除节点ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.节点属性ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.glacialList1 = new GlacialComponents.Controls.GlacialList();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.从分组中移除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -339,29 +341,31 @@
             this.contextMenuStrip_gl.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.填加计算点ToolStripMenuItem,
             this.填加SIS点ToolStripMenuItem,
-            this.强制点ToolStripMenuItem});
+            this.强制点ToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.从分组中移除ToolStripMenuItem});
             this.contextMenuStrip_gl.Name = "contextMenuStrip_gl";
-            this.contextMenuStrip_gl.Size = new System.Drawing.Size(146, 70);
+            this.contextMenuStrip_gl.Size = new System.Drawing.Size(181, 120);
             this.contextMenuStrip_gl.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_gl_Opening);
             // 
             // 填加计算点ToolStripMenuItem
             // 
             this.填加计算点ToolStripMenuItem.Name = "填加计算点ToolStripMenuItem";
-            this.填加计算点ToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.填加计算点ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.填加计算点ToolStripMenuItem.Text = "填加计算点...";
             this.填加计算点ToolStripMenuItem.Click += new System.EventHandler(this.toolStripButtonAddNewCalc_Click);
             // 
             // 填加SIS点ToolStripMenuItem
             // 
             this.填加SIS点ToolStripMenuItem.Name = "填加SIS点ToolStripMenuItem";
-            this.填加SIS点ToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.填加SIS点ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.填加SIS点ToolStripMenuItem.Text = "填加SIS点...";
             this.填加SIS点ToolStripMenuItem.Click += new System.EventHandler(this.toolStripButtonAddSis_Click);
             // 
             // 强制点ToolStripMenuItem
             // 
             this.强制点ToolStripMenuItem.Name = "强制点ToolStripMenuItem";
-            this.强制点ToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.强制点ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.强制点ToolStripMenuItem.Text = "强制点...";
             this.强制点ToolStripMenuItem.Click += new System.EventHandler(this.强制点ToolStripMenuItem_Click);
             // 
@@ -1009,7 +1013,21 @@
             this.glacialList1.TabIndex = 1;
             this.glacialList1.Text = "glacialList1";
             this.glacialList1.Click += new System.EventHandler(this.glacialList1_Click);
+            this.glacialList1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.glacialList1_KeyDown);
+            this.glacialList1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.glacialList1_KeyUp);
             this.glacialList1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.glacialList1_MouseDown);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // 从分组中移除ToolStripMenuItem
+            // 
+            this.从分组中移除ToolStripMenuItem.Name = "从分组中移除ToolStripMenuItem";
+            this.从分组中移除ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.从分组中移除ToolStripMenuItem.Text = "从分组中移除";
+            this.从分组中移除ToolStripMenuItem.Click += new System.EventHandler(this.从分组中移除ToolStripMenuItem_Click);
             // 
             // FormPointSet
             // 
@@ -1128,5 +1146,7 @@
         private System.Windows.Forms.ToolStripMenuItem 增加节点ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 删除节点ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 节点属性ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem 从分组中移除ToolStripMenuItem;
     }
 }
