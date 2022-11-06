@@ -690,6 +690,7 @@ namespace HGS
             treeView.Nodes.AddRange(DataDeviceTree.GetAllSubNode(@"").ToArray());
             // Clear the TreeView each time the method is called.
             treeView.Nodes[0].Nodes.AddRange(DataDeviceTree.GetAllSubNode(@"/1").ToArray());
+            treeView.Nodes[0].Expand();
             //treeView.Nodes[0].Expand();
             // Reset the cursor to the default for all controls.
             Cursor.Current = Cursors.Default;
@@ -699,17 +700,20 @@ namespace HGS
         }
 
         private void treeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {          
+            RefreshSubs(e.Node);
+        }
+        private void RefreshSubs(TreeNode tn)
         {
+            if (tn == null) return;
             // Display a wait cursor while the TreeNodes are being created.
             Cursor.Current = Cursors.WaitCursor;
 
             // Suppress repainting the TreeView until all the objects have been created.
             treeView.BeginUpdate();
-            TreeNode tn = e.Node;
-            // Clear the TreeView each time the method is called.
             tn.Nodes.Clear();
             tn.Nodes.AddRange(DataDeviceTree.GetAllSubNode(((TreeTag)tn.Tag).path).ToArray());
-            foreach(TreeNode ttn in tn.Nodes)
+            foreach (TreeNode ttn in tn.Nodes)
             {
                 ttn.Nodes.Clear();
                 ttn.Nodes.AddRange(DataDeviceTree.GetAllSubNode(((TreeTag)ttn.Tag).path).ToArray());
@@ -722,31 +726,214 @@ namespace HGS
         }
         private void treeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
-                treeView.SelectedNode = e.Node;
+            //if (e.Button == MouseButtons.Right)
+            treeView.SelectedNode = e.Node;
+            if (e.Button == MouseButtons.Left)
+            {
+                TreeTag ttg = (TreeTag)e.Node.Tag;
+                if (e.Node.Text == "全部")
+                {
+                    glacialLisint();
+                }
+                else if (ttg == null || ttg.pointid_set == null)
+                {
+                    glacialList1.Items.Clear();
+                    glacialList1.Invalidate();
+                }
+                else if (ttg.pointid_set.Count > 0)
+                {
+                    List<GLItem> lsItem = new List<GLItem>();
+                    foreach (int id in ttg.pointid_set)
+                    {
+                        GLItem item = new GLItem(glacialList1);
+                        gllistInitItemText(Data.inst().cd_Point[id], item);
+                        lsItem.Add(item);
+                    }
+                    glacialList1.Items.Clear();
+                    glacialList1.Items.AddRange(lsItem.ToArray());
+                    glacialList1.Invalidate();
+                }
+            }
         }
-
         private void 增加节点ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TreeNode tn = treeView.SelectedNode;
-            FormTreeNode ftn = new FormTreeNode(null);
-            ftn.Text = "增加节点";
-            if (ftn.ShowDialog() == DialogResult.OK)
-            { 
+            try
+            {
+                TreeNode stn = treeView.SelectedNode;
+                if (stn != null)
+                {
+                    FormTreeNode ftn = new FormTreeNode(null);
+                    ftn.Text = "增加节点";
+                    if (ftn.ShowDialog() == DialogResult.OK)
+                    {
+                        TreeNode ntn = stn.Nodes.Add(ftn.tt.nodeName);
+                        ntn.Tag = ftn.tt;
+                        DataDeviceTree.InsertNode(ntn);
+                        RefreshSubs(ntn);
+                        stn.Expand();
+
+                    }
+                }
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show(ee.ToString(), "错误");
             }
         }
 
         private void 删除节点ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            try
+            {
+                TreeNode tn = treeView.SelectedNode;
+                if (tn != null)
+                {
+                    if (MessageBox.Show(string.Format("删除节点\"{0}\"?", tn.Text), "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                    {
+                        DataDeviceTree.RemoveNode(tn);
+                        tn.Remove();
+                    }
+                }
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show(ee.ToString(), "错误");
+            }
 
         }
 
         private void 节点属性ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TreeNode tn = treeView.SelectedNode;
-            FormTreeNode ftn = new FormTreeNode((TreeTag)tn.Tag);
-            if (ftn.ShowDialog() == DialogResult.OK)
+            try
             {
+                TreeNode tn = treeView.SelectedNode;
+                if (tn != null)
+                {
+                    FormTreeNode ftn = new FormTreeNode((TreeTag)tn.Tag);
+                    if (ftn.ShowDialog() == DialogResult.OK)
+                    {
+                        DataDeviceTree.UpdateNode(tn);
+                        RefreshSubs(tn.Parent);
+                    }
+                }
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show(ee.ToString(), "错误");
+            }
+        }
+
+        private void treeView_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(TreeNode)))
+            {
+                e.Effect = DragDropEffects.Move;
+            }
+            
+            else if (e.Data.GetDataPresent(typeof(HashSet<int>)))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+                e.Effect = DragDropEffects.None;
+
+        }
+
+        private void treeView_DragOver(object sender, DragEventArgs e)
+        {
+            Point Position = new Point(0, 0);
+            Position.X = e.X;
+            Position.Y = e.Y;
+            Position = treeView.PointToClient(Position);
+            TreeNode DropNode = this.treeView.GetNodeAt(Position);
+
+            if (e.Data.GetDataPresent(typeof(TreeNode)))
+            {
+                e.Effect = DragDropEffects.Move;
+                treeView.SelectedNode = DropNode;
+            }
+            else if (e.Data.GetDataPresent(typeof(HashSet<int>)))
+            {
+                e.Effect = DragDropEffects.Copy;
+                treeView.Focus();
+                treeView.SelectedNode = DropNode;
+            }
+            else
+                e.Effect = DragDropEffects.None;
+            //
+            if (DropNode != null)
+                treeView.SelectedNode.Expand();
+
+        }
+
+        private void treeView_DragDrop(object sender, DragEventArgs e)
+        {
+            TreeNode myNode = null;
+            if (e.Data.GetDataPresent(typeof(TreeNode)))
+            {
+                myNode = (TreeNode)(e.Data.GetData(typeof(TreeNode)));
+
+                // if (!myNode.Tag.ToString().Equals("node")) return;
+                Point Position = new Point(0, 0);
+                Position.X = e.X;
+                Position.Y = e.Y;
+                Position = treeView.PointToClient(Position);
+                TreeNode DropNode = this.treeView.GetNodeAt(Position);
+                // 1.目标节点不是空。2.目标节点不是被拖拽接点的字节点。3.目标节点不是被拖拽节点本身
+                if (DropNode != null && DropNode != myNode.Parent && DropNode != myNode)
+                {
+                    if (myNode.Parent != null)
+                        myNode.Parent.Nodes.Remove(myNode);
+                    DropNode.Nodes.Add(myNode);
+                    DataDeviceTree.UpdateAllSubNodes(myNode);
+                    RefreshSubs(myNode.Parent);
+                }
+            }
+            else if (e.Data.GetDataPresent(typeof(HashSet<int>)))
+            {               
+                HashSet<int> myData = (HashSet<int>)(e.Data.GetData(typeof(HashSet<int>)));
+
+                Point Position = new Point(0, 0);
+                Position.X = e.X;
+                Position.Y = e.Y;
+                Position = treeView.PointToClient(Position);
+                TreeNode DropNode = this.treeView.GetNodeAt(Position);
+                // 1.目标节点不是空。
+                if (DropNode != null)
+                {
+                    TreeTag ttg = (TreeTag)DropNode.Tag;
+                    if (ttg.pointid_set == null)
+                        ttg.pointid_set = new HashSet<int>();
+                    ttg.pointid_set.UnionWith(myData);
+                    DataDeviceTree.UpdateNode(DropNode);
+                    TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(DropNode,MouseButtons.Left,0,0,0);
+                    treeView_NodeMouseClick(null, ee);
+                }
+
+            }
+        }
+
+        private void treeView_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            DoDragDrop(e.Item, DragDropEffects.Move);
+        }
+
+        private void treeView_QueryContinueDrag(object sender, QueryContinueDragEventArgs e)
+        {
+            if (e.EscapePressed)
+                e.Action = DragAction.Cancel;
+        }
+
+        private void glacialList1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && glacialList1.SelectedItems.Count > 0)
+            {
+                HashSet<int> hs_pointid = new HashSet<int>();
+                foreach (GLItem it in glacialList1.SelectedItems)
+                {
+                    hs_pointid.Add(((itemtag)it.Tag).id);
+                }
+                glacialList1.DoDragDrop(hs_pointid,DragDropEffects.Copy);
             }
         }
     }

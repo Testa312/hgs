@@ -50,6 +50,10 @@ namespace HGS
         {
             return d.HasValue ? d.ToString() : "NULL";
         }
+        public static string dtoNULL(float? d)
+        {
+            return d.HasValue ? d.ToString() : "NULL";
+        }
         public static  double? NullDoubleRount(double? d, int fm)
         {
             double? r = null;

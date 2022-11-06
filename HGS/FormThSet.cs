@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace HGS
 {
-    public partial class FormCorrelation : Form
+    public partial class FormThSet : Form
     {
-        public FormCorrelation()
+        public FormThSet()
         {
             InitializeComponent();
         }

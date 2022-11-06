@@ -26,30 +26,42 @@ namespace HGS
                 mtb_alarm_th_dis.Text = tt.alarm_th_dis.ToString();
                 mtb_sort.Text = tt.sort.ToString();
             }
+            else
+                tt = new TreeTag();
         }
         private void BtnOK_Click(object sender, EventArgs e)
         {
-            tt.nodeName = tB_nodeName.Text;
-            if (mtb_start_th.Text.Length > 0)
+            try
             {
-                tt.start_th = float.Parse(mtb_start_th.Text);
+                tt.nodeName = tB_nodeName.Text.Trim();
+                if (tt.nodeName.Length == 0)
+                    throw new Exception("节点名不能为空！");
+                if (mtb_start_th.Text.Length > 0)
+                {
+                    tt.start_th = float.Parse(mtb_start_th.Text);
+                }
+                else
+                    tt.start_th = null;
+                //
+                if (mtb_alarm_th_dis.Text.Length > 0)
+                {
+                    tt.alarm_th_dis = float.Parse(mtb_alarm_th_dis.Text);
+                }
+                else
+                    tt.alarm_th_dis = null;
+                //
+                if (mtb_sort.Text.Length > 0)
+                {
+                    tt.sort = int.Parse(mtb_sort.Text);
+                }
+                else
+                    tt.sort = -1;
             }
-            else
-                tt.start_th = null;
-            //
-            if (mtb_alarm_th_dis.Text.Length > 0)
+            catch (Exception ee)
             {
-                tt.alarm_th_dis = float.Parse(mtb_alarm_th_dis.Text);
+                MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.DialogResult = DialogResult.Cancel;
             }
-            else
-                tt.alarm_th_dis = null;
-            //
-            if (mtb_sort.Text.Length > 0)
-            {
-                tt.sort = int.Parse(mtb_sort.Text);
-            }
-            else
-                tt.sort = -1;
         }
     }
 }
