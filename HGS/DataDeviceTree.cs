@@ -184,7 +184,7 @@ namespace HGS
             finally { pgconn.Close(); }
             return ltn;
         }
-        public static void InsertNode(TreeNode tn)
+        public static void InsertNodetoDb(TreeNode tn)
         {
             var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
             try
@@ -212,7 +212,7 @@ namespace HGS
                                     tag.nodeName, tag.path, ArraytoString(tag.start_th), ArraytoString(tag.alarm_th_dis), tag.sort, GetNodeArray(tn), tag.id);
             return sql;
         }
-        public static void UpdateNode(TreeNode tn)
+        public static void UpdateNodetoDB(TreeNode tn)
         {
             var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
             try

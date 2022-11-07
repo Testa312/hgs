@@ -740,7 +740,7 @@ namespace HGS
                 {
                     glacialLisint();
                 }
-                else if (ttg == null || ttg.pointid_set == null)
+                else if (ttg == null || ttg.pointid_set == null || ttg.pointid_set.Count <= 0)
                 {
                     glacialList1.Items.Clear();
                     glacialList1.Invalidate();
@@ -773,7 +773,7 @@ namespace HGS
                     {
                         TreeNode ntn = stn.Nodes.Add(ftn.tt.nodeName);
                         ntn.Tag = ftn.tt;
-                        DataDeviceTree.InsertNode(ntn);
+                        DataDeviceTree.InsertNodetoDb(ntn);
                         RefreshSubs(ntn);
                         stn.Expand();
 
@@ -817,7 +817,7 @@ namespace HGS
                     FormTreeNode ftn = new FormTreeNode((TreeTag)tn.Tag);
                     if (ftn.ShowDialog() == DialogResult.OK)
                     {
-                        DataDeviceTree.UpdateNode(tn);
+                        DataDeviceTree.UpdateNodetoDB(tn);
                         RefreshSubs(tn.Parent);
                     }
                 }
@@ -914,7 +914,7 @@ namespace HGS
                         ttg.sisid_set = new HashSet<object>();
                     ttg.sisid_set.UnionWith(Data.inst().GetSisIdSet(ttg.pointid_set));
 
-                    DataDeviceTree.UpdateNode(DropNode);
+                    DataDeviceTree.UpdateNodetoDB(DropNode);
                     TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(DropNode,MouseButtons.Left,0,0,0);
                     treeView_NodeMouseClick(null, ee);
                 }
@@ -970,7 +970,7 @@ namespace HGS
                     tt.pointid_set.Remove(((itemtag)item.Tag).id);
                 }
                 tt.sisid_set = Data.inst().GetSisIdSet(tt.pointid_set);
-                DataDeviceTree.UpdateNode(tn);
+                DataDeviceTree.UpdateNodetoDB(tn);
                 TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(tn, MouseButtons.Left, 0, 0, 0);
                 treeView_NodeMouseClick(null, ee);
             }

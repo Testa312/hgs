@@ -3372,7 +3372,7 @@ namespace GlacialComponents.Controls
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			DW("GlacialList_MouseDown");
-
+			base.OnMouseDown(e);//20221.1.7bug
 
 			//Debug.WriteLine( "Real " + e.X.ToString() + " " + e.Y.ToString() );
 
