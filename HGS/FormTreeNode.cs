@@ -22,8 +22,8 @@ namespace HGS
             if (tt != null) //throw new System.ArgumentException("Parameter cannot be null", "tt");
             {
                 tB_nodeName.Text = tt.nodeName;
-                mtb_start_th.Text = tt.start_th.ToString();
-                mtb_alarm_th_dis.Text = tt.alarm_th_dis.ToString();
+                //mtb_start_th.Text = tt.start_th.ToString();
+                //mtb_alarm_th_dis.Text = tt.alarm_th_dis.ToString();
                 mtb_sort.Text = tt.sort.ToString();
             }
             else

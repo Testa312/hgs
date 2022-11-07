@@ -934,7 +934,7 @@ namespace HGS
 
         private void glacialList1_MouseDown(object sender, MouseEventArgs e)
         {
-            if (isAltKeyDown && e.Button == MouseButtons.Left && glacialList1.SelectedItems.Count > 0)
+            if (isAltKeyDown && e.Button == MouseButtons.Right && glacialList1.SelectedItems.Count > 0)
             {
                 HashSet<int> hs_pointid = new HashSet<int>();
                 foreach (GLItem it in glacialList1.SelectedItems)

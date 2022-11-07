@@ -47,6 +47,10 @@ namespace HGS
             host1 = new ToolStripControlHost(dateTimePicker2);
             toolStrip1.Items.Insert(3, host1);
             //
+            if (ttg.sisid_set != null && ttg.sisid_set.Count > 0)
+                plotView1.Model = PlotPoint(SisConnect.GetsisData(ttg.sisid_set.ToArray(),
+                           dateTimePicker1.Value, dateTimePicker2.Value));
+            //
             if (ttg != null)
             {
                 textBox_Name.Text = ttg.nodeName;
@@ -122,9 +126,6 @@ namespace HGS
                 List<GLItem> lsItem = new List<GLItem>();
                 for (int i = 0; i < span.Length; i++)
                 {
-                    plotView1.Model = PlotPoint(SisConnect.GetsisData(ttg.sisid_set.ToArray(),
-                        dateTimePicker1.Value, dateTimePicker2.Value));
-
                     DateTime end = dateTimePicker2.Value;
                     DateTime begin = end.AddMinutes(-span[i]);
 
