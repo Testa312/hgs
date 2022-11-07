@@ -36,6 +36,7 @@ namespace HGS
                 tt.nodeName = tB_nodeName.Text.Trim();
                 if (tt.nodeName.Length == 0)
                     throw new Exception("节点名不能为空！");
+                /*
                 if (mtb_start_th.Text.Length > 0)
                 {
                     tt.start_th = float.Parse(mtb_start_th.Text);
@@ -56,6 +57,7 @@ namespace HGS
                 }
                 else
                     tt.sort = -1;
+                */
             }
             catch (Exception ee)
             {

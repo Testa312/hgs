@@ -16,8 +16,8 @@ namespace HGS
         public string nodeName = "";
         public int id = -1;
         public string path = "";
-        public float? start_th = null;
-        public float? alarm_th_dis = null;
+        public float[] start_th = null;
+        public float[] alarm_th_dis = null;
         public int sort = 0;
         //public NodeStatus treenodestatus = NodeStatus.no;
         public HashSet<int> pointid_set = null;
@@ -114,6 +114,24 @@ namespace HGS
             else 
                 return "NULL";                
         }
+        private static string ArraytoString(float[] fa)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (fa != null && fa.Length > 0)
+            {
+                sb.Append("'{");
+                foreach (float v in fa)
+                {
+                    string ay = string.Format("{0},", fa);
+                    sb.Append(ay);
+                }
+                if (sb.Length >= 2) sb.Remove(sb.Length - 1, 1);
+                sb.Append("}'");
+                return sb.ToString();
+            }
+            else
+                return "NULL";
+        }
         private static float? CasttoFloat(object ob)
         {
             if (ob == DBNull.Value)
@@ -141,9 +159,17 @@ namespace HGS
                     ttag.nodeName = pgreader["nodename"].ToString();
                     ttag.sort = (int)pgreader["sort"];
                     ttag.path = pgreader["path"].ToString();
-                    ttag.start_th = CasttoFloat(pgreader["start_th"]);
-                    ttag.alarm_th_dis = CasttoFloat(pgreader["alarm_th_dis"]);
-                    object ob = pgreader["pointid_array"];
+                    object ob = pgreader["start_th"];
+                    if (ob != DBNull.Value)
+                    {
+                        ttag.start_th = (float[])ob;
+                    }
+                    ob = pgreader["alarm_th_dis"];
+                    if (ob != DBNull.Value)
+                    {
+                        ttag.alarm_th_dis = (float[])ob;
+                    }
+                    ob = pgreader["pointid_array"];
                     if (ob != DBNull.Value)
                     {
                         ttag.pointid_set = new HashSet<int>((int[])ob);
@@ -170,7 +196,7 @@ namespace HGS
                 tag.path = GetNodeFullPath(tn);
                 string sql = string.Format(@"insert into devicetree (id,nodename,path,start_th,alarm_th_dis,sort,pointid_array)" +
                                     " values ({0},'{1}','{2}',{3},{4},{5},{6});",
-                                    tag.id, tag.nodeName, tag.path,Functions.dtoNULL(tag.start_th),Functions.dtoNULL(tag.alarm_th_dis), tag.sort, GetNodeArray(tn));
+                                    tag.id, tag.nodeName, tag.path, ArraytoString(tag.start_th),ArraytoString(tag.alarm_th_dis), tag.sort, GetNodeArray(tn));
                 var cmd = new NpgsqlCommand(sql, pgconn);
                 pgconn.Open();
                 cmd.ExecuteNonQuery();          
@@ -183,7 +209,7 @@ namespace HGS
             TreeTag tag = (TreeTag)tn.Tag;
             tag.path = GetNodeFullPath(tn);
             string sql = string.Format(@"update devicetree set nodename='{0}',path='{1}',start_th={2},alarm_th_dis={3},sort={4},pointid_array={5} where id = {6};",
-                                    tag.nodeName, tag.path, Functions.dtoNULL(tag.start_th), Functions.dtoNULL(tag.alarm_th_dis), tag.sort, GetNodeArray(tn), tag.id);
+                                    tag.nodeName, tag.path, ArraytoString(tag.start_th), ArraytoString(tag.alarm_th_dis), tag.sort, GetNodeArray(tn), tag.id);
             return sql;
         }
         public static void UpdateNode(TreeNode tn)

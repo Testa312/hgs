@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using GlacialComponents.Controls;
 using System.Diagnostics;
-using OpenPlant = System.IntPtr;
 
 namespace HGS
 {

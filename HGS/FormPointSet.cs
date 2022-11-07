@@ -691,8 +691,11 @@ namespace HGS
             treeView.Nodes.Clear();
             treeView.Nodes.AddRange(DataDeviceTree.GetAllSubNode(@"").ToArray());
             // Clear the TreeView each time the method is called.
-            treeView.Nodes[0].Nodes.AddRange(DataDeviceTree.GetAllSubNode(@"/1").ToArray());
-            treeView.Nodes[0].Expand();
+            if (treeView.Nodes.Count > 0)
+            {
+                treeView.Nodes[0].Nodes.AddRange(DataDeviceTree.GetAllSubNode(@"/1").ToArray());
+                treeView.Nodes[0].Expand();
+            }
             //treeView.Nodes[0].Expand();
             // Reset the cursor to the default for all controls.
             Cursor.Current = Cursors.Default;

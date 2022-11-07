@@ -26,8 +26,8 @@ namespace HGS
     }
     static class SisConnect
     {
-        public static OPAPI.Connect sisconn = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
-            Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
+        public static OPAPI.Connect sisconn = null; //new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
+            //Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
         public static Dictionary<int, PointData> GetsisData(object[] keys, DateTime begin, DateTime end, int span = 1)
         {
             Dictionary<int, PointData> dic_data = new Dictionary<int, PointData>();
@@ -106,7 +106,7 @@ namespace HGS
                 {
                     y[i] *= c;
                     double d = x[i] - y[i];
-                    cost += d * d;
+                    //cost += d * d;
                 }
             }
             else if (y2 > x2 && x2 >= 0.01)
@@ -116,11 +116,53 @@ namespace HGS
                 {
                     x[i] *= c;
                     double d = x[i] - y[i];
-                    cost += d * d;
+                    //cost += d * d;
                 }
             }
-            return (float)Math.Sqrt(cost);// (float) (Dtw.GetScoreF(x, y) / Math.Sqrt(2 * x.Length* x.Length)); ;
+            //return (float)Math.Sqrt(cost);
+            return (float) (Dtw.GetScoreF(x, y) / Math.Sqrt(2 * x.Length* x.Length)); ;
         }
-      
+        //没有用，也不快
+        /*
+        public static double GetDtwD(PointData pd1, PointData pd2)
+        {
+            if (pd1.data.Count != pd2.data.Count)
+                throw new ArgumentException("数组长度应相等！");
+            double x2 = 0, y2 = 0, cost = 0; //矢量长度的平方。
+
+            double[] x = new double[pd1.data.Count];
+            double[] y = new double[pd1.data.Count];
+            for (int i = 0; i < pd1.data.Count; i++)
+            {
+                x[i] = (pd1.data[i].Value - pd1.MinAv);
+                y[i] = (pd2.data[i].Value - pd2.MinAv);
+                x2 += x[i] * x[i];
+                y2 += y[i] * y[i];
+            }
+            if (x2 > y2 && y2 >= 0.01)
+            {
+                double c = Math.Sqrt(x2 / y2);
+                for (int i = 0; i < x.Length; i++)
+                {
+                    y[i] *= c;
+                    double d = x[i] - y[i];
+                    //cost += d * d;
+                }
+            }
+            else if (y2 > x2 && x2 >= 0.01)
+            {
+                double c = Math.Sqrt(y2 / x2);
+                for (int i = 0; i < x.Length; i++)
+                {
+                    x[i] *= c;
+                    double d = x[i] - y[i];
+                    //cost += d * d;
+                }
+            }
+            //return (float)Math.Sqrt(cost);
+            return dd_dtw.dtw_distance(x, y);
+        
+        }
+        */
     }
 }

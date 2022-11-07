@@ -26,6 +26,8 @@ namespace HGS
             tssL_error_nums.Text = "";
             try
             {
+                SisConnect.sisconn = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
+            Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
                 Data.inst().LoadFromPG();
             }
             catch (Exception ee)
