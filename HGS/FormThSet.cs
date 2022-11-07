@@ -132,7 +132,7 @@ namespace HGS
                     Cursor = Cursors.WaitCursor;
                   
                     double cost = 0;
-                    double maxpp = 0;
+                    double maxpp = double.MinValue;
                     while (begin >= dateTimePicker1.Value)
                     {
                         Dictionary<int, PointData> dic_pd = SisConnect.GetsisData(ttg.sisid_set.ToArray(), begin, end);
@@ -174,8 +174,10 @@ namespace HGS
                 glacialList1.Invalidate();
                 Cursor = Cursors.Default;
                 sw.Stop();
-                toolStripStatusLabel1.Text = sw.ElapsedMilliseconds.ToString();
-               
+                if (ttg.sisid_set != null && ttg.sisid_set.Count > 0)
+                    plotView1.Model = PlotPoint(SisConnect.GetsisData(ttg.sisid_set.ToArray(),
+                               dateTimePicker1.Value, dateTimePicker2.Value));
+                toolStripStatusLabel1.Text = sw.ElapsedMilliseconds.ToString();             
             }
             catch(Exception ee)
             {
