@@ -30,33 +30,33 @@ namespace HGS
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormThSet));
-            GlacialComponents.Controls.GLColumn glColumn4 = new GlacialComponents.Controls.GLColumn();
-            GlacialComponents.Controls.GLColumn glColumn5 = new GlacialComponents.Controls.GLColumn();
-            GlacialComponents.Controls.GLColumn glColumn6 = new GlacialComponents.Controls.GLColumn();
-            GlacialComponents.Controls.GLItem glItem7 = new GlacialComponents.Controls.GLItem();
-            GlacialComponents.Controls.GLSubItem glSubItem19 = new GlacialComponents.Controls.GLSubItem();
-            GlacialComponents.Controls.GLSubItem glSubItem20 = new GlacialComponents.Controls.GLSubItem();
-            GlacialComponents.Controls.GLSubItem glSubItem21 = new GlacialComponents.Controls.GLSubItem();
-            GlacialComponents.Controls.GLItem glItem8 = new GlacialComponents.Controls.GLItem();
-            GlacialComponents.Controls.GLSubItem glSubItem22 = new GlacialComponents.Controls.GLSubItem();
-            GlacialComponents.Controls.GLSubItem glSubItem23 = new GlacialComponents.Controls.GLSubItem();
-            GlacialComponents.Controls.GLSubItem glSubItem24 = new GlacialComponents.Controls.GLSubItem();
-            GlacialComponents.Controls.GLItem glItem9 = new GlacialComponents.Controls.GLItem();
-            GlacialComponents.Controls.GLSubItem glSubItem25 = new GlacialComponents.Controls.GLSubItem();
-            GlacialComponents.Controls.GLSubItem glSubItem26 = new GlacialComponents.Controls.GLSubItem();
-            GlacialComponents.Controls.GLSubItem glSubItem27 = new GlacialComponents.Controls.GLSubItem();
-            GlacialComponents.Controls.GLItem glItem10 = new GlacialComponents.Controls.GLItem();
-            GlacialComponents.Controls.GLSubItem glSubItem28 = new GlacialComponents.Controls.GLSubItem();
-            GlacialComponents.Controls.GLSubItem glSubItem29 = new GlacialComponents.Controls.GLSubItem();
-            GlacialComponents.Controls.GLSubItem glSubItem30 = new GlacialComponents.Controls.GLSubItem();
-            GlacialComponents.Controls.GLItem glItem11 = new GlacialComponents.Controls.GLItem();
-            GlacialComponents.Controls.GLSubItem glSubItem31 = new GlacialComponents.Controls.GLSubItem();
-            GlacialComponents.Controls.GLSubItem glSubItem32 = new GlacialComponents.Controls.GLSubItem();
-            GlacialComponents.Controls.GLSubItem glSubItem33 = new GlacialComponents.Controls.GLSubItem();
-            GlacialComponents.Controls.GLItem glItem12 = new GlacialComponents.Controls.GLItem();
-            GlacialComponents.Controls.GLSubItem glSubItem34 = new GlacialComponents.Controls.GLSubItem();
-            GlacialComponents.Controls.GLSubItem glSubItem35 = new GlacialComponents.Controls.GLSubItem();
-            GlacialComponents.Controls.GLSubItem glSubItem36 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLColumn glColumn1 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn2 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn3 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLItem glItem1 = new GlacialComponents.Controls.GLItem();
+            GlacialComponents.Controls.GLSubItem glSubItem1 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem2 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem3 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLItem glItem2 = new GlacialComponents.Controls.GLItem();
+            GlacialComponents.Controls.GLSubItem glSubItem4 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem5 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem6 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLItem glItem3 = new GlacialComponents.Controls.GLItem();
+            GlacialComponents.Controls.GLSubItem glSubItem7 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem8 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem9 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLItem glItem4 = new GlacialComponents.Controls.GLItem();
+            GlacialComponents.Controls.GLSubItem glSubItem10 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem11 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem12 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLItem glItem5 = new GlacialComponents.Controls.GLItem();
+            GlacialComponents.Controls.GLSubItem glSubItem13 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem14 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem15 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLItem glItem6 = new GlacialComponents.Controls.GLItem();
+            GlacialComponents.Controls.GLSubItem glSubItem16 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem17 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem18 = new GlacialComponents.Controls.GLSubItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip2 = new System.Windows.Forms.MenuStrip();
@@ -71,15 +71,15 @@ namespace HGS
             this.toolStripButton_First = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.glacialList1 = new GlacialComponents.Controls.GlacialList();
+            this.textBox_Name = new System.Windows.Forms.TextBox();
+            this.maskedTextBox_Sort = new MaskedTextBox.MaskedTextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.plotView1 = new OxyPlot.WindowsForms.PlotView();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
-            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBox_Name = new System.Windows.Forms.TextBox();
-            this.glacialList1 = new GlacialComponents.Controls.GlacialList();
-            this.maskedTextBox_Sort = new MaskedTextBox.MaskedTextBox();
             this.statusStrip1.SuspendLayout();
             this.menuStrip2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -110,8 +110,8 @@ namespace HGS
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(131, 17);
-            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(44, 17);
+            this.toolStripStatusLabel1.Text = "用时：";
             // 
             // menuStrip2
             // 
@@ -244,6 +244,315 @@ namespace HGS
             this.splitContainer2.SplitterDistance = 221;
             this.splitContainer2.TabIndex = 0;
             // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Name = "splitContainer3";
+            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.glacialList1);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.textBox_Name);
+            this.splitContainer3.Panel2.Controls.Add(this.maskedTextBox_Sort);
+            this.splitContainer3.Panel2.Controls.Add(this.label2);
+            this.splitContainer3.Panel2.Controls.Add(this.label1);
+            this.splitContainer3.Size = new System.Drawing.Size(221, 315);
+            this.splitContainer3.SplitterDistance = 174;
+            this.splitContainer3.TabIndex = 0;
+            // 
+            // glacialList1
+            // 
+            this.glacialList1.AllowColumnResize = true;
+            this.glacialList1.AllowMultiselect = false;
+            this.glacialList1.AlternateBackground = System.Drawing.Color.DarkGreen;
+            this.glacialList1.AlternatingColors = false;
+            this.glacialList1.AutoHeight = true;
+            this.glacialList1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.glacialList1.BackgroundStretchToFit = true;
+            glColumn1.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn1.CheckBoxes = false;
+            glColumn1.ImageIndex = -1;
+            glColumn1.Name = "TW";
+            glColumn1.NumericSort = false;
+            glColumn1.Text = "时间窗";
+            glColumn1.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            glColumn1.Width = 60;
+            glColumn2.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn2.CheckBoxes = false;
+            glColumn2.ImageIndex = -1;
+            glColumn2.Name = "start_th";
+            glColumn2.NumericSort = true;
+            glColumn2.Text = "启动值";
+            glColumn2.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
+            glColumn2.Width = 60;
+            glColumn3.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn3.CheckBoxes = false;
+            glColumn3.ImageIndex = -1;
+            glColumn3.Name = "alarm_th";
+            glColumn3.NumericSort = true;
+            glColumn3.Text = "报警值";
+            glColumn3.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
+            glColumn3.Width = 60;
+            this.glacialList1.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
+            glColumn1,
+            glColumn2,
+            glColumn3});
+            this.glacialList1.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
+            this.glacialList1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.glacialList1.FullRowSelect = true;
+            this.glacialList1.GridColor = System.Drawing.Color.LightGray;
+            this.glacialList1.GridLines = GlacialComponents.Controls.GLGridLines.gridBoth;
+            this.glacialList1.GridLineStyle = GlacialComponents.Controls.GLGridLineStyles.gridSolid;
+            this.glacialList1.GridTypes = GlacialComponents.Controls.GLGridTypes.gridOnExists;
+            this.glacialList1.HeaderHeight = 22;
+            this.glacialList1.HeaderVisible = true;
+            this.glacialList1.HeaderWordWrap = false;
+            this.glacialList1.HotColumnTracking = false;
+            this.glacialList1.HotItemTracking = false;
+            this.glacialList1.HotTrackingColor = System.Drawing.Color.LightGray;
+            this.glacialList1.HoverEvents = false;
+            this.glacialList1.HoverTime = 1;
+            this.glacialList1.ImageList = null;
+            this.glacialList1.ItemHeight = 19;
+            glItem1.BackColor = System.Drawing.Color.White;
+            glItem1.ForeColor = System.Drawing.Color.Black;
+            glItem1.RowBorderColor = System.Drawing.Color.Black;
+            glItem1.RowBorderSize = 0;
+            glSubItem1.BackColor = System.Drawing.Color.Empty;
+            glSubItem1.Checked = false;
+            glSubItem1.ForceText = false;
+            glSubItem1.ForeColor = System.Drawing.Color.Black;
+            glSubItem1.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem1.ImageIndex = -1;
+            glSubItem1.Text = "15m";
+            glSubItem2.BackColor = System.Drawing.Color.Empty;
+            glSubItem2.Checked = false;
+            glSubItem2.ForceText = false;
+            glSubItem2.ForeColor = System.Drawing.Color.Black;
+            glSubItem2.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem2.ImageIndex = -1;
+            glSubItem2.Text = "";
+            glSubItem3.BackColor = System.Drawing.Color.Empty;
+            glSubItem3.Checked = false;
+            glSubItem3.ForceText = false;
+            glSubItem3.ForeColor = System.Drawing.Color.Black;
+            glSubItem3.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem3.ImageIndex = -1;
+            glSubItem3.Text = "";
+            glItem1.SubItems.AddRange(new GlacialComponents.Controls.GLSubItem[] {
+            glSubItem1,
+            glSubItem2,
+            glSubItem3});
+            glItem1.Text = "15m";
+            glItem2.BackColor = System.Drawing.Color.White;
+            glItem2.ForeColor = System.Drawing.Color.Black;
+            glItem2.RowBorderColor = System.Drawing.Color.Black;
+            glItem2.RowBorderSize = 0;
+            glSubItem4.BackColor = System.Drawing.Color.Empty;
+            glSubItem4.Checked = false;
+            glSubItem4.ForceText = false;
+            glSubItem4.ForeColor = System.Drawing.Color.Black;
+            glSubItem4.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem4.ImageIndex = -1;
+            glSubItem4.Text = "30m";
+            glSubItem5.BackColor = System.Drawing.Color.Empty;
+            glSubItem5.Checked = false;
+            glSubItem5.ForceText = false;
+            glSubItem5.ForeColor = System.Drawing.Color.Black;
+            glSubItem5.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem5.ImageIndex = -1;
+            glSubItem5.Text = "";
+            glSubItem6.BackColor = System.Drawing.Color.Empty;
+            glSubItem6.Checked = false;
+            glSubItem6.ForceText = false;
+            glSubItem6.ForeColor = System.Drawing.Color.Black;
+            glSubItem6.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem6.ImageIndex = -1;
+            glSubItem6.Text = "";
+            glItem2.SubItems.AddRange(new GlacialComponents.Controls.GLSubItem[] {
+            glSubItem4,
+            glSubItem5,
+            glSubItem6});
+            glItem2.Text = "30m";
+            glItem3.BackColor = System.Drawing.Color.White;
+            glItem3.ForeColor = System.Drawing.Color.Black;
+            glItem3.RowBorderColor = System.Drawing.Color.Black;
+            glItem3.RowBorderSize = 0;
+            glSubItem7.BackColor = System.Drawing.Color.Empty;
+            glSubItem7.Checked = false;
+            glSubItem7.ForceText = false;
+            glSubItem7.ForeColor = System.Drawing.Color.Black;
+            glSubItem7.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem7.ImageIndex = -1;
+            glSubItem7.Text = "1h";
+            glSubItem8.BackColor = System.Drawing.Color.Empty;
+            glSubItem8.Checked = false;
+            glSubItem8.ForceText = false;
+            glSubItem8.ForeColor = System.Drawing.Color.Black;
+            glSubItem8.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem8.ImageIndex = -1;
+            glSubItem8.Text = "";
+            glSubItem9.BackColor = System.Drawing.Color.Empty;
+            glSubItem9.Checked = false;
+            glSubItem9.ForceText = false;
+            glSubItem9.ForeColor = System.Drawing.Color.Black;
+            glSubItem9.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem9.ImageIndex = -1;
+            glSubItem9.Text = "";
+            glItem3.SubItems.AddRange(new GlacialComponents.Controls.GLSubItem[] {
+            glSubItem7,
+            glSubItem8,
+            glSubItem9});
+            glItem3.Text = "1h";
+            glItem4.BackColor = System.Drawing.Color.White;
+            glItem4.ForeColor = System.Drawing.Color.Black;
+            glItem4.RowBorderColor = System.Drawing.Color.Black;
+            glItem4.RowBorderSize = 0;
+            glSubItem10.BackColor = System.Drawing.Color.Empty;
+            glSubItem10.Checked = false;
+            glSubItem10.ForceText = false;
+            glSubItem10.ForeColor = System.Drawing.Color.Black;
+            glSubItem10.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem10.ImageIndex = -1;
+            glSubItem10.Text = "2h";
+            glSubItem11.BackColor = System.Drawing.Color.Empty;
+            glSubItem11.Checked = false;
+            glSubItem11.ForceText = false;
+            glSubItem11.ForeColor = System.Drawing.Color.Black;
+            glSubItem11.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem11.ImageIndex = -1;
+            glSubItem11.Text = "";
+            glSubItem12.BackColor = System.Drawing.Color.Empty;
+            glSubItem12.Checked = false;
+            glSubItem12.ForceText = false;
+            glSubItem12.ForeColor = System.Drawing.Color.Black;
+            glSubItem12.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem12.ImageIndex = -1;
+            glSubItem12.Text = "";
+            glItem4.SubItems.AddRange(new GlacialComponents.Controls.GLSubItem[] {
+            glSubItem10,
+            glSubItem11,
+            glSubItem12});
+            glItem4.Text = "2h";
+            glItem5.BackColor = System.Drawing.Color.White;
+            glItem5.ForeColor = System.Drawing.Color.Black;
+            glItem5.RowBorderColor = System.Drawing.Color.Black;
+            glItem5.RowBorderSize = 0;
+            glSubItem13.BackColor = System.Drawing.Color.Empty;
+            glSubItem13.Checked = false;
+            glSubItem13.ForceText = false;
+            glSubItem13.ForeColor = System.Drawing.Color.Black;
+            glSubItem13.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem13.ImageIndex = -1;
+            glSubItem13.Text = "4h";
+            glSubItem14.BackColor = System.Drawing.Color.Empty;
+            glSubItem14.Checked = false;
+            glSubItem14.ForceText = false;
+            glSubItem14.ForeColor = System.Drawing.Color.Black;
+            glSubItem14.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem14.ImageIndex = -1;
+            glSubItem14.Text = "";
+            glSubItem15.BackColor = System.Drawing.Color.Empty;
+            glSubItem15.Checked = false;
+            glSubItem15.ForceText = false;
+            glSubItem15.ForeColor = System.Drawing.Color.Black;
+            glSubItem15.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem15.ImageIndex = -1;
+            glSubItem15.Text = "";
+            glItem5.SubItems.AddRange(new GlacialComponents.Controls.GLSubItem[] {
+            glSubItem13,
+            glSubItem14,
+            glSubItem15});
+            glItem5.Text = "4h";
+            glItem6.BackColor = System.Drawing.Color.White;
+            glItem6.ForeColor = System.Drawing.Color.Black;
+            glItem6.RowBorderColor = System.Drawing.Color.Black;
+            glItem6.RowBorderSize = 0;
+            glSubItem16.BackColor = System.Drawing.Color.Empty;
+            glSubItem16.Checked = false;
+            glSubItem16.ForceText = false;
+            glSubItem16.ForeColor = System.Drawing.Color.Black;
+            glSubItem16.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem16.ImageIndex = -1;
+            glSubItem16.Text = "8h";
+            glSubItem17.BackColor = System.Drawing.Color.Empty;
+            glSubItem17.Checked = false;
+            glSubItem17.ForceText = false;
+            glSubItem17.ForeColor = System.Drawing.Color.Black;
+            glSubItem17.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem17.ImageIndex = -1;
+            glSubItem17.Text = "";
+            glSubItem18.BackColor = System.Drawing.Color.Empty;
+            glSubItem18.Checked = false;
+            glSubItem18.ForceText = false;
+            glSubItem18.ForeColor = System.Drawing.Color.Black;
+            glSubItem18.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem18.ImageIndex = -1;
+            glSubItem18.Text = "";
+            glItem6.SubItems.AddRange(new GlacialComponents.Controls.GLSubItem[] {
+            glSubItem16,
+            glSubItem17,
+            glSubItem18});
+            glItem6.Text = "8h";
+            this.glacialList1.Items.AddRange(new GlacialComponents.Controls.GLItem[] {
+            glItem1,
+            glItem2,
+            glItem3,
+            glItem4,
+            glItem5,
+            glItem6});
+            this.glacialList1.ItemWordWrap = false;
+            this.glacialList1.Location = new System.Drawing.Point(0, 0);
+            this.glacialList1.Name = "glacialList1";
+            this.glacialList1.Selectable = true;
+            this.glacialList1.SelectedTextColor = System.Drawing.Color.White;
+            this.glacialList1.SelectionColor = System.Drawing.Color.DarkBlue;
+            this.glacialList1.ShowBorder = true;
+            this.glacialList1.ShowFocusRect = false;
+            this.glacialList1.Size = new System.Drawing.Size(221, 174);
+            this.glacialList1.SortType = GlacialComponents.Controls.SortTypes.InsertionSort;
+            this.glacialList1.SuperFlatHeaderColor = System.Drawing.Color.White;
+            this.glacialList1.TabIndex = 0;
+            this.glacialList1.Text = "glacialList1";
+            // 
+            // textBox_Name
+            // 
+            this.textBox_Name.Location = new System.Drawing.Point(14, 37);
+            this.textBox_Name.Name = "textBox_Name";
+            this.textBox_Name.Size = new System.Drawing.Size(189, 21);
+            this.textBox_Name.TabIndex = 2;
+            // 
+            // maskedTextBox_Sort
+            // 
+            this.maskedTextBox_Sort.Location = new System.Drawing.Point(14, 91);
+            this.maskedTextBox_Sort.Masked = MaskedTextBox.Mask.Digit;
+            this.maskedTextBox_Sort.Name = "maskedTextBox_Sort";
+            this.maskedTextBox_Sort.Size = new System.Drawing.Size(93, 21);
+            this.maskedTextBox_Sort.TabIndex = 1;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 74);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(41, 12);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "排序：";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 20);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(41, 12);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "名称：";
+            // 
             // plotView1
             // 
             this.plotView1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -277,315 +586,6 @@ namespace HGS
             this.buttonOK.Text = "确认";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
-            // 
-            // splitContainer3
-            // 
-            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer3.Name = "splitContainer3";
-            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer3.Panel1
-            // 
-            this.splitContainer3.Panel1.Controls.Add(this.glacialList1);
-            // 
-            // splitContainer3.Panel2
-            // 
-            this.splitContainer3.Panel2.Controls.Add(this.textBox_Name);
-            this.splitContainer3.Panel2.Controls.Add(this.maskedTextBox_Sort);
-            this.splitContainer3.Panel2.Controls.Add(this.label2);
-            this.splitContainer3.Panel2.Controls.Add(this.label1);
-            this.splitContainer3.Size = new System.Drawing.Size(221, 315);
-            this.splitContainer3.SplitterDistance = 174;
-            this.splitContainer3.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 20);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 12);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "名称：";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 74);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(41, 12);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "排序：";
-            // 
-            // textBox_Name
-            // 
-            this.textBox_Name.Location = new System.Drawing.Point(14, 37);
-            this.textBox_Name.Name = "textBox_Name";
-            this.textBox_Name.Size = new System.Drawing.Size(189, 21);
-            this.textBox_Name.TabIndex = 2;
-            // 
-            // glacialList1
-            // 
-            this.glacialList1.AllowColumnResize = true;
-            this.glacialList1.AllowMultiselect = false;
-            this.glacialList1.AlternateBackground = System.Drawing.Color.DarkGreen;
-            this.glacialList1.AlternatingColors = false;
-            this.glacialList1.AutoHeight = true;
-            this.glacialList1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.glacialList1.BackgroundStretchToFit = true;
-            glColumn4.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
-            glColumn4.CheckBoxes = false;
-            glColumn4.ImageIndex = -1;
-            glColumn4.Name = "TW";
-            glColumn4.NumericSort = false;
-            glColumn4.Text = "时间窗";
-            glColumn4.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            glColumn4.Width = 60;
-            glColumn5.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
-            glColumn5.CheckBoxes = false;
-            glColumn5.ImageIndex = -1;
-            glColumn5.Name = "start_th";
-            glColumn5.NumericSort = true;
-            glColumn5.Text = "启动值";
-            glColumn5.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
-            glColumn5.Width = 60;
-            glColumn6.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
-            glColumn6.CheckBoxes = false;
-            glColumn6.ImageIndex = -1;
-            glColumn6.Name = "alarm_th";
-            glColumn6.NumericSort = true;
-            glColumn6.Text = "报警值";
-            glColumn6.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
-            glColumn6.Width = 60;
-            this.glacialList1.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
-            glColumn4,
-            glColumn5,
-            glColumn6});
-            this.glacialList1.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
-            this.glacialList1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.glacialList1.FullRowSelect = true;
-            this.glacialList1.GridColor = System.Drawing.Color.LightGray;
-            this.glacialList1.GridLines = GlacialComponents.Controls.GLGridLines.gridBoth;
-            this.glacialList1.GridLineStyle = GlacialComponents.Controls.GLGridLineStyles.gridSolid;
-            this.glacialList1.GridTypes = GlacialComponents.Controls.GLGridTypes.gridOnExists;
-            this.glacialList1.HeaderHeight = 22;
-            this.glacialList1.HeaderVisible = true;
-            this.glacialList1.HeaderWordWrap = false;
-            this.glacialList1.HotColumnTracking = false;
-            this.glacialList1.HotItemTracking = false;
-            this.glacialList1.HotTrackingColor = System.Drawing.Color.LightGray;
-            this.glacialList1.HoverEvents = false;
-            this.glacialList1.HoverTime = 1;
-            this.glacialList1.ImageList = null;
-            this.glacialList1.ItemHeight = 19;
-            glItem7.BackColor = System.Drawing.Color.White;
-            glItem7.ForeColor = System.Drawing.Color.Black;
-            glItem7.RowBorderColor = System.Drawing.Color.Black;
-            glItem7.RowBorderSize = 0;
-            glSubItem19.BackColor = System.Drawing.Color.Empty;
-            glSubItem19.Checked = false;
-            glSubItem19.ForceText = false;
-            glSubItem19.ForeColor = System.Drawing.Color.Black;
-            glSubItem19.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
-            glSubItem19.ImageIndex = -1;
-            glSubItem19.Text = "15m";
-            glSubItem20.BackColor = System.Drawing.Color.Empty;
-            glSubItem20.Checked = false;
-            glSubItem20.ForceText = false;
-            glSubItem20.ForeColor = System.Drawing.Color.Black;
-            glSubItem20.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
-            glSubItem20.ImageIndex = -1;
-            glSubItem20.Text = "";
-            glSubItem21.BackColor = System.Drawing.Color.Empty;
-            glSubItem21.Checked = false;
-            glSubItem21.ForceText = false;
-            glSubItem21.ForeColor = System.Drawing.Color.Black;
-            glSubItem21.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
-            glSubItem21.ImageIndex = -1;
-            glSubItem21.Text = "";
-            glItem7.SubItems.AddRange(new GlacialComponents.Controls.GLSubItem[] {
-            glSubItem19,
-            glSubItem20,
-            glSubItem21});
-            glItem7.Text = "15m";
-            glItem8.BackColor = System.Drawing.Color.White;
-            glItem8.ForeColor = System.Drawing.Color.Black;
-            glItem8.RowBorderColor = System.Drawing.Color.Black;
-            glItem8.RowBorderSize = 0;
-            glSubItem22.BackColor = System.Drawing.Color.Empty;
-            glSubItem22.Checked = false;
-            glSubItem22.ForceText = false;
-            glSubItem22.ForeColor = System.Drawing.Color.Black;
-            glSubItem22.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
-            glSubItem22.ImageIndex = -1;
-            glSubItem22.Text = "30m";
-            glSubItem23.BackColor = System.Drawing.Color.Empty;
-            glSubItem23.Checked = false;
-            glSubItem23.ForceText = false;
-            glSubItem23.ForeColor = System.Drawing.Color.Black;
-            glSubItem23.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
-            glSubItem23.ImageIndex = -1;
-            glSubItem23.Text = "";
-            glSubItem24.BackColor = System.Drawing.Color.Empty;
-            glSubItem24.Checked = false;
-            glSubItem24.ForceText = false;
-            glSubItem24.ForeColor = System.Drawing.Color.Black;
-            glSubItem24.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
-            glSubItem24.ImageIndex = -1;
-            glSubItem24.Text = "";
-            glItem8.SubItems.AddRange(new GlacialComponents.Controls.GLSubItem[] {
-            glSubItem22,
-            glSubItem23,
-            glSubItem24});
-            glItem8.Text = "30m";
-            glItem9.BackColor = System.Drawing.Color.White;
-            glItem9.ForeColor = System.Drawing.Color.Black;
-            glItem9.RowBorderColor = System.Drawing.Color.Black;
-            glItem9.RowBorderSize = 0;
-            glSubItem25.BackColor = System.Drawing.Color.Empty;
-            glSubItem25.Checked = false;
-            glSubItem25.ForceText = false;
-            glSubItem25.ForeColor = System.Drawing.Color.Black;
-            glSubItem25.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
-            glSubItem25.ImageIndex = -1;
-            glSubItem25.Text = "1h";
-            glSubItem26.BackColor = System.Drawing.Color.Empty;
-            glSubItem26.Checked = false;
-            glSubItem26.ForceText = false;
-            glSubItem26.ForeColor = System.Drawing.Color.Black;
-            glSubItem26.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
-            glSubItem26.ImageIndex = -1;
-            glSubItem26.Text = "";
-            glSubItem27.BackColor = System.Drawing.Color.Empty;
-            glSubItem27.Checked = false;
-            glSubItem27.ForceText = false;
-            glSubItem27.ForeColor = System.Drawing.Color.Black;
-            glSubItem27.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
-            glSubItem27.ImageIndex = -1;
-            glSubItem27.Text = "";
-            glItem9.SubItems.AddRange(new GlacialComponents.Controls.GLSubItem[] {
-            glSubItem25,
-            glSubItem26,
-            glSubItem27});
-            glItem9.Text = "1h";
-            glItem10.BackColor = System.Drawing.Color.White;
-            glItem10.ForeColor = System.Drawing.Color.Black;
-            glItem10.RowBorderColor = System.Drawing.Color.Black;
-            glItem10.RowBorderSize = 0;
-            glSubItem28.BackColor = System.Drawing.Color.Empty;
-            glSubItem28.Checked = false;
-            glSubItem28.ForceText = false;
-            glSubItem28.ForeColor = System.Drawing.Color.Black;
-            glSubItem28.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
-            glSubItem28.ImageIndex = -1;
-            glSubItem28.Text = "2h";
-            glSubItem29.BackColor = System.Drawing.Color.Empty;
-            glSubItem29.Checked = false;
-            glSubItem29.ForceText = false;
-            glSubItem29.ForeColor = System.Drawing.Color.Black;
-            glSubItem29.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
-            glSubItem29.ImageIndex = -1;
-            glSubItem29.Text = "";
-            glSubItem30.BackColor = System.Drawing.Color.Empty;
-            glSubItem30.Checked = false;
-            glSubItem30.ForceText = false;
-            glSubItem30.ForeColor = System.Drawing.Color.Black;
-            glSubItem30.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
-            glSubItem30.ImageIndex = -1;
-            glSubItem30.Text = "";
-            glItem10.SubItems.AddRange(new GlacialComponents.Controls.GLSubItem[] {
-            glSubItem28,
-            glSubItem29,
-            glSubItem30});
-            glItem10.Text = "2h";
-            glItem11.BackColor = System.Drawing.Color.White;
-            glItem11.ForeColor = System.Drawing.Color.Black;
-            glItem11.RowBorderColor = System.Drawing.Color.Black;
-            glItem11.RowBorderSize = 0;
-            glSubItem31.BackColor = System.Drawing.Color.Empty;
-            glSubItem31.Checked = false;
-            glSubItem31.ForceText = false;
-            glSubItem31.ForeColor = System.Drawing.Color.Black;
-            glSubItem31.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
-            glSubItem31.ImageIndex = -1;
-            glSubItem31.Text = "4h";
-            glSubItem32.BackColor = System.Drawing.Color.Empty;
-            glSubItem32.Checked = false;
-            glSubItem32.ForceText = false;
-            glSubItem32.ForeColor = System.Drawing.Color.Black;
-            glSubItem32.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
-            glSubItem32.ImageIndex = -1;
-            glSubItem32.Text = "";
-            glSubItem33.BackColor = System.Drawing.Color.Empty;
-            glSubItem33.Checked = false;
-            glSubItem33.ForceText = false;
-            glSubItem33.ForeColor = System.Drawing.Color.Black;
-            glSubItem33.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
-            glSubItem33.ImageIndex = -1;
-            glSubItem33.Text = "";
-            glItem11.SubItems.AddRange(new GlacialComponents.Controls.GLSubItem[] {
-            glSubItem31,
-            glSubItem32,
-            glSubItem33});
-            glItem11.Text = "4h";
-            glItem12.BackColor = System.Drawing.Color.White;
-            glItem12.ForeColor = System.Drawing.Color.Black;
-            glItem12.RowBorderColor = System.Drawing.Color.Black;
-            glItem12.RowBorderSize = 0;
-            glSubItem34.BackColor = System.Drawing.Color.Empty;
-            glSubItem34.Checked = false;
-            glSubItem34.ForceText = false;
-            glSubItem34.ForeColor = System.Drawing.Color.Black;
-            glSubItem34.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
-            glSubItem34.ImageIndex = -1;
-            glSubItem34.Text = "8h";
-            glSubItem35.BackColor = System.Drawing.Color.Empty;
-            glSubItem35.Checked = false;
-            glSubItem35.ForceText = false;
-            glSubItem35.ForeColor = System.Drawing.Color.Black;
-            glSubItem35.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
-            glSubItem35.ImageIndex = -1;
-            glSubItem35.Text = "";
-            glSubItem36.BackColor = System.Drawing.Color.Empty;
-            glSubItem36.Checked = false;
-            glSubItem36.ForceText = false;
-            glSubItem36.ForeColor = System.Drawing.Color.Black;
-            glSubItem36.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
-            glSubItem36.ImageIndex = -1;
-            glSubItem36.Text = "";
-            glItem12.SubItems.AddRange(new GlacialComponents.Controls.GLSubItem[] {
-            glSubItem34,
-            glSubItem35,
-            glSubItem36});
-            glItem12.Text = "8h";
-            this.glacialList1.Items.AddRange(new GlacialComponents.Controls.GLItem[] {
-            glItem7,
-            glItem8,
-            glItem9,
-            glItem10,
-            glItem11,
-            glItem12});
-            this.glacialList1.ItemWordWrap = false;
-            this.glacialList1.Location = new System.Drawing.Point(0, 0);
-            this.glacialList1.Name = "glacialList1";
-            this.glacialList1.Selectable = true;
-            this.glacialList1.SelectedTextColor = System.Drawing.Color.White;
-            this.glacialList1.SelectionColor = System.Drawing.Color.DarkBlue;
-            this.glacialList1.ShowBorder = true;
-            this.glacialList1.ShowFocusRect = false;
-            this.glacialList1.Size = new System.Drawing.Size(221, 174);
-            this.glacialList1.SortType = GlacialComponents.Controls.SortTypes.InsertionSort;
-            this.glacialList1.SuperFlatHeaderColor = System.Drawing.Color.White;
-            this.glacialList1.TabIndex = 0;
-            this.glacialList1.Text = "glacialList1";
-            // 
-            // maskedTextBox_Sort
-            // 
-            this.maskedTextBox_Sort.Location = new System.Drawing.Point(14, 91);
-            this.maskedTextBox_Sort.Masked = MaskedTextBox.Mask.Digit;
-            this.maskedTextBox_Sort.Name = "maskedTextBox_Sort";
-            this.maskedTextBox_Sort.Size = new System.Drawing.Size(93, 21);
-            this.maskedTextBox_Sort.TabIndex = 1;
             // 
             // FormThSet
             // 

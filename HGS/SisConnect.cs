@@ -99,32 +99,29 @@ namespace HGS
                 x2 += x[i] * x[i];
                 y2 += y[i] * y[i];
             }
-            if (x2 > y2 && y2 >= 0.01)
+            //向量模归一化.与z-normalization 比精度更高
+            if (x2 > y2 && y2 >= 0.5)
             {
                 float c = (float)Math.Sqrt(x2 / y2);
                 for (int i = 0; i < x.Length; i++)
                 {
                     y[i] *= c;
-                    double d = x[i] - y[i];
-                    //cost += d * d;
                 }
+                cost = Dtw.GetScoreF(x, y);
             }
-            else if (y2 > x2 && x2 >= 0.01)
+            else if (y2 > x2 && x2 >= 0.5)
             {
                 float c = (float)Math.Sqrt(y2 / x2);
                 for (int i = 0; i < x.Length; i++)
                 {
                     x[i] *= c;
-                    double d = x[i] - y[i];
-                    //cost += d * d;
                 }
+                cost = Dtw.GetScoreF(x, y);
             }
-            //return (float)Math.Sqrt(cost);
-            return (float) (Dtw.GetScoreF(x, y) / Math.Sqrt(2 * x.Length* x.Length)); ;
+            return (float)Math.Sqrt(cost / x.Length);//均方差。
         }
-        //没有用，也不快
-        /*
-        public static double GetDtwD(PointData pd1, PointData pd2)
+        //dtaidistance.dtw
+        public static double GetDtw_dd(PointData pd1, PointData pd2,double max_dist = 0, bool use_pruning = false)
         {
             if (pd1.data.Count != pd2.data.Count)
                 throw new ArgumentException("数组长度应相等！");
@@ -139,30 +136,84 @@ namespace HGS
                 x2 += x[i] * x[i];
                 y2 += y[i] * y[i];
             }
-            if (x2 > y2 && y2 >= 0.01)
+            //向量模归一化.与z-normalization 比精度更高
+            if (x2 > y2 && y2 >= 0.5)
             {
                 double c = Math.Sqrt(x2 / y2);
                 for (int i = 0; i < x.Length; i++)
                 {
                     y[i] *= c;
-                    double d = x[i] - y[i];
-                    //cost += d * d;
                 }
+                cost = dd_dtw.dtw_distance(x, y,max_dist,use_pruning);
             }
-            else if (y2 > x2 && x2 >= 0.01)
+            else if (y2 > x2 && x2 >= 0.5)
             {
                 double c = Math.Sqrt(y2 / x2);
                 for (int i = 0; i < x.Length; i++)
                 {
                     x[i] *= c;
+                }
+                cost = dd_dtw.dtw_distance(x, y,max_dist, use_pruning);
+            }
+            return cost;
+        }
+        //最小欧氏距离
+        public static float GetED(PointData pd1, PointData pd2)
+        {
+            if (pd1.data.Count != pd2.data.Count)
+                throw new ArgumentException("数组长度应相等！");
+            double x2 = 0, y2 = 0, cost = 0; //矢量长度的平方。
+
+            float[] x = new float[pd1.data.Count];
+            float[] y = new float[pd1.data.Count];
+            for (int i = 0; i < pd1.data.Count; i++)
+            {
+                x[i] = (pd1.data[i].Value - pd1.MinAv);
+                y[i] = (pd2.data[i].Value - pd2.MinAv);
+                x2 += x[i] * x[i];
+                y2 += y[i] * y[i];
+            }
+            //用向量的模归一化
+            if (x2 > y2 && y2 >= 0.1)
+            {
+                float c = (float)Math.Sqrt(x2 / y2);
+                for (int i = 0; i < x.Length; i++)
+                {
+                    y[i] *= c;
                     double d = x[i] - y[i];
-                    //cost += d * d;
+                    cost += d * d;
                 }
             }
-            //return (float)Math.Sqrt(cost);
-            return dd_dtw.dtw_distance(x, y);
-        
+            else if (y2 > x2 && x2 >= 0.1)
+            {
+                float c = (float)Math.Sqrt(y2 / x2);
+                for (int i = 0; i < x.Length; i++)
+                {
+                    x[i] *= c;
+                    double d = x[i] - y[i];
+                    cost += d * d;
+                }
+            }
+            return (float)Math.Sqrt(cost);
         }
-        */
+        public static double GetMain(Dictionary<int, PointData> dic_pd, double[] outmain)
+        {
+            int c = 0;
+            foreach (PointData pd in dic_pd.Values)
+            {
+                for (int i = 0; i < pd.data.Count; i++)
+                {
+                    outmain[i] += pd.data[i].Value;
+                }
+                c++;
+            }
+            if (c == 0) throw new Exception("数据长度不能为0!");
+            for (int i = 0; i < outmain.Length; i++)
+            {
+                outmain[i] /= c;
+            }
+           
+            return 0;
+        }
     }
 }

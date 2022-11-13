@@ -184,6 +184,7 @@
     <Compile Include="CalcEngine\Tester.cs" />
     <Compile Include="CalcEngine\Token.cs" />
     <Compile Include="DataDeviceTree.cs" />
+    <Compile Include="dd_dtw.cs" />
     <Compile Include="DTW\Dtw.cs" />
     <Compile Include="EasyMail.cs">
       <SubType>Component</SubType>
@@ -276,11 +277,11 @@
     <Compile Include="FormAlarmSetList.Designer.cs">
       <DependentUpon>FormAlarmSetList.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormTreeNode.cs">
+    <Compile Include="FormTreeNode--.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormTreeNode.Designer.cs">
-      <DependentUpon>FormTreeNode.cs</DependentUpon>
+    <Compile Include="FormTreeNode--.Designer.cs">
+      <DependentUpon>FormTreeNode--.cs</DependentUpon>
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="GlacialList\BorderStrip.cs">
@@ -386,8 +387,8 @@
     <EmbeddedResource Include="FormAlarmSetList.resx">
       <DependentUpon>FormAlarmSetList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormTreeNode.resx">
-      <DependentUpon>FormTreeNode.cs</DependentUpon>
+    <EmbeddedResource Include="FormTreeNode--.resx">
+      <DependentUpon>FormTreeNode--.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GlacialList\BorderStrip.resx" />
     <EmbeddedResource Include="GlacialList\GlacialList.resx" />
@@ -423,6 +424,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CalcEngine\readme.txt" />
+    <Content Include="dd_dtw.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="GlacialList\Readme.txt" />
     <Content Include="libfftw3-3.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

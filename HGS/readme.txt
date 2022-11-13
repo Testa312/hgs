@@ -41,3 +41,5 @@ UPDATE owner SET password = crypt('123456', gen_salt('bf',10));
 2022.11.4------
 设备运行参数相关性报警，用矢量的模规范化为相同长度，再用DTW进行波形比较。
 2022.11.6 oxyplot安装时出现 冲突，在nuGet卸载相应模块即可。
+2022-11-13-----------------
+dtaidistance DTW 配置max_dist,use_pruning参数后速度很快。

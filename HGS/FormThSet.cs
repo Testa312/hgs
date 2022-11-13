@@ -146,7 +146,7 @@ namespace HGS
                             {
                                 for (int m = 0; m < lspd.Count; m++)
                                 {
-                                    cost = Math.Max(cost, SisConnect.GetDtw(pt_main, lspd[m]));
+                                    cost = Math.Max(cost, SisConnect.GetDtw_dd(pt_main, lspd[m],0,true));
                                 }
                                 pt_main = lspd[0];
                                 lspd.RemoveAt(0);
@@ -177,7 +177,7 @@ namespace HGS
                 if (ttg.sisid_set != null && ttg.sisid_set.Count > 0)
                     plotView1.Model = PlotPoint(SisConnect.GetsisData(ttg.sisid_set.ToArray(),
                                dateTimePicker1.Value, dateTimePicker2.Value));
-                toolStripStatusLabel1.Text = sw.ElapsedMilliseconds.ToString();             
+                toolStripStatusLabel1.Text = string.Format("用时：{0}ms",sw.ElapsedMilliseconds);             
             }
             catch(Exception ee)
             {

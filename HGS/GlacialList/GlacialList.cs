@@ -3386,7 +3386,7 @@ namespace GlacialComponents.Controls
 
 			if ( e.Button == MouseButtons.Right )			// if its the right button then we don't really care till its released
 			{
-				base.OnMouseDown( e );
+				//base.OnMouseDown( e );
 				return;
 			}
 
@@ -3407,7 +3407,7 @@ namespace GlacialComponents.Controls
 					ColumnClickedEvent( this, new ClickEventArgs( nItem, nColumn ) );				// fire the column clicked event
 
 				//Invalidate();
-				base.OnMouseDown( e );
+				//base.OnMouseDown( e );
 				return;
 			}
 			//---Resizing -----------------------------------------------------------------------------------
@@ -3420,7 +3420,7 @@ namespace GlacialComponents.Controls
 				m_nResizeColumnNumber = nColumn;
 
 
-				base.OnMouseDown( e );
+				//base.OnMouseDown( e );
 				return;
 			}
 			//--Item check, if no items exist go no further--
@@ -3466,7 +3466,7 @@ namespace GlacialComponents.Controls
 						Items[nItem].Selected = true;
 
 
-					base.OnMouseDown( e );
+					//base.OnMouseDown( e );
 					return;
 				}
 
@@ -3487,7 +3487,7 @@ namespace GlacialComponents.Controls
 						Items[index].Selected = true;
 					}
 
-					base.OnMouseDown( e );
+					//base.OnMouseDown( e );
 					return;
 				}
 
@@ -3507,7 +3507,7 @@ namespace GlacialComponents.Controls
 			}
 
 
-			base.OnMouseDown( e );
+			//base.OnMouseDown( e );
 			return;
 		}
 

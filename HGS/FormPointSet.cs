@@ -154,9 +154,12 @@ namespace HGS
                 {
                     if (!onlysisid.ContainsKey(pt.id_sis))
                     {
+                       
                         GLItem itemn = new GLItem(glacialList1);
                         gllistInitItemText(pt,itemn);
                         lsItem.Add(itemn);
+                        //
+                        onlysisid.Add(pt.id_sis,itemn);
                         dic_glItemNew.Add(itemn, pt);
                     }
                     else 
@@ -814,7 +817,7 @@ namespace HGS
                 TreeNode tn = treeView.SelectedNode;
                 if (tn != null)
                 {
-                    FormTreeNode ftn = new FormTreeNode((TreeTag)tn.Tag);
+                    FormThSet ftn = new FormThSet((TreeTag)tn.Tag);
                     if (ftn.ShowDialog() == DialogResult.OK)
                     {
                         DataDeviceTree.UpdateNodetoDB(tn);
@@ -934,7 +937,7 @@ namespace HGS
 
         private void glacialList1_MouseDown(object sender, MouseEventArgs e)
         {
-            if (isAltKeyDown && e.Button == MouseButtons.Left && glacialList1.SelectedItems.Count > 0)
+            if (e.Button == MouseButtons.Left && glacialList1.SelectedItems.Count > 0)
             {
                 HashSet<int> hs_pointid = new HashSet<int>();
                 foreach (GLItem it in glacialList1.SelectedItems)
@@ -962,7 +965,7 @@ namespace HGS
         private void 从分组中移除ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TreeNode tn = treeView.SelectedNode;
-            if (tn != null)
+            if (tn != null && tn.Text != "全部")
             {
                 TreeTag tt = (TreeTag)tn.Tag;
                 foreach (GLItem item in glacialList1.SelectedItems)
