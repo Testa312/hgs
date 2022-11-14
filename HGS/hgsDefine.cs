@@ -93,12 +93,12 @@ namespace HGS
         public bool isboolvalarm = false;
         public string boolalarminfo = "";//isbool 为真时的报警信息。
         //
-        public Expression expression_main = null;// new Expression();//优化计算速度。
+        public Expression expression_main = null;//已展开为sis点,优化计算速度。
         //计算子点id
-        public List<varlinktopoint> lsCalcOrgSubPoint_main = null;// new List<varlinktopoint>();//原始参与计算点列表
+        public List<varlinktopoint> lsCalcOrgSubPoint_main = null;//原始参与计算点列表
         //
         //计算子点id用于进行计算点状态计算。
-        public List<point> listSisCalaExpPointID_main = null;//new List<point>();
+        public List<point> listSisCalaExpPointID_main = null;//已展开成sis点的变量sis点。;
         //
         //报警用，不存入数据库                                                            
         //

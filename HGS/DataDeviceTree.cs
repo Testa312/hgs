@@ -21,7 +21,7 @@ namespace HGS
         public int sort = 0;
         //public NodeStatus treenodestatus = NodeStatus.no;
         public HashSet<int> pointid_set = null;
-        public HashSet<object> sisid_set = null;
+        //public HashSet<object> sisid_set = null;
     }
     public class TreeDragData
     {
@@ -178,8 +178,8 @@ namespace HGS
                     if (ob != DBNull.Value)
                     {
                         ttag.pointid_set = new HashSet<int>((int[])ob);
-                        ttag.sisid_set = new HashSet<object>();
-                        ttag.sisid_set.UnionWith(Data.inst().GetSisIdSet(ttag.pointid_set));
+                        //ttag.sisid_set = new HashSet<object>();
+                        //ttag.sisid_set.UnionWith(Data.inst().GetSisIdSet(ttag.pointid_set));
                     }
                     ltn.Add(tn);
                     //

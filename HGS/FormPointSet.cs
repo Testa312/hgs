@@ -19,7 +19,7 @@ namespace HGS
         Dictionary<point, GLItem> dic_glItemModified = new Dictionary<point, GLItem>();
         //Dictionary<int, GLItem> NewAddsisid = new Dictionary<int,GLItem>();
         HashSet<string> hs_ND = new HashSet<string>();
-        int PointNums = 0;
+        //int PointNums = 0;
         bool isFirst = true;
  
         public FormPointSet()
@@ -27,10 +27,9 @@ namespace HGS
             InitializeComponent();
             FillMyTreeView();
         }
-        private void DisplayHints()
+        private void DisplayHints(int PointNums)
         {
-            tSSLabel_count.Text = string.Format("点数：{0}，其中新加点{1}，已修改点{2}。",
-               PointNums, dic_glItemNew.Count, dic_glItemModified.Count);
+            tSSLabel_count.Text = string.Format("点数：{0}。",PointNums);
         }
         private void AlarmSubItemSymbol(GLItem item,point pt)
         {
@@ -49,7 +48,7 @@ namespace HGS
         {
             timerUpdateValue.Enabled = false;
             glacialList1.Items.Clear();
-            PointNums = 0;
+            //PointNums = 0;
             this.Cursor = Cursors.WaitCursor;
             //NewAddsisid.Clear();
             List<GLItem> lsItem = new List<GLItem>();
@@ -84,7 +83,7 @@ namespace HGS
             this.Cursor = Cursors.Default;
             timerUpdateValue.Enabled = true;
             tabControl.Enabled = false;
-            DisplayHints();
+            DisplayHints(lsItem.Count);
             glacialList1.Invalidate();
         }
         private void gllistInitItemText(point ptx , GLItem itemn)
@@ -116,8 +115,8 @@ namespace HGS
             it.PointSrc = ptx.pointsrc;
 
             AlarmSubItemSymbol(itemn, ptx);
-            PointNums++;
-            DisplayHints();
+            //PointNums++;
+            //DisplayHints();
         }
         private void gllistUpateItemText(GLItem item,point pt)
         {
@@ -138,7 +137,7 @@ namespace HGS
                 Data.inst().hs_FormulaErrorPoint.Remove(pt);
             }
 
-            DisplayHints();
+            //DisplayHints();
             AlarmSubItemSymbol(item, pt);
         }
         private void toolStripButtonAddSis_Click(object sender, EventArgs e)//加sis点
@@ -168,7 +167,7 @@ namespace HGS
                 }
                 glacialList1.Items.AddRange(lsItem.ToArray());
                 glacialList1.ScrolltoBottom();
-                DisplayHints();
+                //DisplayHints();
                 //
                 Save();
             }
@@ -275,7 +274,7 @@ namespace HGS
                     ptid++;
                 }
                 Data.inst().SavetoPG();
-                PointNums += dic_glItemNew.Count;
+                //PointNums += dic_glItemNew.Count;
                 dic_glItemModified.Clear();
                 dic_glItemNew.Clear();
                 //
@@ -286,9 +285,6 @@ namespace HGS
                     if (tt.pointid_set == null)
                         tt.pointid_set = new HashSet<int>();
                     tt.pointid_set.UnionWith(hs_ptid);
-                    if (tt.sisid_set == null)
-                        tt.sisid_set = new HashSet<object>();
-                    tt.sisid_set.UnionWith(Data.inst().GetSisIdSet(tt.pointid_set));
                     DataDeviceTree.UpdateNodetoDB(tn);
                 }
             }
@@ -355,7 +351,7 @@ namespace HGS
                     }
                 }             
             }
-            DisplayHints();
+            //DisplayHints();
         }
         private void glacialList1_Click(object sender, EventArgs e)
         {
@@ -500,7 +496,7 @@ namespace HGS
                     //toolStripButtonFind.Enabled = false;
                     Data.inst().Delete(Data.inst().cd_Point[it.id]);
                     glacialList1.Items.Remove(itemn);
-                    PointNums--;
+                    //PointNums--;
                 }
             }
             Save();
@@ -603,6 +599,7 @@ namespace HGS
                         //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
                     }
                     textBoxHL.Enabled = fcps.CalcPoint.orgformula_hl.Length == 0;
+                    Save();
                 }
                 //itemn.Tag = it;
                 
@@ -635,6 +632,7 @@ namespace HGS
                         //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
                     }
                     textBoxLL.Enabled = fcps.CalcPoint.orgformula_ll.Length == 0;
+                    Save();
                 }
                 //itemn.Tag = it;
 
@@ -685,7 +683,6 @@ namespace HGS
                     glacialList1.Items.AddRange(lsItem.ToArray());
                     glacialList1.ScrolltoBottom();
                     Save();
-                    DisplayHints();
                 }
                 catch(Exception ee )
                 {
@@ -720,6 +717,7 @@ namespace HGS
                         //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
                     }
                     //buttonAlarmIf.Enabled = fcaf.CalcPoint.alarmif.Length == 0;
+                    Save();
                 }
                 //itemn.Tag = it;
 
@@ -802,6 +800,7 @@ namespace HGS
                     glacialList1.Items.Clear();
                     glacialList1.Items.AddRange(lsItem.ToArray());
                     glacialList1.Invalidate();
+                    DisplayHints(lsItem.Count);
                 }
             }
         }
@@ -812,12 +811,13 @@ namespace HGS
                 TreeNode stn = treeView.SelectedNode;
                 if (stn != null)
                 {
-                    FormTreeNode ftn = new FormTreeNode(null);
+                    TreeTag tt = new TreeTag();
+                    FormThSet ftn = new FormThSet(tt);
                     ftn.Text = "增加节点";
                     if (ftn.ShowDialog() == DialogResult.OK)
                     {
-                        TreeNode ntn = stn.Nodes.Add(ftn.tt.nodeName);
-                        ntn.Tag = ftn.tt;
+                        TreeNode ntn = stn.Nodes.Add(tt.nodeName);
+                        ntn.Tag = tt;
                         DataDeviceTree.InsertNodetoDb(ntn);
                         RefreshSubs(ntn);
                         stn.Expand();
@@ -1004,7 +1004,6 @@ namespace HGS
                         {
                             TreeTag tt = (TreeTag)myData.DragSourceNode.Tag;
                             tt.pointid_set.ExceptWith(myData.pointid_set);
-                            tt.sisid_set = Data.inst().GetSisIdSet(tt.pointid_set);
                             DataDeviceTree.UpdateNodetoDB(myData.DragSourceNode);
                         }
                     }
@@ -1015,10 +1014,7 @@ namespace HGS
                         if (ttg.pointid_set == null)
                             ttg.pointid_set = new HashSet<int>();
                         ttg.pointid_set.UnionWith(myData.pointid_set);
-                        if (ttg.sisid_set == null)
-                            ttg.sisid_set = new HashSet<object>();
-                        ttg.sisid_set.UnionWith(Data.inst().GetSisIdSet(ttg.pointid_set));
-
+                       
                         DataDeviceTree.UpdateNodetoDB(DropNode);
                         TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(DropNode, MouseButtons.Left, 0, 0, 0);
                         treeView_NodeMouseClick(null, ee);
@@ -1064,7 +1060,6 @@ namespace HGS
                 {                 
                     tt.pointid_set.Remove(((itemtag)item.Tag).id);
                 }
-                tt.sisid_set = Data.inst().GetSisIdSet(tt.pointid_set);
                 DataDeviceTree.UpdateNodetoDB(tn);
                 TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(tn, MouseButtons.Left, 0, 0, 0);
                 treeView_NodeMouseClick(null, ee);

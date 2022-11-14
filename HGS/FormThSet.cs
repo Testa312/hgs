@@ -47,9 +47,7 @@ namespace HGS
             host1 = new ToolStripControlHost(dateTimePicker2);
             toolStrip1.Items.Insert(3, host1);
             //
-            if (ttg.sisid_set != null && ttg.sisid_set.Count > 0)
-                plotView1.Model = PlotPoint(SisConnect.GetsisData(ttg.sisid_set.ToArray(),
-                           dateTimePicker1.Value, dateTimePicker2.Value));
+            plotView1.Model = PlotPoint(GetPointData_dic());
             //
             if (ttg != null)
             {
@@ -58,6 +56,33 @@ namespace HGS
             }
             else
                 ttg = new TreeTag();
+        }
+        private Dictionary<int, PointData> GetPointData_dic()
+        {
+            Dictionary<int, PointData> dic_pd = null;
+            if (ttg.pointid_set != null && ttg.pointid_set.Count > 0)
+            {
+                HashSet<object> sisid = new HashSet<object>();
+                List<point> calcpt = new List<point>();
+                foreach (int id in ttg.pointid_set)
+                {
+                    point pt = Data.inst().cd_Point[id];
+                    if (pt.pointsrc == pointsrc.sis)
+                        sisid.Add(Convert.ToInt64(pt.id_sis));
+                    else if (pt.pointsrc == pointsrc.calc)
+                        calcpt.Add(pt);
+                }
+                int span = (int)(dateTimePicker2.Value - dateTimePicker1.Value).TotalSeconds / 600;
+                dic_pd = SisConnect.GetsisData(sisid.ToArray(),
+                           dateTimePicker1.Value, dateTimePicker2.Value, span);
+
+                foreach (point pt in calcpt)
+                {
+                    PointData ptcalc = SisConnect.GetCalcPointData(pt, dateTimePicker1.Value, dateTimePicker2.Value, span);
+                    dic_pd.Add(ptcalc.ID, ptcalc);
+                }
+            }
+            return dic_pd;
         }
         private PlotModel PlotPoint(Dictionary<int, PointData> dic_pd)
         {
@@ -107,10 +132,11 @@ namespace HGS
             {
                 var lineSeries = new LineSeries
                 {
+                    Title = pd.GN,
                     DataFieldX = "Date",
                     DataFieldY = "Value",
                     ItemsSource = pd.data,
-                    TrackerFormatString = "{2}\r{4:0.00}",
+                    TrackerFormatString = "{0}\r{2}\r{4:0.00}",
                 };
                 pm.Series.Add(lineSeries);
             }
@@ -135,21 +161,21 @@ namespace HGS
                     double maxpp = double.MinValue;
                     while (begin >= dateTimePicker1.Value)
                     {
-                        Dictionary<int, PointData> dic_pd = SisConnect.GetsisData(ttg.sisid_set.ToArray(), begin, end);
+                        Dictionary<int, PointData> dic_pd = GetPointData_dic();
                         List<PointData> lspd = new List<PointData>(dic_pd.Values.ToArray());
                         
-                        if (lspd.Count > 0)
+                        if (lspd.Count >= 2)
                         {
                             PointData pt_main = lspd[0];
-                            lspd.RemoveAt(0);
-                            while (lspd.Count > 0)
+                            //lspd.RemoveAt(0);
+                            //while (lspd.Count > 0)
                             {
-                                for (int m = 0; m < lspd.Count; m++)
+                                for (int m = 1; m < lspd.Count; m++)
                                 {
                                     cost = Math.Max(cost, SisConnect.GetDtw_dd(pt_main, lspd[m],0,true));
                                 }
-                                pt_main = lspd[0];
-                                lspd.RemoveAt(0);
+                                //pt_main = lspd[0];
+                                //lspd.RemoveAt(0);
                             }
                         }
                         foreach (PointData pd in dic_pd.Values)
@@ -174,9 +200,9 @@ namespace HGS
                 glacialList1.Invalidate();
                 Cursor = Cursors.Default;
                 sw.Stop();
-                if (ttg.sisid_set != null && ttg.sisid_set.Count > 0)
-                    plotView1.Model = PlotPoint(SisConnect.GetsisData(ttg.sisid_set.ToArray(),
-                               dateTimePicker1.Value, dateTimePicker2.Value));
+
+                plotView1.Model = PlotPoint(GetPointData_dic());
+
                 toolStripStatusLabel1.Text = string.Format("用时：{0}ms",sw.ElapsedMilliseconds);             
             }
             catch(Exception ee)
@@ -210,11 +236,11 @@ namespace HGS
         {
             try
             {
-                /*
+                
                 if (textBox_Name.Text.Trim().Length == 0)
                     throw new Exception("节点名不能为空！");
                 ttg.nodeName = textBox_Name.Text.Trim();
-
+                /*
                 if (mtb_start_th.Text.Length > 0)
                 {
                     tt.start_th = float.Parse(mtb_start_th.Text);
@@ -228,14 +254,14 @@ namespace HGS
                 }
                 else
                     tt.alarm_th_dis = null;
-                //
-                if (mtb_sort.Text.Length > 0)
+                */
+                if (maskedTextBox_Sort.Text.Length > 0)
                 {
-                    tt.sort = int.Parse(mtb_sort.Text);
+                    ttg.sort = int.Parse(maskedTextBox_Sort.Text);
                 }
                 else
-                    tt.sort = -1;
-                */
+                    ttg.sort = -1;
+                
             }
             catch (Exception ee)
             {

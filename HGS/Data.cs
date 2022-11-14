@@ -650,7 +650,7 @@ namespace HGS
                 throw new Exception("新加点中也包括此点！");
             hs_ModifyPoint.Add(pt);
         }
-        //
+        /*
         public HashSet<object> GetSisIdSet(HashSet<int> pointid_set)
         {
             HashSet<object> sisid = new HashSet<object>();
@@ -659,7 +659,7 @@ namespace HGS
                 sisid.Add(Convert.ToInt64(cd_Point[id].id_sis));
             }
             return sisid;
-        }
+        }*/
         public static DateTime GetSisSystemTime()
         {
             DateTime sysdt = DateTime.Now.AddSeconds(-120);

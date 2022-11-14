@@ -18,7 +18,8 @@ namespace HGS
     }
     public class PointData
     {
-        //public int ID = -1;
+        public int ID = -1;
+        public string GN = "";
         public float MaxAv = float.MinValue;
         public float MinAv = float.MaxValue;
         public float MeanAV = 0;
@@ -33,7 +34,7 @@ namespace HGS
             Dictionary<int, PointData> dic_data = new Dictionary<int, PointData>();
             if (keys.Length == 0) return dic_data;
 
-            string[] colnames = new string[] { "ID", "TM", "DS", "AV" };
+            string[] colnames = new string[] { "ID", "TM", "DS", "AV","GN" };
 
             Dictionary<string, object> options = new Dictionary<string, object>();
             span = (int)(end - begin).TotalSeconds / 120;
@@ -54,6 +55,8 @@ namespace HGS
                     if (!dic_data.TryGetValue(id, out PtData))
                     {
                         PtData = new PointData();
+                        PtData.GN = resultSet.getString(4);
+                        PtData.ID = id;
                         dic_data.Add(id, PtData);
                     }
                     PtData.data.Add(new DateValue(resultSet.getDateTime(1),resultSet.getFloat(3)));
@@ -84,7 +87,53 @@ namespace HGS
             }
             return dic_data;
         }
-        public static float GetDtw(PointData pd1, PointData pd2)
+        public static PointData GetCalcPointData(point calcpt, DateTime begin, DateTime end, int span = 1)
+        {
+            if (calcpt.pointsrc != pointsrc.calc)
+                throw new ArgumentException("必须为计算点！");
+
+            List<object> siskeys = new List<object>();
+            CalcEngine.CalcEngine ce = new CalcEngine.CalcEngine();
+            foreach (point sispt in calcpt.listSisCalaExpPointID_main)
+            {
+                siskeys.Add(Convert.ToInt64(sispt.id_sis));
+            }
+            //
+            Dictionary<int, PointData> data = GetsisData(siskeys.ToArray(), begin, end, span);
+            int c = 0;
+            if (data.Keys.Count >= 1)
+            {
+                PointData pt = data[Convert.ToInt32(siskeys[0])];
+                c = pt.data.Count;
+            }
+            PointData newpt = new PointData();
+            newpt.GN = calcpt.ed;
+            newpt.ID = calcpt.id;
+            string sisformula = Data.inst().ExpandOrgFormula_Main(calcpt);
+            for (int i = 0; i < c; i++)
+            {
+                DateValue dv = new DateValue(DateTime.Now,0);
+                foreach (KeyValuePair<int, PointData> kvp in data)
+                {
+                    ce.Variables["S" + Data.inst().dic_SisIdtoPoint[kvp.Key].id.ToString()] = kvp.Value.data[i].Value;
+                    dv.Date = kvp.Value.data[i].Date;
+                }
+                if (sisformula.Length > 0)
+                    dv.Value = (float)Convert.ToDouble(ce.Evaluate(sisformula));
+                newpt.data.Add(dv);
+            }
+            double sum = 0;
+            for (int m = 0; m < newpt.data.Count; m++)
+            {
+                newpt.MaxAv = Math.Max(newpt.MaxAv, newpt.data[m].Value);
+                newpt.MinAv = Math.Min(newpt.MinAv, newpt.data[m].Value);
+                sum += newpt.data[m].Value;
+            }
+            newpt.MeanAV = (float)sum / newpt.data.Count;
+
+            return newpt;
+        }
+            public static float GetDtw(PointData pd1, PointData pd2)
         {
             if (pd1.data.Count != pd2.data.Count)
                 throw new ArgumentException("数组长度应相等！");

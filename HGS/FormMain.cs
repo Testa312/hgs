@@ -197,7 +197,7 @@ namespace HGS
                     if (calcpt.expression_main != null && calcpt.ps == PointState.Good)
                     {
                         //double rsl = 
-                        calcpt.Av = Convert.ToDouble(calcpt.expression_main.Evaluate()); ;
+                        calcpt.Av = Convert.ToDouble(calcpt.expression_main.Evaluate());
                     }
                     else calcpt.Av = null;
 
