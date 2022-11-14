@@ -330,7 +330,10 @@ namespace HGS
             if (pt.pointsrc == pointsrc.calc)
             {
                 if (pt.orgformula_main.Length > 0)
-                    pt.expression_main = _ce.Parse(ExpandOrgFormula_Main(pt));
+                {
+                    pt.sisformula_main = ExpandOrgFormula_Main(pt);
+                    pt.expression_main = _ce.Parse(pt.sisformula_main);
+                }
             }
             //if (pt.pointsrc == pointsrc.sis)
             {

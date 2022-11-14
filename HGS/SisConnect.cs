@@ -29,7 +29,7 @@ namespace HGS
     {
         public static OPAPI.Connect sisconn = null; //new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
             //Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
-        public static Dictionary<int, PointData> GetsisData(object[] keys, DateTime begin, DateTime end, int span = 1)
+        public static Dictionary<int, PointData> GetsisData(object[] keys, DateTime begin, DateTime end,int count = 120)
         {
             Dictionary<int, PointData> dic_data = new Dictionary<int, PointData>();
             if (keys.Length == 0) return dic_data;
@@ -37,7 +37,7 @@ namespace HGS
             string[] colnames = new string[] { "ID", "TM", "DS", "AV","GN" };
 
             Dictionary<string, object> options = new Dictionary<string, object>();
-            span = (int)(end - begin).TotalSeconds / 120;
+            int span = (int)(end - begin).TotalSeconds / count;
             options.Add("end", end);
             options.Add("begin", begin);
             options.Add("mode", "span");
@@ -87,7 +87,7 @@ namespace HGS
             }
             return dic_data;
         }
-        public static PointData GetCalcPointData(point calcpt, DateTime begin, DateTime end, int span = 1)
+        public static PointData GetCalcPointData(point calcpt, DateTime begin, DateTime end, int count = 120)
         {
             if (calcpt.pointsrc != pointsrc.calc)
                 throw new ArgumentException("必须为计算点！");
@@ -99,7 +99,7 @@ namespace HGS
                 siskeys.Add(Convert.ToInt64(sispt.id_sis));
             }
             //
-            Dictionary<int, PointData> data = GetsisData(siskeys.ToArray(), begin, end, span);
+            Dictionary<int, PointData> data = GetsisData(siskeys.ToArray(), begin, end, count);
             int c = 0;
             if (data.Keys.Count >= 1)
             {
@@ -109,7 +109,7 @@ namespace HGS
             PointData newpt = new PointData();
             newpt.GN = calcpt.ed;
             newpt.ID = calcpt.id;
-            string sisformula = Data.inst().ExpandOrgFormula_Main(calcpt);
+            //string sisformula = Data.inst().ExpandOrgFormula_Main(calcpt);
             for (int i = 0; i < c; i++)
             {
                 DateValue dv = new DateValue(DateTime.Now,0);
@@ -118,8 +118,8 @@ namespace HGS
                     ce.Variables["S" + Data.inst().dic_SisIdtoPoint[kvp.Key].id.ToString()] = kvp.Value.data[i].Value;
                     dv.Date = kvp.Value.data[i].Date;
                 }
-                if (sisformula.Length > 0)
-                    dv.Value = (float)Convert.ToDouble(ce.Evaluate(sisformula));
+                if (calcpt.sisformula_main.Length > 0)
+                    dv.Value = (float)Convert.ToDouble(ce.Evaluate(calcpt.sisformula_main));
                 newpt.data.Add(dv);
             }
             double sum = 0;
@@ -133,7 +133,7 @@ namespace HGS
 
             return newpt;
         }
-            public static float GetDtw(PointData pd1, PointData pd2)
+            public static float GetFastDtw(PointData pd1, PointData pd2)
         {
             if (pd1.data.Count != pd2.data.Count)
                 throw new ArgumentException("数组长度应相等！");

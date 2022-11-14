@@ -79,7 +79,7 @@ namespace HGS
         public pointsrc pointsrc = 0;//点源0:sis,1:计算点
         public int ownerid = 0;//专业id
         public string orgformula_main = "";//计算公式
-        //public string expformula_main = "";//展开成点的计算公式
+        public string sisformula_main = "";//展开成点的计算公式
         public int id = -1;//点id
         public string eu = "";//点单位
         public bool iscalc= false;//是否进行计算

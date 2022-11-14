@@ -47,7 +47,7 @@ namespace HGS
             host1 = new ToolStripControlHost(dateTimePicker2);
             toolStrip1.Items.Insert(3, host1);
             //
-            plotView1.Model = PlotPoint(GetPointData_dic());
+            plotView1.Model = PlotPoint(GetPointData_dic(dateTimePicker1.Value, dateTimePicker2.Value,600));
             //
             if (ttg != null)
             {
@@ -57,7 +57,7 @@ namespace HGS
             else
                 ttg = new TreeTag();
         }
-        private Dictionary<int, PointData> GetPointData_dic()
+        private Dictionary<int, PointData> GetPointData_dic(DateTime begin,DateTime end,int count = 120)
         {
             Dictionary<int, PointData> dic_pd = null;
             if (ttg.pointid_set != null && ttg.pointid_set.Count > 0)
@@ -72,13 +72,11 @@ namespace HGS
                     else if (pt.pointsrc == pointsrc.calc)
                         calcpt.Add(pt);
                 }
-                int span = (int)(dateTimePicker2.Value - dateTimePicker1.Value).TotalSeconds / 600;
-                dic_pd = SisConnect.GetsisData(sisid.ToArray(),
-                           dateTimePicker1.Value, dateTimePicker2.Value, span);
+                dic_pd = SisConnect.GetsisData(sisid.ToArray(),begin, end, count);
 
                 foreach (point pt in calcpt)
                 {
-                    PointData ptcalc = SisConnect.GetCalcPointData(pt, dateTimePicker1.Value, dateTimePicker2.Value, span);
+                    PointData ptcalc = SisConnect.GetCalcPointData(pt, begin, end, count);
                     dic_pd.Add(ptcalc.ID, ptcalc);
                 }
             }
@@ -150,18 +148,20 @@ namespace HGS
                 sw.Start();
                 int[] span = new int[] {15,30,60,120,240,480 };//分钟
                 List<GLItem> lsItem = new List<GLItem>();
+                double cost = 0;
+                double maxpp = double.MinValue;
                 for (int i = 0; i < span.Length; i++)
                 {
                     DateTime end = dateTimePicker2.Value;
                     DateTime begin = end.AddMinutes(-span[i]);
 
                     Cursor = Cursors.WaitCursor;
-                  
-                    double cost = 0;
-                    double maxpp = double.MinValue;
+
+                    cost = 0;
+                    maxpp = double.MinValue;
                     while (begin >= dateTimePicker1.Value)
                     {
-                        Dictionary<int, PointData> dic_pd = GetPointData_dic();
+                        Dictionary<int, PointData> dic_pd = GetPointData_dic(begin,end);
                         List<PointData> lspd = new List<PointData>(dic_pd.Values.ToArray());
                         
                         if (lspd.Count >= 2)
@@ -169,14 +169,15 @@ namespace HGS
                             PointData pt_main = lspd[0];
                             //lspd.RemoveAt(0);
                             //while (lspd.Count > 0)
-                            {
+                            //{
                                 for (int m = 1; m < lspd.Count; m++)
                                 {
                                     cost = Math.Max(cost, SisConnect.GetDtw_dd(pt_main, lspd[m],0,true));
+                                    //cost = Math.Max(cost, SisConnect.GetFastDtw(pt_main, lspd[m]));
                                 }
                                 //pt_main = lspd[0];
                                 //lspd.RemoveAt(0);
-                            }
+                            //}
                         }
                         foreach (PointData pd in dic_pd.Values)
                         {
@@ -189,8 +190,8 @@ namespace HGS
                     //                   
                     GLItem item = new GLItem(glacialList1);
                     item.SubItems["TW"].Text = span[i].ToString() + "m";
-                    item.SubItems["start_th"].Text = Math.Round(maxpp * 1.1, 3).ToString();
-                    item.SubItems["alarm_th"].Text = Math.Round(cost * 1.1, 3).ToString();
+                    item.SubItems["start_th"].Text = Math.Round(maxpp * 1.0, 3).ToString();
+                    item.SubItems["alarm_th"].Text = Math.Round(cost * 1.0, 3).ToString();
                     lsItem.Add(item);
                    
                 }
@@ -201,7 +202,7 @@ namespace HGS
                 Cursor = Cursors.Default;
                 sw.Stop();
 
-                plotView1.Model = PlotPoint(GetPointData_dic());
+                plotView1.Model = PlotPoint(GetPointData_dic(dateTimePicker1.Value, dateTimePicker2.Value,600));
 
                 toolStripStatusLabel1.Text = string.Format("用时：{0}ms",sw.ElapsedMilliseconds);             
             }
