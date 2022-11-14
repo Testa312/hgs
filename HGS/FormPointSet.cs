@@ -17,12 +17,11 @@ namespace HGS
     {
         Dictionary<GLItem, point> dic_glItemNew = new Dictionary<GLItem, point>();
         Dictionary<point, GLItem> dic_glItemModified = new Dictionary<point, GLItem>();
-        Dictionary<int, GLItem> onlysisid = new Dictionary<int,GLItem>();
+        //Dictionary<int, GLItem> NewAddsisid = new Dictionary<int,GLItem>();
         HashSet<string> hs_ND = new HashSet<string>();
         int PointNums = 0;
         bool isFirst = true;
-
-        bool isAltKeyDown = false;
+ 
         public FormPointSet()
         {
             InitializeComponent();
@@ -52,13 +51,13 @@ namespace HGS
             glacialList1.Items.Clear();
             PointNums = 0;
             this.Cursor = Cursors.WaitCursor;
-            onlysisid.Clear();
+            //NewAddsisid.Clear();
             List<GLItem> lsItem = new List<GLItem>();
             foreach (point ptx in Data.inst().hsAllPoint)
             {
                 if (ptx.pointsrc == pointsrc.sis)
                 {
-                    onlysisid.Add(ptx.id_sis,null);//唯一性
+                    //NewAddsisid.Add(ptx.id_sis,null);//唯一性
                 }
                 if ((ptx.pointsrc == pointsrc.sis || (Auth.GetInst().LoginID == 0 || ptx.ownerid == Auth.GetInst().LoginID || 
                     ptx.ownerid == 0)) &&
@@ -67,7 +66,7 @@ namespace HGS
                 {
                     GLItem item = new GLItem(glacialList1);
                     gllistInitItemText(ptx,item);
-                    onlysisid[ptx.id_sis] = item;
+                    //NewAddsisid[ptx.id_sis] = item;
                     lsItem.Add(item);
                 }
                 if (isFirst) hs_ND.Add(ptx.nd);              
@@ -145,21 +144,20 @@ namespace HGS
         private void toolStripButtonAddSis_Click(object sender, EventArgs e)//加sis点
         {     
             FormSisPointList fspl = new FormSisPointList();
-            fspl.onlysisid = onlysisid;
             if (fspl.ShowDialog() == DialogResult.OK)
             {
-                toolStripButtonFind.Enabled = fspl.lsitem.Count == 0;
+                //toolStripButtonFind.Enabled = fspl.lsitem.Count == 0;
                 List<GLItem> lsItem = new List<GLItem>();
                 foreach (point pt in fspl.lsitem)
                 {
-                    if (!onlysisid.ContainsKey(pt.id_sis))
+                    if (!Data.inst().dic_SisIdtoPoint.ContainsKey(pt.id_sis))
                     {
                        
                         GLItem itemn = new GLItem(glacialList1);
                         gllistInitItemText(pt,itemn);
                         lsItem.Add(itemn);
                         //
-                        onlysisid.Add(pt.id_sis,itemn);
+                        //NewAddsisid.Add(pt.id_sis,itemn);
                         dic_glItemNew.Add(itemn, pt);
                     }
                     else 
@@ -171,6 +169,8 @@ namespace HGS
                 glacialList1.Items.AddRange(lsItem.ToArray());
                 glacialList1.ScrolltoBottom();
                 DisplayHints();
+                //
+                Save();
             }
         }
         private void buttonSet_Click(object sender, EventArgs e)
@@ -243,7 +243,8 @@ namespace HGS
                             if ((pt.isalarmwave || pt.isalarmskip) && pt.skip_pp == null && pt.skip_pp > 0)
                                 MessageBox.Show("阈值不应为空且大于0！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
-                        toolStripButtonFind.Enabled = glc == 0;
+                        Save();
+                        //toolStripButtonFind.Enabled = glc == 0;
                     }                  
                 }
                 catch (Exception ee)
@@ -254,30 +255,60 @@ namespace HGS
         }   
         private void Save()
         {
-            foreach (point pt in dic_glItemModified.Keys)
+            try
             {
-                Data.inst().Update(pt);
-            }
-            int ptid = Data.inst().GetNextPointId();
-            foreach (point pt in dic_glItemNew.Values)
-            {
-                pt.id = ptid;
-                Data.inst().Add(pt);
-                if (!hs_ND.Contains(pt.nd))
+                foreach (point pt in dic_glItemModified.Keys)
                 {
-                    tSCB_ND.Items.Add(pt.nd);
+                    Data.inst().Update(pt);
                 }
-                ptid++;
+                int ptid = Data.inst().GetNextPointId();
+                HashSet<int> hs_ptid = new HashSet<int>();
+                foreach (point pt in dic_glItemNew.Values)
+                {
+                    pt.id = ptid;
+                    Data.inst().Add(pt);
+                    hs_ptid.Add(ptid);
+                    if (!hs_ND.Contains(pt.nd))
+                    {
+                        tSCB_ND.Items.Add(pt.nd);
+                    }
+                    ptid++;
+                }
+                Data.inst().SavetoPG();
+                PointNums += dic_glItemNew.Count;
+                dic_glItemModified.Clear();
+                dic_glItemNew.Clear();
+                //
+                TreeNode tn = treeView.SelectedNode;
+                if (tn != null && tn.Text != "全部")
+                {
+                    TreeTag tt = (TreeTag)tn.Tag;
+                    if (tt.pointid_set == null)
+                        tt.pointid_set = new HashSet<int>();
+                    tt.pointid_set.UnionWith(hs_ptid);
+                    if (tt.sisid_set == null)
+                        tt.sisid_set = new HashSet<object>();
+                    tt.sisid_set.UnionWith(Data.inst().GetSisIdSet(tt.pointid_set));
+                    DataDeviceTree.UpdateNodetoDB(tn);
+                }
             }
-            Data.inst().SavetoPG();
-            PointNums += dic_glItemNew.Count;
-            dic_glItemModified.Clear();
-            dic_glItemNew.Clear();
-            toolStripButtonFind.Enabled = true;
-           
+            catch (Exception ee)
+            {
+                MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                //timerUpdateValue.Enabled = true;
+            }
+            if (treeView.SelectedNode != null)
+            {
+                TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(treeView.SelectedNode, MouseButtons.Left, 0, 0, 0);
+                treeView_NodeMouseClick(null, ee);
+            }
         }
         private void toolStripButtonSave_Click(object sender, EventArgs e)
         {
+            /*
             try
             {
                 //timerUpdateValue.Enabled = false;
@@ -293,6 +324,7 @@ namespace HGS
             }
             glacialLisint();
             DisplayHints();
+            */
         }
 
         private void FormPointSet_FormClosed(object sender, FormClosedEventArgs e)
@@ -389,13 +421,15 @@ namespace HGS
             //fcps.CellId = cellid.main;
             if (fcps.ShowDialog() == DialogResult.OK)
             {
-                toolStripButtonFind.Enabled = false;
+                //toolStripButtonFind.Enabled = false;
                 GLItem item = new GLItem(glacialList1);
                 gllistInitItemText(fcps.CalcPoint, item);
                 glacialList1.Items.Add(item);
                 dic_glItemNew.Add(item, fcps.CalcPoint);
 
                 glacialList1.ScrolltoBottom();
+                //
+                Save();
             }
            
         }
@@ -414,9 +448,10 @@ namespace HGS
                 //fcps.CellId = cellid.main;
                 if (fcps.ShowDialog() == DialogResult.OK)
                 {
-                    toolStripButtonFind.Enabled = false;
+                    //toolStripButtonFind.Enabled = false;
 
-                    gllistUpateItemText(itemn, fcps.CalcPoint);                  
+                    gllistUpateItemText(itemn, fcps.CalcPoint);
+                    Save();
                 }                
             }
         }
@@ -433,6 +468,7 @@ namespace HGS
                 itemtag it = (itemtag)itemn.Tag;
 
                 List<int> lspid = VartoPointTable.GetDeletePointIdList(it.id);
+                /*
                 if (dic_glItemNew.ContainsKey(itemn))
                 {
                     if (DialogResult.OK == MessageBox.Show(string.Format("是否删除点[{0}]-{1}？",
@@ -444,7 +480,8 @@ namespace HGS
                     }
                     continue;
                 }
-                else if (lspid.Count > 0)
+                */
+                if (lspid.Count > 0)
                 {
                     StringBuilder sb = new StringBuilder();
                     sb.AppendLine("被下列点引用，不能删除！");
@@ -460,15 +497,17 @@ namespace HGS
                     itemn.SubItems["PN"].Text,itemn.SubItems["ED"].Text), "提示",
                         MessageBoxButtons.OKCancel, MessageBoxIcon.Question))
                 {
-                    toolStripButtonFind.Enabled = false;
+                    //toolStripButtonFind.Enabled = false;
                     Data.inst().Delete(Data.inst().cd_Point[it.id]);
                     glacialList1.Items.Remove(itemn);
                     PointNums--;
                 }
             }
+            Save();
         }
         private void FormPointSet_FormClosing(object sender, FormClosingEventArgs e)
         {
+            /*
             if (!toolStripButtonFind.Enabled &&
                 DialogResult.Yes == MessageBox.Show("已修改，是否保存？", "提示",
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question))
@@ -482,6 +521,7 @@ namespace HGS
                     MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+            */
         }
 
         private void checkBoxbool_Click(object sender, EventArgs e)
@@ -602,11 +642,14 @@ namespace HGS
         }
         private void tSB_Cancel_Click(object sender, EventArgs e)
         {
+            /*
             dic_glItemModified.Clear();
             dic_glItemNew.Clear();
+            //NewAddsisid.Clear();
             Data.inst().DeleteClear();
             glacialLisint();
             toolStripButtonFind.Enabled = true;
+            */
         }
 
         private void tSB_ImportFromFile_Click(object sender, EventArgs e)
@@ -614,13 +657,13 @@ namespace HGS
             FormImportFromFile fiff = new FormImportFromFile();
             if (DialogResult.OK == fiff.ShowDialog())
             {
-                toolStripButtonFind.Enabled = fiff.lspt.Count == 0;
+                //toolStripButtonFind.Enabled = fiff.lspt.Count == 0;
                 List<GLItem> lsItem = new List<GLItem>();
                 try
                 {
                     foreach (point pt in fiff.lspt)
                     {
-                        if (onlysisid.ContainsKey(pt.id_sis))
+                        if (Data.inst().dic_SisIdtoPoint.ContainsKey(pt.id_sis))
                         {
                             if (DialogResult.Yes == MessageBox.Show(string.Format("点[{0}]-{1}已存在，是否修改报警限值？",
                                 pt.pn, pt.ed), "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
@@ -628,9 +671,7 @@ namespace HGS
                                 point ptx = Data.inst().dic_SisIdtoPoint[pt.id_sis];
                                 ptx.hl = pt.hl;
                                 ptx.ll = pt.ll;
-                                GLItem item = onlysisid[pt.id_sis];
-                                if (item != null)
-                                    gllistUpateItemText(item, ptx);
+                                dic_glItemModified.Add(ptx, null);//????????????
                             }
                         }
                         else
@@ -643,6 +684,7 @@ namespace HGS
                     }
                     glacialList1.Items.AddRange(lsItem.ToArray());
                     glacialList1.ScrolltoBottom();
+                    Save();
                     DisplayHints();
                 }
                 catch(Exception ee )
@@ -794,12 +836,15 @@ namespace HGS
             try
             {
                 TreeNode tn = treeView.SelectedNode;
-                if (tn != null)
+                if (tn != null && tn.Text != "全部")
                 {
                     if (MessageBox.Show(string.Format("删除节点\"{0}\"?", tn.Text), "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                     {
+                        TreeNode ptn = tn.Parent;
                         DataDeviceTree.RemoveNode(tn);
                         tn.Remove();
+                        if (ptn != null)
+                            RefreshSubs(ptn);
                     }
                 }
             }
@@ -815,7 +860,7 @@ namespace HGS
             try
             {
                 TreeNode tn = treeView.SelectedNode;
-                if (tn != null)
+                if (tn != null && tn.Text !="全部")
                 {
                     FormThSet ftn = new FormThSet((TreeTag)tn.Tag);
                     if (ftn.ShowDialog() == DialogResult.OK)
@@ -835,12 +880,27 @@ namespace HGS
         {
             if (e.Data.GetDataPresent(typeof(TreeNode)))
             {
-                e.Effect = DragDropEffects.Move;
+
+                if ((e.KeyState & 8) == 8 &&
+                    (e.AllowedEffect & DragDropEffects.Copy) == DragDropEffects.Copy)
+                {
+                    // CTRL KeyState for copy.
+                    e.Effect = DragDropEffects.Copy;
+                }
+                else
+                    e.Effect = DragDropEffects.Move;
             }
             
-            else if (e.Data.GetDataPresent(typeof(HashSet<int>)))
+            else if (e.Data.GetDataPresent(typeof(TreeDragData)))
             {
-                e.Effect = DragDropEffects.Copy;
+                if ((e.KeyState & 8) == 8 &&
+                    (e.AllowedEffect & DragDropEffects.Copy) == DragDropEffects.Copy)
+                {
+                    // CTRL KeyState for copy.
+                    e.Effect = DragDropEffects.Copy;
+                }
+                else
+                    e.Effect = DragDropEffects.Move;
             }
             else
                 e.Effect = DragDropEffects.None;
@@ -857,21 +917,35 @@ namespace HGS
 
             if (e.Data.GetDataPresent(typeof(TreeNode)))
             {
-                e.Effect = DragDropEffects.Move;
+                if ((e.KeyState & 8) == 8 &&
+                    (e.AllowedEffect & DragDropEffects.Copy) == DragDropEffects.Copy)
+                {
+                    // CTRL KeyState for copy.
+                    e.Effect = DragDropEffects.Copy;
+                }
+                else
+                    e.Effect = DragDropEffects.Move;
                 treeView.SelectedNode = DropNode;
+                if (DropNode != null)
+                    DropNode.Expand();
             }
-            else if (e.Data.GetDataPresent(typeof(HashSet<int>)))
+            else if (e.Data.GetDataPresent(typeof(TreeDragData)))
             {
-                e.Effect = DragDropEffects.Copy;
+                if ((e.KeyState & 8) == 8 &&
+                    (e.AllowedEffect & DragDropEffects.Copy) == DragDropEffects.Copy)
+                {
+                    // CTRL KeyState for copy.
+                    e.Effect = DragDropEffects.Copy;
+                }
+                else
+                    e.Effect = DragDropEffects.Move;
                 treeView.Focus();
                 treeView.SelectedNode = DropNode;
+                if (DropNode != null)
+                    DropNode.Expand();
             }
             else
-                e.Effect = DragDropEffects.None;
-            //
-            if (DropNode != null)
-                treeView.SelectedNode.Expand();
-
+                e.Effect = DragDropEffects.None;  
         }
 
         private void treeView_DragDrop(object sender, DragEventArgs e)
@@ -891,15 +965,30 @@ namespace HGS
                 if (DropNode != null && DropNode != myNode.Parent && DropNode != myNode)
                 {
                     if (myNode.Parent != null)
-                        myNode.Parent.Nodes.Remove(myNode);
-                    DropNode.Nodes.Add(myNode);
-                    DataDeviceTree.UpdateAllSubNodes(myNode);
-                    RefreshSubs(myNode.Parent);
+                    {
+                        if (e.Effect == DragDropEffects.Move)
+                        {
+                            myNode.Parent.Nodes.Remove(myNode);
+                            DropNode.Nodes.Add(myNode);
+                            DataDeviceTree.UpdateAllSubNodes(myNode);
+                            RefreshSubs(myNode.Parent);
+                        }
+                        else if (e.Effect == DragDropEffects.Copy)
+                        {
+                            TreeNode tn = (TreeNode)myNode.Clone();
+                            DropNode.Nodes.Add(tn);
+                            DataDeviceTree.InsertNodetoDb(tn);
+                            DataDeviceTree.UpdateAllSubNodes(tn.Parent);
+                            RefreshSubs(tn.Parent);
+                            //tn.Parent.Expand();
+                        }
+                    }
+                   
                 }
             }
-            else if (e.Data.GetDataPresent(typeof(HashSet<int>)))
-            {               
-                HashSet<int> myData = (HashSet<int>)(e.Data.GetData(typeof(HashSet<int>)));
+            else if (e.Data.GetDataPresent(typeof(TreeDragData)))
+            {
+                TreeDragData myData = (TreeDragData)(e.Data.GetData(typeof(TreeDragData)));
 
                 Point Position = new Point(0, 0);
                 Position.X = e.X;
@@ -909,24 +998,38 @@ namespace HGS
                 // 1.目标节点不是空。
                 if (DropNode != null)
                 {
-                    TreeTag ttg = (TreeTag)DropNode.Tag;
-                    if (ttg.pointid_set == null)
-                        ttg.pointid_set = new HashSet<int>();
-                    ttg.pointid_set.UnionWith(myData);
-                    if (ttg.sisid_set == null)
-                        ttg.sisid_set = new HashSet<object>();
-                    ttg.sisid_set.UnionWith(Data.inst().GetSisIdSet(ttg.pointid_set));
+                    if (e.Effect == DragDropEffects.Move)
+                    {
+                        if (myData.DragSourceNode != null && myData.DragSourceNode.Text != "全部")
+                        {
+                            TreeTag tt = (TreeTag)myData.DragSourceNode.Tag;
+                            tt.pointid_set.ExceptWith(myData.pointid_set);
+                            tt.sisid_set = Data.inst().GetSisIdSet(tt.pointid_set);
+                            DataDeviceTree.UpdateNodetoDB(myData.DragSourceNode);
+                        }
+                    }
+                    if (e.Effect == DragDropEffects.Move || e.Effect == DragDropEffects.Copy)
+                    {
 
-                    DataDeviceTree.UpdateNodetoDB(DropNode);
-                    TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(DropNode,MouseButtons.Left,0,0,0);
-                    treeView_NodeMouseClick(null, ee);
+                        TreeTag ttg = (TreeTag)DropNode.Tag;
+                        if (ttg.pointid_set == null)
+                            ttg.pointid_set = new HashSet<int>();
+                        ttg.pointid_set.UnionWith(myData.pointid_set);
+                        if (ttg.sisid_set == null)
+                            ttg.sisid_set = new HashSet<object>();
+                        ttg.sisid_set.UnionWith(Data.inst().GetSisIdSet(ttg.pointid_set));
+
+                        DataDeviceTree.UpdateNodetoDB(DropNode);
+                        TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(DropNode, MouseButtons.Left, 0, 0, 0);
+                        treeView_NodeMouseClick(null, ee);
+                    }                  
                 }
             }
         }
 
         private void treeView_ItemDrag(object sender, ItemDragEventArgs e)
         {
-            DoDragDrop(e.Item, DragDropEffects.Move);
+            DoDragDrop(e.Item, DragDropEffects.Move | DragDropEffects.Copy);
         }
 
         private void treeView_QueryContinueDrag(object sender, QueryContinueDragEventArgs e)
@@ -939,29 +1042,18 @@ namespace HGS
         {
             if (e.Button == MouseButtons.Left && glacialList1.SelectedItems.Count > 0)
             {
-                HashSet<int> hs_pointid = new HashSet<int>();
+                TreeDragData td = new TreeDragData();
                 foreach (GLItem it in glacialList1.SelectedItems)
                 {
                     itemtag tag = (itemtag)it.Tag;
-                    if (tag.PointSrc == pointsrc.sis)//计算点无曲线，没法比较。
-                        hs_pointid.Add(tag.id);
+                    //if (tag.PointSrc == pointsrc.sis)//计算点无曲线，没法比较。
+                        td.pointid_set.Add(tag.id);
+                    td.DragSourceNode = treeView.SelectedNode;
                 }
-                glacialList1.DoDragDrop(hs_pointid,DragDropEffects.Copy);
+                glacialList1.DoDragDrop(td, DragDropEffects.Copy | DragDropEffects.Move);
+
             }
         }
-
-        private void glacialList1_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyValue == 18)
-                isAltKeyDown = true;
-        }
-
-        private void glacialList1_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyValue == 18)
-                isAltKeyDown = false;
-        }
-
         private void 从分组中移除ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TreeNode tn = treeView.SelectedNode;

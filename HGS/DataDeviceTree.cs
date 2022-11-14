@@ -23,9 +23,14 @@ namespace HGS
         public HashSet<int> pointid_set = null;
         public HashSet<object> sisid_set = null;
     }
+    public class TreeDragData
+    {
+        public HashSet<int> pointid_set = new HashSet<int>();
+        public TreeNode DragSourceNode = null;
+    }
     static class DataDeviceTree
     {
-        public static int GetNextPointId()
+        public static int GetNextTreeNodeId()
         {
             int imax = 0;
             var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
@@ -191,7 +196,7 @@ namespace HGS
             {
                
                 TreeTag tag = (TreeTag)tn.Tag;
-                tag.id = GetNextPointId();
+                tag.id = GetNextTreeNodeId();
                 if (tag.sort <= 0) tag.sort = GetMaxSortV();
                 tag.path = GetNodeFullPath(tn);
                 string sql = string.Format(@"insert into devicetree (id,nodename,path,start_th,alarm_th_dis,sort,pointid_array)" +

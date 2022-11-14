@@ -16,7 +16,7 @@ namespace HGS
     {
         OPAPI.Connect sisconn = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60, 
             Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
-        public Dictionary<int, GLItem> onlysisid = new Dictionary<int, GLItem>();
+        //public Dictionary<int, GLItem> onlysisid = new Dictionary<int, GLItem>();
         public List<point> lsitem = new List<point>();
         public FormSisPointList()
         {
@@ -101,7 +101,7 @@ namespace HGS
                         if (!flag) break;
                     }
 
-                    if (!flag || onlysisid.ContainsKey(id))
+                    if (!flag || Data.inst().dic_SisIdtoPoint.ContainsKey(id))
                     {
                         continue;
                     }
