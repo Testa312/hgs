@@ -87,6 +87,31 @@ namespace HGS
             }
             return dic_data;
         }
+        public static Dictionary<int, PointData> GetPointData_dic(HashSet<int> hspid, DateTime begin, DateTime end, int count = 120)
+        {
+            Dictionary<int, PointData> dic_pd = null;
+            if (hspid != null && hspid.Count > 0)
+            {
+                HashSet<object> sisid = new HashSet<object>();
+                List<point> calcpt = new List<point>();
+                foreach (int id in hspid)
+                {
+                    point pt = Data.inst().cd_Point[id];
+                    if (pt.pointsrc == pointsrc.sis)
+                        sisid.Add(Convert.ToInt64(pt.id_sis));
+                    else if (pt.pointsrc == pointsrc.calc)
+                        calcpt.Add(pt);
+                }
+                dic_pd = SisConnect.GetsisData(sisid.ToArray(), begin, end, count);
+
+                foreach (point pt in calcpt)
+                {
+                    PointData ptcalc = SisConnect.GetCalcPointData(pt, begin, end, count);
+                    dic_pd.Add(ptcalc.ID, ptcalc);
+                }
+            }
+            return dic_pd;
+        }
         public static PointData GetCalcPointData(point calcpt, DateTime begin, DateTime end, int count = 120)
         {
             if (calcpt.pointsrc != pointsrc.calc)

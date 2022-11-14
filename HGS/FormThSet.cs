@@ -47,7 +47,7 @@ namespace HGS
             host1 = new ToolStripControlHost(dateTimePicker2);
             toolStrip1.Items.Insert(3, host1);
             //
-            plotView1.Model = PlotPoint(GetPointData_dic(dateTimePicker1.Value, dateTimePicker2.Value,600));
+            plotView1.Model = PlotPoint(SisConnect.GetPointData_dic(ttg.pointid_set, dateTimePicker1.Value, dateTimePicker2.Value,600));
             //
             if (ttg != null)
             {
@@ -57,6 +57,7 @@ namespace HGS
             else
                 ttg = new TreeTag();
         }
+        /*
         private Dictionary<int, PointData> GetPointData_dic(DateTime begin,DateTime end,int count = 120)
         {
             Dictionary<int, PointData> dic_pd = null;
@@ -81,7 +82,7 @@ namespace HGS
                 }
             }
             return dic_pd;
-        }
+        }*/
         private PlotModel PlotPoint(Dictionary<int, PointData> dic_pd)
         {
             //
@@ -161,11 +162,12 @@ namespace HGS
                     maxpp = double.MinValue;
                     while (begin >= dateTimePicker1.Value)
                     {
-                        Dictionary<int, PointData> dic_pd = GetPointData_dic(begin,end);
+                        Dictionary<int, PointData> dic_pd = SisConnect.GetPointData_dic(ttg.pointid_set,begin,end);
                         List<PointData> lspd = new List<PointData>(dic_pd.Values.ToArray());
                         
                         if (lspd.Count >= 2)
                         {
+                            //第一条曲线为主进行比较，全部比较会产生组合爆炸。
                             PointData pt_main = lspd[0];
                             //lspd.RemoveAt(0);
                             //while (lspd.Count > 0)
@@ -202,7 +204,7 @@ namespace HGS
                 Cursor = Cursors.Default;
                 sw.Stop();
 
-                plotView1.Model = PlotPoint(GetPointData_dic(dateTimePicker1.Value, dateTimePicker2.Value,600));
+                plotView1.Model = PlotPoint(SisConnect.GetPointData_dic(ttg.pointid_set,dateTimePicker1.Value, dateTimePicker2.Value,600));
 
                 toolStripStatusLabel1.Text = string.Format("用时：{0}ms",sw.ElapsedMilliseconds);             
             }
