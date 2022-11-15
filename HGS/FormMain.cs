@@ -13,8 +13,8 @@ namespace HGS
 {
     public partial class FormMain : Form
     {
-        //OPAPI.Connect sisconn = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
-         // Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
+        OPAPI.Connect sisconn = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
+          Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
         FormAlarmSetList formAlarmSet = null;
         FormPointSet formPointSet = null;
         FormAlarmHistoryList formAlarmList = null;
@@ -39,6 +39,7 @@ namespace HGS
          ~FormMain()
         {
             SisConnect.sisconn.close();
+            sisconn.close();
         }
         private void 点设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -99,7 +100,7 @@ namespace HGS
             string sql = string.Format("select ID,TM,DS,AV from Realtime where ID in ({0})", sbid.ToString());
             try
             {
-                OPAPI.ResultSet resultSet = SisConnect.sisconn.executeQuery(sql);//执行SQL
+                OPAPI.ResultSet resultSet = sisconn.executeQuery(sql);//执行SQL
 
                 const short gb1 = -32256;
                 const short gb2 = -32768;

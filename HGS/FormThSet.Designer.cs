@@ -80,6 +80,7 @@ namespace HGS
             this.plotView1 = new OxyPlot.WindowsForms.PlotView();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip1.SuspendLayout();
             this.menuStrip2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -135,6 +136,7 @@ namespace HGS
             this.toolStripLabel1,
             this.toolStripLabel2,
             this.toolStripButton_Find,
+            this.toolStripSeparator1,
             this.toolStripButton_Multi,
             this.toolStripButton_Divide,
             this.toolStripButton_Back,
@@ -587,6 +589,11 @@ namespace HGS
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
             // FormThSet
             // 
             this.AcceptButton = this.buttonOK;
@@ -651,5 +658,6 @@ namespace HGS
         private MaskedTextBox.MaskedTextBox maskedTextBox_Sort;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }

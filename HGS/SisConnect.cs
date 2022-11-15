@@ -37,7 +37,8 @@ namespace HGS
             string[] colnames = new string[] { "ID", "TM", "DS", "AV","GN" };
 
             Dictionary<string, object> options = new Dictionary<string, object>();
-            int span = (int)(end - begin).TotalSeconds / count;
+            int span = (int)((end - begin).TotalSeconds / count);
+            span = span > 0 ? span : span++;
             options.Add("end", end);
             options.Add("begin", begin);
             options.Add("mode", "span");
@@ -59,7 +60,8 @@ namespace HGS
                         PtData.ID = id;
                         dic_data.Add(id, PtData);
                     }
-                    PtData.data.Add(new DateValue(resultSet.getDateTime(1),resultSet.getFloat(3)));
+                    if (PtData.data.Count < count)
+                        PtData.data.Add(new DateValue(resultSet.getDateTime(1), resultSet.getFloat(3)));
                 }
             }
             catch (Exception e)
@@ -270,24 +272,51 @@ namespace HGS
             }
             return (float)Math.Sqrt(cost);
         }
-        public static double GetMain(Dictionary<int, PointData> dic_pd, double[] outmain)
+        //用差分归一化
+        public static double GetDtw_dd_diff(PointData pd1, PointData pd2, double max_dist = 0, bool use_pruning = false)
         {
-            int c = 0;
-            foreach (PointData pd in dic_pd.Values)
+            if (pd1.data.Count != pd2.data.Count)
+                throw new ArgumentException("数组长度应相等！");
+
+            double[] x = new double[pd1.data.Count];
+            double[] y = new double[pd1.data.Count];
+            x[0] = y[0] = 0;
+            for (int i = 1; i < pd1.data.Count; i++)
             {
-                for (int i = 0; i < pd.data.Count; i++)
+                x[i] = pd1.data[i].Value - pd1.data[i - 1].Value;
+                y[i] = pd2.data[i].Value - pd2.data[i - 1].Value;
+            }
+            return dd_dtw.dtw_distance(x, y, max_dist, use_pruning); ;
+        }
+        public static DateTime GetSisSystemTime()
+        {
+            DateTime sysdt = DateTime.Now.AddSeconds(-120);
+            string sql = "select TM from Realtime where ID in (2053,9092,220865)";
+            bool flag = false;
+
+            OPAPI.ResultSet resultSet = SisConnect.sisconn.executeQuery(sql);//执行SQL
+            try
+            {
+                while (resultSet.next())//next()执行一次，游标下移一行
                 {
-                    outmain[i] += pd.data[i].Value;
+                    sysdt = resultSet.getDateTime(0);
+                    flag = true;
                 }
-                c++;
+                if (!flag) throw new Exception("没有得到sis系统时间！");
             }
-            if (c == 0) throw new Exception("数据长度不能为0!");
-            for (int i = 0; i < outmain.Length; i++)
+            catch (Exception ee)
             {
-                outmain[i] /= c;
+                throw new Exception("取点系统时间出错！" + ee.ToString());
+
             }
-           
-            return 0;
+            finally
+            {
+                if (resultSet != null)
+                {
+                    resultSet.close(); //释放内存
+                }
+            }
+            return sysdt;
         }
     }
 }

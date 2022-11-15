@@ -663,36 +663,7 @@ namespace HGS
             }
             return sisid;
         }*/
-        public static DateTime GetSisSystemTime()
-        {
-            DateTime sysdt = DateTime.Now.AddSeconds(-120);
-            string sql = "select TM from Realtime where ID in (2053,9092,220865)";
-            bool flag = false;
-
-            OPAPI.ResultSet resultSet = SisConnect.sisconn.executeQuery(sql);//执行SQL
-            try
-            {
-                while (resultSet.next())//next()执行一次，游标下移一行
-                {
-                    sysdt = resultSet.getDateTime(0);
-                    flag = true;
-                }
-                if (!flag) throw new Exception("没有得到sis系统时间！");
-            }
-            catch (Exception ee)
-            {
-                throw new Exception("取点系统时间出错！" + ee.ToString());
-
-            }
-            finally
-            {
-                if (resultSet != null)
-                {
-                    resultSet.close(); //释放内存
-                }
-            }
-            return sysdt;
-        }
+        
     }
     
 }

@@ -29,7 +29,7 @@ namespace HGS
             Size size = new Size(159, 21);
             //
 
-            dateTimePicker2.Value = Data.GetSisSystemTime().AddSeconds(-5);
+            dateTimePicker2.Value = SisConnect.GetSisSystemTime().AddSeconds(-5);
             dateTimePicker2.Size = size;
             dateTimePicker2.Format = DateTimePickerFormat.Custom;
             dateTimePicker2.CustomFormat = sformat;
@@ -47,7 +47,7 @@ namespace HGS
             host1 = new ToolStripControlHost(dateTimePicker2);
             toolStrip1.Items.Insert(3, host1);
             //
-            plotView1.Model = PlotPoint(SisConnect.GetPointData_dic(ttg.pointid_set, dateTimePicker1.Value, dateTimePicker2.Value,600));
+            plotView1.Model = PlotPoint();
             //
             if (ttg != null)
             {
@@ -57,42 +57,15 @@ namespace HGS
             else
                 ttg = new TreeTag();
         }
-        /*
-        private Dictionary<int, PointData> GetPointData_dic(DateTime begin,DateTime end,int count = 120)
+        private PlotModel PlotPoint(int count = 600)
         {
-            Dictionary<int, PointData> dic_pd = null;
-            if (ttg.pointid_set != null && ttg.pointid_set.Count > 0)
-            {
-                HashSet<object> sisid = new HashSet<object>();
-                List<point> calcpt = new List<point>();
-                foreach (int id in ttg.pointid_set)
-                {
-                    point pt = Data.inst().cd_Point[id];
-                    if (pt.pointsrc == pointsrc.sis)
-                        sisid.Add(Convert.ToInt64(pt.id_sis));
-                    else if (pt.pointsrc == pointsrc.calc)
-                        calcpt.Add(pt);
-                }
-                dic_pd = SisConnect.GetsisData(sisid.ToArray(),begin, end, count);
-
-                foreach (point pt in calcpt)
-                {
-                    PointData ptcalc = SisConnect.GetCalcPointData(pt, begin, end, count);
-                    dic_pd.Add(ptcalc.ID, ptcalc);
-                }
-            }
-            return dic_pd;
-        }*/
-        private PlotModel PlotPoint(Dictionary<int, PointData> dic_pd)
-        {
-            //
+            Dictionary<int, PointData> dic_pd = SisConnect.GetPointData_dic(ttg.pointid_set, dateTimePicker1.Value, dateTimePicker2.Value, count);
             if (dic_pd == null || dic_pd.Count <= 0) return null;
-            string title = "";
-           /* List<DateValue> lsdv = dic_pd.Values;
-            if (lsdv.Count > 0)
-                title = string.Format("{0}---{1}  [{2}]", lsdv[lsdv.Count - 1].Date, lsdv[0].Date,
-                                        (lsdv[0].Date - lsdv[lsdv.Count - 1].Date));
-           */
+
+            //string title = string.Format("{0}---{1}  [{2}]", dateTimePicker1.Value, dateTimePicker2.Value,
+                                        //(dateTimePicker2.Value - dateTimePicker1.Value));
+
+            string title = string.Format("[{0}]",(dateTimePicker2.Value - dateTimePicker1.Value));
             var pm = new PlotModel
             {
                 Title = title,
@@ -174,7 +147,7 @@ namespace HGS
                             //{
                                 for (int m = 1; m < lspd.Count; m++)
                                 {
-                                    cost = Math.Max(cost, SisConnect.GetDtw_dd(pt_main, lspd[m],0,true));
+                                    cost = Math.Max(cost, SisConnect.GetDtw_dd_diff(pt_main, lspd[m],0,true));
                                     //cost = Math.Max(cost, SisConnect.GetFastDtw(pt_main, lspd[m]));
                                 }
                                 //pt_main = lspd[0];
@@ -192,8 +165,8 @@ namespace HGS
                     //                   
                     GLItem item = new GLItem(glacialList1);
                     item.SubItems["TW"].Text = span[i].ToString() + "m";
-                    item.SubItems["start_th"].Text = Math.Round(maxpp * 1.0, 3).ToString();
-                    item.SubItems["alarm_th"].Text = Math.Round(cost * 1.0, 3).ToString();
+                    item.SubItems["start_th"].Text = Math.Round(maxpp * 1.1, 3).ToString();
+                    item.SubItems["alarm_th"].Text = Math.Round(cost * 1.1, 3).ToString();
                     lsItem.Add(item);
                    
                 }
@@ -204,7 +177,7 @@ namespace HGS
                 Cursor = Cursors.Default;
                 sw.Stop();
 
-                plotView1.Model = PlotPoint(SisConnect.GetPointData_dic(ttg.pointid_set,dateTimePicker1.Value, dateTimePicker2.Value,600));
+                plotView1.Model = PlotPoint();
 
                 toolStripStatusLabel1.Text = string.Format("用时：{0}ms",sw.ElapsedMilliseconds);             
             }
@@ -217,22 +190,73 @@ namespace HGS
 
         private void toolStripButton_Multi_Click(object sender, EventArgs e)
         {
-            //timespan = (int)Math.Round(timespan / 1.414);
-        }
+            DateTime begin = dateTimePicker1.Value;
+            DateTime end = dateTimePicker2.Value;
+            if ((end - begin).TotalSeconds >= 900)
+            {
+                int span = (int)(end - begin).TotalSeconds;
+                span = (int)((span - span / 1.414) /2);
+                //
+                dateTimePicker1.Value = begin.AddSeconds(span);
+                dateTimePicker2.Value = end.AddSeconds(-span);
 
+                plotView1.Model = PlotPoint();
+            }
+        }
         private void toolStripButton_Divide_Click(object sender, EventArgs e)
         {
+            DateTime begin = dateTimePicker1.Value;
+            DateTime end = dateTimePicker2.Value;
+            DateTime sistime = SisConnect.GetSisSystemTime();
 
+            int span = (int)(((end - begin).TotalSeconds * 0.414) / 2);
+            end = end.AddSeconds(span);
+            if(end > sistime)
+            {
+                end = sistime;
+                begin = end.AddSeconds(-span * 6.831);
+            }
+            else
+                begin = begin.AddSeconds(-span);
+            dateTimePicker1.Value = begin;
+            dateTimePicker2.Value = end ;
+
+            plotView1.Model = PlotPoint();
         }
 
         private void toolStripButton_Back_Click(object sender, EventArgs e)
         {
+            DateTime begin = dateTimePicker1.Value;
+            DateTime end = dateTimePicker2.Value;
 
+            int span = (int)((end - begin).TotalSeconds / 3);
+
+            dateTimePicker1.Value = begin.AddSeconds(-span);
+            dateTimePicker2.Value = end.AddSeconds(-span);
+
+            plotView1.Model = PlotPoint();
         }
 
         private void toolStripButton_First_Click(object sender, EventArgs e)
         {
+            DateTime begin = dateTimePicker1.Value;
+            DateTime end = dateTimePicker2.Value;
+            DateTime sistime = SisConnect.GetSisSystemTime();
 
+            int span = (int)((end - begin).TotalSeconds / 3);
+            end = end.AddSeconds(span);
+            if (end > sistime)
+            {
+                end = sistime;
+                begin = end.AddSeconds(-3 * span);
+            }
+            else
+                begin = begin.AddSeconds(span);
+
+            dateTimePicker1.Value = begin;
+            dateTimePicker2.Value = end;
+
+            plotView1.Model = PlotPoint();
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
