@@ -387,41 +387,7 @@ namespace HGS
                     Point.zl = CasttoDouble(pgreader["zl"]);
                     Point.zh = CasttoDouble(pgreader["zh"]);
                     Point.skip_pp = CasttoDouble(pgreader["skip_pp"]);
-                    /*
-                    if (pgreader["tv"] == DBNull.Value)
-                        Point.tv = null;
-                    else
-                        Point.tv = (double)pgreader["tv"];
-
-                    if (pgreader["bv"] == DBNull.Value)
-                        Point.bv = null;
-                    else
-                        Point.bv = (double)pgreader["bv"];
-
-                    if (pgreader["ll"] == DBNull.Value)
-                        Point.ll = null;
-                    else
-                        Point.ll = (double)pgreader["ll"];
-
-                    if (pgreader["hl"] == DBNull.Value)
-                        Point.hl = null;
-                    else
-                        Point.hl = (double)pgreader["hl"];
-
-                    if (pgreader["zl"] == DBNull.Value)
-                        Point.zl = null;
-                    else
-                        Point.zl = (double)pgreader["zl"];
-                    if (pgreader["zh"] == DBNull.Value)
-                        Point.zh = null;
-                    else
-                        Point.zh = (double)pgreader["zh"];
-                    //
-                    if (pgreader["skip_pp"] == DBNull.Value)
-                        Point.skip_pp = null;
-                    else
-                        Point.skip_pp = (double)pgreader["skip_pp"];
-                    */
+                    
                     Point.id_sis = (int)pgreader["id_sis"];
 
                     //object oo = (int)pgreader["pointsrc"];
@@ -444,7 +410,11 @@ namespace HGS
                     if ((Point.isalarmwave || Point.isalarmskip) && Point.skip_pp != null)
                         Point.waveDetection = new WaveDetection();
                     //
-
+                    object ob = pgreader["dtw_start_th"];
+                    if (ob != DBNull.Value)
+                    {
+                        Point.dtw_start_th = (float[])ob;
+                    }
                     //Point.lsCalcOrgSubPoint_main = VartoPointTable.Sub_PointtoVarList(Point,cellid.main);
 
                     cd_Point[Point.id] = Point;
@@ -490,11 +460,24 @@ namespace HGS
             VartoPointTable.Refresh(true); 
             LoadData();
         }
-        /*
-        private string dtoNULL(double? d)
+        private  string ArraytoString(float[] fa)
         {
-            return d.HasValue ? d.ToString() : "NULL";
-        }*/
+            StringBuilder sb = new StringBuilder();
+            if (fa != null && fa.Length > 0)
+            {
+                sb.Append("'{");
+                foreach (float v in fa)
+                {
+                    string ay = string.Format("{0},", v);
+                    sb.Append(ay);
+                }
+                if (sb.Length >= 2) sb.Remove(sb.Length - 1, 1);
+                sb.Append("}'");
+                return sb.ToString();
+            }
+            else
+                return "NULL";
+        }
         private void GetinsertsubSql(StringBuilder sb, List<varlinktopoint> lssub,point pt,cellid CellID)
         {
             if (lssub is null) return;
@@ -538,12 +521,12 @@ namespace HGS
                                          "pn='{8}',orgformula_main='{9}',fm={10},iscalc = {11}," +
                                         "isavalarm = {12},ed = '{13}',isboolv = {14},boolalarminfo = '{15}'," +
                                                    " orgformula_hl = '{16}',orgformula_ll = '{17}',alarmif = '{18}' ,boolalarmif = {19} ,isalarmskip = {20},isalarmwave = {21}," +
-                                                   "skip_pp = {22} where id = {23};",
+                                                   "skip_pp = {22},dtw_start_th = {23} where id = {24};",
                                         Functions.dtoNULL(pt.tv), Functions.dtoNULL(pt.bv), Functions.dtoNULL(pt.ll), Functions.dtoNULL(pt.hl),
                                         Functions.dtoNULL(pt.zl), Functions.dtoNULL(pt.zh),
                                         DateTime.Now,pt.eu, pt.pn, pt.orgformula_main,pt.fm,
                                         pt.iscalc,pt.isavalarm, pt.ed,pt.isboolvalarm,pt.boolalarminfo, pt.orgformula_hl,
-                                        pt.orgformula_ll,pt.alarmif,pt.boolalarmif,pt.isalarmskip,pt.isalarmwave, Functions.dtoNULL(pt.skip_pp), pt.id));
+                                        pt.orgformula_ll,pt.alarmif,pt.boolalarmif,pt.isalarmskip,pt.isalarmwave, Functions.dtoNULL(pt.skip_pp), ArraytoString(pt.dtw_start_th), pt.id));
                 sb.AppendLine(string.Format("delete  from formula_point where id = {0};", pt.id));
                 GetinsertsubSql(sb, pt);
             }
@@ -553,14 +536,14 @@ namespace HGS
 
                 sb.AppendLine(string.Format(@"insert into point (id,nd,pn,ed,eu,tv,bv,ll,hl,zl,"+
                                             "zh,id_sis,pointsrc,mt,ownerid,orgformula_main,fm,iscalc,isavalarm,isboolv,boolalarminfo," +
-                                            "orgformula_hl,orgformula_ll,alarmif,boolalarmif,isalarmskip,isalarmwave,skip_pp) " + 
+                                            "orgformula_hl,orgformula_ll,alarmif,boolalarmif,isalarmskip,isalarmwave,skip_pp,dtw_start_th) " + 
                                     "values ({0},'{1}','{2}','{3}','{4}',{5},{6},{7},{8},{9},"+
-                                            "{10},{11},{12},'{13}',{14},'{15}',{16},{17},{18},{19},'{20}','{21}','{22}','{23}',{24},{25},{26},{27});",
+                                            "{10},{11},{12},'{13}',{14},'{15}',{16},{17},{18},{19},'{20}','{21}','{22}','{23}',{24},{25},{26},{27},{28});",
                                     pt.id, pt.nd, pt.pn, pt.ed, pt.eu, Functions.dtoNULL(pt.tv), Functions.dtoNULL(pt.bv), 
                                     Functions.dtoNULL(pt.ll), Functions.dtoNULL(pt.hl), Functions.dtoNULL(pt.zl),
                                     Functions.dtoNULL(pt.zh), pt.id_sis,(int)pt.pointsrc, DateTime.Now, Auth.GetInst().LoginID, pt.orgformula_main,
                                     pt.fm,pt.iscalc,pt.isavalarm,pt.isboolvalarm,pt.boolalarminfo, pt.orgformula_hl, pt.orgformula_ll,pt.alarmif,
-                                    pt.boolalarmif,pt.isalarmskip,pt.isalarmwave, Functions.dtoNULL(pt.skip_pp)));
+                                    pt.boolalarmif,pt.isalarmskip,pt.isalarmwave, Functions.dtoNULL(pt.skip_pp), ArraytoString(pt.dtw_start_th)));
                 GetinsertsubSql(sb, pt);
                // pt.id = ptid;
                // ptid++;

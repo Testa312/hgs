@@ -128,6 +128,8 @@ namespace HGS
         private int datanums = -1;
 
         private double? av = null;//点值，实时或计算。
+        //动态时间规整器扫描的阈值,6个数，为15m,30m,60m,120m,240m,480m时间段。
+        public float[] dtw_start_th = null ;
         //不能多于一次赋值，否则将不对。
         public double? Av
         {

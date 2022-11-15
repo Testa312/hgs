@@ -20,6 +20,8 @@ namespace HGS
         private TreeTag ttg;
         DateTimePicker dateTimePicker1 = new DateTimePicker();
         DateTimePicker dateTimePicker2 = new DateTimePicker();
+        //
+        readonly int[] ScanSpan = { 15, 30, 60, 120, 240, 480 };//分钟
         public FormThSet(TreeTag ttg)
         {
             InitializeComponent();
@@ -104,7 +106,7 @@ namespace HGS
             {
                 var lineSeries = new LineSeries
                 {
-                    Title = pd.GN,
+                    Title = string.Format("[{0}]\r{1}",pd.GN,pd.ED),
                     DataFieldX = "Date",
                     DataFieldY = "Value",
                     ItemsSource = pd.data,
@@ -120,14 +122,15 @@ namespace HGS
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
-                int[] span = new int[] {15,30,60,120,240,480 };//分钟
+                //int[] span = new int[] {15,30,60,120,240,480 };//分钟
                 List<GLItem> lsItem = new List<GLItem>();
                 double cost = 0;
                 double maxpp = double.MinValue;
-                for (int i = 0; i < span.Length; i++)
+                
+                for (int i = 0; i < ScanSpan.Length; i++)
                 {
                     DateTime end = dateTimePicker2.Value;
-                    DateTime begin = end.AddMinutes(-span[i]);
+                    DateTime begin = end.AddMinutes(-ScanSpan[i]);
 
                     Cursor = Cursors.WaitCursor;
 
@@ -140,33 +143,36 @@ namespace HGS
                         
                         if (lspd.Count >= 2)
                         {
-                            //第一条曲线为主进行比较，全部比较会产生组合爆炸。
+                            //第1、2条曲线为主进行比较，全部比较会产生组合爆炸。
                             PointData pt_main = lspd[0];
-                            //lspd.RemoveAt(0);
-                            //while (lspd.Count > 0)
-                            //{
+                            lspd.RemoveAt(0);
+                            int count = 1;
+                            while (lspd.Count > 0)
+                            {
                                 for (int m = 1; m < lspd.Count; m++)
                                 {
-                                    cost = Math.Max(cost, SisConnect.GetDtw_dd_diff(pt_main, lspd[m],0,true));
-                                    //cost = Math.Max(cost, SisConnect.GetFastDtw(pt_main, lspd[m]));
+                                    cost = Math.Max(cost, SisConnect.GetDtw_dd_diff(pt_main, lspd[m], 0, true));
                                 }
-                                //pt_main = lspd[0];
-                                //lspd.RemoveAt(0);
-                            //}
+                                pt_main = lspd[0];
+                                lspd.RemoveAt(0);
+                                count++;
+                                if (count >= 2) break;//只选两条曲线
+                            }
                         }
                         foreach (PointData pd in dic_pd.Values)
                         {
                             maxpp = Math.Max(maxpp, pd.MaxAv - pd.MinAv);
                         }
                         
-                        begin = begin.AddMinutes(-span[i] / 5);
-                        end = end.AddMinutes(-span[i] / 5);
+                        begin = begin.AddMinutes(-ScanSpan[i] / 5);
+                        end = end.AddMinutes(-ScanSpan[i] / 5);
                     }
                     //                   
                     GLItem item = new GLItem(glacialList1);
-                    item.SubItems["TW"].Text = span[i].ToString() + "m";
-                    item.SubItems["start_th"].Text = Math.Round(maxpp * 1.1, 3).ToString();
-                    item.SubItems["alarm_th"].Text = Math.Round(cost * 1.1, 3).ToString();
+                    item.SubItems["TW"].Text = ScanSpan[i].ToString() + "m";
+                    //item.SubItems["start_th"].Text = Math.Round(maxpp * 1.1, 3).ToString();
+                    cost *= 1.1;
+                    item.SubItems["alarm_th"].Text = Math.Round(cost, 3).ToString();
                     lsItem.Add(item);
                    
                 }
@@ -224,7 +230,7 @@ namespace HGS
             plotView1.Model = PlotPoint();
         }
 
-        private void toolStripButton_Back_Click(object sender, EventArgs e)
+        private void toolStripButton_BBack_Click(object sender, EventArgs e)
         {
             DateTime begin = dateTimePicker1.Value;
             DateTime end = dateTimePicker2.Value;
@@ -237,7 +243,7 @@ namespace HGS
             plotView1.Model = PlotPoint();
         }
 
-        private void toolStripButton_First_Click(object sender, EventArgs e)
+        private void toolStripButton_FFirst_Click(object sender, EventArgs e)
         {
             DateTime begin = dateTimePicker1.Value;
             DateTime end = dateTimePicker2.Value;
@@ -263,25 +269,31 @@ namespace HGS
         {
             try
             {
-                
+                float[] th = new float[ScanSpan.Length];
+
                 if (textBox_Name.Text.Trim().Length == 0)
                     throw new Exception("节点名不能为空！");
                 ttg.nodeName = textBox_Name.Text.Trim();
-                /*
-                if (mtb_start_th.Text.Length > 0)
+                bool flag = false;
+                for (int i= 0; i < 6; i++)
                 {
-                    tt.start_th = float.Parse(mtb_start_th.Text);
+                    th[i] = float.MaxValue;
+                    GLItem item =  glacialList1.Items[i];
+                    string txt_th = item.SubItems["alarm_th"].Text;
+                    if (txt_th.Length > 0)
+                    {
+                        float fv;
+                        if (float.TryParse(txt_th, out fv))
+                        {
+                            th[i] = fv;
+                            flag = true;
+                        }
+                        else
+                            throw new Exception(string.Format("无法解析[{0}]！", txt_th));
+                    }
                 }
-                else
-                    tt.start_th = null;
-                //
-                if (mtb_alarm_th_dis.Text.Length > 0)
-                {
-                    tt.alarm_th_dis = float.Parse(mtb_alarm_th_dis.Text);
-                }
-                else
-                    tt.alarm_th_dis = null;
-                */
+                if (flag)
+                    ttg.alarm_th_dis = th;
                 if (maskedTextBox_Sort.Text.Length > 0)
                 {
                     ttg.sort = int.Parse(maskedTextBox_Sort.Text);
@@ -293,7 +305,7 @@ namespace HGS
             catch (Exception ee)
             {
                 MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.DialogResult = DialogResult.Cancel;
+                this.DialogResult = DialogResult.None;
             }
         }
     }

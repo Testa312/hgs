@@ -20,6 +20,7 @@ namespace HGS
     {
         public int ID = -1;
         public string GN = "";
+        public string ED = "";
         public float MaxAv = float.MinValue;
         public float MinAv = float.MaxValue;
         public float MeanAV = 0;
@@ -105,10 +106,15 @@ namespace HGS
                         calcpt.Add(pt);
                 }
                 dic_pd = SisConnect.GetsisData(sisid.ToArray(), begin, end, count);
+                foreach (PointData pd in dic_pd.Values)
+                {
+                    pd.ED = Data.inst().dic_SisIdtoPoint[pd.ID].ed;
+                }
 
                 foreach (point pt in calcpt)
                 {
                     PointData ptcalc = SisConnect.GetCalcPointData(pt, begin, end, count);
+                    ptcalc.ED = pt.ed;
                     dic_pd.Add(ptcalc.ID, ptcalc);
                 }
             }

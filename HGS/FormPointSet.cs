@@ -234,7 +234,7 @@ namespace HGS
                                     pt.waveDetection = new WaveDetection();
                                 }                               
                             } 
-                            else
+                            else if(pt.waveDetection != null)
                             {                               
                                 pt.waveDetection.Clear();
                                 pt.waveDetection = null;
@@ -355,7 +355,6 @@ namespace HGS
         }
         private void glacialList1_Click(object sender, EventArgs e)
         {
-
             if (glacialList1.SelectedItems.Count == 1)
             {
                 GLItem item = (GLItem)glacialList1.SelectedItems[0];
@@ -371,7 +370,7 @@ namespace HGS
                 checkBoxAlarm.Checked = Point.isavalarm;
                 checkBoxbool.Checked = Point.isboolvalarm;
                 tB_boolAlarmInfo.Text = Point.boolalarminfo;
-                if(Point.boolalarminfo.Length<=0)
+                if (Point.boolalarminfo.Length <= 0)
                     tB_boolAlarmInfo.Text = Point.ed;
                 buttonCalc.Enabled = (it.PointSrc == pointsrc.calc) ? true : false;
 
@@ -408,6 +407,7 @@ namespace HGS
 
             }
             tabControl.Enabled = glacialList1.SelectedItems.Count > 0;
+
         }
         private void toolStripButtonAddNewCalc_Click(object sender, EventArgs e)
         {          
@@ -899,7 +899,7 @@ namespace HGS
                     // CTRL KeyState for copy.
                     e.Effect = DragDropEffects.Copy;
                 }
-                else
+                else 
                     e.Effect = DragDropEffects.Move;
             }
             else
@@ -923,7 +923,7 @@ namespace HGS
                     // CTRL KeyState for copy.
                     e.Effect = DragDropEffects.Copy;
                 }
-                else
+                else if((e.AllowedEffect & DragDropEffects.Move) == DragDropEffects.Move)
                     e.Effect = DragDropEffects.Move;
                 treeView.SelectedNode = DropNode;
                 if (DropNode != null)
@@ -937,7 +937,7 @@ namespace HGS
                     // CTRL KeyState for copy.
                     e.Effect = DragDropEffects.Copy;
                 }
-                else
+                else if((e.AllowedEffect & DragDropEffects.Move) == DragDropEffects.Move)
                     e.Effect = DragDropEffects.Move;
                 treeView.Focus();
                 treeView.SelectedNode = DropNode;
@@ -1036,18 +1036,20 @@ namespace HGS
 
         private void glacialList1_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && glacialList1.SelectedItems.Count > 0)
+            if ((ModifierKeys & Keys.Shift) == Keys.Shift || (ModifierKeys & Keys.Control) == Keys.Control)
             {
-                TreeDragData td = new TreeDragData();
-                foreach (GLItem it in glacialList1.SelectedItems)
+                if (e.Button == MouseButtons.Left && glacialList1.SelectedItems.Count > 0)
                 {
-                    itemtag tag = (itemtag)it.Tag;
-                    //if (tag.PointSrc == pointsrc.sis)//计算点无曲线，没法比较。
+                    TreeDragData td = new TreeDragData();
+                    foreach (GLItem it in glacialList1.SelectedItems)
+                    {
+                        itemtag tag = (itemtag)it.Tag;
+                        //if (tag.PointSrc == pointsrc.sis)//计算点无曲线，没法比较。
                         td.pointid_set.Add(tag.id);
-                    td.DragSourceNode = treeView.SelectedNode;
+                        td.DragSourceNode = treeView.SelectedNode;
+                    }
+                    glacialList1.DoDragDrop(td, DragDropEffects.Copy | DragDropEffects.Move);
                 }
-                glacialList1.DoDragDrop(td, DragDropEffects.Copy | DragDropEffects.Move);
-
             }
         }
         private void 从分组中移除ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1063,6 +1065,26 @@ namespace HGS
                 DataDeviceTree.UpdateNodetoDB(tn);
                 TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(tn, MouseButtons.Left, 0, 0, 0);
                 treeView_NodeMouseClick(null, ee);
+            }
+        }
+
+        private void glacialList1_SelectedIndexChanged(object source, ClickEventArgs e)
+        {
+            
+        }
+
+        private void 显示曲线ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            HashSet<int> pointid = new HashSet<int>();
+            foreach (GLItem item in glacialList1.SelectedItems)
+            {
+                itemtag it = (itemtag)item.Tag;
+                pointid.Add(it.id);
+            }
+            if (pointid.Count > 0)
+            {
+                FormCurves fc = new FormCurves(pointid);
+                fc.Show();
             }
         }
     }
