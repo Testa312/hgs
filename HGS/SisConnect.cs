@@ -19,6 +19,7 @@ namespace HGS
     public class PointData
     {
         public int ID = -1;
+        public int ID_sis = -1;
         public string GN = "";
         public string ED = "";
         public float MaxAv = float.MinValue;
@@ -58,7 +59,7 @@ namespace HGS
                     {
                         PtData = new PointData();
                         PtData.GN = resultSet.getString(4);
-                        PtData.ID = id;
+                        PtData.ID_sis = id;
                         dic_data.Add(id, PtData);
                     }
                     if (PtData.data.Count < count)
@@ -92,7 +93,7 @@ namespace HGS
         }
         public static Dictionary<int, PointData> GetPointData_dic(HashSet<int> hspid, DateTime begin, DateTime end, int count = 120)
         {
-            Dictionary<int, PointData> dic_pd = null;
+            Dictionary<int, PointData> dic_pd = new Dictionary<int, PointData>();
             if (hspid != null && hspid.Count > 0)
             {
                 HashSet<object> sisid = new HashSet<object>();
@@ -105,17 +106,20 @@ namespace HGS
                     else if (pt.pointsrc == pointsrc.calc)
                         calcpt.Add(pt);
                 }
-                dic_pd = SisConnect.GetsisData(sisid.ToArray(), begin, end, count);
-                foreach (PointData pd in dic_pd.Values)
+                Dictionary<int, PointData>  dic_pd_sis = SisConnect.GetsisData(sisid.ToArray(), begin, end, count);
+                foreach (PointData pd in dic_pd_sis.Values)
                 {
-                    pd.ED = Data.inst().dic_SisIdtoPoint[pd.ID].ed;
+                    point pt = Data.inst().dic_SisIdtoPoint[pd.ID_sis];
+                    pd.ED =pt.ed;
+                    pd.ID = pt.id;
+                    dic_pd.Add(pd.ID, pd);
                 }
 
                 foreach (point pt in calcpt)
                 {
-                    PointData ptcalc = SisConnect.GetCalcPointData(pt, begin, end, count);
-                    ptcalc.ED = pt.ed;
-                    dic_pd.Add(ptcalc.ID, ptcalc);
+                    PointData pdcalc = SisConnect.GetCalcPointData(pt, begin, end, count);
+                    pdcalc.ED = pt.ed;
+                    dic_pd.Add(pdcalc.ID, pdcalc);
                 }
             }
             return dic_pd;

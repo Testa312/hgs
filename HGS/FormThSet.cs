@@ -22,6 +22,7 @@ namespace HGS
         DateTimePicker dateTimePicker2 = new DateTimePicker();
         //
         readonly int[] ScanSpan = { 15, 30, 60, 120, 240, 480 };//分钟
+        const double MULTI = 1.1;
         public FormThSet(TreeTag ttg)
         {
             InitializeComponent();
@@ -55,6 +56,41 @@ namespace HGS
             {
                 textBox_Name.Text = ttg.nodeName;
                 maskedTextBox_Sort.Text = ttg.sort.ToString();
+                if (ttg.alarm_th_dis != null)
+                {
+                    List<GLItem> lsItem = new List<GLItem>();
+                    for (int i = 0; i < ScanSpan.Length; i++)
+                    {
+                        //                   
+                        GLItem item = new GLItem(glacialList1);
+                        item.SubItems["TW"].Text = ScanSpan[i].ToString() + "m";
+                        item.SubItems["alarm_th"].Text = Math.Round(ttg.alarm_th_dis[i], 3).ToString();
+                        lsItem.Add(item);
+                    }
+                    glacialList1.Items.Clear();
+                    glacialList1.Items.AddRange(lsItem.ToArray());
+                    glacialList1.Invalidate();
+                }
+                if (ttg.pointid_set != null)
+                {
+                    List<GLItem> lsItem = new List<GLItem>();
+                    foreach (int id in ttg.pointid_set)
+                    {
+                        GLItem item = new GLItem(glacialList2);
+                        point pt = Data.inst().cd_Point[id];
+                        item.SubItems["PN"].Text = pt.pn;
+                        item.SubItems["ED"].Text = pt.ed;
+                        item.Tag = pt.id;
+                        for (int i = 0; i < ScanSpan.Length; i++)
+                        {
+                            item.SubItems[string.Format("m{0}", ScanSpan[i])].Text = pt.dtw_start_th == null ? "" : Math.Round(pt.dtw_start_th[i], 3).ToString();
+                        }
+                        lsItem.Add(item);                      
+                    }
+                    glacialList2.Items.Clear();
+                    glacialList2.Items.AddRange(lsItem.ToArray());
+                    glacialList2.Invalidate();
+                }
             }
             else
                 ttg = new TreeTag();
@@ -67,7 +103,7 @@ namespace HGS
             //string title = string.Format("{0}---{1}  [{2}]", dateTimePicker1.Value, dateTimePicker2.Value,
                                         //(dateTimePicker2.Value - dateTimePicker1.Value));
 
-            string title = string.Format("[{0}]",(dateTimePicker2.Value - dateTimePicker1.Value));
+            string title = string.Format("[{0}h]",Math.Round((dateTimePicker2.Value - dateTimePicker1.Value).TotalHours),2);
             var pm = new PlotModel
             {
                 Title = title,
@@ -126,7 +162,7 @@ namespace HGS
                 List<GLItem> lsItem = new List<GLItem>();
                 double cost = 0;
                 double maxpp = double.MinValue;
-                
+                Dictionary<int, float[]> dic_dtw_th = new Dictionary<int, float[]>();
                 for (int i = 0; i < ScanSpan.Length; i++)
                 {
                     DateTime end = dateTimePicker2.Value;
@@ -136,9 +172,10 @@ namespace HGS
 
                     cost = 0;
                     maxpp = double.MinValue;
+                    Dictionary<int, PointData> dic_pd = null;
                     while (begin >= dateTimePicker1.Value)
                     {
-                        Dictionary<int, PointData> dic_pd = SisConnect.GetPointData_dic(ttg.pointid_set,begin,end);
+                        dic_pd = SisConnect.GetPointData_dic(ttg.pointid_set,begin,end);
                         List<PointData> lspd = new List<PointData>(dic_pd.Values.ToArray());
                         
                         if (lspd.Count >= 2)
@@ -171,15 +208,43 @@ namespace HGS
                     GLItem item = new GLItem(glacialList1);
                     item.SubItems["TW"].Text = ScanSpan[i].ToString() + "m";
                     //item.SubItems["start_th"].Text = Math.Round(maxpp * 1.1, 3).ToString();
-                    cost *= 1.1;
+                    cost *= MULTI;
                     item.SubItems["alarm_th"].Text = Math.Round(cost, 3).ToString();
                     lsItem.Add(item);
-                   
+                    foreach (PointData pd in dic_pd.Values)
+                    {
+                        float[] v;
+                        if (!dic_dtw_th.TryGetValue(pd.ID, out v))
+                        {
+                            v = new float[ScanSpan.Length];
+                            dic_dtw_th.Add(pd.ID, v);
+                        }
+                        v[i] =(float) ((pd.MaxAv - pd.MinAv) * MULTI);
+                    }
                 }
                 //
                 glacialList1.Items.Clear();
                 glacialList1.Items.AddRange(lsItem.ToArray());
                 glacialList1.Invalidate();
+                //
+                lsItem.Clear();
+                foreach (KeyValuePair<int, float[]> th in dic_dtw_th)
+                {
+                    GLItem item = new GLItem(glacialList2);
+                    point pt = Data.inst().cd_Point[th.Key];
+                    item.SubItems["PN"].Text = pt.pn;
+                    item.SubItems["ED"].Text = pt.ed;
+                    item.Tag = pt.id;
+                    for (int i = 0; i < ScanSpan.Length; i++)
+                    {
+                        item.SubItems[string.Format("m{0}",ScanSpan[i])].Text = Math.Round(th.Value[i],3).ToString();
+                    }
+                    lsItem.Add(item);
+                }
+                glacialList2.Items.Clear();
+                glacialList2.Items.AddRange(lsItem.ToArray());
+                glacialList2.Invalidate();
+                //
                 Cursor = Cursors.Default;
                 sw.Stop();
 
@@ -269,44 +334,92 @@ namespace HGS
         {
             try
             {
-                float[] th = new float[ScanSpan.Length];
-
                 if (textBox_Name.Text.Trim().Length == 0)
                     throw new Exception("节点名不能为空！");
                 ttg.nodeName = textBox_Name.Text.Trim();
+                //
                 bool flag = false;
-                for (int i= 0; i < 6; i++)
+                float[] th = new float[ScanSpan.Length];
+                if (glacialList1.Items.Count == 6)
                 {
-                    th[i] = float.MaxValue;
-                    GLItem item =  glacialList1.Items[i];
-                    string txt_th = item.SubItems["alarm_th"].Text;
-                    if (txt_th.Length > 0)
+                    
+                    for (int i = 0; i < 6; i++)
                     {
-                        float fv;
-                        if (float.TryParse(txt_th, out fv))
+                        th[i] = float.MaxValue;
+                        GLItem item = glacialList1.Items[i];
+                        string txt_th = item.SubItems["alarm_th"].Text;
+                        if (txt_th.Length > 0)
                         {
-                            th[i] = fv;
-                            flag = true;
+                            float fv;
+                            if (float.TryParse(txt_th, out fv))
+                            {
+                                th[i] = fv;
+                                flag = true;
+                            }
+                            else
+                                throw new Exception(string.Format("无法解析[{0}]！", txt_th));
                         }
-                        else
-                            throw new Exception(string.Format("无法解析[{0}]！", txt_th));
                     }
                 }
-                if (flag)
-                    ttg.alarm_th_dis = th;
+                ttg.alarm_th_dis = flag ? th : null;
+
                 if (maskedTextBox_Sort.Text.Length > 0)
                 {
                     ttg.sort = int.Parse(maskedTextBox_Sort.Text);
                 }
                 else
                     ttg.sort = -1;
-                
+                //
+                foreach (int id in ttg.pointid_set)
+                {
+                    point pt = Data.inst().cd_Point[id];
+                    pt.dtw_start_th =  null;
+                }
+                foreach(GLItem item in glacialList2.Items)
+                {
+                    flag = false;
+                    float[] th_dtw = new float[ScanSpan.Length];
+                    for (int i = 0; i < 6; i++)
+                    {
+                        th_dtw[i] = float.MaxValue;
+                        string txt_th = item.SubItems[string.Format("m{0}", ScanSpan[i])].Text;
+                        if (txt_th.Length > 0)
+                        {
+                            float fv;
+                            if (float.TryParse(txt_th, out fv))
+                            {
+                                th_dtw[i] = fv;
+                                flag = true;
+                            }
+                            else
+                                throw new Exception(string.Format("无法解析[{0}]！", txt_th));
+                        }
+                    }
+
+                    point pt = Data.inst().cd_Point[(int)item.Tag];
+                    pt.dtw_start_th = flag ? th_dtw : null;
+                    
+                }
+                foreach (int id in ttg.pointid_set)
+                {
+                    point pt = Data.inst().cd_Point[id];
+                    Data.inst().Update(pt);
+                }
+                Data.inst().SavetoPG();
             }
             catch (Exception ee)
             {
                 MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.DialogResult = DialogResult.None;
             }
+        }
+
+        private void button_dell_Click(object sender, EventArgs e)
+        {
+            glacialList1.Items.Clear();
+            glacialList2.Items.Clear();
+            glacialList1.Invalidate();
+            glacialList2.Invalidate();
         }
     }
 }
