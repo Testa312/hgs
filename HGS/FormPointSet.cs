@@ -335,6 +335,7 @@ namespace HGS
                 itemtag it = (itemtag)(item.Tag);
                 if (glacialList1.IsItemVisible(item))
                 {
+                   
                     //bool sss = dic_glItemNew.ContainsKey(item);
                     point pt = dic_glItemNew.ContainsKey(item) ? dic_glItemNew[item] : Data.inst().cd_Point[it.id];
                     item.SubItems["AV"].Text = Functions.NullDoubleRount(pt.Av, pt.fm).ToString();                   
@@ -349,7 +350,7 @@ namespace HGS
                     {
                         item.SubItems["LL"].Text = Functions.NullDoubleRount(pt.ll, pt.fm).ToString();
                     }
-                }             
+                }
             }
             //DisplayHints();
         }

@@ -208,7 +208,7 @@ namespace HGS
                     GLItem item = new GLItem(glacialList1);
                     item.SubItems["TW"].Text = ScanSpan[i].ToString() + "m";
                     //item.SubItems["start_th"].Text = Math.Round(maxpp * 1.1, 3).ToString();
-                    cost *= MULTI;
+                    cost *= 2;
                     item.SubItems["alarm_th"].Text = Math.Round(cost, 3).ToString();
                     lsItem.Add(item);
                     foreach (PointData pd in dic_pd.Values)
@@ -362,6 +362,11 @@ namespace HGS
                     }
                 }
                 ttg.alarm_th_dis = flag ? th : null;
+                DeviceInfo di;
+                if(Data_Device.dic_Device.TryGetValue(ttg.id,out di))
+                {
+                    di.alarm_th_dis = ttg.alarm_th_dis;
+                }
 
                 if (maskedTextBox_Sort.Text.Length > 0)
                 {
@@ -373,7 +378,7 @@ namespace HGS
                 foreach (int id in ttg.hs_Sensorsid)
                 {
                     point pt = Data.inst().cd_Point[id];
-                    pt.Dtw_start_th =  null;
+                    //pt.Dtw_start_th =  null;
                 }
                 foreach(GLItem item in glacialList2.Items)
                 {

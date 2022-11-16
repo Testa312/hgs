@@ -202,13 +202,6 @@ namespace HGS
             var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
             try
             {
-                /*
-                TreeTag tag = (TreeTag)tn.Tag;
-                //tag.id = GetNextPointId();
-                tag.path = GetNodePath(tn);
-                string sql = string.Format(@"update devicetree set nodename='{0}',path='{1}',start_th={2},alarm_th_dis={3},sort={4},pointid_array={5} where id = {6};",
-                                    tag.nodeName, tag.path, Functions.dtoNULL(tag.start_th), Functions.dtoNULL(tag.alarm_th_dis), tag.sort, GetNodeArray(tn), tag.id);
-                */
                 var cmd = new NpgsqlCommand(GetUpdateSql(tn), pgconn);
                 pgconn.Open();
                 cmd.ExecuteNonQuery();

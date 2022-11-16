@@ -369,7 +369,7 @@ namespace HGS
                 string strsql = "select * from point order by id";
                 var cmd = new NpgsqlCommand(strsql, pgconn);
                 NpgsqlDataReader pgreader = cmd.ExecuteReader();
-                List<point> lsintQueues = new List<point>();
+               
                 while (pgreader.Read())
                 {
                     point Point = new point();
@@ -445,13 +445,15 @@ namespace HGS
                     ParseFormula(v);
                 }
                 //
-                Data_Device.GetAllAlarmDevice();
-
+                Data_Device.GetAllAlarmDevice();//从数据库中取出设备信息并关联传感器。
+                //
+                Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
                 foreach (point v in hsAllPoint)
                 {
                     if (v.Dtw_Queues_Array != null)
-                        lsintQueues.Add(v);
+                        dic_intQueues.Add(v.id,v);
                 }
+                SisConnect.InitSensorsQueues(dic_intQueues);
             }
             catch(Exception e)  { throw new Exception(string.Format("装入点id={0}:{1}时发生错误！",flagpt.id,flagpt.ed),e); }
             finally { pgconn.Close(); }

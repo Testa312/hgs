@@ -142,16 +142,16 @@ namespace HGS
             set
             {
                 av = value;
+                datanums++;
                 if (skip_pp != null && (isalarmskip || isalarmwave))
                 {
                     waveDetection.add(av ?? 0);
-                    datanums++;
                 }
                 if (dtw_Queues_Array != null)
                 {
                     for (int i = 0; i < dtw_Queues_Array.Length; i++)
                     {
-                        dtw_Queues_Array[i].add(av ?? 0);
+                        dtw_Queues_Array[i].add(av ?? 0,true);
                     }
                 }
             }
@@ -182,17 +182,21 @@ namespace HGS
                 throw new Exception("数据不能为空！");
             for (int i = 0; i < v.Length; i++)
             {
-                dtw_Queues_Array[step].add(v[i]);
+                dtw_Queues_Array[step].add(v[i],false);
             }
         }
         private void initDeviceQ()
         {
             if (hs_Device != null && dtw_start_th != null)
             {
-                dtw_Queues_Array = new Dtw_queues[6];
-                for (int i = 0; i < dtw_Queues_Array.Length; i++)
+                if (dtw_Queues_Array == null)
                 {
-                    dtw_Queues_Array[i].Size = (int)(9 * Math.Pow(2, i));
+                    dtw_Queues_Array = new Dtw_queues[6];
+                    for (int i = 0; i < dtw_Queues_Array.Length; i++)
+                    {
+                        dtw_Queues_Array[i] = new Dtw_queues();
+                        dtw_Queues_Array[i].DownSamples = (int)(9 * Math.Pow(2, i));
+                    }
                 }
             }
             else
@@ -298,11 +302,13 @@ namespace HGS
                             }
                         }
                     }
-                    //
-                    if(dtw_Queues_Array != null && id % 10 == datanums % 180)
+                   
+                    if(dtw_Queues_Array != null)// && id % 10 == datanums % 180)
                     {
                         for (int i = 0; i < 6; i++)
                         {
+                            double texx = dtw_Queues_Array[i].DeltaP_P();//????????????????
+                            bool bbreak = false;
                             if (dtw_Queues_Array[i].DeltaP_P() > dtw_start_th[i])
                             {
                                 if (hs_Device != null)
@@ -313,11 +319,14 @@ namespace HGS
                                         if (info.dtw_alarm(id, i))
                                         {
                                             alarmLevel = alarmlevel.dtw;
-                                            alarmininfo += string.Format("  {0}的[{1}]-{2}-{3}分钟-异常报警！",
+                                            alarmininfo += string.Format("{0}的[{1}]-{2}-{3}分钟-异常报警！",
                                                 info.Name,pn,ed, Pref.Inst().ScanSpan[i]);
+                                            bbreak = true;
+                                            break;
                                         }
                                     }
                                 }
+                                if (bbreak) break;
                             }
                         }
                     }

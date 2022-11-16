@@ -170,14 +170,31 @@ namespace HGS
 
             return newpt;
         }
-        public static void InitSensorsQueues(List<point> lspt)
+        public static void InitSensorsQueues(Dictionary<int,point> dic_pt)
         {
-            if (lspt == null)
+            if (dic_pt == null)
                 throw new ArgumentException("初始化队列的点列表不能为空！");
+            int[] ScanSpan = Pref.Inst().ScanSpan;//分钟
+            HashSet<int> lsob = new HashSet<int>();
+            foreach (int id in dic_pt.Keys)
+            {
+                lsob.Add(id);
+            }
+            DateTime end = GetSisSystemTime().AddSeconds(-5);
             for (int i = 0; i < ScanSpan.Length; i++)
             {
-                DateTime end = dateTimePicker2.Value;
                 DateTime begin = end.AddMinutes(-ScanSpan[i]);
+                //
+                Dictionary<int, PointData> dic_pd = GetPointData_dic(lsob, begin, end);
+                foreach (PointData pd in dic_pd.Values)
+                {
+                    float[] x = new float[pd.data.Count];
+                    for (int m = 0; m < pd.data.Count; m++)
+                    {
+                        x[pd.data.Count - 1 -m] = pd.data[pd.data.Count - 1 - m].Value;   
+                    }
+                    dic_pt[pd.ID].initDeviceQ(i, x);
+                }
             }
         }
         public static float GetFastDtw(PointData pd1, PointData pd2)
@@ -306,7 +323,22 @@ namespace HGS
                 x[i] = pd1.data[i].Value - pd1.data[i - 1].Value;
                 y[i] = pd2.data[i].Value - pd2.data[i - 1].Value;
             }
-            return dd_dtw.dtw_distance(x, y, max_dist, use_pruning); ;
+            return dd_dtw.dtw_distance(x, y, max_dist, use_pruning); 
+        }
+        public static double GetDtw_dd_diff(double[] x, double[] y, double max_dist = 0, bool use_pruning = false)
+        {
+            if (x.Length != y.Length)
+                throw new ArgumentException("数组长度应相等！");
+
+            double[] xx = new double[x.Length];
+            double[] yy = new double[x.Length];
+            xx[0] = yy[0] = 0;
+            for (int i = 1; i < x.Length; i++)
+            {
+                xx[i] = x[i] - x[i - 1];
+                yy[i] = y[i] - y[i - 1];
+            }
+            return dd_dtw.dtw_distance(xx, yy, max_dist, use_pruning); ;
         }
         public static DateTime GetSisSystemTime()
         {

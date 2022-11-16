@@ -36,7 +36,8 @@ namespace HGS
                         double[] secdata = Data.inst().cd_Point[id].Dtw_Queues_Array[Step].Data();
                         if (secdata != null)
                         {
-                            if (dd_dtw.dtw_distance(maindata, secdata) > alarm_th_dis[Step])
+                            //double textxx = SisConnect.GetDtw_dd_diff(maindata, secdata);//???????????????
+                            if (SisConnect.GetDtw_dd_diff(maindata, secdata, alarm_th_dis[Step]) > alarm_th_dis[Step])
                                 return true ;
                         }
                         count++;
@@ -87,7 +88,7 @@ namespace HGS
                         foreach(int id in di.hs_Sensorsid)
                         {
                             point pt = Data.inst().cd_Point[id];
-                            pt.add_device(id);
+                            pt.add_device(di.id);
                         }
                     }
                             

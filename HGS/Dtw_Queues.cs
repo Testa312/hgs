@@ -39,9 +39,10 @@ namespace HGS
             get { return downsamples; }
             set { downsamples = value; }
         }
-        public void add(double d)
+        public void add(double d,bool bDS)
         {
-            if (totalsampls % downsamples == 0)
+            totalsampls++;
+            if (!bDS || (totalsampls % downsamples == 0))
             {
                 p++;
                 int im = 0;
