@@ -184,6 +184,7 @@
     <Compile Include="CalcEngine\Tester.cs" />
     <Compile Include="CalcEngine\Token.cs" />
     <Compile Include="DataDeviceTree.cs" />
+    <Compile Include="Data_Device.cs" />
     <Compile Include="dd_dtw.cs" />
     <Compile Include="DTW\Dtw.cs" />
     <Compile Include="EasyMail.cs">
@@ -341,6 +342,7 @@
     <Compile Include="SharpFFTW\Transform.cs" />
     <Compile Include="SisConnect.cs" />
     <Compile Include="WaveDetection.cs" />
+    <Compile Include="Dtw_Queues.cs" />
     <Compile Include="VartoPointTable.cs" />
     <Compile Include="XmlConst.cs" />
     <Compile Include="XmlSettings.cs" />

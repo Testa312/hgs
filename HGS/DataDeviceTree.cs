@@ -7,22 +7,6 @@ using System.Windows.Forms;
 using Npgsql;
 namespace HGS
 {
-    public enum NodeStatus
-    {
-        Added,Modified,Removed,no
-    }
-    public class TreeTag
-    {
-        public string nodeName = "";
-        public int id = -1;
-        public string path = "";
-        //public float[] start_th = null;
-        public float[] alarm_th_dis = null;
-        public int sort = 0;
-        //public NodeStatus treenodestatus = NodeStatus.no;
-        public HashSet<int> pointid_set = null;
-        //public HashSet<object> sisid_set = null;
-    }
     public class TreeDragData
     {
         public HashSet<int> pointid_set = new HashSet<int>();
@@ -30,6 +14,7 @@ namespace HGS
     }
     static class DataDeviceTree
     {
+
         public static int GetNextTreeNodeId()
         {
             int imax = 0;
@@ -92,7 +77,7 @@ namespace HGS
             TreeNode tnode = tn;
             while (tnode != null)
             {
-                TreeTag ttg = (TreeTag)tnode.Tag;
+                DeviceInfo ttg = (DeviceInfo)tnode.Tag;
                 string path = string.Format("/{0}",ttg.id);
                 sb.Insert(0,path);
                 tnode = tnode.Parent;
@@ -102,12 +87,12 @@ namespace HGS
         private static string GetNodeArray(TreeNode tn)
         {
             StringBuilder sb = new StringBuilder();
-            TreeTag ttg = (TreeTag)tn.Tag;
+            DeviceInfo ttg = (DeviceInfo)tn.Tag;
 
-            if (ttg != null && ttg.pointid_set != null && ttg.pointid_set.Count > 0)
+            if (ttg != null && ttg.hs_Sensorsid != null && ttg.hs_Sensorsid.Count > 0)
             {
                 sb.Append("'{");
-                foreach (int id in ttg.pointid_set)
+                foreach (int id in ttg.hs_Sensorsid)
                 {
                     string ay = string.Format("{0},", id);
                     sb.Append(ay);
@@ -158,19 +143,12 @@ namespace HGS
                 while (pgreader.Read())
                 {
                     TreeNode tn = new TreeNode(pgreader["nodename"].ToString());
-                    TreeTag ttag = new TreeTag();
+                    DeviceInfo ttag = new DeviceInfo();
                     tn.Tag = ttag;
                     ttag.id = (int)pgreader["id"];
-                    ttag.nodeName = pgreader["nodename"].ToString();
+                    ttag.Name = pgreader["nodename"].ToString();
                     ttag.sort = (int)pgreader["sort"];
                     ttag.path = pgreader["path"].ToString();
-                    //object ob = pgreader["start_th"];
-                    /*
-                    if (ob != DBNull.Value)
-                    {
-                        ttag.start_th = (float[])ob;
-                    }
-                    */
                     object ob = pgreader["alarm_th_dis"];
                     if (ob != DBNull.Value)
                     {
@@ -179,7 +157,7 @@ namespace HGS
                     ob = pgreader["pointid_array"];
                     if (ob != DBNull.Value)
                     {
-                        ttag.pointid_set = new HashSet<int>((int[])ob);
+                        ttag.hs_Sensorsid = new HashSet<int>((int[])ob);
                         //ttag.sisid_set = new HashSet<object>();
                         //ttag.sisid_set.UnionWith(Data.inst().GetSisIdSet(ttag.pointid_set));
                     }
@@ -197,13 +175,13 @@ namespace HGS
             try
             {
                
-                TreeTag tag = (TreeTag)tn.Tag;
+                DeviceInfo tag = (DeviceInfo)tn.Tag;
                 tag.id = GetNextTreeNodeId();
                 if (tag.sort <= 0) tag.sort = GetMaxSortV();
                 tag.path = GetNodeFullPath(tn);
                 string sql = string.Format(@"insert into devicetree (id,nodename,path,alarm_th_dis,sort,pointid_array)" +
                                     " values ({0},'{1}','{2}',{3},{4},{5});",
-                                    tag.id, tag.nodeName, tag.path,ArraytoString(tag.alarm_th_dis), tag.sort, GetNodeArray(tn));
+                                    tag.id, tag.Name, tag.path,ArraytoString(tag.alarm_th_dis), tag.sort, GetNodeArray(tn));
                 var cmd = new NpgsqlCommand(sql, pgconn);
                 pgconn.Open();
                 cmd.ExecuteNonQuery();          
@@ -213,10 +191,10 @@ namespace HGS
         }
         private static string  GetUpdateSql(TreeNode tn)
         {
-            TreeTag tag = (TreeTag)tn.Tag;
+            DeviceInfo tag = (DeviceInfo)tn.Tag;
             tag.path = GetNodeFullPath(tn);
             string sql = string.Format(@"update devicetree set nodename='{0}',path='{1}',alarm_th_dis={2},sort={3},pointid_array={4} where id = {5};",
-                                    tag.nodeName, tag.path, ArraytoString(tag.alarm_th_dis), tag.sort, GetNodeArray(tn), tag.id);
+                                    tag.Name, tag.path, ArraytoString(tag.alarm_th_dis), tag.sort, GetNodeArray(tn), tag.id);
             return sql;
         }
         public static void UpdateNodetoDB(TreeNode tn)
@@ -278,7 +256,7 @@ namespace HGS
             var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
             try
             {
-                string sql = string.Format(@"DELETE  FROM devicetree WHERE path like '{0}%';",((TreeTag)tn.Tag).path);
+                string sql = string.Format(@"DELETE  FROM devicetree WHERE path like '{0}%';",((DeviceInfo)tn.Tag).path);
                 var cmd = new NpgsqlCommand(sql, pgconn);
                 pgconn.Open();
                 cmd.ExecuteNonQuery();

@@ -281,10 +281,10 @@ namespace HGS
                 TreeNode tn = treeView.SelectedNode;
                 if (tn != null && tn.Text != "全部")
                 {
-                    TreeTag tt = (TreeTag)tn.Tag;
-                    if (tt.pointid_set == null)
-                        tt.pointid_set = new HashSet<int>();
-                    tt.pointid_set.UnionWith(hs_ptid);
+                    DeviceInfo tt = (DeviceInfo)tn.Tag;
+                    if (tt.hs_Sensorsid == null)
+                        tt.hs_Sensorsid = new HashSet<int>();
+                    tt.hs_Sensorsid.UnionWith(hs_ptid);
                     DataDeviceTree.UpdateNodetoDB(tn);
                 }
             }
@@ -760,11 +760,11 @@ namespace HGS
             // Suppress repainting the TreeView until all the objects have been created.
             treeView.BeginUpdate();
             tn.Nodes.Clear();
-            tn.Nodes.AddRange(DataDeviceTree.GetAllSubNode(((TreeTag)tn.Tag).path).ToArray());
+            tn.Nodes.AddRange(DataDeviceTree.GetAllSubNode(((DeviceInfo)tn.Tag).path).ToArray());
             foreach (TreeNode ttn in tn.Nodes)
             {
                 ttn.Nodes.Clear();
-                ttn.Nodes.AddRange(DataDeviceTree.GetAllSubNode(((TreeTag)ttn.Tag).path).ToArray());
+                ttn.Nodes.AddRange(DataDeviceTree.GetAllSubNode(((DeviceInfo)ttn.Tag).path).ToArray());
             }
             // Reset the cursor to the default for all controls.
             Cursor.Current = Cursors.Default;
@@ -778,20 +778,20 @@ namespace HGS
             treeView.SelectedNode = e.Node;
             if (e.Button == MouseButtons.Left)
             {
-                TreeTag ttg = (TreeTag)e.Node.Tag;
+                DeviceInfo ttg = (DeviceInfo)e.Node.Tag;
                 if (e.Node.Text == "全部")
                 {
                     glacialLisint();
                 }
-                else if (ttg == null || ttg.pointid_set == null || ttg.pointid_set.Count <= 0)
+                else if (ttg == null || ttg.hs_Sensorsid == null || ttg.hs_Sensorsid.Count <= 0)
                 {
                     glacialList1.Items.Clear();
                     glacialList1.Invalidate();
                 }
-                else if (ttg.pointid_set.Count > 0)
+                else if (ttg.hs_Sensorsid.Count > 0)
                 {
                     List<GLItem> lsItem = new List<GLItem>();
-                    foreach (int id in ttg.pointid_set)
+                    foreach (int id in ttg.hs_Sensorsid)
                     {
                         GLItem item = new GLItem(glacialList1);
                         gllistInitItemText(Data.inst().cd_Point[id], item);
@@ -811,12 +811,12 @@ namespace HGS
                 TreeNode stn = treeView.SelectedNode;
                 if (stn != null)
                 {
-                    TreeTag tt = new TreeTag();
+                    DeviceInfo tt = new DeviceInfo();
                     FormThSet ftn = new FormThSet(tt);
                     ftn.Text = "增加节点";
                     if (ftn.ShowDialog() == DialogResult.OK)
                     {
-                        TreeNode ntn = stn.Nodes.Add(tt.nodeName);
+                        TreeNode ntn = stn.Nodes.Add(tt.Name);
                         ntn.Tag = tt;
                         DataDeviceTree.InsertNodetoDb(ntn);
                         RefreshSubs(ntn);
@@ -862,7 +862,7 @@ namespace HGS
                 TreeNode tn = treeView.SelectedNode;
                 if (tn != null && tn.Text !="全部")
                 {
-                    FormThSet ftn = new FormThSet((TreeTag)tn.Tag);
+                    FormThSet ftn = new FormThSet((DeviceInfo)tn.Tag);
                     if (ftn.ShowDialog() == DialogResult.OK)
                     {
                         DataDeviceTree.UpdateNodetoDB(tn);
@@ -1002,18 +1002,18 @@ namespace HGS
                     {
                         if (myData.DragSourceNode != null && myData.DragSourceNode.Text != "全部")
                         {
-                            TreeTag tt = (TreeTag)myData.DragSourceNode.Tag;
-                            tt.pointid_set.ExceptWith(myData.pointid_set);
+                            DeviceInfo tt = (DeviceInfo)myData.DragSourceNode.Tag;
+                            tt.hs_Sensorsid.ExceptWith(myData.pointid_set);
                             DataDeviceTree.UpdateNodetoDB(myData.DragSourceNode);
                         }
                     }
                     if (e.Effect == DragDropEffects.Move || e.Effect == DragDropEffects.Copy)
                     {
 
-                        TreeTag ttg = (TreeTag)DropNode.Tag;
-                        if (ttg.pointid_set == null)
-                            ttg.pointid_set = new HashSet<int>();
-                        ttg.pointid_set.UnionWith(myData.pointid_set);
+                        DeviceInfo ttg = (DeviceInfo)DropNode.Tag;
+                        if (ttg.hs_Sensorsid == null)
+                            ttg.hs_Sensorsid = new HashSet<int>();
+                        ttg.hs_Sensorsid.UnionWith(myData.pointid_set);
                        
                         DataDeviceTree.UpdateNodetoDB(DropNode);
                         TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(DropNode, MouseButtons.Left, 0, 0, 0);
@@ -1057,10 +1057,10 @@ namespace HGS
             TreeNode tn = treeView.SelectedNode;
             if (tn != null && tn.Text != "全部")
             {
-                TreeTag tt = (TreeTag)tn.Tag;
+                DeviceInfo tt = (DeviceInfo)tn.Tag;
                 foreach (GLItem item in glacialList1.SelectedItems)
                 {                 
-                    tt.pointid_set.Remove(((itemtag)item.Tag).id);
+                    tt.hs_Sensorsid.Remove(((itemtag)item.Tag).id);
                 }
                 DataDeviceTree.UpdateNodetoDB(tn);
                 TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(tn, MouseButtons.Left, 0, 0, 0);

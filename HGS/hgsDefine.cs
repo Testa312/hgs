@@ -19,7 +19,7 @@ namespace HGS
     //sw开关量。
     public enum alarmlevel
     {
-        no,tv,hl,zh,bv,ll,zl,sw,skip,bad  //no为未设置报警,bad为坏点
+        no,tv,hl,zh,bv,ll,zl,sw,skip,bad,dtw  //no为未设置报警,bad为坏点
     }
     public class varlinktopoint
     {
@@ -82,10 +82,10 @@ namespace HGS
         public string sisformula_main = "";//展开成点的计算公式
         public int id = -1;//点id
         public string eu = "";//点单位
-        public bool iscalc= false;//是否进行计算
+        public bool iscalc = false;//是否进行计算
         public bool isavalarm = false;//是否报警
         public PointState ps = PointState.Good;//点状态
-       
+
         public short fm = 1;//保留小数点位数。
 
         //----------------------
@@ -109,7 +109,7 @@ namespace HGS
         public double? alarmingav = null;
         //强制值，不存数据库
         public bool isforce = false;
-        public double? forceav = null ;//强制的数值。
+        public double? forceav = null;//强制的数值。
         ////---------------------报警公式，值为真时才允许报警。
         public bool alarmifav = true;
         public string alarmif = "";
@@ -128,8 +128,13 @@ namespace HGS
         private int datanums = -1;
 
         private double? av = null;//点值，实时或计算。
+        //-----------------------------
         //动态时间规整器扫描的阈值,6个数，为15m,30m,60m,120m,240m,480m时间段。
-        public float[] dtw_start_th = null ;
+        private float[] dtw_start_th = null;
+        //传感器的设备归属-不存数据库，运行时生成。
+        private HashSet<int> hs_Device = null;
+        private Dtw_queues[] dtw_Queues_Array = null;
+        //-----------------------------
         //不能多于一次赋值，否则将不对。
         public double? Av
         {
@@ -142,8 +147,76 @@ namespace HGS
                     waveDetection.add(av ?? 0);
                     datanums++;
                 }
+                if (dtw_Queues_Array != null)
+                {
+                    for (int i = 0; i < dtw_Queues_Array.Length; i++)
+                    {
+                        dtw_Queues_Array[i].add(av ?? 0);
+                    }
+                }
             }
         }
+        public float[] Dtw_start_th
+        {
+            get { return dtw_start_th; }
+            set
+            {
+                dtw_start_th = value;
+                if (dtw_start_th != null)
+                {
+                    if (dtw_start_th.Length != 6)
+                        throw new Exception("dtw阈值数必须为6个!");
+                    initDeviceQ();
+                }
+            }
+        }
+        public Dtw_queues[] Dtw_Queues_Array
+        {
+            get { return dtw_Queues_Array; }
+        }
+        public void initDeviceQ(int step,float[] v)
+        {
+            if (step < 0 || step >= 6) 
+                throw new Exception("设备没有采集这些数据！");
+            if (v == null) 
+                throw new Exception("数据不能为空！");
+            for (int i = 0; i < v.Length; i++)
+            {
+                dtw_Queues_Array[step].add(v[i]);
+            }
+        }
+        private void initDeviceQ()
+        {
+            if (hs_Device != null && dtw_start_th != null)
+            {
+                dtw_Queues_Array = new Dtw_queues[6];
+                for (int i = 0; i < dtw_Queues_Array.Length; i++)
+                {
+                    dtw_Queues_Array[i].Size = (int)(9 * Math.Pow(2, i));
+                }
+            }
+            else
+                dtw_Queues_Array = null;
+        }
+        public void add_device(int di)
+        {
+            if (hs_Device == null) 
+                hs_Device = new HashSet<int>();
+            hs_Device.Add(di);
+            initDeviceQ();
+        }
+        public void remove_device(int di)
+        {
+            if (hs_Device != null)
+                hs_Device.Remove(di);
+            if (hs_Device.Count == 0)
+            {
+                hs_Device = null;
+                dtw_Queues_Array = null;
+            }
+        }
+        //初始化dtw队列数组
+
         //--------------------
         public alarmlevel AlarmCalc()
         {
@@ -217,11 +290,34 @@ namespace HGS
 
                             if (spstatus == WaveDetection.wavestatus.surge)
                             {
-                                alarmininfo += "跳变！";
+                                alarmininfo += "  跳变！";
                             }
                             else if (spstatus == WaveDetection.wavestatus.wave)
                             {
-                                alarmininfo += "波动！";
+                                alarmininfo += "  波动！";
+                            }
+                        }
+                    }
+                    //
+                    if(dtw_Queues_Array != null && id % 10 == datanums % 180)
+                    {
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (dtw_Queues_Array[i].DeltaP_P() > dtw_start_th[i])
+                            {
+                                if (hs_Device != null)
+                                {
+                                    foreach (int di in hs_Device)
+                                    {
+                                        DeviceInfo info = Data_Device.dic_Device[di];
+                                        if (info.dtw_alarm(id, i))
+                                        {
+                                            alarmLevel = alarmlevel.dtw;
+                                            alarmininfo += string.Format("  {0}的[{1}]-{2}-{3}分钟-异常报警！",
+                                                info.Name,pn,ed, Pref.Inst().ScanSpan[i]);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

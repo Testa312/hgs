@@ -369,7 +369,7 @@ namespace HGS
                 string strsql = "select * from point order by id";
                 var cmd = new NpgsqlCommand(strsql, pgconn);
                 NpgsqlDataReader pgreader = cmd.ExecuteReader();
-
+                List<point> lsintQueues = new List<point>();
                 while (pgreader.Read())
                 {
                     point Point = new point();
@@ -413,7 +413,7 @@ namespace HGS
                     object ob = pgreader["dtw_start_th"];
                     if (ob != DBNull.Value)
                     {
-                        Point.dtw_start_th = (float[])ob;
+                        Point.Dtw_start_th = (float[])ob;
                     }
                     //Point.lsCalcOrgSubPoint_main = VartoPointTable.Sub_PointtoVarList(Point,cellid.main);
 
@@ -429,6 +429,7 @@ namespace HGS
                     {
                         hs_calcpoint.Add(Point);
                     }
+                    //
                 }
                 ///展开计算点到sis点。
                 foreach (point v in hsAllPoint)
@@ -442,6 +443,14 @@ namespace HGS
                     flagpt = v;
                     ParsetoSisPoint(v);
                     ParseFormula(v);
+                }
+                //
+                Data_Device.GetAllAlarmDevice();
+
+                foreach (point v in hsAllPoint)
+                {
+                    if (v.Dtw_Queues_Array != null)
+                        lsintQueues.Add(v);
                 }
             }
             catch(Exception e)  { throw new Exception(string.Format("装入点id={0}:{1}时发生错误！",flagpt.id,flagpt.ed),e); }
@@ -526,7 +535,7 @@ namespace HGS
                                         Functions.dtoNULL(pt.zl), Functions.dtoNULL(pt.zh),
                                         DateTime.Now,pt.eu, pt.pn, pt.orgformula_main,pt.fm,
                                         pt.iscalc,pt.isavalarm, pt.ed,pt.isboolvalarm,pt.boolalarminfo, pt.orgformula_hl,
-                                        pt.orgformula_ll,pt.alarmif,pt.boolalarmif,pt.isalarmskip,pt.isalarmwave, Functions.dtoNULL(pt.skip_pp), ArraytoString(pt.dtw_start_th), pt.id));
+                                        pt.orgformula_ll,pt.alarmif,pt.boolalarmif,pt.isalarmskip,pt.isalarmwave, Functions.dtoNULL(pt.skip_pp), ArraytoString(pt.Dtw_start_th), pt.id));
                 sb.AppendLine(string.Format("delete  from formula_point where id = {0};", pt.id));
                 GetinsertsubSql(sb, pt);
             }
@@ -543,7 +552,7 @@ namespace HGS
                                     Functions.dtoNULL(pt.ll), Functions.dtoNULL(pt.hl), Functions.dtoNULL(pt.zl),
                                     Functions.dtoNULL(pt.zh), pt.id_sis,(int)pt.pointsrc, DateTime.Now, Auth.GetInst().LoginID, pt.orgformula_main,
                                     pt.fm,pt.iscalc,pt.isavalarm,pt.isboolvalarm,pt.boolalarminfo, pt.orgformula_hl, pt.orgformula_ll,pt.alarmif,
-                                    pt.boolalarmif,pt.isalarmskip,pt.isalarmwave, Functions.dtoNULL(pt.skip_pp), ArraytoString(pt.dtw_start_th)));
+                                    pt.boolalarmif,pt.isalarmskip,pt.isalarmwave, Functions.dtoNULL(pt.skip_pp), ArraytoString(pt.Dtw_start_th)));
                 GetinsertsubSql(sb, pt);
                // pt.id = ptid;
                // ptid++;
@@ -636,17 +645,6 @@ namespace HGS
                 throw new Exception("新加点中也包括此点！");
             hs_ModifyPoint.Add(pt);
         }
-        /*
-        public HashSet<object> GetSisIdSet(HashSet<int> pointid_set)
-        {
-            HashSet<object> sisid = new HashSet<object>();
-            foreach (int id in pointid_set)
-            {
-                sisid.Add(Convert.ToInt64(cd_Point[id].id_sis));
-            }
-            return sisid;
-        }*/
-        
     }
     
 }

@@ -40,6 +40,10 @@ namespace HGS
         const char strSisVarPfx = 'S';
         //计算错误时的结果值
         //public double errorvalue = -1;
+        //dtw数据长度
+        public const int DTWDATALENGTH = 100;
+        //dtw数据周期
+        public readonly int[] ScanSpan = { 15, 30, 60, 120, 240, 480 };//分钟
         pointsrc Pointsrc = pointsrc.sis;
         //-------------------------
         public string sisHost

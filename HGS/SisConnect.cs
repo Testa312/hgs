@@ -31,7 +31,7 @@ namespace HGS
     {
         public static OPAPI.Connect sisconn = null; //new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
             //Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
-        public static Dictionary<int, PointData> GetsisData(object[] keys, DateTime begin, DateTime end,int count = 120)
+        public static Dictionary<int, PointData> GetsisData(object[] keys, DateTime begin, DateTime end,int count = 100)
         {
             Dictionary<int, PointData> dic_data = new Dictionary<int, PointData>();
             if (keys.Length == 0) return dic_data;
@@ -91,7 +91,7 @@ namespace HGS
             }
             return dic_data;
         }
-        public static Dictionary<int, PointData> GetPointData_dic(HashSet<int> hspid, DateTime begin, DateTime end, int count = 120)
+        public static Dictionary<int, PointData> GetPointData_dic(HashSet<int> hspid, DateTime begin, DateTime end, int count = 100)
         {
             Dictionary<int, PointData> dic_pd = new Dictionary<int, PointData>();
             if (hspid != null && hspid.Count > 0)
@@ -124,7 +124,7 @@ namespace HGS
             }
             return dic_pd;
         }
-        public static PointData GetCalcPointData(point calcpt, DateTime begin, DateTime end, int count = 120)
+        public static PointData GetCalcPointData(point calcpt, DateTime begin, DateTime end, int count = 100)
         {
             if (calcpt.pointsrc != pointsrc.calc)
                 throw new ArgumentException("必须为计算点！");
@@ -170,7 +170,17 @@ namespace HGS
 
             return newpt;
         }
-            public static float GetFastDtw(PointData pd1, PointData pd2)
+        public static void InitSensorsQueues(List<point> lspt)
+        {
+            if (lspt == null)
+                throw new ArgumentException("初始化队列的点列表不能为空！");
+            for (int i = 0; i < ScanSpan.Length; i++)
+            {
+                DateTime end = dateTimePicker2.Value;
+                DateTime begin = end.AddMinutes(-ScanSpan[i]);
+            }
+        }
+        public static float GetFastDtw(PointData pd1, PointData pd2)
         {
             if (pd1.data.Count != pd2.data.Count)
                 throw new ArgumentException("数组长度应相等！");

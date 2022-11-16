@@ -17,13 +17,13 @@ namespace HGS
 {
     public partial class FormThSet : Form
     {
-        private TreeTag ttg;
+        private DeviceInfo ttg;
         DateTimePicker dateTimePicker1 = new DateTimePicker();
         DateTimePicker dateTimePicker2 = new DateTimePicker();
         //
-        readonly int[] ScanSpan = { 15, 30, 60, 120, 240, 480 };//分钟
+        readonly int[] ScanSpan = Pref.Inst().ScanSpan;//分钟
         const double MULTI = 1.1;
-        public FormThSet(TreeTag ttg)
+        public FormThSet(DeviceInfo ttg)
         {
             InitializeComponent();
             this.ttg = ttg;
@@ -54,7 +54,7 @@ namespace HGS
             //
             if (ttg != null)
             {
-                textBox_Name.Text = ttg.nodeName;
+                textBox_Name.Text = ttg.Name;
                 maskedTextBox_Sort.Text = ttg.sort.ToString();
                 if (ttg.alarm_th_dis != null)
                 {
@@ -71,10 +71,10 @@ namespace HGS
                     glacialList1.Items.AddRange(lsItem.ToArray());
                     glacialList1.Invalidate();
                 }
-                if (ttg.pointid_set != null)
+                if (ttg.hs_Sensorsid != null)
                 {
                     List<GLItem> lsItem = new List<GLItem>();
-                    foreach (int id in ttg.pointid_set)
+                    foreach (int id in ttg.hs_Sensorsid)
                     {
                         GLItem item = new GLItem(glacialList2);
                         point pt = Data.inst().cd_Point[id];
@@ -83,7 +83,7 @@ namespace HGS
                         item.Tag = pt.id;
                         for (int i = 0; i < ScanSpan.Length; i++)
                         {
-                            item.SubItems[string.Format("m{0}", ScanSpan[i])].Text = pt.dtw_start_th == null ? "" : Math.Round(pt.dtw_start_th[i], 3).ToString();
+                            item.SubItems[string.Format("m{0}", ScanSpan[i])].Text = pt.Dtw_start_th == null ? "" : Math.Round(pt.Dtw_start_th[i], 3).ToString();
                         }
                         lsItem.Add(item);                      
                     }
@@ -93,11 +93,11 @@ namespace HGS
                 }
             }
             else
-                ttg = new TreeTag();
+                ttg = new DeviceInfo();
         }
         private PlotModel PlotPoint(int count = 600)
         {
-            Dictionary<int, PointData> dic_pd = SisConnect.GetPointData_dic(ttg.pointid_set, dateTimePicker1.Value, dateTimePicker2.Value, count);
+            Dictionary<int, PointData> dic_pd = SisConnect.GetPointData_dic(ttg.hs_Sensorsid, dateTimePicker1.Value, dateTimePicker2.Value, count);
             if (dic_pd == null || dic_pd.Count <= 0) return null;
 
             //string title = string.Format("{0}---{1}  [{2}]", dateTimePicker1.Value, dateTimePicker2.Value,
@@ -175,7 +175,7 @@ namespace HGS
                     Dictionary<int, PointData> dic_pd = null;
                     while (begin >= dateTimePicker1.Value)
                     {
-                        dic_pd = SisConnect.GetPointData_dic(ttg.pointid_set,begin,end);
+                        dic_pd = SisConnect.GetPointData_dic(ttg.hs_Sensorsid,begin,end);
                         List<PointData> lspd = new List<PointData>(dic_pd.Values.ToArray());
                         
                         if (lspd.Count >= 2)
@@ -336,7 +336,7 @@ namespace HGS
             {
                 if (textBox_Name.Text.Trim().Length == 0)
                     throw new Exception("节点名不能为空！");
-                ttg.nodeName = textBox_Name.Text.Trim();
+                ttg.Name = textBox_Name.Text.Trim();
                 //
                 bool flag = false;
                 float[] th = new float[ScanSpan.Length];
@@ -370,10 +370,10 @@ namespace HGS
                 else
                     ttg.sort = -1;
                 //
-                foreach (int id in ttg.pointid_set)
+                foreach (int id in ttg.hs_Sensorsid)
                 {
                     point pt = Data.inst().cd_Point[id];
-                    pt.dtw_start_th =  null;
+                    pt.Dtw_start_th =  null;
                 }
                 foreach(GLItem item in glacialList2.Items)
                 {
@@ -397,10 +397,10 @@ namespace HGS
                     }
 
                     point pt = Data.inst().cd_Point[(int)item.Tag];
-                    pt.dtw_start_th = flag ? th_dtw : null;
+                    pt.Dtw_start_th = flag ? th_dtw : null;
                     
                 }
-                foreach (int id in ttg.pointid_set)
+                foreach (int id in ttg.hs_Sensorsid)
                 {
                     point pt = Data.inst().cd_Point[id];
                     Data.inst().Update(pt);
