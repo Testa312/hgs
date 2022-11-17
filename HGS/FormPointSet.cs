@@ -342,28 +342,33 @@ namespace HGS
         }
         private void timerUpdateValue_Tick(object sender, EventArgs e)
         {
-            foreach (GLItem item in glacialList1.Items)
+            try
             {
-                itemtag it = (itemtag)(item.Tag);
-                if (glacialList1.IsItemVisible(item))
+                foreach (GLItem item in glacialList1.Items)
                 {
-                   
-                    //bool sss = dic_glItemNew.ContainsKey(item);
-                    point pt = dic_glItemNew.ContainsKey(item) ? dic_glItemNew[item] : Data.inst().cd_Point[it.id];
-                    item.SubItems["AV"].Text = Functions.NullDoubleRount(pt.Av, pt.fm).ToString();                   
-                    item.SubItems["DS"].Text = pt.ps.ToString();
-                    item.SubItems["AlarmInfo"].Text = pt.alarmininfo;
-                    //
-                    if (pt.orgformula_hl.Length > 0)
+                    itemtag it = (itemtag)(item.Tag);
+                    if (glacialList1.IsItemVisible(item))
                     {
-                        item.SubItems["HL"].Text = Functions.NullDoubleRount(pt.hl, pt.fm).ToString();
-                    }
-                    if (pt.orgformula_ll.Length > 0)
-                    {
-                        item.SubItems["LL"].Text = Functions.NullDoubleRount(pt.ll, pt.fm).ToString();
+
+                        //bool sss = dic_glItemNew.ContainsKey(item);
+                        point pt = dic_glItemNew.ContainsKey(item) ? dic_glItemNew[item] : Data.inst().cd_Point[it.id];
+                        item.SubItems["AV"].Text = Functions.NullDoubleRount(pt.Av, pt.fm).ToString();
+                        item.SubItems["DS"].Text = pt.ps.ToString();
+                        item.SubItems["AlarmInfo"].Text = pt.alarmininfo;
+                        //
+                        if (pt.orgformula_hl.Length > 0)
+                        {
+                            item.SubItems["HL"].Text = Functions.NullDoubleRount(pt.hl, pt.fm).ToString();
+                        }
+                        if (pt.orgformula_ll.Length > 0)
+                        {
+                            item.SubItems["LL"].Text = Functions.NullDoubleRount(pt.ll, pt.fm).ToString();
+                        }
                     }
                 }
             }
+            catch (Exception)
+            { }
             //DisplayHints();
         }
         private void glacialList1_Click(object sender, EventArgs e)
@@ -471,25 +476,12 @@ namespace HGS
         }
         private void toolStripButtonDelete_Click(object sender, EventArgs e)
         {
-            foreach(GLItem itemn in  glacialList1.SelectedItems)//.Count == 1)
+            bool bfirst = false;
+            foreach(GLItem itemn in  glacialList1.SelectedItems)
             {
-                //GLItem itemn = (GLItem)glacialList1.SelectedItems[0];
                 itemtag it = (itemtag)itemn.Tag;
 
                 List<int> lspid = VartoPointTable.GetDeletePointIdList(it.id);
-                /*
-                if (dic_glItemNew.ContainsKey(itemn))
-                {
-                    if (DialogResult.OK == MessageBox.Show(string.Format("是否删除点[{0}]-{1}？",
-                        itemn.SubItems["PN"].Text,itemn.SubItems["ED"].Text), "提示",
-                        MessageBoxButtons.OKCancel, MessageBoxIcon.Question))
-                    {
-                        dic_glItemNew.Remove(itemn);
-                        glacialList1.Items.Remove(itemn);
-                    }
-                    continue;
-                }
-                */
                 if (lspid.Count > 0)
                 {
                     StringBuilder sb = new StringBuilder();
@@ -502,14 +494,13 @@ namespace HGS
                     MessageBox.Show(sb.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     continue;
                 }
-                if (DialogResult.OK == MessageBox.Show(string.Format("是否删除点[{0}]-{1}？",
+                if (bfirst || DialogResult.OK == MessageBox.Show(string.Format("是否删除点[{0}]-{1}？",
                     itemn.SubItems["PN"].Text,itemn.SubItems["ED"].Text), "提示",
                         MessageBoxButtons.OKCancel, MessageBoxIcon.Question))
                 {
-                    //toolStripButtonFind.Enabled = false;
                     Data.inst().Delete(Data.inst().cd_Point[it.id]);
                     glacialList1.Items.Remove(itemn);
-                    //PointNums--;
+                    bfirst = true;
                 }
             }
             Save();
