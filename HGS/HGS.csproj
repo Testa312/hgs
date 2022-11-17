@@ -218,6 +218,12 @@
     <Compile Include="FormCalcAlarmHlSet.Designer.cs">
       <DependentUpon>FormCalcAlarmHlSet.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormCountOfDeviceCalcDTW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCountOfDeviceCalcDTW.Designer.cs">
+      <DependentUpon>FormCountOfDeviceCalcDTW.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormThSet.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -361,6 +367,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormCalcPointSet.resx">
       <DependentUpon>FormCalcPointSet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCountOfDeviceCalcDTW.resx">
+      <DependentUpon>FormCountOfDeviceCalcDTW.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormThSet.resx">
       <DependentUpon>FormThSet.cs</DependentUpon>

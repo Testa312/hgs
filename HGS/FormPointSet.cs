@@ -297,6 +297,8 @@ namespace HGS
                     tt.UnionWith(hs_ptid);
                     DataDeviceTree.UpdateNodetoDB(tn);
                 }
+                if (tn != null)
+                    MessageBox.Show("应重新设置设备报警参数");
             }
             catch (Exception ee)
             {
@@ -810,10 +812,19 @@ namespace HGS
                     foreach (int id in ttg.Sensors_set())
                     {
                         GLItem item = new GLItem(glacialList1);
-                        gllistInitItemText(Data.inst().cd_Point[id], item);
-                        lsItem.Add(item);
+                        point pt;
+                        if (Data.inst().cd_Point.TryGetValue(id, out pt))
+                        {
+                            gllistInitItemText(pt, item);
+                            lsItem.Add(item);
+                        }
+                        else
+                        {
+                            ttg.RemoveSensor(id);
+                            DataDeviceTree.UpdateNodetoDB(e.Node);
+                        }
                     }
-                    glacialList1.Items.Clear();
+                        glacialList1.Items.Clear();
                     glacialList1.Items.AddRange(lsItem.ToArray());
                     glacialList1.Invalidate();
                     DisplayHints(lsItem.Count);

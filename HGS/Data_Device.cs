@@ -13,6 +13,7 @@ namespace HGS
         public string path = "";
         private float[] alarm_th_dis = null;
         public int sort = 0;
+        public int CountofDTWCalc = 0;
         private HashSet<int> hs_Sensorsid = null;
         public float[] Alarm_th_dis
         {
@@ -27,9 +28,12 @@ namespace HGS
                     {
                         foreach (int sid in hs_Sensorsid)
                         {
-                            point pt = Data.inst().cd_Point[sid];
-                            if (pt.Device_set().Count == 1)
-                                pt.Dtw_start_th = null;
+                            point pt;
+                            if (Data.inst().cd_Point.TryGetValue(sid, out pt))
+                            {
+                                if (pt.Device_set().Count == 1)
+                                    pt.Dtw_start_th = null;
+                            }
                         }
                     }
                 }
@@ -57,7 +61,9 @@ namespace HGS
         public void RemoveSensor(int sid)
         {
             hs_Sensorsid.Remove(sid);
-            Data.inst().cd_Point[sid].remove_device(id);
+            point pt;
+            if (Data.inst().cd_Point.TryGetValue(sid, out pt))
+                pt.remove_device(id);
             if (hs_Sensorsid.Count <= 1)
             {
                 Alarm_th_dis = null;
@@ -71,7 +77,9 @@ namespace HGS
                 throw new Exception("参数不能为空！");
             foreach(int sid in sen_set)
             {
-                Data.inst().cd_Point[sid].remove_device(id);
+                point pt;
+                if (Data.inst().cd_Point.TryGetValue(sid, out pt))
+                    pt.remove_device(id);
             }
             hs_Sensorsid.ExceptWith(sen_set);
             if (hs_Sensorsid.Count <= 1)
@@ -87,7 +95,13 @@ namespace HGS
                 throw new Exception("参数不能为空！");
             foreach (int sid in sen_set)
             {
-                Data.inst().cd_Point[sid].add_device(id);
+                point pt;
+                if (Data.inst().cd_Point.TryGetValue(sid, out pt))
+                {
+                    pt.add_device(id);
+                }
+                //else
+                    //sen_set.Remove(id);
             }
             if (hs_Sensorsid == null)
                 hs_Sensorsid = new HashSet<int>();
@@ -112,15 +126,22 @@ namespace HGS
                 {
                     if (id != Sensorid)
                     {
-                        double[] secdata = Data.inst().cd_Point[id].Dtw_Queues_Array[Step].Data();
-                        if (secdata != null)
+                        point pt;
+                        if (Data.inst().cd_Point.TryGetValue(id, out pt))
                         {
-                            //double textxx = SisConnect.GetDtw_dd_diff(maindata, secdata);//???????????????
-                            if (SisConnect.GetDtw_dd_diff(maindata, secdata, alarm_th_dis[Step]) > alarm_th_dis[Step])
-                                return true ;
+                            if (pt.Dtw_Queues_Array != null)
+                            {
+                                double[] secdata = pt.Dtw_Queues_Array[Step].Data();
+                                if (secdata != null)
+                                {
+                                    CountofDTWCalc++;
+                                    if (SisConnect.GetDtw_dd_diff(maindata, secdata, alarm_th_dis[Step]) > alarm_th_dis[Step])
+                                        return true;
+                                }
+                                count++;
+                                if (count >= 2) return false;
+                            }
                         }
-                        count++;
-                        if (count >= 2) return false;
                     }
                 }
             }

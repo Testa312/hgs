@@ -18,6 +18,7 @@ namespace HGS
         FormAlarmSetList formAlarmSet = null;
         FormPointSet formPointSet = null;
         FormAlarmHistoryList formAlarmList = null;
+        FormCountOfDeviceCalcDTW formcodcd = null;
         int lastTm = -1;//sis点的更新时间，用于处理断线引起的缓冲数据不连续问题。
         Stopwatch sW = new Stopwatch();
         public FormMain()
@@ -336,6 +337,16 @@ namespace HGS
         private void 打开OToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Show();
+        }
+
+        private void dTW计算次数ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (formcodcd == null || formcodcd.IsDisposed)
+                formcodcd = new FormCountOfDeviceCalcDTW();
+
+            formcodcd.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
+            formcodcd.WindowState = FormWindowState.Maximized;
+            formcodcd.Show();
         }
     }
 }
