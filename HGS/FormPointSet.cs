@@ -186,6 +186,7 @@ namespace HGS
                         {
                             List<double> lsav = new List<double>();
                             itemtag it = (itemtag)item.Tag;
+
                             point pt = dic_glItemNew.ContainsKey(item) ? dic_glItemNew[item] : Data.inst().cd_Point[it.id];
 
                             if (textBoxZL.Text.Length > 0)
@@ -196,11 +197,11 @@ namespace HGS
                                 pt.orgformula_ll.Length == 0) { pt.ll = double.Parse(textBoxLL.Text); lsav.Add(Convert.ToDouble(pt.ll)); }
                             else pt.ll = null;
 
-                            if (textBoxBV.Text.Length > 0) { pt.bv = double.Parse(textBoxBV.Text); lsav.Add(Convert.ToDouble(pt.bv)); }
+                            if (textBoxBV.Text.Length > 0) { pt.bv = double.Parse(textBoxBV.Text); /*lsav.Add(Convert.ToDouble(pt.bv));*/ }
                             else pt.bv = null;
 
                             if (textBoxTV.Text.Length > 0)
-                            { pt.tv = double.Parse(textBoxTV.Text);lsav.Add(Convert.ToDouble(pt.tv));}
+                            { pt.tv = double.Parse(textBoxTV.Text);/*lsav.Add(Convert.ToDouble(pt.tv));*/}
                             else pt.tv = null;                         
 
                             if (textBoxHL.Text.Length > 0 &&
@@ -213,6 +214,10 @@ namespace HGS
                             for(int i = 1; i< lsav.Count;i++)
                             {
                                 if (lsav[i - 1] > lsav[i]) { throw new Exception("报警数值大小应按报警高低限值排序！"); }
+                            }
+                            if (pt.bv != null && pt.tv != null)
+                            {
+                                if (pt.bv > pt.tv) { throw new Exception("量程上限应大于量程下限！"); }
                             }
                             gllistUpateItemText(item, pt);
                            
@@ -282,9 +287,7 @@ namespace HGS
                 if (tn != null && tn.Text != "全部")
                 {
                     DeviceInfo tt = (DeviceInfo)tn.Tag;
-                    if (tt.hs_Sensorsid == null)
-                        tt.hs_Sensorsid = new HashSet<int>();
-                    tt.hs_Sensorsid.UnionWith(hs_ptid);
+                    tt.UnionWith(hs_ptid);
                     DataDeviceTree.UpdateNodetoDB(tn);
                 }
             }
@@ -784,15 +787,15 @@ namespace HGS
                 {
                     glacialLisint();
                 }
-                else if (ttg == null || ttg.hs_Sensorsid == null || ttg.hs_Sensorsid.Count <= 0)
+                else if (ttg == null ||  ttg.Sensors_set().Count <= 0)
                 {
                     glacialList1.Items.Clear();
                     glacialList1.Invalidate();
                 }
-                else if (ttg.hs_Sensorsid.Count > 0)
+                else if (ttg.Sensors_set().Count > 0)
                 {
                     List<GLItem> lsItem = new List<GLItem>();
-                    foreach (int id in ttg.hs_Sensorsid)
+                    foreach (int id in ttg.Sensors_set())
                     {
                         GLItem item = new GLItem(glacialList1);
                         gllistInitItemText(Data.inst().cd_Point[id], item);
@@ -1004,7 +1007,7 @@ namespace HGS
                         if (myData.DragSourceNode != null && myData.DragSourceNode.Text != "全部")
                         {
                             DeviceInfo tt = (DeviceInfo)myData.DragSourceNode.Tag;
-                            tt.hs_Sensorsid.ExceptWith(myData.pointid_set);
+                            tt.ExceptWith(myData.pointid_set);
                             DataDeviceTree.UpdateNodetoDB(myData.DragSourceNode);
                         }
                     }
@@ -1012,13 +1015,13 @@ namespace HGS
                     {
 
                         DeviceInfo ttg = (DeviceInfo)DropNode.Tag;
-                        if (ttg.hs_Sensorsid == null)
-                            ttg.hs_Sensorsid = new HashSet<int>();
-                        ttg.hs_Sensorsid.UnionWith(myData.pointid_set);
+
+                        ttg.UnionWith(myData.pointid_set);
                        
                         DataDeviceTree.UpdateNodetoDB(DropNode);
                         TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(DropNode, MouseButtons.Left, 0, 0, 0);
                         treeView_NodeMouseClick(null, ee);
+                        MessageBox.Show("应重新设置设备报警参数");
                     }                  
                 }
             }
@@ -1060,12 +1063,19 @@ namespace HGS
             {
                 DeviceInfo tt = (DeviceInfo)tn.Tag;
                 foreach (GLItem item in glacialList1.SelectedItems)
-                {                 
-                    tt.hs_Sensorsid.Remove(((itemtag)item.Tag).id);
+                {
+                    int did = ((itemtag)item.Tag).id;
+                    DeviceInfo di;
+                    if(Data_Device.dic_Device.TryGetValue(did,out di))
+                    {
+                        di.RemoveSensor(did);
+                    }
+                    tt.RemoveSensor(did);
                 }
                 DataDeviceTree.UpdateNodetoDB(tn);
                 TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(tn, MouseButtons.Left, 0, 0, 0);
                 treeView_NodeMouseClick(null, ee);
+                MessageBox.Show("应重新设置设备报警参数");
             }
         }
 

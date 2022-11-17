@@ -165,9 +165,9 @@ namespace HGS
                 if (dtw_start_th != null)
                 {
                     if (dtw_start_th.Length != 6)
-                        throw new Exception("dtw阈值数必须为6个!");
-                    initDeviceQ();
+                        throw new Exception("dtw阈值数必须为6个!");                    
                 }
+                initDeviceQ();
             }
         }
         public Dtw_queues[] Dtw_Queues_Array
@@ -218,6 +218,13 @@ namespace HGS
                 hs_Device = null;
                 dtw_Queues_Array = null;
             }
+        }
+        public HashSet<int> Device_set()
+        {
+            HashSet<int> hs = new HashSet<int>();
+            if (hs_Device == null)
+                hs.UnionWith(hs_Device);
+            return hs;
         }
         //初始化dtw队列数组
 
@@ -315,15 +322,24 @@ namespace HGS
                                 {
                                     foreach (int di in hs_Device)
                                     {
-                                        DeviceInfo info = Data_Device.dic_Device[di];
-                                        if (info.dtw_alarm(id, i))
+                                        DeviceInfo info = null;
+                                        if (Data_Device.dic_Device.TryGetValue(di, out info))
                                         {
-                                            alarmLevel = alarmlevel.dtw;
-                                            alarmininfo += string.Format("{0}的[{1}]-{2}-{3}分钟-异常报警！",
-                                                info.Name,pn,ed, Pref.Inst().ScanSpan[i]);
+                                            if (info.dtw_alarm(id, i))
+                                            {
+                                                alarmLevel = alarmlevel.dtw;
+                                                alarmininfo += string.Format("{0}的[{1}]-{2}-{3}分钟-异常报警！",
+                                                    info.Name, pn, ed, Pref.Inst().ScanSpan[i]);
+                                                bbreak = true;
+                                                break;
+                                            }
+                                        }
+                                        else
+                                        {
                                             bbreak = true;
                                             break;
                                         }
+
                                     }
                                 }
                                 if (bbreak) break;

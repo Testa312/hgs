@@ -56,48 +56,48 @@ namespace HGS
             {
                 textBox_Name.Text = ttg.Name;
                 maskedTextBox_Sort.Text = ttg.sort.ToString();
-                if (ttg.alarm_th_dis != null)
+                List<GLItem> lsItem = new List<GLItem>();
+                if (ttg.Alarm_th_dis != null)
                 {
-                    List<GLItem> lsItem = new List<GLItem>();
+                   
                     for (int i = 0; i < ScanSpan.Length; i++)
                     {
                         //                   
                         GLItem item = new GLItem(glacialList1);
                         item.SubItems["TW"].Text = ScanSpan[i].ToString() + "m";
-                        item.SubItems["alarm_th"].Text = Math.Round(ttg.alarm_th_dis[i], 3).ToString();
+                        item.SubItems["alarm_th"].Text = Math.Round(ttg.Alarm_th_dis[i], 3).ToString();
                         lsItem.Add(item);
                     }
                     glacialList1.Items.Clear();
                     glacialList1.Items.AddRange(lsItem.ToArray());
                     glacialList1.Invalidate();
                 }
-                if (ttg.hs_Sensorsid != null)
+
+                lsItem.Clear();
+                foreach (int id in ttg.Sensors_set())
                 {
-                    List<GLItem> lsItem = new List<GLItem>();
-                    foreach (int id in ttg.hs_Sensorsid)
+                    GLItem item = new GLItem(glacialList2);
+                    point pt = Data.inst().cd_Point[id];
+                    item.SubItems["PN"].Text = pt.pn;
+                    item.SubItems["ED"].Text = pt.ed;
+                    item.Tag = pt.id;
+                    for (int i = 0; i < ScanSpan.Length; i++)
                     {
-                        GLItem item = new GLItem(glacialList2);
-                        point pt = Data.inst().cd_Point[id];
-                        item.SubItems["PN"].Text = pt.pn;
-                        item.SubItems["ED"].Text = pt.ed;
-                        item.Tag = pt.id;
-                        for (int i = 0; i < ScanSpan.Length; i++)
-                        {
-                            item.SubItems[string.Format("m{0}", ScanSpan[i])].Text = pt.Dtw_start_th == null ? "" : Math.Round(pt.Dtw_start_th[i], 3).ToString();
-                        }
-                        lsItem.Add(item);                      
+                        item.SubItems[string.Format("m{0}", ScanSpan[i])].Text = pt.Dtw_start_th == null ? "" : Math.Round(pt.Dtw_start_th[i], 3).ToString();
                     }
-                    glacialList2.Items.Clear();
-                    glacialList2.Items.AddRange(lsItem.ToArray());
-                    glacialList2.Invalidate();
+                    lsItem.Add(item);
                 }
+                glacialList2.Items.Clear();
+                glacialList2.Items.AddRange(lsItem.ToArray());
+                glacialList2.Invalidate();
+
             }
             else
                 ttg = new DeviceInfo();
         }
         private PlotModel PlotPoint(int count = 600)
         {
-            Dictionary<int, PointData> dic_pd = SisConnect.GetPointData_dic(ttg.hs_Sensorsid, dateTimePicker1.Value, dateTimePicker2.Value, count);
+            Dictionary<int, PointData> dic_pd = SisConnect.GetPointData_dic(ttg.Sensors_set(), dateTimePicker1.Value, dateTimePicker2.Value, count);
             if (dic_pd == null || dic_pd.Count <= 0) return null;
 
             //string title = string.Format("{0}---{1}  [{2}]", dateTimePicker1.Value, dateTimePicker2.Value,
@@ -175,7 +175,7 @@ namespace HGS
                     Dictionary<int, PointData> dic_pd = null;
                     while (begin >= dateTimePicker1.Value)
                     {
-                        dic_pd = SisConnect.GetPointData_dic(ttg.hs_Sensorsid,begin,end);
+                        dic_pd = SisConnect.GetPointData_dic(ttg.Sensors_set(),begin,end);
                         List<PointData> lspd = new List<PointData>(dic_pd.Values.ToArray());
                         
                         if (lspd.Count >= 2)
@@ -361,11 +361,12 @@ namespace HGS
                         }
                     }
                 }
-                ttg.alarm_th_dis = flag ? th : null;
+                //非空加入设备字典，空从字典中去掉。
+                ttg.Alarm_th_dis = flag ? th : null;
                 DeviceInfo di;
                 if(Data_Device.dic_Device.TryGetValue(ttg.id,out di))
                 {
-                    di.alarm_th_dis = ttg.alarm_th_dis;
+                    di.Alarm_th_dis = ttg.Alarm_th_dis;
                 }
 
                 if (maskedTextBox_Sort.Text.Length > 0)
@@ -375,7 +376,7 @@ namespace HGS
                 else
                     ttg.sort = -1;
                 //
-                foreach (int id in ttg.hs_Sensorsid)
+                foreach (int id in ttg.Sensors_set())
                 {
                     point pt = Data.inst().cd_Point[id];
                     //pt.Dtw_start_th =  null;
@@ -405,7 +406,7 @@ namespace HGS
                     pt.Dtw_start_th = flag ? th_dtw : null;
                     
                 }
-                foreach (int id in ttg.hs_Sensorsid)
+                foreach (int id in ttg.Sensors_set())
                 {
                     point pt = Data.inst().cd_Point[id];
                     Data.inst().Update(pt);

@@ -11,9 +11,88 @@ namespace HGS
         public string Name = "";
         public int id = -1;
         public string path = "";
-        public float[] alarm_th_dis = null;
+        private float[] alarm_th_dis = null;
         public int sort = 0;
-        public HashSet<int> hs_Sensorsid = null;
+        private HashSet<int> hs_Sensorsid = null;
+        public float[] Alarm_th_dis
+        {
+            get { return alarm_th_dis; }
+            set
+            {
+                alarm_th_dis = value;
+                if (alarm_th_dis == null)
+                {
+                    Data_Device.dic_Device.Remove(id);
+                    if (hs_Sensorsid != null)
+                    {
+                        foreach (int sid in hs_Sensorsid)
+                        {
+                            point pt = Data.inst().cd_Point[sid];
+                            if (pt.Device_set().Count == 1)
+                                pt.Dtw_start_th = null;
+                        }
+                    }
+                }
+                else
+                {
+                    if (!Data_Device.dic_Device.ContainsKey(id))
+                        Data_Device.dic_Device.Add(id, this);
+                }
+            }
+        }
+        public HashSet<int> Sensors_set()
+        {
+            HashSet<int> hs = new HashSet<int>();
+            if (hs_Sensorsid != null)
+                hs.UnionWith(hs_Sensorsid);
+            return hs;
+        }
+        public void addSensor(int sid)
+        {
+            if (hs_Sensorsid == null)
+                hs_Sensorsid = new HashSet<int>();
+            hs_Sensorsid.Add(sid);
+            Data.inst().cd_Point[sid].add_device(id);
+        }
+        public void RemoveSensor(int sid)
+        {
+            hs_Sensorsid.Remove(sid);
+            Data.inst().cd_Point[sid].remove_device(id);
+            if (hs_Sensorsid.Count <= 1)
+            {
+                Alarm_th_dis = null;
+            }
+            if (hs_Sensorsid.Count == 0)
+                hs_Sensorsid = null;
+        }
+        public void ExceptWith(HashSet<int> sen_set)
+        {
+            if(sen_set == null )
+                throw new Exception("参数不能为空！");
+            foreach(int sid in sen_set)
+            {
+                Data.inst().cd_Point[sid].remove_device(id);
+            }
+            hs_Sensorsid.ExceptWith(sen_set);
+            if (hs_Sensorsid.Count <= 1)
+            {
+                Alarm_th_dis = null;
+            }
+            if (hs_Sensorsid.Count == 0)
+                hs_Sensorsid = null;
+        }
+        public void UnionWith(HashSet<int> sen_set)
+        {
+            if (sen_set == null)
+                throw new Exception("参数不能为空！");
+            foreach (int sid in sen_set)
+            {
+                Data.inst().cd_Point[sid].add_device(id);
+            }
+            if (hs_Sensorsid == null)
+                hs_Sensorsid = new HashSet<int>();
+            hs_Sensorsid.UnionWith(sen_set);
+        }
         public bool dtw_alarm(int Sensorid, int Step)
         {
             if (alarm_th_dis == null || hs_Sensorsid == null) 
@@ -73,25 +152,16 @@ namespace HGS
                     object ob = pgreader["alarm_th_dis"];
                     if (ob != DBNull.Value)
                     {
-                        di.alarm_th_dis = (float[])ob;
+                        di.Alarm_th_dis = (float[])ob;
                     }
                     ob = pgreader["pointid_array"];
                     if (ob != DBNull.Value)
                     {
-                        di.hs_Sensorsid = new HashSet<int>((int[])ob);
+                        di.UnionWith(new HashSet<int>((int[])ob));
 
                     }
-                    if (di.alarm_th_dis != null && di.hs_Sensorsid != null)
-                    {
-                        dic_Device.Add(di.id, di);
-                        //传感器关联设备
-                        foreach(int id in di.hs_Sensorsid)
-                        {
-                            point pt = Data.inst().cd_Point[id];
-                            pt.add_device(di.id);
-                        }
-                    }
-                            
+                    //if (di.Alarm_th_dis != null)//去除大量不报警的设备.
+                        //dic_Device.Add(di.id, di);                           
                 }
             }
             catch (Exception e) { throw new Exception(string.Format("读入设备子节点时发生错误！"), e); }
