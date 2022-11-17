@@ -337,7 +337,7 @@ namespace HGS
                 if (textBox_Name.Text.Trim().Length == 0)
                     throw new Exception("节点名不能为空！");
                 ttg.Name = textBox_Name.Text.Trim();
-                //
+                //设备
                 bool flag = false;
                 float[] th = new float[ScanSpan.Length];
                 if (glacialList1.Items.Count == 6)
@@ -355,6 +355,10 @@ namespace HGS
                             {
                                 th[i] = fv;
                                 flag = true;
+                                if (fv < 0.1)
+                                {
+                                    MessageBox.Show(string.Format("阈值可能太小[{0}]!", fv));
+                                }
                             }
                             else
                                 throw new Exception(string.Format("无法解析[{0}]！", txt_th));
@@ -375,36 +379,49 @@ namespace HGS
                 }
                 else
                     ttg.sort = -1;
-                //
+                /*
                 foreach (int id in ttg.Sensors_set())
                 {
                     point pt = Data.inst().cd_Point[id];
                     //pt.Dtw_start_th =  null;
                 }
-                foreach(GLItem item in glacialList2.Items)
+                */
+                //传感器
+                if (ttg.Sensors_set().Count >= 2)
                 {
-                    flag = false;
-                    float[] th_dtw = new float[ScanSpan.Length];
-                    for (int i = 0; i < 6; i++)
+                    foreach (GLItem item in glacialList2.Items)
                     {
-                        th_dtw[i] = float.MaxValue;
-                        string txt_th = item.SubItems[string.Format("m{0}", ScanSpan[i])].Text;
-                        if (txt_th.Length > 0)
+                        flag = false;
+                        float[] th_dtw = new float[ScanSpan.Length];
+                        for (int i = 0; i < 6; i++)
                         {
-                            float fv;
-                            if (float.TryParse(txt_th, out fv))
+                            th_dtw[i] = float.MaxValue;
+                            string txt_th = item.SubItems[string.Format("m{0}", ScanSpan[i])].Text;
+                            if (txt_th.Length > 0)
                             {
-                                th_dtw[i] = fv;
-                                flag = true;
+                                float fv;
+                                if (float.TryParse(txt_th, out fv))
+                                {
+                                    th_dtw[i] = fv;
+                                    flag = true;
+                                    if (fv < 0.1)
+                                    {
+                                        MessageBox.Show(string.Format("阈值可能太小[{0}]!", fv));
+                                    }
+                                }
+                                else
+                                    throw new Exception(string.Format("无法解析[{0}]！", txt_th));
                             }
-                            else
-                                throw new Exception(string.Format("无法解析[{0}]！", txt_th));
                         }
+
+                        point pt = Data.inst().cd_Point[(int)item.Tag];
+                        pt.Dtw_start_th = flag ? th_dtw : null;
                     }
 
-                    point pt = Data.inst().cd_Point[(int)item.Tag];
-                    pt.Dtw_start_th = flag ? th_dtw : null;
-                    
+                }
+                else
+                {
+                    MessageBox.Show("因传感器数不应小于2个，设备阈值无法设置!");
                 }
                 foreach (int id in ttg.Sensors_set())
                 {
@@ -423,7 +440,37 @@ namespace HGS
         private void button_dell_Click(object sender, EventArgs e)
         {
             glacialList1.Items.Clear();
+            List<GLItem> lsItem = new List<GLItem>();
+
+            for (int i = 0; i < ScanSpan.Length; i++)
+            {
+                //                   
+                GLItem item = new GLItem(glacialList1);
+                item.SubItems["TW"].Text = ScanSpan[i].ToString() + "m";
+                lsItem.Add(item);
+            }
+            glacialList1.Items.AddRange(lsItem.ToArray());
+            glacialList1.Invalidate();
+            //
+            lsItem.Clear();
+
+            foreach (int id in ttg.Sensors_set())
+            {
+                GLItem item = new GLItem(glacialList2);
+                point pt = Data.inst().cd_Point[id];
+                item.SubItems["PN"].Text = pt.pn;
+                item.SubItems["ED"].Text = pt.ed;
+                item.Tag = pt.id;
+                for (int i = 0; i < ScanSpan.Length; i++)
+                {
+                    item.SubItems[string.Format("m{0}", ScanSpan[i])].Text = "";
+                }
+                lsItem.Add(item);
+            }
+            //
             glacialList2.Items.Clear();
+            glacialList2.Items.AddRange(lsItem.ToArray());
+
             glacialList1.Invalidate();
             glacialList2.Invalidate();
         }

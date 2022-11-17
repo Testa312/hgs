@@ -46,7 +46,7 @@ namespace HGS
         }
         public void Add(point pt)
         {          
-            if (pt.alarmifav && (pt.isavalarm || pt.isboolvalarm))
+            if ((pt.alarmifav && (pt.isavalarm || pt.isboolvalarm))|| pt.Dtw_Queues_Array != null)
             {
                 alarmlevel la_stal = pt.alarmLevel;
                 alarmlevel al = pt.AlarmCalc();

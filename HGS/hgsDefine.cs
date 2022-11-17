@@ -197,6 +197,12 @@ namespace HGS
                         dtw_Queues_Array[i] = new Dtw_queues();
                         dtw_Queues_Array[i].DownSamples = (int)(9 * Math.Pow(2, i));
                     }
+                    //
+                    Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
+
+                    dic_intQueues.Add(id, Data.inst().cd_Point[id]);
+
+                    SisConnect.InitSensorsQueues(dic_intQueues);
                 }
             }
             else
@@ -310,41 +316,48 @@ namespace HGS
                         }
                     }
                    
-                    if(dtw_Queues_Array != null)// && id % 10 == datanums % 180)
+                   
+                }
+            }
+            /*
+            if (id == 443)
+            {
+                double xxx = 0;
+            }
+             */     
+            if (dtw_Queues_Array != null)// && id % 10 == datanums % 180)
+            {
+                for (int i = 0; i < 6; i++)
+                {
+                    //double texx = dtw_Queues_Array[i].DeltaP_P();//????????????????
+                    bool bbreak = false;
+                    if (dtw_Queues_Array[i].DeltaP_P() > dtw_start_th[i])
                     {
-                        for (int i = 0; i < 6; i++)
+                        if (hs_Device != null)
                         {
-                            double texx = dtw_Queues_Array[i].DeltaP_P();//????????????????
-                            bool bbreak = false;
-                            if (dtw_Queues_Array[i].DeltaP_P() > dtw_start_th[i])
+                            foreach (int di in hs_Device)
                             {
-                                if (hs_Device != null)
+                                DeviceInfo info = null;
+                                if (Data_Device.dic_Device.TryGetValue(di, out info))
                                 {
-                                    foreach (int di in hs_Device)
+                                    if (info.dtw_alarm(id, i))
                                     {
-                                        DeviceInfo info = null;
-                                        if (Data_Device.dic_Device.TryGetValue(di, out info))
-                                        {
-                                            if (info.dtw_alarm(id, i))
-                                            {
-                                                alarmLevel = alarmlevel.dtw;
-                                                alarmininfo += string.Format("{0}的[{1}]-{2}-{3}分钟-异常报警！",
-                                                    info.Name, pn, ed, Pref.Inst().ScanSpan[i]);
-                                                bbreak = true;
-                                                break;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            bbreak = true;
-                                            break;
-                                        }
-
+                                        alarmLevel = alarmlevel.dtw;
+                                        alarmininfo += string.Format("{0}的[{1}]-{2}-{3}分钟-异常报警！",
+                                            info.Name, pn, ed, Pref.Inst().ScanSpan[i]);
+                                        bbreak = true;
+                                        break;
                                     }
                                 }
-                                if (bbreak) break;
+                                else
+                                {
+                                    bbreak = true;
+                                    break;
+                                }
+
                             }
                         }
+                        if (bbreak) break;
                     }
                 }
             }

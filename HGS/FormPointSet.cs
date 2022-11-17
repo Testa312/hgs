@@ -222,6 +222,13 @@ namespace HGS
                             gllistUpateItemText(item, pt);
                            
                             pt.isavalarm = checkBoxAlarm.Checked;
+                            if (!pt.isavalarm)
+                            {
+                                item.SubItems["AlarmInfo"].Text= "";
+                                point ppt = Data.inst().cd_Point[it.id];
+                                pt.alarmininfo = "";
+                                AlarmSet.GetInst().Remove(ppt);
+                            }
                             pt.isboolvalarm = checkBoxbool.Checked;
                             pt.boolalarminfo = tB_boolAlarmInfo.Text;
                             pt.boolalarmif = radioButton_true.Checked;
@@ -718,6 +725,11 @@ namespace HGS
                     if (fcaf.CalcPoint.alarmif.Length > 0)
                     {
                         buttonAlarmIf.ForeColor = Color.Red;
+
+                        itemn.SubItems["AlarmInfo"].Text = "";
+                        point pt = Data.inst().cd_Point[it.id];
+                        pt.alarmininfo = "";
+                        AlarmSet.GetInst().Remove(pt);
                         //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
                     }
                     //buttonAlarmIf.Enabled = fcaf.CalcPoint.alarmif.Length == 0;
@@ -806,6 +818,7 @@ namespace HGS
                     glacialList1.Invalidate();
                     DisplayHints(lsItem.Count);
                 }
+                tabControl.Enabled = false;
             }
         }
         private void 增加节点ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -870,7 +883,22 @@ namespace HGS
                     if (ftn.ShowDialog() == DialogResult.OK)
                     {
                         DataDeviceTree.UpdateNodetoDB(tn);
+                        TreeNode stn = tn.Parent;
                         RefreshSubs(tn.Parent);
+                        foreach (TreeNode ntn in stn.Nodes)
+                        {
+                            if (((DeviceInfo)ntn.Tag).id == ((DeviceInfo)(tn.Tag)).id)
+                            {
+                                treeView.SelectedNode = ntn;
+                                foreach(int sensor in ((DeviceInfo)ntn.Tag).Sensors_set())
+                                {
+                                    point pt = Data.inst().cd_Point[sensor];
+                                    pt.alarmininfo = "";
+                                    AlarmSet.GetInst().Remove(pt);
+                                }
+                                return;
+                            }
+                        }
                     }
                 }
             }
