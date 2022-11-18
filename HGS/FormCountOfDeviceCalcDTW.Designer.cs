@@ -146,7 +146,7 @@ namespace HGS
             glColumn4.ImageIndex = -1;
             glColumn4.Name = "DTW";
             glColumn4.NumericSort = true;
-            glColumn4.Text = "DTW计算次数";
+            glColumn4.Text = "DTW次数";
             glColumn4.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn4.Width = 80;
             glColumn5.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
@@ -163,7 +163,7 @@ namespace HGS
             glColumn6.Name = "m15s";
             glColumn6.NumericSort = true;
             glColumn6.Text = "15m-s";
-            glColumn6.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn6.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn6.Width = 50;
             glColumn7.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn7.CheckBoxes = false;
@@ -179,7 +179,7 @@ namespace HGS
             glColumn8.Name = "m30s";
             glColumn8.NumericSort = true;
             glColumn8.Text = "30m-s";
-            glColumn8.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn8.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn8.Width = 50;
             glColumn9.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn9.CheckBoxes = false;
@@ -195,7 +195,7 @@ namespace HGS
             glColumn10.Name = "m60s";
             glColumn10.NumericSort = true;
             glColumn10.Text = "60m-s";
-            glColumn10.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn10.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn10.Width = 50;
             glColumn11.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn11.CheckBoxes = false;
@@ -211,7 +211,7 @@ namespace HGS
             glColumn12.Name = "m120s";
             glColumn12.NumericSort = true;
             glColumn12.Text = "120m-s";
-            glColumn12.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn12.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn12.Width = 50;
             glColumn13.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn13.CheckBoxes = false;
@@ -227,7 +227,7 @@ namespace HGS
             glColumn14.Name = "m240s";
             glColumn14.NumericSort = true;
             glColumn14.Text = "240m-s";
-            glColumn14.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn14.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn14.Width = 50;
             glColumn15.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn15.CheckBoxes = false;
@@ -243,7 +243,7 @@ namespace HGS
             glColumn16.Name = "m480s";
             glColumn16.NumericSort = true;
             glColumn16.Text = "480m-s";
-            glColumn16.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn16.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn16.Width = 50;
             this.glacialList1.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
             glColumn1,
