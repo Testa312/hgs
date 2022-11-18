@@ -12,6 +12,7 @@ namespace HGS
         public int id = -1;
         public string path = "";
         private float[] alarm_th_dis = null;
+        public float[] alarm_th_dis_max = new float[6];
         public int sort = 0;
         public int CountofDTWCalc = 0;
         private HashSet<int> hs_Sensorsid = null;
@@ -135,8 +136,12 @@ namespace HGS
                                 if (secdata != null)
                                 {
                                     CountofDTWCalc++;
-                                    if (SisConnect.GetDtw_dd_diff(maindata, secdata, alarm_th_dis[Step]) > alarm_th_dis[Step])
+                                    double cost = SisConnect.GetDtw_dd_diff(maindata, secdata, alarm_th_dis[Step]);
+                                    if (cost > alarm_th_dis[Step])
+                                    {
+                                        alarm_th_dis_max[Step] = (float)Math.Max(cost, alarm_th_dis_max[Step]);
                                         return true;
+                                    }
                                 }
                                 count++;
                                 if (count >= 2) return false;

@@ -25,6 +25,7 @@ namespace HGS
         public float MaxAv = float.MinValue;
         public float MinAv = float.MaxValue;
         public float MeanAV = 0;
+        public float DifAV = 0;
         public List<DateValue> data = new List<DateValue>();
     }
     static class SisConnect
@@ -91,7 +92,8 @@ namespace HGS
             }
             return dic_data;
         }
-        public static Dictionary<int, PointData> GetPointData_dic(HashSet<int> hspid, DateTime begin, DateTime end, int count = 100)
+        public static Dictionary<int, PointData> GetPointData_dic(HashSet<int> hspid, DateTime begin, 
+            DateTime end, int count = 100)
         {
             Dictionary<int, PointData> dic_pd = new Dictionary<int, PointData>();
             if (hspid != null && hspid.Count > 0)
@@ -106,11 +108,12 @@ namespace HGS
                     else if (pt.pointsrc == pointsrc.calc)
                         calcpt.Add(pt);
                 }
-                Dictionary<int, PointData>  dic_pd_sis = SisConnect.GetsisData(sisid.ToArray(), begin, end, count);
+
+                    Dictionary<int, PointData> dic_pd_sis = SisConnect.GetsisData(sisid.ToArray(), begin, end, count);
                 foreach (PointData pd in dic_pd_sis.Values)
                 {
                     point pt = Data.inst().dic_SisIdtoPoint[pd.ID_sis];
-                    pd.ED =pt.ed;
+                    pd.ED = pt.ed;
                     pd.ID = pt.id;
                     dic_pd.Add(pd.ID, pd);
                 }
@@ -185,7 +188,7 @@ namespace HGS
             {
                 DateTime begin = end.AddMinutes(-ScanSpan[i]);
                 //
-                Dictionary<int, PointData> dic_pd = GetPointData_dic(lsob, begin, end);
+                Dictionary<int, PointData> dic_pd = GetPointData_dic(lsob, begin, end,120);
                 foreach (PointData pd in dic_pd.Values)
                 {
                     float[] x = new float[pd.data.Count];
@@ -196,6 +199,67 @@ namespace HGS
                     dic_pt[pd.ID].initDeviceQ(i, x);
                 }
             }
+        }
+        public static Dictionary<int, PointData> GetsisStat(HashSet<int> hspid, DateTime begin, DateTime end,int span)
+        {
+            //
+            Dictionary<int, PointData> dic_data_stat = new Dictionary<int, PointData>();
+            if (hspid.Count == 0 || hspid == null) return dic_data_stat;
+            //
+
+            HashSet<object> sisid = new HashSet<object>();
+            foreach (int id in hspid)
+            {
+                point pt = Data.inst().cd_Point[id];
+                if (pt.pointsrc == pointsrc.sis)
+                    sisid.Add(Convert.ToInt64(pt.id_sis));
+            }
+            string[] colnames = new string[] { "ID", "MAXV", "MINV" };
+
+            Dictionary<string, object> options = new Dictionary<string, object>();
+
+            options.Add("end", end);
+            options.Add("begin", begin);
+            options.Add("mode", "stat");
+            options.Add("interval", span);
+
+            OPAPI.ResultSet resultSet = sisconn.select("Archive", colnames, sisid.ToArray(), options);//options为条件            
+            try
+            {
+                PointData PtData;
+                while (resultSet.next())
+                {
+                    int id = resultSet.getInt(0);
+                    if (!dic_data_stat.TryGetValue(id, out PtData))
+                    {
+                        PtData = new PointData();                     
+                        PtData.ID_sis = id;
+                        dic_data_stat.Add(id, PtData);
+                    }
+                    PtData.DifAV = (float)Math.Max(resultSet.getDouble(1) - resultSet.getDouble(2), PtData.DifAV);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                if (resultSet != null)
+                {
+                    resultSet.close(); //释放内存
+                }
+                //conn.close();
+            }
+            Dictionary<int, PointData> dic_data_stat_id = new Dictionary<int, PointData>();
+            foreach (PointData pd in dic_data_stat.Values)
+            {
+                point pt = Data.inst().dic_SisIdtoPoint[pd.ID_sis];
+                pd.ED = pt.ed;
+                pd.ID = pt.id;
+                dic_data_stat_id.Add(pd.ID, pd);
+            }
+            return dic_data_stat_id;
         }
         public static float GetFastDtw(PointData pd1, PointData pd2)
         {

@@ -130,7 +130,7 @@ namespace HGS
 
             pm.Axes.Add(new LinearAxis()
             {
-                Title = "值",
+                //Title = "值",
                 Position = AxisPosition.Left,
                 IsPanEnabled = false,
                 IsZoomEnabled = false,
@@ -173,9 +173,12 @@ namespace HGS
                     cost = 0;
                     maxpp = double.MinValue;
                     Dictionary<int, PointData> dic_pd = null;
+                    Dictionary<int, PointData> dic_pd_stat = SisConnect.GetsisStat(ttg.Sensors_set(), 
+                        dateTimePicker1.Value, dateTimePicker2.Value, ScanSpan[i] * 60);
                     while (begin >= dateTimePicker1.Value)
                     {
                         dic_pd = SisConnect.GetPointData_dic(ttg.Sensors_set(),begin,end);
+                       
                         List<PointData> lspd = new List<PointData>(dic_pd.Values.ToArray());
                         
                         if (lspd.Count >= 2)
@@ -208,7 +211,7 @@ namespace HGS
                     GLItem item = new GLItem(glacialList1);
                     item.SubItems["TW"].Text = ScanSpan[i].ToString() + "m";
                     //item.SubItems["start_th"].Text = Math.Round(maxpp * 1.1, 3).ToString();
-                    cost *= 2;
+                    cost *= MULTI;
                     item.SubItems["alarm_th"].Text = Math.Round(cost, 3).ToString();
                     lsItem.Add(item);
                     foreach (PointData pd in dic_pd.Values)
@@ -219,7 +222,15 @@ namespace HGS
                             v = new float[ScanSpan.Length];
                             dic_dtw_th.Add(pd.ID, v);
                         }
-                        v[i] =(float) ((pd.MaxAv - pd.MinAv) * MULTI);
+                        PointData pdstat;//sis点才有统计量
+                        if (dic_pd_stat.TryGetValue(pd.ID, out pdstat))
+                        {
+                            v[i] = (float) ((pdstat.DifAV) * MULTI);
+                        }
+                        else
+                        {
+                            v[i] = (float)((pd.MaxAv - pd.MinAv) * MULTI);
+                        }
                     }
                 }
                 //

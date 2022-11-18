@@ -16,6 +16,8 @@ namespace HGS
         private int downsamples = 1;
         private int totalsampls = 0; 
         int p = -1;
+        //滤波器用,x(n)=a*x(n-1)+b*y(n+1)+(1-a-b)*y(n);
+        double a = 0.8f, b = 0.1f, x, y1, y2;
         public Dtw_queues() { }
         public int Size
         {
@@ -44,6 +46,11 @@ namespace HGS
             totalsampls++;
             if (!bDS || (totalsampls % downsamples == 0))
             {
+                //初始化时约为120个数据
+                y1 = y2;
+                y2 = d;
+                d = x = a * x + b * y1 + (1 - a - b) * y2;
+                //
                 p++;
                 int im = 0;
                 qdata.Push(d);
@@ -99,7 +106,7 @@ namespace HGS
         public double DeltaP_P()
         {
             if (qdata.Count != size) return 0;
-            return Math.Abs(Max() - Min());
+            return Max() - Min();
         }
         public void Clear()
         {

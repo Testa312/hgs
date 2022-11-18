@@ -134,6 +134,7 @@ namespace HGS
         //传感器的设备归属-不存数据库，运行时生成。
         private HashSet<int> hs_Device = null;
         private Dtw_queues[] dtw_Queues_Array = null;
+        public float[] dtw_start_max = new float[6];
         //-----------------------------
         //不能多于一次赋值，否则将不对。
         public double? Av
@@ -329,10 +330,14 @@ namespace HGS
             {
                 for (int i = 0; i < 6; i++)
                 {
-                    //double texx = dtw_Queues_Array[i].DeltaP_P();//????????????????
+#if DEBUG
+                    double texx = dtw_Queues_Array[i].DeltaP_P();
+#endif
                     bool bbreak = false;
-                    if (dtw_Queues_Array[i].DeltaP_P() > dtw_start_th[i])
+                    double p_p = dtw_Queues_Array[i].DeltaP_P();
+                    if ( p_p > dtw_start_th[i])
                     {
+                        dtw_start_max[i] = (float)Math.Max(p_p, dtw_start_max[i]);
                         if (hs_Device != null)
                         {
                             foreach (int di in hs_Device)
