@@ -41,6 +41,7 @@ namespace HGS
 
             Dictionary<string, object> options = new Dictionary<string, object>();
             int span = (int)((end - begin).TotalSeconds / count);
+            span = span == 0 ? 1 : span;
             span = span > 0 ? span : span++;
             options.Add("end", end);
             options.Add("begin", begin);

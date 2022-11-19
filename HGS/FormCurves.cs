@@ -55,9 +55,14 @@ namespace HGS
                 plotView1.Model = PlotPoint();
             }
         }
-        private PlotModel PlotPoint(int count = 600)
+        private PlotModel PlotPoint(int count = 1200)
         {
-            Dictionary<int, PointData> dic_pd = SisConnect.GetPointData_dic(hsPointid, dateTimePicker1.Value, dateTimePicker2.Value, count);
+            Dictionary<int, PointData> dic_pd = SisConnect.GetPointData_dic(hsPointid, 
+                dateTimePicker1.Value, dateTimePicker2.Value, count);
+
+            Dictionary<int, PointData> dic_pd_stat = SisConnect.GetsisStat(hsPointid,
+                dateTimePicker1.Value, dateTimePicker2.Value,(int)(dateTimePicker2.Value- dateTimePicker2.Value).TotalSeconds);
+
             if (dic_pd == null || dic_pd.Count <= 0) return null;
             List<GLItem> lsitem = new List<GLItem>();
             glacialList1.Items.Clear();
@@ -66,6 +71,15 @@ namespace HGS
                 GLItem itm = new GLItem(glacialList1);
                 itm.SubItems["PN"].Text = pd.GN;
                 itm.SubItems["ED"].Text = pd.ED;
+                itm.Tag = pd;
+                PointData pd_stat;
+                if (dic_pd.TryGetValue(pd.ID, out pd_stat))
+                {
+                    pd.MaxAv = pd_stat.MaxAv;
+                    pd.MinAv = pd_stat.MinAv;
+                }
+                itm.SubItems["MAX"].Text = Math.Round(pd.MaxAv * 1.1, 3).ToString();
+                itm.SubItems["MIN"].Text = Math.Round(pd.MinAv * 0.9, 3).ToString(); 
                 lsitem.Add(itm);
             }
             glacialList1.Items.AddRange(lsitem.ToArray());
@@ -101,12 +115,12 @@ namespace HGS
 
             pm.Axes.Add(new LinearAxis()
             {
-                Title = "值",
+                //Title = "值",
                 Position = AxisPosition.Left,
                 IsPanEnabled = false,
                 IsZoomEnabled = false,
-                //Minimum = mindv - margindv,
-                Minimum = 0,
+                Minimum = mindv - margindv,
+                //Minimum = 0,
                 Maximum = maxdv + margindv,
                 Key = "yaxis_dv",
             });
@@ -229,6 +243,22 @@ namespace HGS
             dateTimePicker2.Value = end;
 
             plotView1.Model = PlotPoint();
+        }
+
+        private void 接受为报警高低限ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (GLItem item in glacialList1.Items.SelectedItems)
+            {
+                PointData pd = (PointData)item.Tag;
+                point pt;
+                if (Data.inst().cd_Point.TryGetValue(pd.ID, out pt))
+                {                  
+                    pt.ll = Math.Round(pd.MinAv * 0.9,3);
+                    pt.hl = Math.Round(pd.MaxAv * 1.1,3);
+                }
+            }
+            if (glacialList1.Items.SelectedItems.Count > 0)
+                Data.inst().SavetoPG();
         }
     }
 }

@@ -165,15 +165,14 @@ namespace HGS
             }
             get { return _Orgformula_hl; }
         }
-        //public string expformula_hl = "";//展开成点的计算公式
-        private Expression _Expression_hl = null;// new Expression();//优化计算速度。
+        private Expression _Expression_hl = null;//优化计算速度。
         public Expression Expression_hl
         {
             set { _Expression_hl = value; }
             get { return _Expression_hl; }
         }
         //计算子点id
-        private List<varlinktopoint> _lsCalcOrgSubPoint_hl = null;// new List<varlinktopoint>();//原始参与计算点列表
+        private List<varlinktopoint> _lsCalcOrgSubPoint_hl = null;//原始参与计算点列表
         public List<varlinktopoint> lsCalcOrgSubPoint_hl
         {
             set { _lsCalcOrgSubPoint_hl = value; }
@@ -181,7 +180,7 @@ namespace HGS
         }
         //
         //用于进行计算点点状态计算。
-        private List<point> _listSisCalaExpPointID_hl = null;// new List<point>();
+        private List<point> _listSisCalaExpPointID_hl = null;
         public List<point> listSisCalaExpPointID_hl
         {
             set { _listSisCalaExpPointID_hl = value; }
@@ -503,11 +502,10 @@ namespace HGS
 
             _id_sis = (int)pgreader["id_sis"];
 
-            //object oo = (int)pgreader["pointsrc"];
             _pointsrc = (pointsrc)(short)pgreader["pointsrc"];
             _ownerid = (int)pgreader["ownerid"];
             _Orgformula_main = pgreader["orgformula_main"].ToString();
-            //expformula_main = pgreader["expformula"].ToString();
+
             _isAvalarm = (bool)pgreader["isavalarm"];
             _isCalc = (bool)pgreader["iscalc"];
             _fm = (short)pgreader["fm"];
@@ -632,10 +630,10 @@ namespace HGS
         }
         public void Accept_MaxMin_Th()
         {
-            _ll = _min_ll;
-            _zl = _min_zl;
-            _zh = _max_zh;
-            _hl = _max_hl;
+            //_ll = _min_ll;//???????????????????
+            //_zl = _min_zl;
+            //_zh = _max_zh;
+           // _hl = _max_hl;
             if (_dtw_start_th != null)
             {
                 for (int i = 0; i < _dtw_start_max.Length; i++)
@@ -735,13 +733,7 @@ namespace HGS
                    
                    
                 }
-            }
-            /*
-            if (id == 443)
-            {
-                double xxx = 0;
-            }
-             */     
+            }    
             if (_dtw_Queues_Array != null)// && id % 10 == datanums % 180)
             {
                 for (int i = 0; i < 6; i++)
@@ -784,8 +776,6 @@ namespace HGS
             }
             _Alarmingav = Math.Round(av ?? 0, _fm);
 
-            //else
-            //alarmingav = av;
             if (_AlarmLevel == alarmlevel.no && last_al != _AlarmLevel)
                 _Alarmininfo = string.Format("报警消失！");
             if (last_al == alarmlevel.no && _AlarmLevel != last_al)

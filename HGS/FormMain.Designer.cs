@@ -34,8 +34,8 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.报警信息ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.报警记录ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.从文件导入ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.form1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dTW计算次数ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -47,7 +47,6 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.打开OToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出XToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dTW计算次数ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -68,7 +67,6 @@
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.报警信息ToolStripMenuItem,
             this.报警记录ToolStripMenuItem,
-            this.从文件导入ToolStripMenuItem,
             this.form1ToolStripMenuItem,
             this.dTW计算次数ToolStripMenuItem,
             this.退出ToolStripMenuItem});
@@ -90,19 +88,19 @@
             this.报警记录ToolStripMenuItem.Text = "报警历史记录(&H)...";
             this.报警记录ToolStripMenuItem.Click += new System.EventHandler(this.报警记录ToolStripMenuItem_Click);
             // 
-            // 从文件导入ToolStripMenuItem
-            // 
-            this.从文件导入ToolStripMenuItem.Name = "从文件导入ToolStripMenuItem";
-            this.从文件导入ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.从文件导入ToolStripMenuItem.Text = "从文件导入(&I)...";
-            this.从文件导入ToolStripMenuItem.Click += new System.EventHandler(this.从文件导入ToolStripMenuItem_Click);
-            // 
             // form1ToolStripMenuItem
             // 
             this.form1ToolStripMenuItem.Name = "form1ToolStripMenuItem";
             this.form1ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.form1ToolStripMenuItem.Text = "点配置(&P)...";
             this.form1ToolStripMenuItem.Click += new System.EventHandler(this.点设置ToolStripMenuItem_Click);
+            // 
+            // dTW计算次数ToolStripMenuItem
+            // 
+            this.dTW计算次数ToolStripMenuItem.Name = "dTW计算次数ToolStripMenuItem";
+            this.dTW计算次数ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.dTW计算次数ToolStripMenuItem.Text = "DTW计算次数...";
+            this.dTW计算次数ToolStripMenuItem.Click += new System.EventHandler(this.dTW计算次数ToolStripMenuItem_Click);
             // 
             // 退出ToolStripMenuItem
             // 
@@ -184,13 +182,6 @@
             this.退出XToolStripMenuItem.Text = "退出（&X）";
             this.退出XToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
             // 
-            // dTW计算次数ToolStripMenuItem
-            // 
-            this.dTW计算次数ToolStripMenuItem.Name = "dTW计算次数ToolStripMenuItem";
-            this.dTW计算次数ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.dTW计算次数ToolStripMenuItem.Text = "DTW计算次数...";
-            this.dTW计算次数ToolStripMenuItem.Click += new System.EventHandler(this.dTW计算次数ToolStripMenuItem_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -228,7 +219,6 @@
         private System.Windows.Forms.ToolStripMenuItem 报警记录ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
-        private System.Windows.Forms.ToolStripMenuItem 从文件导入ToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
         private System.Windows.Forms.ToolStripStatusLabel usetime;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;

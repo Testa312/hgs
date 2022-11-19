@@ -70,6 +70,8 @@ namespace HGS
         private void toolStripButton_refresh_Click(object sender, EventArgs e)
         {
             glacialList1.Items.Clear();
+            dic_device.Clear();
+            dic_sensor.Clear();
             refresh();
         }
 

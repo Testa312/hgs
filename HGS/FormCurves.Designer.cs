@@ -28,32 +28,40 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCurves));
             GlacialComponents.Controls.GLColumn glColumn1 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn2 = new GlacialComponents.Controls.GLColumn();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCurves));
+            GlacialComponents.Controls.GLColumn glColumn3 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn4 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn5 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn6 = new GlacialComponents.Controls.GLColumn();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.glacialList1 = new GlacialComponents.Controls.GlacialList();
-            this.plotView1 = new OxyPlot.WindowsForms.PlotView();
+            this.toolStripButton_Multi = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton_Divide = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton_BBack = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton_Back = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton_First = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton_FFirst = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton_Multi = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton_Divide = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.glacialList1 = new GlacialComponents.Controls.GlacialList();
+            this.plotView1 = new OxyPlot.WindowsForms.PlotView();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.接受为报警高低限ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -108,102 +116,30 @@
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // statusStrip1
+            // toolStripButton_Multi
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 521);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1040, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
+            this.toolStripButton_Multi.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButton_Multi.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_Multi.Image")));
+            this.toolStripButton_Multi.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton_Multi.Name = "toolStripButton_Multi";
+            this.toolStripButton_Multi.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton_Multi.Text = "+";
+            this.toolStripButton_Multi.Click += new System.EventHandler(this.toolStripButton_Multi_Click);
             // 
-            // splitContainer1
+            // toolStripButton_Divide
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 50);
-            this.splitContainer1.Name = "splitContainer1";
+            this.toolStripButton_Divide.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButton_Divide.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_Divide.Image")));
+            this.toolStripButton_Divide.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton_Divide.Name = "toolStripButton_Divide";
+            this.toolStripButton_Divide.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton_Divide.Text = "-";
+            this.toolStripButton_Divide.Click += new System.EventHandler(this.toolStripButton_Divide_Click);
             // 
-            // splitContainer1.Panel1
+            // toolStripSeparator2
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.glacialList1);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.plotView1);
-            this.splitContainer1.Size = new System.Drawing.Size(1040, 471);
-            this.splitContainer1.SplitterDistance = 346;
-            this.splitContainer1.TabIndex = 3;
-            // 
-            // glacialList1
-            // 
-            this.glacialList1.AllowColumnResize = true;
-            this.glacialList1.AllowMultiselect = false;
-            this.glacialList1.AlternateBackground = System.Drawing.Color.DarkGreen;
-            this.glacialList1.AlternatingColors = false;
-            this.glacialList1.AutoHeight = true;
-            this.glacialList1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.glacialList1.BackgroundStretchToFit = true;
-            glColumn1.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
-            glColumn1.CheckBoxes = false;
-            glColumn1.ImageIndex = -1;
-            glColumn1.Name = "PN";
-            glColumn1.NumericSort = false;
-            glColumn1.Text = "点名";
-            glColumn1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn1.Width = 100;
-            glColumn2.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
-            glColumn2.CheckBoxes = false;
-            glColumn2.ImageIndex = -1;
-            glColumn2.Name = "ED";
-            glColumn2.NumericSort = false;
-            glColumn2.Text = "描述";
-            glColumn2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn2.Width = 200;
-            this.glacialList1.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
-            glColumn1,
-            glColumn2});
-            this.glacialList1.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
-            this.glacialList1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.glacialList1.FullRowSelect = true;
-            this.glacialList1.GridColor = System.Drawing.Color.LightGray;
-            this.glacialList1.GridLines = GlacialComponents.Controls.GLGridLines.gridBoth;
-            this.glacialList1.GridLineStyle = GlacialComponents.Controls.GLGridLineStyles.gridSolid;
-            this.glacialList1.GridTypes = GlacialComponents.Controls.GLGridTypes.gridOnExists;
-            this.glacialList1.HeaderHeight = 22;
-            this.glacialList1.HeaderVisible = true;
-            this.glacialList1.HeaderWordWrap = false;
-            this.glacialList1.HotColumnTracking = false;
-            this.glacialList1.HotItemTracking = false;
-            this.glacialList1.HotTrackingColor = System.Drawing.Color.LightGray;
-            this.glacialList1.HoverEvents = false;
-            this.glacialList1.HoverTime = 1;
-            this.glacialList1.ImageList = null;
-            this.glacialList1.ItemHeight = 19;
-            this.glacialList1.ItemWordWrap = false;
-            this.glacialList1.Location = new System.Drawing.Point(0, 0);
-            this.glacialList1.Name = "glacialList1";
-            this.glacialList1.Selectable = true;
-            this.glacialList1.SelectedTextColor = System.Drawing.Color.White;
-            this.glacialList1.SelectionColor = System.Drawing.Color.DarkBlue;
-            this.glacialList1.ShowBorder = true;
-            this.glacialList1.ShowFocusRect = false;
-            this.glacialList1.Size = new System.Drawing.Size(346, 471);
-            this.glacialList1.SortType = GlacialComponents.Controls.SortTypes.InsertionSort;
-            this.glacialList1.SuperFlatHeaderColor = System.Drawing.Color.White;
-            this.glacialList1.TabIndex = 0;
-            this.glacialList1.Text = "glacialList1";
-            // 
-            // plotView1
-            // 
-            this.plotView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.plotView1.Location = new System.Drawing.Point(0, 0);
-            this.plotView1.Name = "plotView1";
-            this.plotView1.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotView1.Size = new System.Drawing.Size(690, 471);
-            this.plotView1.TabIndex = 0;
-            this.plotView1.Text = "plotView1";
-            this.plotView1.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
-            this.plotView1.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
-            this.plotView1.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripButton_BBack
             // 
@@ -245,30 +181,154 @@
             this.toolStripButton_FFirst.Text = ">>";
             this.toolStripButton_FFirst.Click += new System.EventHandler(this.toolStripButton_FFirst_Click);
             // 
-            // toolStripButton_Multi
+            // statusStrip1
             // 
-            this.toolStripButton_Multi.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButton_Multi.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_Multi.Image")));
-            this.toolStripButton_Multi.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton_Multi.Name = "toolStripButton_Multi";
-            this.toolStripButton_Multi.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton_Multi.Text = "+";
-            this.toolStripButton_Multi.Click += new System.EventHandler(this.toolStripButton_Multi_Click);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 521);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1040, 22);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Text = "statusStrip1";
             // 
-            // toolStripButton_Divide
+            // splitContainer1
             // 
-            this.toolStripButton_Divide.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButton_Divide.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_Divide.Image")));
-            this.toolStripButton_Divide.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton_Divide.Name = "toolStripButton_Divide";
-            this.toolStripButton_Divide.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton_Divide.Text = "-";
-            this.toolStripButton_Divide.Click += new System.EventHandler(this.toolStripButton_Divide_Click);
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 50);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // toolStripSeparator2
+            // splitContainer1.Panel1
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            this.splitContainer1.Panel1.Controls.Add(this.glacialList1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.plotView1);
+            this.splitContainer1.Size = new System.Drawing.Size(1040, 471);
+            this.splitContainer1.SplitterDistance = 119;
+            this.splitContainer1.TabIndex = 3;
+            // 
+            // glacialList1
+            // 
+            this.glacialList1.AllowColumnResize = true;
+            this.glacialList1.AllowMultiselect = false;
+            this.glacialList1.AlternateBackground = System.Drawing.Color.DarkGreen;
+            this.glacialList1.AlternatingColors = false;
+            this.glacialList1.AutoHeight = true;
+            this.glacialList1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.glacialList1.BackgroundStretchToFit = true;
+            glColumn1.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn1.CheckBoxes = false;
+            glColumn1.ImageIndex = -1;
+            glColumn1.Name = "PN";
+            glColumn1.NumericSort = false;
+            glColumn1.Text = "点名";
+            glColumn1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn1.Width = 200;
+            glColumn2.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn2.CheckBoxes = false;
+            glColumn2.ImageIndex = -1;
+            glColumn2.Name = "ED";
+            glColumn2.NumericSort = false;
+            glColumn2.Text = "描述";
+            glColumn2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn2.Width = 300;
+            glColumn3.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn3.CheckBoxes = false;
+            glColumn3.ImageIndex = -1;
+            glColumn3.Name = "BV";
+            glColumn3.NumericSort = false;
+            glColumn3.Text = "下限";
+            glColumn3.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
+            glColumn3.Width = 100;
+            glColumn4.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn4.CheckBoxes = false;
+            glColumn4.ImageIndex = -1;
+            glColumn4.Name = "TV";
+            glColumn4.NumericSort = false;
+            glColumn4.Text = "上限";
+            glColumn4.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
+            glColumn4.Width = 100;
+            glColumn5.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn5.CheckBoxes = false;
+            glColumn5.ImageIndex = -1;
+            glColumn5.Name = "MIN";
+            glColumn5.NumericSort = true;
+            glColumn5.Text = "最小值*0.9倍";
+            glColumn5.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
+            glColumn5.Width = 90;
+            glColumn6.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn6.CheckBoxes = false;
+            glColumn6.ImageIndex = -1;
+            glColumn6.Name = "MAX";
+            glColumn6.NumericSort = true;
+            glColumn6.Text = "最大值*1.1倍";
+            glColumn6.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
+            glColumn6.Width = 90;
+            this.glacialList1.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
+            glColumn1,
+            glColumn2,
+            glColumn3,
+            glColumn4,
+            glColumn5,
+            glColumn6});
+            this.glacialList1.ContextMenuStrip = this.contextMenuStrip1;
+            this.glacialList1.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
+            this.glacialList1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.glacialList1.FullRowSelect = true;
+            this.glacialList1.GridColor = System.Drawing.Color.LightGray;
+            this.glacialList1.GridLines = GlacialComponents.Controls.GLGridLines.gridBoth;
+            this.glacialList1.GridLineStyle = GlacialComponents.Controls.GLGridLineStyles.gridSolid;
+            this.glacialList1.GridTypes = GlacialComponents.Controls.GLGridTypes.gridOnExists;
+            this.glacialList1.HeaderHeight = 22;
+            this.glacialList1.HeaderVisible = true;
+            this.glacialList1.HeaderWordWrap = false;
+            this.glacialList1.HotColumnTracking = false;
+            this.glacialList1.HotItemTracking = false;
+            this.glacialList1.HotTrackingColor = System.Drawing.Color.LightGray;
+            this.glacialList1.HoverEvents = false;
+            this.glacialList1.HoverTime = 1;
+            this.glacialList1.ImageList = null;
+            this.glacialList1.ItemHeight = 19;
+            this.glacialList1.ItemWordWrap = false;
+            this.glacialList1.Location = new System.Drawing.Point(0, 0);
+            this.glacialList1.Name = "glacialList1";
+            this.glacialList1.Selectable = true;
+            this.glacialList1.SelectedTextColor = System.Drawing.Color.White;
+            this.glacialList1.SelectionColor = System.Drawing.Color.DarkBlue;
+            this.glacialList1.ShowBorder = true;
+            this.glacialList1.ShowFocusRect = false;
+            this.glacialList1.Size = new System.Drawing.Size(1040, 119);
+            this.glacialList1.SortType = GlacialComponents.Controls.SortTypes.InsertionSort;
+            this.glacialList1.SuperFlatHeaderColor = System.Drawing.Color.White;
+            this.glacialList1.TabIndex = 0;
+            this.glacialList1.Text = "glacialList1";
+            // 
+            // plotView1
+            // 
+            this.plotView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.plotView1.Location = new System.Drawing.Point(0, 0);
+            this.plotView1.Name = "plotView1";
+            this.plotView1.PanCursor = System.Windows.Forms.Cursors.Hand;
+            this.plotView1.Size = new System.Drawing.Size(1040, 348);
+            this.plotView1.TabIndex = 0;
+            this.plotView1.Text = "plotView1";
+            this.plotView1.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
+            this.plotView1.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
+            this.plotView1.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.接受为报警高低限ToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(185, 26);
+            // 
+            // 接受为报警高低限ToolStripMenuItem
+            // 
+            this.接受为报警高低限ToolStripMenuItem.Name = "接受为报警高低限ToolStripMenuItem";
+            this.接受为报警高低限ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.接受为报警高低限ToolStripMenuItem.Text = "接受为报警高－低限";
+            this.接受为报警高低限ToolStripMenuItem.Click += new System.EventHandler(this.接受为报警高低限ToolStripMenuItem_Click);
             // 
             // FormCurves
             // 
@@ -283,6 +343,7 @@
             this.Name = "FormCurves";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "曲线";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
@@ -291,6 +352,7 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -315,5 +377,7 @@
         private System.Windows.Forms.ToolStripButton toolStripButton_Multi;
         private System.Windows.Forms.ToolStripButton toolStripButton_Divide;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem 接受为报警高低限ToolStripMenuItem;
     }
 }

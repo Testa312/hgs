@@ -323,12 +323,6 @@ namespace HGS
         {
             this.Show();
         }
-
-        private void 从文件导入ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            
-        }
-
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
         {
             notifyIcon1.Dispose();

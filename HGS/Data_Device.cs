@@ -136,10 +136,11 @@ namespace HGS
                                 if (secdata != null)
                                 {
                                     CountofDTWCalc++;
-                                    double cost = SisConnect.GetDtw_dd_diff(maindata, secdata, alarm_th_dis[Step]);
+                                    double cost = SisConnect.GetDtw_dd_diff(maindata, secdata, alarm_th_dis[Step]*1.414);
                                     if (cost > alarm_th_dis[Step])
                                     {
-                                        alarm_th_dis_max[Step] = (float)Math.Max(cost, alarm_th_dis_max[Step]);
+                                        if (!double.IsInfinity(cost))
+                                            alarm_th_dis_max[Step] = (float)Math.Max(cost, alarm_th_dis_max[Step]);
                                         return true;
                                     }
                                 }

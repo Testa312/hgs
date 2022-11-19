@@ -16,9 +16,7 @@ namespace HGS
     public partial class FormPointSet : Form
     {
         HashSet<string> hs_ND = new HashSet<string>();
-        //int PointNums = 0;
         bool isFirst = true;
- 
         public FormPointSet()
         {
             InitializeComponent();
@@ -45,16 +43,10 @@ namespace HGS
         {
             timerUpdateValue.Enabled = false;
             glacialList1.Items.Clear();
-            //PointNums = 0;
             this.Cursor = Cursors.WaitCursor;
-            //NewAddsisid.Clear();
             List<GLItem> lsItem = new List<GLItem>();
             foreach (point ptx in Data.inst().hsAllPoint)
             {
-                if (ptx.pointsrc == pointsrc.sis)
-                {
-                    //NewAddsisid.Add(ptx.id_sis,null);//唯一性
-                }
                 if ((ptx.pointsrc == pointsrc.sis || (Auth.GetInst().LoginID == 0 || ptx.OwnerId == Auth.GetInst().LoginID || 
                     ptx.OwnerId == 0)) &&
                     ptx.nd.Contains(tSCB_ND.Text.Trim()) && ptx.ed.Contains(tSTB_ED.Text.Trim()) &&
@@ -62,7 +54,6 @@ namespace HGS
                 {
                     GLItem item = new GLItem(glacialList1);
                     gllistInitItemTextFromPoint(ptx,item);
-                    //NewAddsisid[ptx.id_sis] = item;
                     lsItem.Add(item);
                 }
                 if (isFirst) hs_ND.Add(ptx.nd);              
@@ -85,8 +76,6 @@ namespace HGS
         }
         private void gllistInitItemTextFromPoint(point ptx , GLItem itemn)
         {
-            //if (ptx.id != ((itemtag)(itemn).Tag).id) throw new Exception("更换点和项目不同！");
-
             itemtag it = new itemtag();
             itemn.Tag = it;
             it.id = ptx.Id;
@@ -112,8 +101,6 @@ namespace HGS
             it.PointSrc = ptx.pointsrc;
 
             AlarmSubItemSymbol(itemn, ptx);
-            //PointNums++;
-            //DisplayHints();
         }
         private void gllistUpateItemText(GLItem item,point pt)
         {
@@ -124,18 +111,12 @@ namespace HGS
             item.SubItems["HL"].Text = pt.hl.ToString();
             item.SubItems["ZL"].Text = pt.zl.ToString();
             item.SubItems["ZH"].Text = pt.zh.ToString();
-            //item.SubItems["ND"].Text = pt.nd;
             item.SubItems["ED"].Text = pt.ed;
             item.SubItems["EU"].Text = pt.eu;
             item.SubItems["PN"].Text = pt.pn;
-            
-            //if (!dic_glItemNew.ContainsKey(item))
-            {
-               // dic_glItemModified[pt] = item;
-                Data.inst().hs_FormulaErrorPoint.Remove(pt);
-            }
 
-            //DisplayHints();
+            Data.inst().hs_FormulaErrorPoint.Remove(pt);
+            
             AlarmSubItemSymbol(item, pt);
         }
         private void toolStripButtonAddSis_Click(object sender, EventArgs e)//加sis点
@@ -294,26 +275,6 @@ namespace HGS
                 treeView_NodeMouseClick(null, ee);
             }
         }
-        private void toolStripButtonSave_Click(object sender, EventArgs e)
-        {
-            /*
-            try
-            {
-                //timerUpdateValue.Enabled = false;
-                Save();
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                //timerUpdateValue.Enabled = true;
-            }
-            glacialLisint();
-            DisplayHints();
-            */
-        }
 
         private void FormPointSet_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -388,12 +349,10 @@ namespace HGS
                     if (Point.orgformula_hl.Length > 0)
                     {
                         button_HL.ForeColor = Color.Red;
-                        //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
                     }
                     if (Point.Orgformula_ll.Length > 0)
                     {
                         button_LL.ForeColor = Color.Red;
-                        //button_LL.Text = Functions.NullDoubleRount(Point.ll, Point.fm).ToString();
                     }
                     textBoxHL.Enabled = Point.orgformula_hl.Length == 0;
                     textBoxLL.Enabled = Point.Orgformula_ll.Length == 0;
@@ -402,7 +361,6 @@ namespace HGS
                     if (Point.Alarmif.Length > 0)
                     {
                         buttonAlarmIf.ForeColor = Color.Red;
-                        //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
                     }
                 }
 
@@ -495,25 +453,6 @@ namespace HGS
             }
             Save();
         }
-        private void FormPointSet_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            /*
-            if (!toolStripButtonFind.Enabled &&
-                DialogResult.Yes == MessageBox.Show("已修改，是否保存？", "提示",
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question))
-            {
-                try
-                {
-                    Save();
-                }
-                catch (Exception ee)
-                {
-                    MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            */
-        }
-
         private void checkBoxbool_Click(object sender, EventArgs e)
         {
             if (checkBoxbool.Checked)
@@ -530,13 +469,6 @@ namespace HGS
         private void FormPointSet_Shown(object sender, EventArgs e)
         {
             glacialLisint();
-            /*
-            foreach(point pt in Data.inst().hsSisPoint)
-            {
-                onlysisid.Add(pt.id_sis);
-            }
-            */
-            //if (tSCB_ND.Items.Count > 0) tSCB_ND.SelectedIndex = 0;
             label_formula.Text = "";
         }
 
@@ -594,14 +526,11 @@ namespace HGS
                         if (CalcPoint.orgformula_hl.Length > 0)
                         {
                             button_HL.ForeColor = Color.Red;
-                            //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
                         }
                         textBoxHL.Enabled = CalcPoint.orgformula_hl.Length == 0;
                         Save();
                     }
                 }
-                //itemn.Tag = it;
-                
             }
         }
 
@@ -628,71 +557,15 @@ namespace HGS
                         if (CalcPoint.Orgformula_ll.Length > 0)
                         {
                             button_LL.ForeColor = Color.Red;
-                            //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
                         }
                         textBoxLL.Enabled = CalcPoint.Orgformula_ll.Length == 0;
                         Save();
                     }
                 }
-                //itemn.Tag = it;
-
             }
         }
-        private void tSB_Cancel_Click(object sender, EventArgs e)
-        {
-            /*
-            dic_glItemModified.Clear();
-            dic_glItemNew.Clear();
-            //NewAddsisid.Clear();
-            Data.inst().DeleteClear();
-            glacialLisint();
-            toolStripButtonFind.Enabled = true;
-            */
-        }
 
-        private void tSB_ImportFromFile_Click(object sender, EventArgs e)
-        {
-            /*
-            FormImportFromFile fiff = new FormImportFromFile();
-            if (DialogResult.OK == fiff.ShowDialog())
-            {
-                //toolStripButtonFind.Enabled = fiff.lspt.Count == 0;
-                List<GLItem> lsItem = new List<GLItem>();
-                try
-                {
-                    foreach (point pt in fiff.lspt)
-                    {
-                        if (Data.inst().dic_SisIdtoPoint.ContainsKey(pt.Id_sis))
-                        {
-                            if (DialogResult.Yes == MessageBox.Show(string.Format("点[{0}]-{1}已存在，是否修改报警限值？",
-                                pt.pn, pt.ed), "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
-                            {
-                                point ptx = Data.inst().dic_SisIdtoPoint[pt.Id_sis];
-                                ptx.hl = pt.hl;
-                                ptx.ll = pt.ll;
-                                dic_glItemModified.Add(ptx, null);//????????????
-                            }
-                        }
-                        else
-                        {
-                            GLItem itemn = new GLItem(glacialList1);
-                            gllistInitItemText(pt, itemn);
-                            lsItem.Add(itemn);
-                            dic_glItemNew.Add(itemn, pt);
-                        }
-                    }
-                    glacialList1.Items.AddRange(lsItem.ToArray());
-                    glacialList1.ScrolltoBottom();
-                    Save();
-                }
-                catch(Exception ee )
-                {
-                    MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            */
-        }
-
+    
         private void buttonAlarmIf_Click(object sender, EventArgs e)
         {
             if (glacialList1.SelectedItems.Count == 1)
@@ -1126,6 +999,11 @@ namespace HGS
                 FormCurves fc = new FormCurves(pointid);
                 fc.Show();
             }
+        }
+
+        private void toolStripButtonSave_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
