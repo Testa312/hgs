@@ -16,12 +16,13 @@ namespace HGS
     public partial class FormCalcAlarmIf : Form
     {
         HashSet<int> onlyid = new HashSet<int>();
-        public point CalcPoint;
+        private point CalcPoint;
         int PointNums = 0;
         //--------------------------------
-        public FormCalcAlarmIf()
+        public FormCalcAlarmIf(point pt)
         {
             InitializeComponent();
+            CalcPoint = pt;
         }
         private void DisplayStats()
         {
@@ -50,8 +51,8 @@ namespace HGS
                     itemn.SubItems["EU"].Text = Point.eu;
                     itemn.SubItems["ED"].Text = Point.ed;
                     //itemn.SubItems[1].Text = Pref.GetInst().GetVarName(Point);
-                    it.sisid = Point.id_sis;
-                    if (onlyid.Contains(CalcPoint.id)) throw new Exception("不能引用自身！");
+                    it.sisid = Point.Id_sis;
+                    if (onlyid.Contains(CalcPoint.Id)) throw new Exception("不能引用自身！");
                     onlyid.Add(it.id);//唯一性
                                       //
                     itemn.SubItems["VarName"].Text = subpt.varname;
@@ -60,12 +61,12 @@ namespace HGS
                 }
             }
             glacialList1.Items.AddRange(lsItmems.ToArray());
-            onlyid.Add(CalcPoint.id);//排除自已。
-            textBoxFormula.Text = CalcPoint.alarmif;
+            onlyid.Add(CalcPoint.Id);//排除自已。
+            textBoxFormula.Text = CalcPoint.Alarmif;
             textBoxmDiscription.Text = CalcPoint.ed;
             textBoxPN.Text = CalcPoint.pn;
             comboBox_eu.Text = CalcPoint.eu;
-            checkBoxCalc.Checked = CalcPoint.iscalc;
+            checkBoxCalc.Checked = CalcPoint.isCalc;
             numericUpDown.Value = CalcPoint.fm;
             timer1.Enabled = true;
             DisplayStats();
@@ -84,12 +85,12 @@ namespace HGS
                 {
                     itemtag it = (itemtag)(item.Tag);
                     point pt = Data.inst().cd_Point[it.id];
-                    if (pt.Av != null)
+                    if (pt.av != null)
                     {
-                        item.SubItems["AV"].Text = Math.Round(pt.Av ?? 0, pt.fm).ToString();
+                        item.SubItems["AV"].Text = Math.Round(pt.av ?? 0, pt.fm).ToString();
                     }
                     else
-                        item.SubItems["AV"].Text = pt.Av.ToString();
+                        item.SubItems["AV"].Text = pt.av.ToString();
                     item.SubItems["DS"].Text = pt.ps.ToString();
                 }
             }
@@ -151,7 +152,7 @@ namespace HGS
         {
             HashSet<string> hsVar = new HashSet<string>();
             CalcEngine.CalcEngine ce = new CalcEngine.CalcEngine();
-            point Point = new point();
+            point Point = new point(-1,pointsrc.calc);
             Point.lsCalcOrgSubPoint_alarmif = new List<varlinktopoint>();
             //-----
             //可加内部变量
@@ -181,21 +182,21 @@ namespace HGS
                 subpt.sub_id = it.id;
                 Point.lsCalcOrgSubPoint_alarmif.Add(subpt);
 
-                ce.Variables[subpt.varname] = Data.inst().cd_Point[it.id].Av;//测试用。
+                ce.Variables[subpt.varname] = Data.inst().cd_Point[it.id].av;//测试用。
             }
             if (textBoxmDiscription.Text.Length < 1)
             {
                 throw new Exception("计算点的的描述不能为空！");
             }
-            Point.alarmif = textBoxFormula.Text;
+            Point.Alarmif = textBoxFormula.Text;
             //
             bool orgv = true;
-            if (Point.alarmif.Length > 0 )
-                orgv = Convert.ToBoolean(ce.Evaluate(Point.alarmif)); //验证表达式的合法性
+            if (Point.Alarmif.Length > 0 )
+                orgv = Convert.ToBoolean(ce.Evaluate(Point.Alarmif)); //验证表达式的合法性
                                                                                            
             ce.Variables = Data.inst().Variables;
             bool expv = true;
-            if(Point.alarmif.Length > 0 )
+            if(Point.Alarmif.Length > 0 )
                 expv = Convert.ToBoolean(ce.Evaluate(Data.inst().ExpandOrgFormula_AlarmIf(Point)));//验证表达式展开sis点的合法性。
             if (rsl)
                 MessageBox.Show(string.Format("原公式计算值＝{0}\n展开公式计算值＝{1}",orgv,expv), 
@@ -206,7 +207,7 @@ namespace HGS
             try
             {
                 Dovalidity(false);
-                CalcPoint.alarmif = textBoxFormula.Text.Trim().Replace("\r\n","");
+                CalcPoint.Alarmif = textBoxFormula.Text.Trim().Replace("\r\n","");
 
                 CalcPoint.lsCalcOrgSubPoint_alarmif = new List<varlinktopoint>();
 

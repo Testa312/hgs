@@ -6,22 +6,15 @@ using System.Threading.Tasks;
 
 namespace HGS
 {
-    class Functions
+    static class Functions
     {
-        /*
-        private static Functions instance;
-
-        private Functions() { }
-
-        public static Functions inst()
+        public  static double? CasttoDouble(object ob)
         {
-            if (instance == null)
-            {
-                instance = new Functions();
-            }
-            return instance;
+            if (ob == DBNull.Value)
+                return null;
+            else
+                return (double)ob;
         }
-        */
         //返回大于n的素数。
         public static int AbovePrimes(int n)
         {

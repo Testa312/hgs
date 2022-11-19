@@ -237,9 +237,10 @@ namespace HGS
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
+            int ptid = Data.inst().GetNextPointId();
             foreach (GLItem item in glacialList.SelectedItems)
             {
-                point Point = new point();
+                point Point = new point(ptid,pointsrc.sis);
                 lsitem.Add(Point);
 
                 Point.nd = tSCBNode.Text;
@@ -257,10 +258,12 @@ namespace HGS
                 { Point.bv = double.Parse(v); }
                 else Point.bv = null;
 
-                Point.id_sis = ((itemtag)(item.Tag)).sisid;
+                Point.Id_sis = ((itemtag)(item.Tag)).sisid;
 
-                Point.pointsrc = pointsrc.sis;
-                Point.ownerid = Auth.GetInst().LoginID;
+                //Point.pointsrc = pointsrc.sis;
+                Point.OwnerId = Auth.GetInst().LoginID;
+                //
+                ptid++;
 
             }
         }

@@ -80,7 +80,7 @@ namespace HGS
                     point pt = Data.inst().cd_Point[id];
                     item.SubItems["PN"].Text = pt.pn;
                     item.SubItems["ED"].Text = pt.ed;
-                    item.Tag = pt.id;
+                    item.Tag = pt.Id;
                     for (int i = 0; i < ScanSpan.Length; i++)
                     {
                         item.SubItems[string.Format("m{0}", ScanSpan[i])].Text = pt.Dtw_start_th == null ? "" : Math.Round(pt.Dtw_start_th[i], 3).ToString();
@@ -245,7 +245,7 @@ namespace HGS
                     point pt = Data.inst().cd_Point[th.Key];
                     item.SubItems["PN"].Text = pt.pn;
                     item.SubItems["ED"].Text = pt.ed;
-                    item.Tag = pt.id;
+                    item.Tag = pt.Id;
                     for (int i = 0; i < ScanSpan.Length; i++)
                     {
                         item.SubItems[string.Format("m{0}",ScanSpan[i])].Text = Math.Round(th.Value[i],3).ToString();
@@ -471,7 +471,7 @@ namespace HGS
                 point pt = Data.inst().cd_Point[id];
                 item.SubItems["PN"].Text = pt.pn;
                 item.SubItems["ED"].Text = pt.ed;
-                item.Tag = pt.id;
+                item.Tag = pt.Id;
                 for (int i = 0; i < ScanSpan.Length; i++)
                 {
                     item.SubItems[string.Format("m{0}", ScanSpan[i])].Text = "";

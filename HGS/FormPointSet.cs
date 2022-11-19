@@ -15,9 +15,6 @@ namespace HGS
 {
     public partial class FormPointSet : Form
     {
-        Dictionary<GLItem, point> dic_glItemNew = new Dictionary<GLItem, point>();
-        Dictionary<point, GLItem> dic_glItemModified = new Dictionary<point, GLItem>();
-        //Dictionary<int, GLItem> NewAddsisid = new Dictionary<int,GLItem>();
         HashSet<string> hs_ND = new HashSet<string>();
         //int PointNums = 0;
         bool isFirst = true;
@@ -35,13 +32,13 @@ namespace HGS
         {
             if (pt.pointsrc == pointsrc.sis)
             {
-                item.SubItems["IsAlarm"].Text = pt.alarmifav && (pt.isavalarm || pt.isboolvalarm) ? Pref.Inst().strOk : Pref.Inst().strNo;
+                item.SubItems["IsAlarm"].Text = pt.Alarmifav && (pt.isAvalarm || pt.isboolvAlarm) ? Pref.Inst().strOk : Pref.Inst().strNo;
                 if (Data.inst().hs_FormulaErrorPoint.Contains(pt)) item.SubItems["FError"].Text = Pref.Inst().strNo; 
             }
             else
             {
-                item.SubItems["IsAlarm"].Text = pt.alarmifav && (pt.isavalarm || pt.isboolvalarm) ? Pref.Inst().strOk : Pref.Inst().strNo;
-                item.SubItems["IsCalc"].Text = pt.iscalc ? Pref.Inst().strOk : Pref.Inst().strNo;
+                item.SubItems["IsAlarm"].Text = pt.Alarmifav && (pt.isAvalarm || pt.isboolvAlarm) ? Pref.Inst().strOk : Pref.Inst().strNo;
+                item.SubItems["IsCalc"].Text = pt.isCalc ? Pref.Inst().strOk : Pref.Inst().strNo;
             }
         }
         private void glacialLisint()
@@ -58,13 +55,13 @@ namespace HGS
                 {
                     //NewAddsisid.Add(ptx.id_sis,null);//唯一性
                 }
-                if ((ptx.pointsrc == pointsrc.sis || (Auth.GetInst().LoginID == 0 || ptx.ownerid == Auth.GetInst().LoginID || 
-                    ptx.ownerid == 0)) &&
+                if ((ptx.pointsrc == pointsrc.sis || (Auth.GetInst().LoginID == 0 || ptx.OwnerId == Auth.GetInst().LoginID || 
+                    ptx.OwnerId == 0)) &&
                     ptx.nd.Contains(tSCB_ND.Text.Trim()) && ptx.ed.Contains(tSTB_ED.Text.Trim()) &&
                     ptx.pn.Contains(tSTB_PN.Text.Trim()) && ptx.orgformula_main.Contains(tSTB_F.Text.Trim()))
                 {
                     GLItem item = new GLItem(glacialList1);
-                    gllistInitItemText(ptx,item);
+                    gllistInitItemTextFromPoint(ptx,item);
                     //NewAddsisid[ptx.id_sis] = item;
                     lsItem.Add(item);
                 }
@@ -86,14 +83,14 @@ namespace HGS
             DisplayHints(lsItem.Count);
             glacialList1.Invalidate();
         }
-        private void gllistInitItemText(point ptx , GLItem itemn)
+        private void gllistInitItemTextFromPoint(point ptx , GLItem itemn)
         {
             //if (ptx.id != ((itemtag)(itemn).Tag).id) throw new Exception("更换点和项目不同！");
 
             itemtag it = new itemtag();
             itemn.Tag = it;
-            it.id = ptx.id;
-            itemn.SubItems["ID"].Text = ptx.id.ToString();
+            it.id = ptx.Id;
+            itemn.SubItems["ID"].Text = ptx.Id.ToString();
             itemn.SubItems["ND"].Text = ptx.nd;
             itemn.SubItems["PN"].Text = ptx.pn;
 
@@ -107,10 +104,10 @@ namespace HGS
 
             itemn.SubItems["ZL"].Text = ptx.zl.ToString();
             itemn.SubItems["ZH"].Text = ptx.zh.ToString();
-            itemn.SubItems["AlarmInfo"].Text = ptx.alarmininfo;
+            itemn.SubItems["AlarmInfo"].Text = ptx.Alarmininfo;
             itemn.SubItems["DS"].Text = ptx.ps.ToString();
 
-            it.sisid = ptx.id_sis;
+            it.sisid = ptx.Id_sis;
             it.fm = ptx.fm;
             it.PointSrc = ptx.pointsrc;
 
@@ -120,7 +117,7 @@ namespace HGS
         }
         private void gllistUpateItemText(GLItem item,point pt)
         {
-            if (pt.id != ((itemtag)(item).Tag).id) throw new Exception("更换点和项目不同！");
+            if (pt.Id != ((itemtag)(item).Tag).id) throw new Exception("更换点和项目不同！");
             item.SubItems["TV"].Text = pt.tv.ToString();
             item.SubItems["BV"].Text = pt.bv.ToString();
             item.SubItems["LL"].Text = pt.ll.ToString();
@@ -131,9 +128,10 @@ namespace HGS
             item.SubItems["ED"].Text = pt.ed;
             item.SubItems["EU"].Text = pt.eu;
             item.SubItems["PN"].Text = pt.pn;
-            if (!dic_glItemNew.ContainsKey(item))
+            
+            //if (!dic_glItemNew.ContainsKey(item))
             {
-                dic_glItemModified[pt] = item;
+               // dic_glItemModified[pt] = item;
                 Data.inst().hs_FormulaErrorPoint.Remove(pt);
             }
 
@@ -145,19 +143,21 @@ namespace HGS
             FormSisPointList fspl = new FormSisPointList();
             if (fspl.ShowDialog() == DialogResult.OK)
             {
-                //toolStripButtonFind.Enabled = fspl.lsitem.Count == 0;
                 List<GLItem> lsItem = new List<GLItem>();
+                HashSet<int> hs_ptid = new HashSet<int>();
                 foreach (point pt in fspl.lsitem)
                 {
-                    if (!Data.inst().dic_SisIdtoPoint.ContainsKey(pt.id_sis))
+                    if (!Data.inst().dic_SisIdtoPoint.ContainsKey(pt.Id_sis))
                     {
                        
                         GLItem itemn = new GLItem(glacialList1);
-                        gllistInitItemText(pt,itemn);
+                        gllistInitItemTextFromPoint(pt,itemn);
                         lsItem.Add(itemn);
-                        //
-                        //NewAddsisid.Add(pt.id_sis,itemn);
-                        dic_glItemNew.Add(itemn, pt);
+                        if (!hs_ND.Contains(pt.nd))
+                        {
+                            tSCB_ND.Items.Add(pt.nd);
+                        }
+                        hs_ptid.Add(pt.Id);
                     }
                     else 
                     {
@@ -165,11 +165,21 @@ namespace HGS
                             pt.pn),"提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
                      }
                 }
-                glacialList1.Items.AddRange(lsItem.ToArray());
-                glacialList1.ScrolltoBottom();
-                //DisplayHints();
-                //
                 Save();
+                TreeNode tn = treeView.SelectedNode;
+                if (tn != null && tn.Text != "全部")
+                {
+                    DeviceInfo tt = (DeviceInfo)tn.Tag;
+                    tt.UnionWith(hs_ptid);
+                    DataDeviceTree.UpdateNodetoDB(tn);
+                }
+                if (tn != null && hs_ptid.Count > 0)
+                    MessageBox.Show("应重新设置设备报警参数");
+
+                glacialList1.Items.AddRange(lsItem.ToArray());
+                glacialList1.Invalidate();
+                glacialList1.ScrolltoBottom();
+                
             }
         }
         private void buttonSet_Click(object sender, EventArgs e)
@@ -187,14 +197,14 @@ namespace HGS
                             List<double> lsav = new List<double>();
                             itemtag it = (itemtag)item.Tag;
 
-                            point pt = dic_glItemNew.ContainsKey(item) ? dic_glItemNew[item] : Data.inst().cd_Point[it.id];
+                            point pt = Data.inst().cd_Point[it.id];
 
                             if (textBoxZL.Text.Length > 0)
                             { pt.zl = double.Parse(textBoxZL.Text); lsav.Add(Convert.ToDouble(pt.zl)); }
                             else pt.zl = null;
 
                             if (textBoxLL.Text.Length > 0 && 
-                                pt.orgformula_ll.Length == 0) { pt.ll = double.Parse(textBoxLL.Text); lsav.Add(Convert.ToDouble(pt.ll)); }
+                                pt.Orgformula_ll.Length == 0) { pt.ll = double.Parse(textBoxLL.Text); lsav.Add(Convert.ToDouble(pt.ll)); }
                             else pt.ll = null;
 
                             if (textBoxBV.Text.Length > 0) { pt.bv = double.Parse(textBoxBV.Text); /*lsav.Add(Convert.ToDouble(pt.bv));*/ }
@@ -221,37 +231,37 @@ namespace HGS
                             }
                             gllistUpateItemText(item, pt);
                            
-                            pt.isavalarm = checkBoxAlarm.Checked;
-                            if (!pt.isavalarm)
+                            pt.isAvalarm = checkBoxAlarm.Checked;
+                            if (!pt.isAvalarm)
                             {
                                 item.SubItems["AlarmInfo"].Text= "";
                                 point ppt = Data.inst().cd_Point[it.id];
-                                pt.alarmininfo = "";
+                                pt.Alarmininfo = "";
                                 AlarmSet.GetInst().Remove(ppt);
                             }
-                            pt.isboolvalarm = checkBoxbool.Checked;
-                            pt.boolalarminfo = tB_boolAlarmInfo.Text;
-                            pt.boolalarmif = radioButton_true.Checked;
+                            pt.isboolvAlarm = checkBoxbool.Checked;
+                            pt.boolAlarminfo = tB_boolAlarmInfo.Text;
+                            pt.boolAlarmif = radioButton_true.Checked;
 
                             if (textBox_pp.Text.Length > 0)
-                            { pt.skip_pp = double.Parse(textBox_pp.Text);}
-                            else pt.skip_pp = null;
-                            pt.isalarmskip = checkBox_isSkip.Checked;
-                            pt.isalarmwave = checkBox_isWave.Checked;
+                            { pt.Skip_pp = double.Parse(textBox_pp.Text);}
+                            else pt.Skip_pp = null;
+                            pt.isAlarmskip = checkBox_isSkip.Checked;
+                            pt.isAlarmwave = checkBox_isWave.Checked;
 
-                            if ((pt.isalarmwave || pt.isalarmskip) && pt.skip_pp != null)
+                            if ((pt.isAlarmwave || pt.isAlarmskip) && pt.Skip_pp != null)
                             {
-                                if (pt.waveDetection == null)
+                                if (pt.WaveDetection == null)
                                 {
-                                    pt.waveDetection = new WaveDetection();
+                                    pt.WaveDetection = new WaveDetection();
                                 }                               
                             } 
-                            else if(pt.waveDetection != null)
+                            else if(pt.WaveDetection != null)
                             {                               
-                                pt.waveDetection.Clear();
-                                pt.waveDetection = null;
+                                pt.WaveDetection.Clear();
+                                pt.WaveDetection = null;
                             }
-                            if ((pt.isalarmwave || pt.isalarmskip) && pt.skip_pp == null && pt.skip_pp > 0)
+                            if ((pt.isAlarmwave || pt.isAlarmskip) && pt.Skip_pp == null && pt.Skip_pp > 0)
                                 MessageBox.Show("阈值不应为空且大于0！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                         Save();
@@ -267,38 +277,8 @@ namespace HGS
         private void Save()
         {
             try
-            {
-                foreach (point pt in dic_glItemModified.Keys)
-                {
-                    Data.inst().Update(pt);
-                }
-                int ptid = Data.inst().GetNextPointId();
-                HashSet<int> hs_ptid = new HashSet<int>();
-                foreach (point pt in dic_glItemNew.Values)
-                {
-                    pt.id = ptid;
-                    Data.inst().Add(pt);
-                    hs_ptid.Add(ptid);
-                    if (!hs_ND.Contains(pt.nd))
-                    {
-                        tSCB_ND.Items.Add(pt.nd);
-                    }
-                    ptid++;
-                }
+            {     
                 Data.inst().SavetoPG();
-                //PointNums += dic_glItemNew.Count;
-                dic_glItemModified.Clear();
-                dic_glItemNew.Clear();
-                //
-                TreeNode tn = treeView.SelectedNode;
-                if (tn != null && tn.Text != "全部")
-                {
-                    DeviceInfo tt = (DeviceInfo)tn.Tag;
-                    tt.UnionWith(hs_ptid);
-                    DataDeviceTree.UpdateNodetoDB(tn);
-                }
-                if (tn != null)
-                    MessageBox.Show("应重新设置设备报警参数");
             }
             catch (Exception ee)
             {
@@ -349,27 +329,27 @@ namespace HGS
                     itemtag it = (itemtag)(item.Tag);
                     if (glacialList1.IsItemVisible(item))
                     {
-
-                        //bool sss = dic_glItemNew.ContainsKey(item);
-                        point pt = dic_glItemNew.ContainsKey(item) ? dic_glItemNew[item] : Data.inst().cd_Point[it.id];
-                        item.SubItems["AV"].Text = Functions.NullDoubleRount(pt.Av, pt.fm).ToString();
-                        item.SubItems["DS"].Text = pt.ps.ToString();
-                        item.SubItems["AlarmInfo"].Text = pt.alarmininfo;
-                        //
-                        if (pt.orgformula_hl.Length > 0)
+                        point pt;
+                        if(Data.inst().cd_Point.TryGetValue(it.id,out pt))
                         {
-                            item.SubItems["HL"].Text = Functions.NullDoubleRount(pt.hl, pt.fm).ToString();
-                        }
-                        if (pt.orgformula_ll.Length > 0)
-                        {
-                            item.SubItems["LL"].Text = Functions.NullDoubleRount(pt.ll, pt.fm).ToString();
+                            item.SubItems["AV"].Text = Functions.NullDoubleRount(pt.av, pt.fm).ToString();
+                            item.SubItems["DS"].Text = pt.ps.ToString();
+                            item.SubItems["AlarmInfo"].Text = pt.Alarmininfo;
+                            //
+                            if (pt.orgformula_hl.Length > 0)
+                            {
+                                item.SubItems["HL"].Text = Functions.NullDoubleRount(pt.hl, pt.fm).ToString();
+                            }
+                            if (pt.Orgformula_ll.Length > 0)
+                            {
+                                item.SubItems["LL"].Text = Functions.NullDoubleRount(pt.ll, pt.fm).ToString();
+                            }
                         }
                     }
                 }
             }
             catch (Exception)
             { }
-            //DisplayHints();
         }
         private void glacialList1_Click(object sender, EventArgs e)
         {
@@ -378,49 +358,52 @@ namespace HGS
                 GLItem item = (GLItem)glacialList1.SelectedItems[0];
                 itemtag it = (itemtag)(item.Tag);
 
-                point Point = dic_glItemNew.ContainsKey(item) ? dic_glItemNew[item] : Data.inst().cd_Point[it.id];
-                textBoxTV.Text = Point.tv.ToString();
-                textBoxBV.Text = Point.bv.ToString();
-                textBoxLL.Text = Point.ll.ToString();
-                textBoxHL.Text = Point.hl.ToString();
-                textBoxZL.Text = Point.zl.ToString();
-                textBoxZH.Text = Point.zh.ToString();
-                checkBoxAlarm.Checked = Point.isavalarm;
-                checkBoxbool.Checked = Point.isboolvalarm;
-                tB_boolAlarmInfo.Text = Point.boolalarminfo;
-                if (Point.boolalarminfo.Length <= 0)
-                    tB_boolAlarmInfo.Text = Point.ed;
-                buttonCalc.Enabled = (it.PointSrc == pointsrc.calc) ? true : false;
-
-                label_formula.Text = Point.orgformula_main;
-
-                radioButton_true.Checked = Point.boolalarmif;
-                radioButton_false.Checked = !Point.boolalarmif;
-
-                checkBox_isSkip.Checked = Point.isalarmskip;
-                checkBox_isWave.Checked = Point.isalarmwave;
-                textBox_pp.Text = Point.skip_pp.ToString();
-                //
-                button_HL.ForeColor = Color.Black;
-                button_LL.ForeColor = Color.Black;
-                if (Point.orgformula_hl.Length > 0)
+                point Point;
+                if (Data.inst().cd_Point.TryGetValue(it.id, out Point))
                 {
-                    button_HL.ForeColor = Color.Red;
-                    //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
-                }
-                if (Point.orgformula_ll.Length > 0)
-                {
-                    button_LL.ForeColor = Color.Red;
-                    //button_LL.Text = Functions.NullDoubleRount(Point.ll, Point.fm).ToString();
-                }
-                textBoxHL.Enabled = Point.orgformula_hl.Length == 0;
-                textBoxLL.Enabled = Point.orgformula_ll.Length == 0;
+                    textBoxTV.Text = Point.tv.ToString();
+                    textBoxBV.Text = Point.bv.ToString();
+                    textBoxLL.Text = Point.ll.ToString();
+                    textBoxHL.Text = Point.hl.ToString();
+                    textBoxZL.Text = Point.zl.ToString();
+                    textBoxZH.Text = Point.zh.ToString();
+                    checkBoxAlarm.Checked = Point.isAvalarm;
+                    checkBoxbool.Checked = Point.isboolvAlarm;
+                    tB_boolAlarmInfo.Text = Point.boolAlarminfo;
+                    if (Point.boolAlarminfo.Length <= 0)
+                        tB_boolAlarmInfo.Text = Point.ed;
+                    buttonCalc.Enabled = (it.PointSrc == pointsrc.calc) ? true : false;
 
-                buttonAlarmIf.ForeColor = Color.Black;
-                if (Point.alarmif.Length > 0)
-                {
-                    buttonAlarmIf.ForeColor = Color.Red;
-                    //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
+                    label_formula.Text = Point.orgformula_main;
+
+                    radioButton_true.Checked = Point.boolAlarmif;
+                    radioButton_false.Checked = !Point.boolAlarmif;
+
+                    checkBox_isSkip.Checked = Point.isAlarmskip;
+                    checkBox_isWave.Checked = Point.isAlarmwave;
+                    textBox_pp.Text = Point.Skip_pp.ToString();
+                    //
+                    button_HL.ForeColor = Color.Black;
+                    button_LL.ForeColor = Color.Black;
+                    if (Point.orgformula_hl.Length > 0)
+                    {
+                        button_HL.ForeColor = Color.Red;
+                        //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
+                    }
+                    if (Point.Orgformula_ll.Length > 0)
+                    {
+                        button_LL.ForeColor = Color.Red;
+                        //button_LL.Text = Functions.NullDoubleRount(Point.ll, Point.fm).ToString();
+                    }
+                    textBoxHL.Enabled = Point.orgformula_hl.Length == 0;
+                    textBoxLL.Enabled = Point.Orgformula_ll.Length == 0;
+
+                    buttonAlarmIf.ForeColor = Color.Black;
+                    if (Point.Alarmif.Length > 0)
+                    {
+                        buttonAlarmIf.ForeColor = Color.Red;
+                        //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
+                    }
                 }
 
             }
@@ -428,45 +411,52 @@ namespace HGS
 
         }
         private void toolStripButtonAddNewCalc_Click(object sender, EventArgs e)
-        {          
-            FormCalcPointSet fcps = new FormCalcPointSet();
-            fcps.CalcPoint = new point();
+        {
+            point calcpt = new point(-1, pointsrc.calc);
+            FormCalcPointSet fcps = new FormCalcPointSet(calcpt);          
             fcps.Text = "新加计算点";
-            //fcps.CellId = cellid.main;
             if (fcps.ShowDialog() == DialogResult.OK)
             {
-                //toolStripButtonFind.Enabled = false;
-                GLItem item = new GLItem(glacialList1);
-                gllistInitItemText(fcps.CalcPoint, item);
-                glacialList1.Items.Add(item);
-                dic_glItemNew.Add(item, fcps.CalcPoint);
-
-                glacialList1.ScrolltoBottom();
-                //
+                calcpt.Id = Data.inst().GetNextPointId();
                 Save();
+                GLItem item = new GLItem(glacialList1);
+                gllistInitItemTextFromPoint(calcpt, item);
+                glacialList1.Items.Add(item);
+                
+                TreeNode tn = treeView.SelectedNode;
+                if (tn != null && tn.Text != "全部")
+                {
+                    DeviceInfo tt = (DeviceInfo)tn.Tag;
+                    HashSet<int> hs_id = new HashSet<int>();
+                    hs_id.Add(calcpt.Id);
+                    tt.UnionWith(hs_id);
+                    DataDeviceTree.UpdateNodetoDB(tn);
+                }
+                if (tn != null)
+                    MessageBox.Show("应重新设置设备报警参数");
+                glacialList1.ScrolltoBottom();
+                glacialList1.Invalidate();                          
             }
-           
         }
-
         private void buttonCalcSet_Click(object sender, EventArgs e)
         {
             if (glacialList1.SelectedItems.Count == 1)
             {
-                FormCalcPointSet fcps = new FormCalcPointSet();
+                
                 GLItem itemn = (GLItem)glacialList1.SelectedItems[0];
                 itemtag it = (itemtag)itemn.Tag;
-
-                fcps.CalcPoint = dic_glItemNew.ContainsKey(itemn) ? dic_glItemNew[itemn] : Data.inst().cd_Point[it.id];
-                fcps.glacialLisint();
-                fcps.Text = string.Format("点[{0}]公式",fcps.CalcPoint.ed);
-                //fcps.CellId = cellid.main;
-                if (fcps.ShowDialog() == DialogResult.OK)
+                point calppt;
+                if (Data.inst().cd_Point.TryGetValue(it.id, out calppt))
                 {
-                    //toolStripButtonFind.Enabled = false;
-
-                    gllistUpateItemText(itemn, fcps.CalcPoint);
-                    Save();
-                }                
+                    FormCalcPointSet fcps = new FormCalcPointSet(calppt);
+                    fcps.glacialLisint();
+                    fcps.Text = string.Format("点[{0}]公式", calppt.ed);
+                    if (fcps.ShowDialog() == DialogResult.OK)
+                    {
+                        gllistUpateItemText(itemn, calppt);
+                        Save();
+                    }
+                }
             }
         }
        
@@ -489,7 +479,7 @@ namespace HGS
                     foreach (int pid in lspid)
                     {
                         point pt = Data.inst().cd_Point[pid];
-                        sb.AppendLine(string.Format("[id:{0}]-{1}", pt.id, pt.ed));
+                        sb.AppendLine(string.Format("[id:{0}]-{1}", pt.Id, pt.ed));
                     }
                     MessageBox.Show(sb.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     continue;
@@ -559,15 +549,18 @@ namespace HGS
                 GLItem itemn = (GLItem)glacialList1.SelectedItems[0];
                 itemtag it = (itemtag)itemn.Tag;
 
-                point Point = dic_glItemNew.ContainsKey(itemn) ? dic_glItemNew[itemn] : Data.inst().cd_Point[it.id];
-                ffv.Text = string.Format("强制{0}点",Point.ed);
-                ffv.textBoxValue.Text = Point.forceav.ToString();
-                ffv.checkBoxForce.Checked = Point.isforce;
-                if(DialogResult.OK == ffv.ShowDialog())
+                point Point;
+                if (Data.inst().cd_Point.TryGetValue(it.id, out Point))
                 {
-                    Point.isforce = ffv.checkBoxForce.Checked;
-                    Point.forceav = Convert.ToDouble(ffv.textBoxValue.Text);
-                    Point.ps = PointState.Force;
+                    ffv.Text = string.Format("强制{0}点", Point.ed);
+                    ffv.textBoxValue.Text = Point.Forceav.ToString();
+                    ffv.checkBoxForce.Checked = Point.isForce;
+                    if (DialogResult.OK == ffv.ShowDialog())
+                    {
+                        Point.isForce = ffv.checkBoxForce.Checked;
+                        Point.Forceav = Convert.ToDouble(ffv.textBoxValue.Text);
+                        Point.ps = PointState.Force;
+                    }
                 }
             }
         }
@@ -581,29 +574,31 @@ namespace HGS
         {
             if (glacialList1.SelectedItems.Count == 1)
             {
-                FormCalcAlarmHlSet fcps = new FormCalcAlarmHlSet();
+                
                 GLItem itemn = (GLItem)glacialList1.SelectedItems[0];
                 itemtag it = (itemtag)itemn.Tag;
 
-                fcps.CalcPoint = dic_glItemNew.ContainsKey(itemn) ? dic_glItemNew[itemn] : Data.inst().cd_Point[it.id];
-                fcps.glacialLisint();
-                fcps.Text = string.Format("点[{0}]高报警值计算", fcps.CalcPoint.ed);
-                //fcps.CellId = cellid.main;
-                if (fcps.ShowDialog() == DialogResult.OK)
+                point CalcPoint;
+                if (Data.inst().cd_Point.TryGetValue(it.id, out CalcPoint))
                 {
-                    if (!dic_glItemNew.ContainsKey(itemn))
+                    FormCalcAlarmHlSet fcps = new FormCalcAlarmHlSet(CalcPoint);
+                    fcps.glacialLisint();
+                    fcps.Text = string.Format("点[{0}]高报警值计算", CalcPoint.ed);
+                    //fcps.CellId = cellid.main;
+                    if (fcps.ShowDialog() == DialogResult.OK)
                     {
-                        dic_glItemModified[fcps.CalcPoint] = itemn;
-                        Data.inst().hs_FormulaErrorPoint.Remove(fcps.CalcPoint);
+
+                        Data.inst().hs_FormulaErrorPoint.Remove(CalcPoint);
+                        
+                        button_HL.ForeColor = Color.Black;
+                        if (CalcPoint.orgformula_hl.Length > 0)
+                        {
+                            button_HL.ForeColor = Color.Red;
+                            //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
+                        }
+                        textBoxHL.Enabled = CalcPoint.orgformula_hl.Length == 0;
+                        Save();
                     }
-                    button_HL.ForeColor = Color.Black;
-                    if (fcps.CalcPoint.orgformula_hl.Length > 0)
-                    {
-                        button_HL.ForeColor = Color.Red;
-                        //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
-                    }
-                    textBoxHL.Enabled = fcps.CalcPoint.orgformula_hl.Length == 0;
-                    Save();
                 }
                 //itemn.Tag = it;
                 
@@ -614,29 +609,30 @@ namespace HGS
         {
             if (glacialList1.SelectedItems.Count == 1)
             {
-                FormCalcAlarmLLSet fcps = new FormCalcAlarmLLSet();
+                
                 GLItem itemn = (GLItem)glacialList1.SelectedItems[0];
                 itemtag it = (itemtag)itemn.Tag;
-
-                fcps.CalcPoint = dic_glItemNew.ContainsKey(itemn) ? dic_glItemNew[itemn] : Data.inst().cd_Point[it.id];
-                fcps.glacialLisint();
-                fcps.Text = string.Format("点[{0}]低报警值计算", fcps.CalcPoint.ed);
-                //fcps.CellId = cellid.main;
-                if (fcps.ShowDialog() == DialogResult.OK)
+                point CalcPoint;
+                if (Data.inst().cd_Point.TryGetValue(it.id, out CalcPoint))
                 {
-                    if (!dic_glItemNew.ContainsKey(itemn))
+                    FormCalcAlarmLLSet fcps = new FormCalcAlarmLLSet(CalcPoint);
+                    fcps.glacialLisint();
+                    fcps.Text = string.Format("点[{0}]低报警值计算", CalcPoint.ed);
+                    //fcps.CellId = cellid.main;
+                    if (fcps.ShowDialog() == DialogResult.OK)
                     {
-                        dic_glItemModified[fcps.CalcPoint] = itemn;
-                        Data.inst().hs_FormulaErrorPoint.Remove(fcps.CalcPoint);
+
+                        Data.inst().hs_FormulaErrorPoint.Remove(CalcPoint);
+
+                        button_LL.ForeColor = Color.Black;
+                        if (CalcPoint.Orgformula_ll.Length > 0)
+                        {
+                            button_LL.ForeColor = Color.Red;
+                            //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
+                        }
+                        textBoxLL.Enabled = CalcPoint.Orgformula_ll.Length == 0;
+                        Save();
                     }
-                    button_LL.ForeColor = Color.Black;
-                    if (fcps.CalcPoint.orgformula_ll.Length > 0)
-                    {
-                        button_LL.ForeColor = Color.Red;
-                        //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
-                    }
-                    textBoxLL.Enabled = fcps.CalcPoint.orgformula_ll.Length == 0;
-                    Save();
                 }
                 //itemn.Tag = it;
 
@@ -656,6 +652,7 @@ namespace HGS
 
         private void tSB_ImportFromFile_Click(object sender, EventArgs e)
         {
+            /*
             FormImportFromFile fiff = new FormImportFromFile();
             if (DialogResult.OK == fiff.ShowDialog())
             {
@@ -665,12 +662,12 @@ namespace HGS
                 {
                     foreach (point pt in fiff.lspt)
                     {
-                        if (Data.inst().dic_SisIdtoPoint.ContainsKey(pt.id_sis))
+                        if (Data.inst().dic_SisIdtoPoint.ContainsKey(pt.Id_sis))
                         {
                             if (DialogResult.Yes == MessageBox.Show(string.Format("点[{0}]-{1}已存在，是否修改报警限值？",
                                 pt.pn, pt.ed), "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
                             {
-                                point ptx = Data.inst().dic_SisIdtoPoint[pt.id_sis];
+                                point ptx = Data.inst().dic_SisIdtoPoint[pt.Id_sis];
                                 ptx.hl = pt.hl;
                                 ptx.ll = pt.ll;
                                 dic_glItemModified.Add(ptx, null);//????????????
@@ -693,40 +690,42 @@ namespace HGS
                     MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+            */
         }
 
         private void buttonAlarmIf_Click(object sender, EventArgs e)
         {
             if (glacialList1.SelectedItems.Count == 1)
             {
-                FormCalcAlarmIf fcaf = new FormCalcAlarmIf();
+                
                 GLItem itemn = (GLItem)glacialList1.SelectedItems[0];
                 itemtag it = (itemtag)itemn.Tag;
-
-                fcaf.CalcPoint = dic_glItemNew.ContainsKey(itemn) ? dic_glItemNew[itemn] : Data.inst().cd_Point[it.id];
-                fcaf.glacialLisint();
-                fcaf.Text = string.Format("点[{0}]报警条件设置", fcaf.CalcPoint.ed);
-                //fcps.CellId = cellid.main;
-                if (fcaf.ShowDialog() == DialogResult.OK)
+                point CalcPoint;
+                if (Data.inst().cd_Point.TryGetValue(it.id, out CalcPoint))
                 {
-                    if (!dic_glItemNew.ContainsKey(itemn))
+                    FormCalcAlarmIf fcaf = new FormCalcAlarmIf(CalcPoint);
+                    fcaf.glacialLisint();
+                    fcaf.Text = string.Format("点[{0}]报警条件设置", CalcPoint.ed);
+                    //fcps.CellId = cellid.main;
+                    if (fcaf.ShowDialog() == DialogResult.OK)
                     {
-                        dic_glItemModified[fcaf.CalcPoint] = itemn;
-                        Data.inst().hs_FormulaErrorPoint.Remove(fcaf.CalcPoint);
-                    }
-                    buttonAlarmIf.ForeColor = Color.Black;
-                    if (fcaf.CalcPoint.alarmif.Length > 0)
-                    {
-                        buttonAlarmIf.ForeColor = Color.Red;
 
-                        itemn.SubItems["AlarmInfo"].Text = "";
-                        point pt = Data.inst().cd_Point[it.id];
-                        pt.alarmininfo = "";
-                        AlarmSet.GetInst().Remove(pt);
-                        //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
+                        Data.inst().hs_FormulaErrorPoint.Remove(CalcPoint);
+
+                        buttonAlarmIf.ForeColor = Color.Black;
+                        if (CalcPoint.Alarmif.Length > 0)
+                        {
+                            buttonAlarmIf.ForeColor = Color.Red;
+
+                            itemn.SubItems["AlarmInfo"].Text = "";
+                            point pt = Data.inst().cd_Point[it.id];
+                            pt.Alarmininfo = "";
+                            AlarmSet.GetInst().Remove(pt);
+                            //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
+                        }
+                        //buttonAlarmIf.Enabled = fcaf.CalcPoint.alarmif.Length == 0;
+                        Save();
                     }
-                    //buttonAlarmIf.Enabled = fcaf.CalcPoint.alarmif.Length == 0;
-                    Save();
                 }
                 //itemn.Tag = it;
 
@@ -806,7 +805,7 @@ namespace HGS
                         point pt;
                         if (Data.inst().cd_Point.TryGetValue(id, out pt))
                         {
-                            gllistInitItemText(pt, item);
+                            gllistInitItemTextFromPoint(pt, item);
                             lsItem.Add(item);
                         }
                         else
@@ -895,7 +894,7 @@ namespace HGS
                                 foreach(int sensor in ((DeviceInfo)ntn.Tag).Sensors_set())
                                 {
                                     point pt = Data.inst().cd_Point[sensor];
-                                    pt.alarmininfo = "";
+                                    pt.Alarmininfo = "";
                                     AlarmSet.GetInst().Remove(pt);
                                 }
                                 return;

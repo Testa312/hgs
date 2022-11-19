@@ -48,12 +48,12 @@ namespace HGS
                     if (ptx.nd.Contains(tSCBNode.Text.Trim()) && flag &&
                         ptx.pn.Contains(tSTBPN.Text.Trim()))
                     {
-                        if (onlyid.Contains(ptx.id)) continue;
+                        if (onlyid.Contains(ptx.Id)) continue;
 
                         GLItem itemn = new GLItem(glacialList);
                         lsItmems.Add(itemn);
                         itemtag it = new itemtag();
-                        it.id = ptx.id;
+                        it.id = ptx.Id;
 
                         itemn.SubItems["ND"].Text = ptx.nd;
                         itemn.SubItems["PN"].Text = ptx.pn;
@@ -61,7 +61,7 @@ namespace HGS
                         itemn.SubItems["EU"].Text = ptx.eu;
                         itemn.SubItems["ED"].Text = ptx.ed;
 
-                        it.sisid = ptx.id_sis;
+                        it.sisid = ptx.Id_sis;
 
                         it.PointSrc = ptx.pointsrc;
 
@@ -108,9 +108,9 @@ namespace HGS
                 {
                     itemtag it = (itemtag)(item.Tag);
                     point pt = Data.inst().cd_Point[it.id];
-                    if (pt.Av != null)
+                    if (pt.av != null)
                     {
-                        item.SubItems["AV"].Text = Math.Round(pt.Av ?? 0, pt.fm).ToString();
+                        item.SubItems["AV"].Text = Math.Round(pt.av ?? 0, pt.fm).ToString();
                     }
                     else
                         item.SubItems["AV"].Text = "";

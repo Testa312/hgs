@@ -16,12 +16,13 @@ namespace HGS
     public partial class FormCalcAlarmHlSet : Form
     {
         HashSet<int> onlyid = new HashSet<int>();
-        public point CalcPoint;
+        private point CalcPoint;
         int PointNums = 0;
         //--------------------------------
-        public FormCalcAlarmHlSet()
+        public FormCalcAlarmHlSet(point pt)
         {
             InitializeComponent();
+            CalcPoint = pt;
         }
         private void DisplayStats()
         {
@@ -50,8 +51,8 @@ namespace HGS
                     itemn.SubItems["EU"].Text = Point.eu;
                     itemn.SubItems["ED"].Text = Point.ed;
                     //itemn.SubItems[1].Text = Pref.GetInst().GetVarName(Point);
-                    it.sisid = Point.id_sis;
-                    if (onlyid.Contains(CalcPoint.id)) throw new Exception("不能引用自身！");
+                    it.sisid = Point.Id_sis;
+                    if (onlyid.Contains(CalcPoint.Id)) throw new Exception("不能引用自身！");
                     onlyid.Add(it.id);//唯一性
                                       //
                     itemn.SubItems["VarName"].Text = subpt.varname;
@@ -60,12 +61,12 @@ namespace HGS
                 }
             }
             glacialList1.Items.AddRange(lsItmems.ToArray());
-            onlyid.Add(CalcPoint.id);//排除自已。
+            onlyid.Add(CalcPoint.Id);//排除自已。
             textBoxFormula.Text = CalcPoint.orgformula_hl;
             textBoxmDiscription.Text = CalcPoint.ed;
             textBoxPN.Text = CalcPoint.pn;
             comboBox_eu.Text = CalcPoint.eu;
-            checkBoxCalc.Checked = CalcPoint.iscalc;
+            checkBoxCalc.Checked = CalcPoint.isCalc;
             numericUpDown.Value = CalcPoint.fm;
             timer1.Enabled = true;
             DisplayStats();
@@ -84,13 +85,13 @@ namespace HGS
                 {
                     itemtag it = (itemtag)(item.Tag);
                     point pt = Data.inst().cd_Point[it.id];
-                    if (pt.Av != null)
+                    if (pt.av != null)
                     {
-                        double dAV = pt.Av ?? 0;
+                        double dAV = pt.av ?? 0;
                         item.SubItems["AV"].Text = Math.Round(dAV, pt.fm).ToString();
                     }
                     else
-                        item.SubItems["AV"].Text = pt.Av.ToString();
+                        item.SubItems["AV"].Text = pt.av.ToString();
                     item.SubItems["DS"].Text = pt.ps.ToString();
                 }
             }
@@ -152,7 +153,7 @@ namespace HGS
         {
             HashSet<string> hsVar = new HashSet<string>();
             CalcEngine.CalcEngine ce = new CalcEngine.CalcEngine();
-            point Point = new point();
+            point Point = new point(-1,pointsrc.calc);
             Point.lsCalcOrgSubPoint_hl = new List<varlinktopoint>();
             //-----
             //可加内部变量
@@ -182,7 +183,7 @@ namespace HGS
                 subpt.sub_id = it.id;
                 Point.lsCalcOrgSubPoint_hl.Add(subpt);
 
-                ce.Variables[subpt.varname] = Data.inst().cd_Point[it.id].Av;//测试用。
+                ce.Variables[subpt.varname] = Data.inst().cd_Point[it.id].av;//测试用。
             }
             if (textBoxmDiscription.Text.Length < 1)
             {

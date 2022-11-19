@@ -88,7 +88,7 @@ namespace HGS
                     string pn = resultSet.getString(1);
                     point pt = dicpt[pn];
                     pt.pn = pn;
-                    pt.id_sis = resultSet.getInt(0);
+                    pt.Id_sis = resultSet.getInt(0);
                     pt.fm = (short)resultSet.getInt(3);
                     pt.eu = resultSet.getString(2);
                     pt.nd = comboBoxND.Text;
@@ -113,6 +113,7 @@ namespace HGS
         }
 private void buttonOpen_Click(object sender, EventArgs e)
         {
+            /*
             var fileContent = string.Empty;
             var filePath = string.Empty;
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -162,10 +163,10 @@ private void buttonOpen_Click(object sender, EventArgs e)
                     pt.pn  = itemn.SubItems["PN"].Text =values[0];
                     pt.ed = itemn.SubItems["ED"].Text = values[1];
                     //
-                    pt.isavalarm = true;
+                    pt.isAvalarm = true;
                     pt.pointsrc = pointsrc.sis;
                     //pt.nd = comboBoxND.Text;
-                    pt.ownerid = Auth.GetInst().LoginID;
+                    pt.OwnerId = Auth.GetInst().LoginID;
 
                     lspt.Add(pt);
                     c++;
@@ -174,6 +175,7 @@ private void buttonOpen_Click(object sender, EventArgs e)
                 glacialList1.Invalidate();
                 toolStripStatusLabel1.Text = "点数：" + c.ToString();
             }
+            */
         }
 
         private void buttonOK_Click(object sender, EventArgs e)

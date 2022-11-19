@@ -88,8 +88,8 @@ namespace HGS
         {
             switch (pt.pointsrc)
             {
-                case pointsrc.sis: return strSisVarPfx + pt.id.ToString();
-                case pointsrc.calc: return strCalcVarPfx + pt.id.ToString();
+                case pointsrc.sis: return strSisVarPfx + pt.Id.ToString();
+                case pointsrc.calc: return strCalcVarPfx + pt.Id.ToString();
                 default: throw new Exception("点计算优先级错误！");
             }
         }

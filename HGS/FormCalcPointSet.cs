@@ -16,12 +16,13 @@ namespace HGS
     public partial class FormCalcPointSet : Form
     {
         HashSet<int> onlyid = new HashSet<int>();
-        public point CalcPoint;
+        private point CalcPoint;
         int PointNums = 0;
         //--------------------------------
-        public FormCalcPointSet()
+        public FormCalcPointSet(point pt)
         {
             InitializeComponent();
+            CalcPoint = pt;
         }
         private void DisplayStats()
         {
@@ -50,8 +51,8 @@ namespace HGS
                     itemn.SubItems["EU"].Text = Point.eu;
                     itemn.SubItems["ED"].Text = Point.ed;
                     //itemn.SubItems[1].Text = Pref.GetInst().GetVarName(Point);
-                    it.sisid = Point.id_sis;
-                    if (onlyid.Contains(CalcPoint.id)) throw new Exception("不能引用自身！");
+                    it.sisid = Point.Id_sis;
+                    if (onlyid.Contains(CalcPoint.Id)) throw new Exception("不能引用自身！");
                     onlyid.Add(it.id);//唯一性
                                       //
                     itemn.SubItems["VarName"].Text = subpt.varname;
@@ -60,16 +61,16 @@ namespace HGS
                 }
             }
             //排除循环引用点。
-            foreach(int id in VartoPointTable.GetDeletePointIdList(CalcPoint.id))
+            foreach(int id in VartoPointTable.GetDeletePointIdList(CalcPoint.Id))
             {
                 onlyid.Add(id);
             }
             glacialList1.Items.AddRange(lsItmems.ToArray());
-            onlyid.Add(CalcPoint.id);//排除自已。
+            onlyid.Add(CalcPoint.Id);//排除自已。
             textBoxFormula.Text = CalcPoint.orgformula_main;
             textBoxmDiscription.Text = CalcPoint.ed;
             comboBox_eu.Text = CalcPoint.eu;
-            checkBoxCalc.Checked = CalcPoint.iscalc;
+            checkBoxCalc.Checked = CalcPoint.isCalc;
             textBoxPN.Text = CalcPoint.pn;
             numericUpDown.Value = CalcPoint.fm;
             timer1.Enabled = true;
@@ -89,13 +90,13 @@ namespace HGS
                 {
                     itemtag it = (itemtag)(item.Tag);
                     point pt = Data.inst().cd_Point[it.id];
-                    if (pt.Av != null)
+                    if (pt.av != null)
                     {
-                        double dAV = pt.Av ?? 0;
+                        double dAV = pt.av ?? 0;
                         item.SubItems["AV"].Text = Math.Round(dAV, pt.fm).ToString();
                     }
                     else
-                    item.SubItems["AV"].Text = pt.Av.ToString();
+                    item.SubItems["AV"].Text = pt.av.ToString();
                     item.SubItems["DS"].Text = pt.ps.ToString();
                 }
             }
@@ -157,8 +158,8 @@ namespace HGS
         {
             HashSet<string> hsVar = new HashSet<string>();
             CalcEngine.CalcEngine ce = new CalcEngine.CalcEngine();
-            point Point = new point();
-            Point.id = CalcPoint.id;
+            point Point = new point(-1,pointsrc.calc);
+            Point.Id = CalcPoint.Id;
             Point.lsCalcOrgSubPoint_main = new List<varlinktopoint>();
             //-----
             //可加内部变量
@@ -187,7 +188,7 @@ namespace HGS
                 subpt.sub_id = it.id;
                 Point.lsCalcOrgSubPoint_main.Add(subpt);
 
-                ce.Variables[subpt.varname] = Data.inst().cd_Point[it.id].Av;//测试用。
+                ce.Variables[subpt.varname] = Data.inst().cd_Point[it.id].av;//测试用。
             }
             if (textBoxmDiscription.Text.Length < 1)
             {
@@ -216,11 +217,11 @@ namespace HGS
                 CalcPoint.orgformula_main = textBoxFormula.Text.Trim().Replace("\r\n", "");//去掉回车
                 CalcPoint.eu = comboBox_eu.Text;
                 CalcPoint.pn = textBoxPN.Text;
-                CalcPoint.ownerid = Auth.GetInst().LoginID;
+                CalcPoint.OwnerId = Auth.GetInst().LoginID;
                 CalcPoint.pointsrc = pointsrc.calc;
                 CalcPoint.nd = Pref.Inst().CalcPointNodeName;
                 //if(CalcPoint.id <= 0) CalcPoint.id = Data.inst().GetNextPointId();
-                CalcPoint.iscalc = checkBoxCalc.Checked;
+                CalcPoint.isCalc = checkBoxCalc.Checked;
                 CalcPoint.fm = (byte)numericUpDown.Value;
 
                 if (glacialList1.Items.Count > 0)

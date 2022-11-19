@@ -12,6 +12,8 @@ namespace HGS
 {
     public partial class FormCountOfDeviceCalcDTW : Form
     {
+        Dictionary<int, GLItem> dic_device = new Dictionary<int, GLItem>();
+        Dictionary<int, GLItem> dic_sensor = new Dictionary<int, GLItem>();
         public FormCountOfDeviceCalcDTW()
         {
             InitializeComponent();
@@ -19,18 +21,23 @@ namespace HGS
         }
         private void refresh()
         {
-            glacialList1.Items.Clear();
+            //glacialList1.Items.Clear();
             List<GLItem> lsitem = new List<GLItem>();
             int[] ScanSpan = Pref.Inst().ScanSpan;//分钟
             foreach (DeviceInfo di in Data_Device.dic_Device.Values)
             {
-                GLItem item = new GLItem(glacialList1);
-                item.SubItems["ID"].Text = di.id.ToString();
-                item.SubItems["PN"].Text = "设备";
-                item.SubItems["ED"].Text = di.Name;
+                GLItem item;
+                if (!dic_device.TryGetValue(di.id, out item))
+                {                    
+                    item = new GLItem(glacialList1);
+                    item.SubItems["ID"].Text = di.id.ToString();
+                    item.SubItems["PN"].Text = "设备";
+                    item.SubItems["ED"].Text = di.Name;
+                    lsitem.Add(item);
+                    dic_device.Add(di.id, item);
+                }
                 item.SubItems["DTW"].Text = di.CountofDTWCalc.ToString();
-                lsitem.Add(item);
-                //
+                             
                 for (int i = 0; i < ScanSpan.Length; i++)
                 {
                     item.SubItems[string.Format("m{0}", ScanSpan[i])].Text = Math.Round(di.alarm_th_dis_max[i], 3).ToString();
@@ -38,17 +45,22 @@ namespace HGS
                 }
                 foreach (int sid in di.Sensors_set())
                 {
-                    item = new GLItem(glacialList1);
                     point sensor = Data.inst().cd_Point[sid];
-                    item.SubItems["ID"].Text = sensor.id.ToString();
-                    item.SubItems["PN"].Text = sensor.pn;
-                    item.SubItems["ED"].Text = sensor.ed;
+                    if (!dic_sensor.TryGetValue(sid, out item))
+                    {
+                        item = new GLItem(glacialList1);                       
+                        item.SubItems["ID"].Text = sensor.Id.ToString();
+                        item.SubItems["PN"].Text = sensor.pn;
+                        item.SubItems["ED"].Text = sensor.ed;
+                        lsitem.Add(item);
+                        dic_sensor.Add(sid, item);
+                    }
                     for (int i = 0; i < ScanSpan.Length; i++)
                     {
                         item.SubItems[string.Format("m{0}", ScanSpan[i])].Text = Math.Round(sensor.dtw_start_max[i], 3).ToString();
                         item.SubItems[string.Format("m{0}s", ScanSpan[i])].Text = Math.Round(sensor.Dtw_start_th[i], 3).ToString();
                     }
-                    lsitem.Add(item);
+                   
                 }
             }
             glacialList1.Items.AddRange(lsitem.ToArray());
@@ -57,6 +69,7 @@ namespace HGS
 
         private void toolStripButton_refresh_Click(object sender, EventArgs e)
         {
+            glacialList1.Items.Clear();
             refresh();
         }
 

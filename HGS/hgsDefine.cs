@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GlacialComponents.Controls;
 using CalcEngine;
 using System.Data;
+using Npgsql;
 namespace HGS
 {
     //Tag of GalcialList'item 
@@ -44,136 +45,531 @@ namespace HGS
     }
     public class point
     {
-        //
-        public int id_sis = 0;//sis点id
-        public string nd = "";//节点名。
-        public string pn = "";//点名
+        private int _id_sis = 0;//sis点id
+        public int Id_sis
+        {
+            set { _id_sis = value;
+                Data.inst().Update(this);
+            }//?????????
+            get { return _id_sis; }
+        }
+        private string _nd = "";//节点名。
+        public string nd
+        {
+            set {
+                _nd = value;
+                Data.inst().Update(this);
+            }
+            get { return _nd; }
+        }
+        private string _pn = "";//点名
+        public string pn
+        {
+            set {
+                _pn = value;
+                Data.inst().Update(this);
+            }
+            get { return _pn; }
+        }
         //public int rt = 0;//点类型
-        public string ed = "";//点描述
+        private string _ed = "";//点描述
+        public string ed
+        {
+            set { _ed = value;
+                Data.inst().Update(this);
+            }
+            get { return _ed; }
+        }
         //可null
-        public double? tv = null;//量程上限
-        public double? bv = null;//量程下限
+        private double? _tv = null;//量程上限
+        public double? tv
+        {
+            set { _tv = value;
+                Data.inst().Update(this);
+            }
+            get { return _tv; }
+        }
+        private double? _bv = null;//量程下限
+        public double? bv
+        {
+            set { _bv = value;
+                Data.inst().Update(this);
+            }
+            get { return _bv; }
+        }
         //------------------------------------
-        public double? ll = null;//报警低限
-        public string orgformula_ll = "";//计算公式
+        private double? _ll = null;//报警低限
+        public double? ll
+        {
+            set { _ll = value;
+                Data.inst().Update(this);
+            }
+            get { return _ll; }
+        }
+        private double? _min_ll = null;//保持报警值.不保存
+        public double? min_ll
+        {
+            set { _min_ll = value; }
+            get { return _min_ll; }
+        }
+        private string _Orgformula_ll = "";//计算公式
+        public string Orgformula_ll
+        {
+            set { _Orgformula_ll = value;
+                Data.inst().Update(this);
+            }
+            get { return _Orgformula_ll; }
+        }
         //public string expformula_ll = "";//展开成点的计算公式
-        public Expression expression_ll = null;// new Expression();//优化计算速度。
+        private Expression _Expression_ll = null;//优化计算速度,不保存
+        public Expression Expression_ll
+        {
+            set { _Expression_ll = value; }
+            get { return _Expression_ll; }
+        }
         //计算子点id
-        public List<varlinktopoint> lsCalcOrgSubPoint_ll = null;// new List<varlinktopoint>();//原始参与计算点列表
+        private List<varlinktopoint> _lsCalcOrgSubPoint_ll = null;//原始参与计算点列表
+        public List<varlinktopoint> lsCalcOrgSubPoint_ll
+        {
+            set { _lsCalcOrgSubPoint_ll = value; }
+            get { return _lsCalcOrgSubPoint_ll; }
+        }
         //
         //计算子点id用于进行计算点状态计算。
-        public List<point> listSisCalaExpPointID_ll = null;// new List<point>();//展开成sis点的参与计算点列表。
+        private List<point> _listSisCalaExpPointID_ll = null;//展开成sis点的参与计算点列表。
+        public List<point> listSisCalaExpPointID_ll
+        {
+            set { _listSisCalaExpPointID_ll = value; }
+            get { return _listSisCalaExpPointID_ll; }
+        }
         //------------------------------------------
-        public double? hl = null;//报警高限
-        public string orgformula_hl = "";//计算公式
+        private double? _hl = null;//报警高限
+        public double? hl
+        {
+            set { _hl = value;
+                Data.inst().Update(this);
+            }
+            get { return _hl; }
+        }
+        private double? _max_hl = null;
+        public double? max_hl
+        {
+            set { _max_hl = value; }
+            get { return _max_hl; }
+        }
+        private string _Orgformula_hl = "";//计算公式
+        public string orgformula_hl
+        {
+            set { _Orgformula_hl = value;
+                Data.inst().Update(this);
+            }
+            get { return _Orgformula_hl; }
+        }
         //public string expformula_hl = "";//展开成点的计算公式
-        public Expression expression_hl = null;// new Expression();//优化计算速度。
+        private Expression _Expression_hl = null;// new Expression();//优化计算速度。
+        public Expression Expression_hl
+        {
+            set { _Expression_hl = value; }
+            get { return _Expression_hl; }
+        }
         //计算子点id
-        public List<varlinktopoint> lsCalcOrgSubPoint_hl = null;// new List<varlinktopoint>();//原始参与计算点列表
+        private List<varlinktopoint> _lsCalcOrgSubPoint_hl = null;// new List<varlinktopoint>();//原始参与计算点列表
+        public List<varlinktopoint> lsCalcOrgSubPoint_hl
+        {
+            set { _lsCalcOrgSubPoint_hl = value; }
+            get { return _lsCalcOrgSubPoint_hl; }
+        }
         //
         //用于进行计算点点状态计算。
-        public List<point> listSisCalaExpPointID_hl = null;// new List<point>();
+        private List<point> _listSisCalaExpPointID_hl = null;// new List<point>();
+        public List<point> listSisCalaExpPointID_hl
+        {
+            set { _listSisCalaExpPointID_hl = value; }
+            get { return _listSisCalaExpPointID_hl; }
+        }
         //-----------------------------------------
-        public double? zh = null;//报警高2限
-        public double? zl = null;//报警低2限
-        public pointsrc pointsrc = 0;//点源0:sis,1:计算点
-        public int ownerid = 0;//专业id
-        public string orgformula_main = "";//计算公式
-        public string sisformula_main = "";//展开成点的计算公式
-        public int id = -1;//点id
-        public string eu = "";//点单位
-        public bool iscalc = false;//是否进行计算
-        public bool isavalarm = false;//是否报警
-        public PointState ps = PointState.Good;//点状态
+        private double? _zh = null;//报警高2限
+        public double? zh
+        {
+            set { _zh = value;
+                Data.inst().Update(this);
+            }
+            get { return _zh; }
+        }
+        private double? _max_zh = null;
+        public double? max_zh
+        {
+            set { _max_zh = value;
+                Data.inst().Update(this);
+            }
+            get { return _max_zh; }
+        }
+        private double? _zl = null;//报警低2限
+        public double? zl
+        {
+            set { _zl = value;
+                Data.inst().Update(this);
+            }
+            get { return _zl; }
+        }
+        private double? _min_zl = null;
+        public double? min_zl
+        {
+            set { _min_zl = value;
+                Data.inst().Update(this);
+            }
+            get { return _min_zl; }
+        }
+        //--------------------
+        private pointsrc _pointsrc = 0;//点源0:sis,1:计算点
+        public pointsrc pointsrc
+        {
+            set { _pointsrc = value;
+                Data.inst().Update(this);
+            }
+            get { return _pointsrc; }
+        }
+        private int _ownerid = 0;//专业id
+        public int OwnerId
+        {
+            set { _ownerid = value;
+                Data.inst().Update(this);
+            }
+            get { return _ownerid; }
+        }
+        private string _Orgformula_main = "";//计算公式
+        public string orgformula_main
+        {
+            set { _Orgformula_main = value;
+                Data.inst().Update(this);
+            }
+            get { return _Orgformula_main; }
+        }
+        private string _Sisformula_main = "";//展开成点的计算公式
+        public string sisformula_main
+        {
+            set { _Sisformula_main = value; }
+            get { return _Sisformula_main; }
+        }
+        private int _Id = -1;//点id
+        public int Id
+        {
+            set { _Id = value; }
+            get { return _Id; }
+        }
+        private string _eu = "";//点单位
+        public string eu
+        {
+            set { _eu = value;
+                Data.inst().Update(this);
+            }
+            get { return _eu; }
+        }
+        private bool _isCalc = false;//是否进行计算
+        public bool isCalc
+        {
+            set { _isCalc = value;
+                Data.inst().Update(this);
+            }
+            get { return _isCalc; }
+        }
+        private bool _isAvalarm = false;//是否报警
+        public bool isAvalarm
+        {
+            set { _isAvalarm = value;
+                Data.inst().Update(this);
+            }
+            get { return _isAvalarm; }
+        }
+        private PointState _ps = PointState.Good;//点状态
+        public PointState ps
+        {
+            set { _ps = value; }
+            get { return _ps; }
+        }
 
-        public short fm = 1;//保留小数点位数。
+        private short _fm = 1;//保留小数点位数。
+        public short fm
+        {
+            set { _fm = value;
+                Data.inst().Update(this);
+            }
+            get { return _fm; }
+        }
 
         //----------------------
-        public bool boolalarmif = true;
-        public bool isboolvalarm = false;
-        public string boolalarminfo = "";//isbool 为真时的报警信息。
+        private bool _boolAlarmif = true;
+        public bool boolAlarmif
+        {
+            set { _boolAlarmif = value;
+                Data.inst().Update(this);
+            }
+            get { return _boolAlarmif; }
+        }
+        private bool _isboolvAlarm = false;
+        public bool isboolvAlarm
+        {
+            set { _isboolvAlarm = value;
+                Data.inst().Update(this);
+            }
+            get { return _isboolvAlarm; }
+        }
+        private string _boolAlarminfo = "";//isbool 为真时的报警信息。
+        public string boolAlarminfo
+        {
+            set { _boolAlarminfo = value; }
+            get { return _boolAlarminfo; }
+        }
         //
-        public Expression expression_main = null;//已展开为sis点,优化计算速度。
+        private Expression _Expression_main = null;//已展开为sis点,优化计算速度。
+        public Expression Expression_main
+        {
+            set { _Expression_main = value; }
+            get { return _Expression_main; }
+        }
         //计算子点id
-        public List<varlinktopoint> lsCalcOrgSubPoint_main = null;//原始参与计算点列表
+        private List<varlinktopoint> _lsCalcOrgSubPoint_main = null;//原始参与计算点列表
+        public List<varlinktopoint> lsCalcOrgSubPoint_main
+        {
+            set { _lsCalcOrgSubPoint_main = value; }
+            get { return _lsCalcOrgSubPoint_main; }
+        }
         //
         //计算子点id用于进行计算点状态计算。
-        public List<point> listSisCalaExpPointID_main = null;//已展开成sis点的变量sis点。;
+        private List<point> _listSisCalaExpPointID_main = null;//已展开成sis点的变量sis点。;
+        public List<point> listSisCalaExpPointID_main
+        {
+            set { _listSisCalaExpPointID_main = value; }
+            get { return _listSisCalaExpPointID_main; }
+        }
         //
         //报警用，不存入数据库                                                            
         //
         //public bool calciserror = false;
-        public alarmlevel alarmLevel = alarmlevel.no;
-        public DateTime lastalarmdatetime = DateTime.Now;
-        public string alarmininfo = "";
-        public double? alarmingav = null;
+        private alarmlevel _AlarmLevel = alarmlevel.no;
+        public alarmlevel AlarmLevel
+        {
+            set { _AlarmLevel = value; }
+            get { return _AlarmLevel; }
+        }
+        private DateTime _lastAlarmdatetime = DateTime.Now;
+        public DateTime lastAlarmdatetime
+        {
+            set { _lastAlarmdatetime = value; }
+            get { return _lastAlarmdatetime; }
+        }
+    
+        private string _Alarmininfo = "";
+        public string Alarmininfo
+        {
+            set { _Alarmininfo = value; }
+            get { return _Alarmininfo; }
+        }
+        private double? _Alarmingav = null;
+        public double? Alarmingav
+        {
+            set { _Alarmingav = value; }
+            get { return _Alarmingav; }
+        }
         //强制值，不存数据库
-        public bool isforce = false;
-        public double? forceav = null;//强制的数值。
+        private bool _isForce = false;
+        public bool isForce
+        {
+            set { _isForce = value; }
+            get { return _isForce; }
+        }
+        private double? _Forceav = null;//强制的数值。
+        public double? Forceav
+        {
+            set { _Forceav = value; }
+            get { return _Forceav; }
+        }
         ////---------------------报警公式，值为真时才允许报警。
-        public bool alarmifav = true;
-        public string alarmif = "";
-        public Expression expression_alarmif = null;// new Expression();//优化计算速度。
+        private bool _Alarmifav = true;
+        public bool Alarmifav
+        {
+            set { _Alarmifav = value; }
+            get { return _Alarmifav; }
+        }
+       
+        private string _Alarmif = "";
+        public string Alarmif
+        {
+            set { _Alarmif = value;
+                Data.inst().Update(this);
+            }
+            get { return _Alarmif; }
+        }
+        private Expression _Expression_alarmif = null;// new Expression();//优化计算速度。
+        public Expression Expression_alarmif
+        {
+            set { _Expression_alarmif = value; }
+            get { return _Expression_alarmif; }
+        }
         //计算子点id
-        public List<varlinktopoint> lsCalcOrgSubPoint_alarmif = null;// new List<varlinktopoint>();//原始参与计算点列表
+        private List<varlinktopoint> _lscalcOrgSubPoint_alarmif = null;// new List<varlinktopoint>();//原始参与计算点列表
+        public List<varlinktopoint> lsCalcOrgSubPoint_alarmif
+        {
+            set { _lscalcOrgSubPoint_alarmif = value; }
+            get { return _lscalcOrgSubPoint_alarmif; }
+        }
         //
         //用于进行计算点点状态计算。
-        public List<point> listSisCalaExpPointID_alarmif = null;// new List<point>();
-        //-------------------
-        public bool isalarmskip = false;
-        public bool isalarmwave = false;
-        public double? skip_pp = null;
-        public WaveDetection waveDetection = null;
-        private WaveDetection.wavestatus spstatus = WaveDetection.wavestatus.error;
-        private int datanums = -1;
-
-        private double? av = null;//点值，实时或计算。
-        //-----------------------------
-        //动态时间规整器扫描的阈值,6个数，为15m,30m,60m,120m,240m,480m时间段。
-        private float[] dtw_start_th = null;
-        //传感器的设备归属-不存数据库，运行时生成。
-        private HashSet<int> hs_Device = null;
-        private Dtw_queues[] dtw_Queues_Array = null;
-        public float[] dtw_start_max = new float[6];
-        //-----------------------------
-        //不能多于一次赋值，否则将不对。
-        public double? Av
+        private List<point> _listSiscalaExpPointID_alarmif = null;// new List<point>();
+        public List<point> listSisCalaExpPointID_alarmif
         {
-            get { return av; }
+            set { _listSiscalaExpPointID_alarmif = value; }
+            get { return _listSiscalaExpPointID_alarmif; }
+        }
+        //-------------------
+        private bool _isAlarmskip = false;
+        public bool isAlarmskip
+        {
+            set { _isAlarmskip = value;
+                Data.inst().Update(this);
+            }
+            get { return _isAlarmskip; }
+        }
+        private bool _isAlarmwave = false;
+        public bool isAlarmwave
+        {
+            set { _isAlarmwave = value;
+                Data.inst().Update(this);
+            }
+            get { return _isAlarmwave; }
+        }
+        private double? _Skip_pp = null;
+        public double? Skip_pp
+        {
             set
             {
-                av = value;
-                datanums++;
-                if (skip_pp != null && (isalarmskip || isalarmwave))
+                _Skip_pp = value;
+                Data.inst().Update(this);
+            }
+            get { return _Skip_pp; }
+        }
+        private double _max_skip_pp = 0;
+        public double max_Skip_pp
+        {
+            set { _max_skip_pp = value; }
+            get { return _max_skip_pp; }
+        }
+        private WaveDetection _WaveDetection = null;
+        public WaveDetection WaveDetection
+        {
+            set { _WaveDetection = value; }
+            get { return _WaveDetection; }
+        }
+        private WaveDetection.wavestatus spstatus = WaveDetection.wavestatus.error;
+        private int _datanums = -1;
+
+        private double? _av = null;//点值，实时或计算。
+        //-----------------------------
+        //动态时间规整器扫描的阈值,6个数，为15m,30m,60m,120m,240m,480m时间段。
+        private float[] _dtw_start_th = null;
+        //传感器的设备归属-不存数据库，运行时生成。
+        private HashSet<int> _hs_Device = null;
+        private Dtw_queues[] _dtw_Queues_Array = null;
+        private float[] _dtw_start_max = new float[6];
+        public float[] dtw_start_max
+        {
+            set { _dtw_start_max = value; }
+            get { return _dtw_start_max; }
+        }
+        public point(int id ,pointsrc ps)
+        {
+            _Id = id;
+            _pointsrc = ps;
+            Data.inst().AddNew(this);
+        }
+
+        public point(NpgsqlDataReader pgreader)
+        {
+            if (pgreader == null) return;
+
+            _Id = (int)pgreader["id"];
+            _nd = pgreader["nd"].ToString();
+            _pn = pgreader["pn"].ToString();
+            _eu = pgreader["eu"].ToString();
+            _ed = pgreader["ed"].ToString();
+
+            _tv = Functions.CasttoDouble(pgreader["tv"]);
+            _bv = Functions.CasttoDouble(pgreader["bv"]);
+            _ll = Functions.CasttoDouble(pgreader["ll"]);
+            _hl = Functions.CasttoDouble(pgreader["hl"]);
+            _zl = Functions.CasttoDouble(pgreader["zl"]);
+            _zh = Functions.CasttoDouble(pgreader["zh"]);
+            _Skip_pp = Functions.CasttoDouble(pgreader["skip_pp"]);
+
+            _id_sis = (int)pgreader["id_sis"];
+
+            //object oo = (int)pgreader["pointsrc"];
+            _pointsrc = (pointsrc)(short)pgreader["pointsrc"];
+            _ownerid = (int)pgreader["ownerid"];
+            _Orgformula_main = pgreader["orgformula_main"].ToString();
+            //expformula_main = pgreader["expformula"].ToString();
+            _isAvalarm = (bool)pgreader["isavalarm"];
+            _isCalc = (bool)pgreader["iscalc"];
+            _fm = (short)pgreader["fm"];
+            _isboolvAlarm = (bool)pgreader["isboolv"];
+            _boolAlarminfo = pgreader["boolalarminfo"].ToString();
+            _Orgformula_hl = pgreader["orgformula_hl"].ToString();
+            _Orgformula_ll = pgreader["orgformula_ll"].ToString();
+            _Alarmif = pgreader["alarmif"].ToString();
+            _boolAlarmif = (bool)pgreader["boolalarmif"];
+
+            _isAlarmskip = (bool)pgreader["isalarmskip"];
+            _isAlarmwave = (bool)pgreader["isalarmwave"];
+            if ((_isAlarmwave || _isAlarmskip) && _Skip_pp != null)
+                _WaveDetection = new WaveDetection();
+            //
+            object ob = pgreader["dtw_start_th"];
+            if (ob != DBNull.Value)
+            {
+                _dtw_start_th = (float[])ob;
+            }
+            Data.inst().Add(this);
+        }
+        //-----------------------------
+        //不能多于一次赋值，否则将不对。
+        public double? av
+        {
+            get { return _av; }
+            set
+            {
+                _av = value;
+                _datanums++;
+                if (Skip_pp != null && (isAlarmskip || isAlarmwave))
                 {
-                    waveDetection.add(av ?? 0);
+                    WaveDetection.add(_av ?? 0);
                 }
-                if (dtw_Queues_Array != null)
+                if (_dtw_Queues_Array != null)
                 {
-                    for (int i = 0; i < dtw_Queues_Array.Length; i++)
+                    for (int i = 0; i < _dtw_Queues_Array.Length; i++)
                     {
-                        dtw_Queues_Array[i].add(av ?? 0,true);
+                        _dtw_Queues_Array[i].add(_av ?? 0,true);
                     }
                 }
             }
         }
         public float[] Dtw_start_th
         {
-            get { return dtw_start_th; }
+            get { return _dtw_start_th; }
             set
             {
-                dtw_start_th = value;
-                if (dtw_start_th != null)
+                _dtw_start_th = value;
+                if (_dtw_start_th != null)
                 {
-                    if (dtw_start_th.Length != 6)
+                    if (_dtw_start_th.Length != 6)
                         throw new Exception("dtw阈值数必须为6个!");                    
                 }
                 initDeviceQ();
+                Data.inst().Update(this);
             }
         }
         public Dtw_queues[] Dtw_Queues_Array
         {
-            get { return dtw_Queues_Array; }
+            get { return _dtw_Queues_Array; }
         }
         public void initDeviceQ(int step,float[] v)
         {
@@ -183,136 +579,156 @@ namespace HGS
                 throw new Exception("数据不能为空！");
             for (int i = 0; i < v.Length; i++)
             {
-                dtw_Queues_Array[step].add(v[i],false);
+                _dtw_Queues_Array[step].add(v[i],false);
             }
         }
+        //初始化dtw队列数组
         private void initDeviceQ()
         {
-            if (hs_Device != null && dtw_start_th != null)
+            if (_hs_Device != null && _dtw_start_th != null)
             {
-                if (dtw_Queues_Array == null)
+                if (_dtw_Queues_Array == null)
                 {
-                    dtw_Queues_Array = new Dtw_queues[6];
-                    for (int i = 0; i < dtw_Queues_Array.Length; i++)
+                    _dtw_Queues_Array = new Dtw_queues[6];
+                    for (int i = 0; i < _dtw_Queues_Array.Length; i++)
                     {
-                        dtw_Queues_Array[i] = new Dtw_queues();
-                        dtw_Queues_Array[i].DownSamples = (int)(9 * Math.Pow(2, i));
+                        _dtw_Queues_Array[i] = new Dtw_queues();
+                        _dtw_Queues_Array[i].DownSamples = (int)(9 * Math.Pow(2, i));
                     }
                     //
                     Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
 
-                    dic_intQueues.Add(id, Data.inst().cd_Point[id]);
+                    dic_intQueues.Add(Id, Data.inst().cd_Point[Id]);
 
                     SisConnect.InitSensorsQueues(dic_intQueues);
                 }
             }
             else
-                dtw_Queues_Array = null;
+                _dtw_Queues_Array = null;
         }
         public void add_device(int di)
         {
-            if (hs_Device == null) 
-                hs_Device = new HashSet<int>();
-            hs_Device.Add(di);
+            if (_hs_Device == null) 
+                _hs_Device = new HashSet<int>();
+            _hs_Device.Add(di);
             initDeviceQ();
         }
         public void remove_device(int di)
         {
-            if (hs_Device != null)
-                hs_Device.Remove(di);
-            if (hs_Device.Count == 0)
+            if (_hs_Device != null)
+                _hs_Device.Remove(di);
+            if (_hs_Device.Count == 0)
             {
-                hs_Device = null;
-                dtw_Queues_Array = null;
+                _hs_Device = null;
+                _dtw_Queues_Array = null;
             }
         }
         public HashSet<int> Device_set()
         {
             HashSet<int> hs = new HashSet<int>();
-            if (hs_Device == null)
-                hs.UnionWith(hs_Device);
+            if (_hs_Device == null)
+                hs.UnionWith(_hs_Device);
             return hs;
         }
-        //初始化dtw队列数组
+        public void Accept_MaxMin_Th()
+        {
+            _ll = _min_ll;
+            _zl = _min_zl;
+            _zh = _max_zh;
+            _hl = _max_hl;
+            if (_dtw_start_th != null)
+            {
+                for (int i = 0; i < _dtw_start_max.Length; i++)
+                {
+                    _dtw_start_th[i] = Math.Max(_dtw_start_max[i], _dtw_start_th[i]);
+                }
+            }
+           
+        }
 
         //--------------------
         public alarmlevel AlarmCalc()
         {
-            alarmininfo = "";
-            alarmlevel last_al = alarmLevel;
-            alarmLevel = alarmlevel.no;
+            _Alarmininfo = "";
+            alarmlevel last_al = _AlarmLevel;
+            _AlarmLevel = alarmlevel.no;
 
             if (ps != PointState.Good && ps != PointState.Force)
             {
-                alarmingav = -1;
-                alarmLevel = alarmlevel.bad;
-                alarmininfo = "坏点或无法计算！"; //string.Format("{0}",boolalarminfo);
-                if (waveDetection != null) waveDetection.Clear();
+                _Alarmingav = -1;
+                _AlarmLevel = alarmlevel.bad;
+                _Alarmininfo = "坏点或无法计算！"; //string.Format("{0}",boolalarminfo);
+                if (_WaveDetection != null) _WaveDetection.Clear();
             }
-            else if (alarmifav)
+            else if (_Alarmifav)
             {
-                if (isboolvalarm)
+                if (_isboolvAlarm)
                 {
-                    bool blv = Convert.ToBoolean(Av);
-                    if (blv == boolalarmif)
+                    bool blv = Convert.ToBoolean(av);
+                    if (blv == _boolAlarmif)
                     {
-                        alarmingav = Convert.ToDouble(blv);
-                        alarmLevel = alarmlevel.sw;
-                        alarmininfo = boolalarminfo; //string.Format("{0}",boolalarminfo);
+                        _Alarmingav = Convert.ToDouble(blv);
+                        _AlarmLevel = alarmlevel.sw;
+                        _Alarmininfo = boolAlarminfo; 
                     }
                 }
-                else if (isavalarm)
+                else if (_isAvalarm)
                 {
-                    if (zh != null && Av > zh)
+                    if (_zh != null && av > _zh)
                     {
-                        alarmLevel = alarmlevel.zh;
-                        alarmininfo = string.Format("越报警高2限[{0}{1}]！", zh, eu);
+                        _AlarmLevel = alarmlevel.zh;
+                        _Alarmininfo = string.Format("越报警高2限[{0}{1}]！", _zh, _eu);
+                        _max_zh = max_zh.HasValue ? Math.Max(max_zh.GetValueOrDefault(), _av.GetValueOrDefault()) : _av; 
                     }
-                    else if (hl != null && Av > hl)
+                    else if (_hl != null && av > _hl)
                     {
-                        alarmLevel = alarmlevel.hl;
-                        alarmininfo = string.Format("越报警高限[{0}{1}]！", hl, eu);
+                        _AlarmLevel = alarmlevel.hl;
+                        _Alarmininfo = string.Format("越报警高限[{0}{1}]！", _hl, _eu);
+                        _max_hl = max_hl.HasValue ? Math.Max(max_hl.GetValueOrDefault(), _av.GetValueOrDefault()) : _av;
                     }
-                    else if (tv != null && Av > tv)
+                    else if (_tv != null && av > _tv)
                     {
-                        alarmLevel = alarmlevel.tv;
-                        alarmininfo = string.Format("越量程上限[{0}{1}]！", tv, eu);
+                        _AlarmLevel = alarmlevel.tv;
+                        _Alarmininfo = string.Format("越量程上限[{0}{1}]！", _tv, _eu);
                     }
 
-                    else if (zl != null && Av < zl)
+                    else if (zl != null && av < zl)
                     {
-                        alarmLevel = alarmlevel.zl;
-                        alarmininfo = string.Format("越报警低2限[{0}{1}]！", zl, eu);
+                        _AlarmLevel = alarmlevel.zl;
+                        _Alarmininfo = string.Format("越报警低2限[{0}{1}]！", _zl, _eu);
+                        _min_zl = min_zl.HasValue ? Math.Min(min_zl.GetValueOrDefault(), _av.GetValueOrDefault()) : _av;
                     }
-                    else if (ll != null && Av < ll)
+                    else if (_ll != null && av < _ll)
                     {
-                        alarmLevel = alarmlevel.ll;
-                        alarmininfo = string.Format("越报警低限[{0}{1}]！", ll, eu);
+                        _AlarmLevel = alarmlevel.ll;
+                        _Alarmininfo = string.Format("越报警低限[{0}{1}]！", _ll, _eu);
+                        _min_ll = min_ll.HasValue ? Math.Min(min_ll.GetValueOrDefault(), _av.GetValueOrDefault()) : _av;
                     }
-                    else if (bv != null && Av < bv)
+                    else if (_bv != null && av < _bv)
                     {
-                        alarmLevel = alarmlevel.bv;
-                        alarmininfo = string.Format("越量程下限[{0}{1}]！", bv, eu);
+                        _AlarmLevel = alarmlevel.bv;
+                        _Alarmininfo = string.Format("越量程下限[{0}{1}]！", _bv, _eu);
                     }
                     //
-                    if((isalarmskip || isalarmwave) && skip_pp != null  
-                        && skip_pp <= waveDetection.DeltaP_P())
+                    if((_isAlarmskip || _isAlarmwave) && _Skip_pp != null
+                        && _Skip_pp <= _WaveDetection.DeltaP_P())
                     {
-                        if(id % 10 == datanums % 10 || spstatus == WaveDetection.wavestatus.error)//每10个数据计算一次。
+                        _max_skip_pp = Math.Max(_max_skip_pp, _av.GetValueOrDefault());
+                        if(_Id % 10 == _datanums % 10 || spstatus == WaveDetection.wavestatus.error)//每10个数据计算一次。
                         {
-                            spstatus = waveDetection.isWave();
+                            spstatus = _WaveDetection.isWave();
                         }
                         if (spstatus != WaveDetection.wavestatus.error)
                         {
-                            alarmLevel = alarmlevel.skip;
+                            _AlarmLevel = alarmlevel.skip;
 
                             if (spstatus == WaveDetection.wavestatus.surge)
                             {
-                                alarmininfo += "  跳变！";
+                                _Alarmininfo += "  跳变！";
                             }
                             else if (spstatus == WaveDetection.wavestatus.wave)
                             {
-                                alarmininfo += "  波动！";
+                                _Alarmininfo += "  波动！";
                             }
                         }
                     }
@@ -326,30 +742,30 @@ namespace HGS
                 double xxx = 0;
             }
              */     
-            if (dtw_Queues_Array != null)// && id % 10 == datanums % 180)
+            if (_dtw_Queues_Array != null)// && id % 10 == datanums % 180)
             {
                 for (int i = 0; i < 6; i++)
                 {
 #if DEBUG
-                    double texx = dtw_Queues_Array[i].DeltaP_P();
+                    double texx = _dtw_Queues_Array[i].DeltaP_P();
 #endif
                     bool bbreak = false;
-                    double p_p = dtw_Queues_Array[i].DeltaP_P();
-                    if ( p_p > dtw_start_th[i])
+                    double p_p = _dtw_Queues_Array[i].DeltaP_P();
+                    if ( p_p > _dtw_start_th[i])
                     {
-                        dtw_start_max[i] = (float)Math.Max(p_p, dtw_start_max[i]);
-                        if (hs_Device != null)
+                        _dtw_start_max[i] = (float)Math.Max(p_p, _dtw_start_max[i]);
+                        if (_hs_Device != null)
                         {
-                            foreach (int di in hs_Device)
+                            foreach (int di in _hs_Device)
                             {
                                 DeviceInfo info = null;
                                 if (Data_Device.dic_Device.TryGetValue(di, out info))
                                 {
-                                    if (info.dtw_alarm(id, i))
+                                    if (info.dtw_alarm(Id, i))
                                     {
-                                        alarmLevel = alarmlevel.dtw;
-                                        alarmininfo += string.Format("{0}的[{1}]-{2}-{3}分钟-异常报警！",
-                                            info.Name, pn, ed, Pref.Inst().ScanSpan[i]);
+                                        _AlarmLevel = alarmlevel.dtw;
+                                        _Alarmininfo += string.Format("{0}的[{1}]-{2}-{3}分钟-异常报警！",
+                                            info.Name, _pn, _ed, Pref.Inst().ScanSpan[i]);
                                         bbreak = true;
                                         break;
                                     }
@@ -366,18 +782,18 @@ namespace HGS
                     }
                 }
             }
-            alarmingav = Math.Round(Av ?? 0, fm);
+            _Alarmingav = Math.Round(av ?? 0, _fm);
 
             //else
             //alarmingav = av;
-            if (alarmLevel == alarmlevel.no && last_al != alarmLevel)
-                alarmininfo = string.Format("报警消失！");
-            if (last_al == alarmlevel.no && alarmLevel != last_al)
+            if (_AlarmLevel == alarmlevel.no && last_al != _AlarmLevel)
+                _Alarmininfo = string.Format("报警消失！");
+            if (last_al == alarmlevel.no && _AlarmLevel != last_al)
             {
-                lastalarmdatetime = DateTime.Now;
+                _lastAlarmdatetime = DateTime.Now;
             }
 
-            return alarmLevel;
+            return _AlarmLevel;
         }
     }
    

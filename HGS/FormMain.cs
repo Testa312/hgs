@@ -91,7 +91,7 @@ namespace HGS
             StringBuilder sbid = new StringBuilder();
             foreach (point pt in Data.inst().hsSisPoint)
             {
-                sbid.Append(pt.id_sis);
+                sbid.Append(pt.Id_sis);
                 sbid.Append(",");
             }
             if (sbid.Length > 0)
@@ -109,9 +109,9 @@ namespace HGS
                 while (resultSet.next())//next()执行一次，游标下移一行
                 {
                     point Point = Data.inst().dic_SisIdtoPoint[resultSet.getInt(0)];
-                    if (Point.isforce)
+                    if (Point.isForce)
                     {
-                        Point.Av = Point.forceav;
+                        Point.av = Point.Forceav;
                         Point.ps = PointState.Good;
                         continue;
                     }
@@ -136,7 +136,7 @@ namespace HGS
                     }
                     lastTm = Tm;
                     //
-                    Data.inst().Variables[Pref.Inst().GetVarName(Point)] = Point.Av = resultSet.getDouble(3);
+                    Data.inst().Variables[Pref.Inst().GetVarName(Point)] = Point.av = resultSet.getDouble(3);
                 }
                 
                 if (resultSet != null)
@@ -177,16 +177,16 @@ namespace HGS
 
             foreach (point calcpt in Data.inst().hsCalcPoint)
             {
-                if(!calcpt.iscalc)
+                if(!calcpt.isCalc)
                 {
                     calcpt.ps = PointState.Bad;
-                    calcpt.Av = null;
+                    calcpt.av = null;
                     continue;
                 }
                 //
-                if (calcpt.isforce)
+                if (calcpt.isForce)
                 {
-                    calcpt.Av = calcpt.forceav;
+                    calcpt.av = calcpt.Forceav;
                     calcpt.ps = PointState.Good;
                     continue;
                 }
@@ -196,12 +196,12 @@ namespace HGS
 
                 try
                 {
-                    if (calcpt.expression_main != null && calcpt.ps == PointState.Good)
+                    if (calcpt.Expression_main != null && calcpt.ps == PointState.Good)
                     {
                         //double rsl = 
-                        calcpt.Av = Convert.ToDouble(calcpt.expression_main.Evaluate());
+                        calcpt.av = Convert.ToDouble(calcpt.Expression_main.Evaluate());
                     }
-                    else calcpt.Av = null;
+                    else calcpt.av = null;
 
                 }
                 catch (Exception)
@@ -219,8 +219,8 @@ namespace HGS
 
                     try
                     {
-                        if (pt.expression_hl != null && hlps == PointState.Good)
-                            pt.hl = Convert.ToDouble(pt.expression_hl.Evaluate());
+                        if (pt.Expression_hl != null && hlps == PointState.Good)
+                            pt.hl = Convert.ToDouble(pt.Expression_hl.Evaluate());
                         else pt.hl = null;
 
                     }
@@ -231,14 +231,14 @@ namespace HGS
                     }
                 }
                 //
-                if (pt.orgformula_ll.Trim().Length > 0)
+                if (pt.Orgformula_ll.Trim().Length > 0)
                 {
                     PointState llps = GetCalcPointState(pt.listSisCalaExpPointID_ll);
 
                     try
                     {
-                        if (pt.expression_ll != null && llps == PointState.Good)
-                            pt.ll = Convert.ToDouble(pt.expression_ll.Evaluate());
+                        if (pt.Expression_ll != null && llps == PointState.Good)
+                            pt.ll = Convert.ToDouble(pt.Expression_ll.Evaluate());
                         else pt.ll = null;
 
                     }
@@ -249,15 +249,15 @@ namespace HGS
                     }
                 }
                 //
-                pt.alarmifav = true;
-                if (pt.alarmif.Trim().Length > 0)
+                pt.Alarmifav = true;
+                if (pt.Alarmif.Trim().Length > 0)
                 {
                     PointState alarmifps = GetCalcPointState(pt.listSisCalaExpPointID_alarmif);
 
                     try
                     {
-                        if (pt.expression_alarmif != null && alarmifps == PointState.Good)
-                            pt.alarmifav = Convert.ToBoolean(pt.expression_alarmif.Evaluate());
+                        if (pt.Expression_alarmif != null && alarmifps == PointState.Good)
+                            pt.Alarmifav = Convert.ToBoolean(pt.Expression_alarmif.Evaluate());
 
                     }
                     catch (Exception)

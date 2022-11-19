@@ -104,7 +104,7 @@ namespace HGS
                 {
                     point pt = Data.inst().cd_Point[id];
                     if (pt.pointsrc == pointsrc.sis)
-                        sisid.Add(Convert.ToInt64(pt.id_sis));
+                        sisid.Add(Convert.ToInt64(pt.Id_sis));
                     else if (pt.pointsrc == pointsrc.calc)
                         calcpt.Add(pt);
                 }
@@ -114,7 +114,7 @@ namespace HGS
                 {
                     point pt = Data.inst().dic_SisIdtoPoint[pd.ID_sis];
                     pd.ED = pt.ed;
-                    pd.ID = pt.id;
+                    pd.ID = pt.Id;
                     dic_pd.Add(pd.ID, pd);
                 }
 
@@ -136,7 +136,7 @@ namespace HGS
             CalcEngine.CalcEngine ce = new CalcEngine.CalcEngine();
             foreach (point sispt in calcpt.listSisCalaExpPointID_main)
             {
-                siskeys.Add(Convert.ToInt64(sispt.id_sis));
+                siskeys.Add(Convert.ToInt64(sispt.Id_sis));
             }
             //
             Dictionary<int, PointData> data = GetsisData(siskeys.ToArray(), begin, end, count);
@@ -148,14 +148,14 @@ namespace HGS
             }
             PointData newpt = new PointData();
             newpt.GN = calcpt.ed;
-            newpt.ID = calcpt.id;
+            newpt.ID = calcpt.Id;
             //string sisformula = Data.inst().ExpandOrgFormula_Main(calcpt);
             for (int i = 0; i < c; i++)
             {
                 DateValue dv = new DateValue(DateTime.Now,0);
                 foreach (KeyValuePair<int, PointData> kvp in data)
                 {
-                    ce.Variables["S" + Data.inst().dic_SisIdtoPoint[kvp.Key].id.ToString()] = kvp.Value.data[i].Value;
+                    ce.Variables["S" + Data.inst().dic_SisIdtoPoint[kvp.Key].Id.ToString()] = kvp.Value.data[i].Value;
                     dv.Date = kvp.Value.data[i].Date;
                 }
                 if (calcpt.sisformula_main.Length > 0)
@@ -212,7 +212,7 @@ namespace HGS
             {
                 point pt = Data.inst().cd_Point[id];
                 if (pt.pointsrc == pointsrc.sis)
-                    sisid.Add(Convert.ToInt64(pt.id_sis));
+                    sisid.Add(Convert.ToInt64(pt.Id_sis));
             }
             string[] colnames = new string[] { "ID", "MAXV", "MINV" };
 
@@ -256,7 +256,7 @@ namespace HGS
             {
                 point pt = Data.inst().dic_SisIdtoPoint[pd.ID_sis];
                 pd.ED = pt.ed;
-                pd.ID = pt.id;
+                pd.ID = pt.Id;
                 dic_data_stat_id.Add(pd.ID, pd);
             }
             return dic_data_stat_id;

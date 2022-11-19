@@ -32,9 +32,9 @@ namespace HGS
                     if (!flag) break;
                 }
 
-                if ((pt.ownerid == tsCB_class.SelectedIndex || tsCB_class.SelectedIndex == 0) &&
+                if ((pt.OwnerId == tsCB_class.SelectedIndex || tsCB_class.SelectedIndex == 0) &&
                     pt.nd.Contains(tsCB_ND.Text.Trim()) && flag &&
-                    pt.pn.Contains(tsTB_PN.Text.Trim()) && pt.alarmininfo.Contains(tsTB_AI.Text.Trim()))
+                    pt.pn.Contains(tsTB_PN.Text.Trim()) && pt.Alarmininfo.Contains(tsTB_AI.Text.Trim()))
                 {
                     GLItem itemn;
                     if (!dic_rec.ContainsKey(pt))
@@ -48,9 +48,9 @@ namespace HGS
                     }
                     itemn = dic_rec[pt];
                     itemn.SubItems["ED"].Text = pt.ed;
-                    itemn.SubItems["AlarmingAV"].Text = pt.alarmingav.ToString();
-                    itemn.SubItems["AlarmInfo"].Text = pt.alarmininfo;
-                    itemn.SubItems["Time"].Text = pt.lastalarmdatetime.ToString();
+                    itemn.SubItems["AlarmingAV"].Text = pt.Alarmingav.ToString();
+                    itemn.SubItems["AlarmInfo"].Text = pt.Alarmininfo;
+                    itemn.SubItems["Time"].Text = pt.lastAlarmdatetime.ToString();
                     count++;
                 }
             }
