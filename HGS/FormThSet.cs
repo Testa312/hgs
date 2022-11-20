@@ -156,6 +156,9 @@ namespace HGS
         {
             try
             {
+                double dspan = (dateTimePicker2.Value - dateTimePicker1.Value).TotalHours;
+                if (dspan < 8)
+                    dateTimePicker1.Value.AddHours(dspan-8);
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 //int[] span = new int[] {15,30,60,120,240,480 };//分钟
@@ -189,7 +192,7 @@ namespace HGS
                             int count = 1;
                             while (lspd.Count > 0)
                             {
-                                for (int m = 1; m < lspd.Count; m++)
+                                for (int m = 0; m < lspd.Count; m++)
                                 {
                                     cost = Math.Max(cost, SisConnect.GetDtw_dd_diff(pt_main, lspd[m], 0, true));
                                 }

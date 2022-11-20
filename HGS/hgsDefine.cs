@@ -472,7 +472,22 @@ namespace HGS
             set { _lastAlarmdatetime = value; }
             get { return _lastAlarmdatetime; }
         }
-    
+        //bit0:ZL
+        //bit1:LL
+        //bit2:HL
+        //bit3:ZH
+        //bit4:TV
+        //bit5:BV
+        //bit6:Bool
+        //biti7:skip
+        //bit8:wave
+        private uint _lastAlarmBitInfo = 0;
+        public uint lastAlarmBitInfo
+        {
+            set { _lastAlarmBitInfo = value; }
+            get { return _lastAlarmBitInfo; }
+        }
+
         private string _Alarmininfo = "";
         public string Alarmininfo
         {
@@ -774,7 +789,18 @@ namespace HGS
             }
            
         }
-
+        private string CreateAlarmSid(string AlarmName)
+        {
+            return string.Format("P{0}-{1}", id, AlarmName);
+        }
+        //-------------
+        public AlarmInfo CreateAlarmInfo(string AlarmName,string info)
+        {
+            return new AlarmInfo(CreateAlarmSid(AlarmName),
+                string.Format("{0}.{1}", nd, pn),
+                ed, 
+                info);
+        }
         //--------------------
         public alarmlevel AlarmCalc()
         {
@@ -798,7 +824,21 @@ namespace HGS
                     {
                         _Alarmingav = Convert.ToDouble(blv);
                         _AlarmLevel = alarmlevel.sw;
-                        _Alarmininfo = boolAlarminfo; 
+                        _Alarmininfo = boolAlarminfo;
+                        //
+                        if ((_lastAlarmBitInfo & (uint)1) == 0)
+                        {
+                            _lastAlarmBitInfo = _lastAlarmBitInfo | (uint)1;
+                            AlarmSet.GetInst().AddAlarming(CreateAlarmInfo("D", boolAlarminfo));
+                        }
+                    }
+                    else
+                    {
+                        if ((_lastAlarmBitInfo & (uint)1) == (uint)1)
+                        {
+                            _lastAlarmBitInfo = _lastAlarmBitInfo & 0;
+                            AlarmSet.GetInst().AlarmStop(CreateAlarmSid("D"));
+                        }
                     }
                 }
                 else if (_isAvalarm)

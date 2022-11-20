@@ -5,23 +5,46 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using Npgsql;
+using Queues;
 namespace HGS
 {
-    /*/ Defines a comparer to create a sorted set
-    // that is sorted by the file extensions.
-    public class ByDateTime : IComparer<point>
+    public class AlarmInfo
     {
-        public int Compare(point x, point y)
+        public AlarmInfo(string sid,string gn,string ed,string info)
         {
-            return x.lastalarmdatetime.CompareTo(y.lastalarmdatetime);
+            _sid = sid;
+            _Info = info;
+            _gn = gn;
+            _ed = ed;
         }
-    }*/
+        string _gn;
+        string _ed;
+        string _sid;
+        public string sid
+        {
+            set { }
+            get
+            {
+                return _sid;
+            }
+        }
+
+        DateTime _starttime = new DateTime();
+        public DateTime stoptime;
+        string _Info;
+    }
     class AlarmSet
     {
         private static AlarmSet inst;
         private static NpgsqlConnection pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
         private static NpgsqlCommand cmd;
         private StringBuilder sb_alarmsql = new StringBuilder();
+        //
+        private LinkedList<AlarmInfo> linkAlarming = new LinkedList<AlarmInfo>();
+        //private Queue<AlarmInfo> q_alarming = new Queue<AlarmInfo>();
+        private Queue<AlarmInfo> q_alarm_history = new Queue<AlarmInfo>();
+        private Dictionary<string, LinkedListNode<AlarmInfo>> dic_alarminfo = new Dictionary<string, LinkedListNode<AlarmInfo>>();
+        //
         private AlarmSet() { }
 
         public static AlarmSet GetInst()
@@ -87,6 +110,31 @@ namespace HGS
 
             }
             catch(Exception e) { throw new Exception(string.Format("保存报警信息时发生错误！"),e); }
+        }
+        //有线程安全问题
+        public void AddAlarming(AlarmInfo ai)
+        {
+            if (!dic_alarminfo.ContainsKey(ai.sid))
+            {
+                dic_alarminfo.Add(ai.sid,linkAlarming.AddLast(ai));
+                if (linkAlarming.Count > 1000)
+                {
+                    linkAlarming.RemoveFirst();
+                    dic_alarminfo.Remove(ai.sid);
+                }
+                
+            }
+        }
+        public void AlarmStop(string sid)
+        {
+            LinkedListNode<AlarmInfo> lai;
+            if(dic_alarminfo.TryGetValue(sid,out lai))
+            {
+                lai.Value.stoptime = DateTime.Now;
+                q_alarm_history.Enqueue(lai.Value);
+                dic_alarminfo.Remove(sid);
+                linkAlarming.Remove(lai);
+            }
         }
     }
 }

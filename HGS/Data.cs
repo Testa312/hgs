@@ -9,6 +9,7 @@ using System.Diagnostics;
 using Npgsql;
 using System.Text.RegularExpressions;
 using CalcEngine;
+
 namespace HGS
     {
     public class Data
@@ -323,11 +324,10 @@ namespace HGS
             {
                 pt.Expression_alarmif = _ce.Parse(ExpandOrgFormula_AlarmIf(pt));
             }
-
         }
-       
-        //-------------------------------
-        private void LoadData()
+
+    //-------------------------------
+    private void LoadData()
         {
             var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
             point flagpt = null;
