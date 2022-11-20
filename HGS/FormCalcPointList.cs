@@ -48,12 +48,12 @@ namespace HGS
                     if (ptx.nd.Contains(tSCBNode.Text.Trim()) && flag &&
                         ptx.pn.Contains(tSTBPN.Text.Trim()))
                     {
-                        if (onlyid.Contains(ptx.Id)) continue;
+                        if (onlyid.Contains(ptx.id)) continue;
 
                         GLItem itemn = new GLItem(glacialList);
                         lsItmems.Add(itemn);
                         itemtag it = new itemtag();
-                        it.id = ptx.Id;
+                        it.id = ptx.id;
 
                         itemn.SubItems["ND"].Text = ptx.nd;
                         itemn.SubItems["PN"].Text = ptx.pn;

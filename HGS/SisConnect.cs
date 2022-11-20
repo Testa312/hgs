@@ -115,7 +115,7 @@ namespace HGS
                 {
                     point pt = Data.inst().dic_SisIdtoPoint[pd.ID_sis];
                     pd.ED = pt.ed;
-                    pd.ID = pt.Id;
+                    pd.ID = pt.id;
                     dic_pd.Add(pd.ID, pd);
                 }
 
@@ -149,18 +149,18 @@ namespace HGS
             }
             PointData newpt = new PointData();
             newpt.GN = calcpt.ed;
-            newpt.ID = calcpt.Id;
+            newpt.ID = calcpt.id;
             //string sisformula = Data.inst().ExpandOrgFormula_Main(calcpt);
             for (int i = 0; i < c; i++)
             {
                 DateValue dv = new DateValue(DateTime.Now,0);
                 foreach (KeyValuePair<int, PointData> kvp in data)
                 {
-                    ce.Variables["S" + Data.inst().dic_SisIdtoPoint[kvp.Key].Id.ToString()] = kvp.Value.data[i].Value;
+                    ce.Variables["S" + Data.inst().dic_SisIdtoPoint[kvp.Key].id.ToString()] = kvp.Value.data[i].Value;
                     dv.Date = kvp.Value.data[i].Date;
                 }
-                if (calcpt.sisformula_main.Length > 0)
-                    dv.Value = (float)Convert.ToDouble(ce.Evaluate(calcpt.sisformula_main));
+                if (calcpt.Sisformula_main.Length > 0)
+                    dv.Value = (float)Convert.ToDouble(ce.Evaluate(calcpt.Sisformula_main));
                 newpt.data.Add(dv);
             }
             double sum = 0;
@@ -257,7 +257,7 @@ namespace HGS
             {
                 point pt = Data.inst().dic_SisIdtoPoint[pd.ID_sis];
                 pd.ED = pt.ed;
-                pd.ID = pt.Id;
+                pd.ID = pt.id;
                 dic_data_stat_id.Add(pd.ID, pd);
             }
             return dic_data_stat_id;

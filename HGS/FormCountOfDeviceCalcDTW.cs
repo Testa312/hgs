@@ -49,7 +49,7 @@ namespace HGS
                     if (!dic_sensor.TryGetValue(sid, out item))
                     {
                         item = new GLItem(glacialList1);                       
-                        item.SubItems["ID"].Text = sensor.Id.ToString();
+                        item.SubItems["ID"].Text = sensor.id.ToString();
                         item.SubItems["PN"].Text = sensor.pn;
                         item.SubItems["ED"].Text = sensor.ed;
                         lsitem.Add(item);

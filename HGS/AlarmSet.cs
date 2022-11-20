@@ -60,7 +60,7 @@ namespace HGS
                 {
 
                     sb_alarmsql.AppendLine(string.Format(@"insert into alarmhistory (id,alarminfo,alarmav,datetime) values ({0},'{1}',{2},'{3}');",
-                                   pt.Id, pt.Alarmininfo, Functions.dtoNULL(pt.Alarmingav), DateTime.Now));
+                                   pt.id, pt.Alarmininfo, Functions.dtoNULL(pt.Alarmingav), DateTime.Now));
                 }
             }
             else
@@ -70,7 +70,7 @@ namespace HGS
         {
             if(ssAlarmPoint.Contains(pt))
                 sb_alarmsql.AppendLine(string.Format(@"insert into alarmhistory (id,alarminfo,alarmav,datetime) values ({0},'{1}',{2},'{3}');",
-                                  pt.Id, "人工取消了报警！", Functions.dtoNULL(pt.Alarmingav), DateTime.Now));
+                                  pt.id, "人工取消了报警！", Functions.dtoNULL(pt.Alarmingav), DateTime.Now));
             ssAlarmPoint.Remove(pt);
         }
             public void SaveAlarmInfo()

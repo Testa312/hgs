@@ -48,17 +48,24 @@ namespace HGS
         private int _id_sis = 0;//sis点id
         public int Id_sis
         {
-            set { _id_sis = value;
-                Data.inst().Update(this);
-            }//?????????
+            set {
+                if (_id_sis != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _id_sis = value;
+            }
             get { return _id_sis; }
         }
         private string _nd = "";//节点名。
         public string nd
         {
             set {
+                if (_nd != value)
+                {
+                    Data.inst().Update(this);
+                }
                 _nd = value;
-                Data.inst().Update(this);
             }
             get { return _nd; }
         }
@@ -66,8 +73,11 @@ namespace HGS
         public string pn
         {
             set {
+                if (_pn != value)
+                {
+                    Data.inst().Update(this);
+                }
                 _pn = value;
-                Data.inst().Update(this);
             }
             get { return _pn; }
         }
@@ -75,8 +85,12 @@ namespace HGS
         private string _ed = "";//点描述
         public string ed
         {
-            set { _ed = value;
-                Data.inst().Update(this);
+            set {
+                if (_ed != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _ed = value;
             }
             get { return _ed; }
         }
@@ -84,16 +98,24 @@ namespace HGS
         private double? _tv = null;//量程上限
         public double? tv
         {
-            set { _tv = value;
-                Data.inst().Update(this);
+            set {
+                if (_tv != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _tv = value;
             }
             get { return _tv; }
         }
         private double? _bv = null;//量程下限
         public double? bv
         {
-            set { _bv = value;
-                Data.inst().Update(this);
+            set {
+                if (_bv != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _bv = value;
             }
             get { return _bv; }
         }
@@ -101,8 +123,20 @@ namespace HGS
         private double? _ll = null;//报警低限
         public double? ll
         {
-            set { _ll = value;
-                Data.inst().Update(this);
+            set {
+                if (_ll != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _ll = value;
+            }
+            get { return _ll; }
+        }
+        public double? _LL//浮动定值计算用
+        {
+            set
+            {
+                _ll = value;
             }
             get { return _ll; }
         }
@@ -115,20 +149,24 @@ namespace HGS
         private string _Orgformula_ll = "";//计算公式
         public string Orgformula_ll
         {
-            set { _Orgformula_ll = value;
-                Data.inst().Update(this);
+            set {
+                if (_Orgformula_ll != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _Orgformula_ll = value;
             }
             get { return _Orgformula_ll; }
         }
         //public string expformula_ll = "";//展开成点的计算公式
-        private Expression _Expression_ll = null;//优化计算速度,不保存
+        private Expression _Expression_ll = null; //已解析为表达式树,优化计算速度。
         public Expression Expression_ll
         {
             set { _Expression_ll = value; }
             get { return _Expression_ll; }
         }
         //计算子点id
-        private List<varlinktopoint> _lsCalcOrgSubPoint_ll = null;//原始参与计算点列表
+        private List<varlinktopoint> _lsCalcOrgSubPoint_ll = null;//变量与点Id的对应列表
         public List<varlinktopoint> lsCalcOrgSubPoint_ll
         {
             set { _lsCalcOrgSubPoint_ll = value; }
@@ -136,7 +174,7 @@ namespace HGS
         }
         //
         //计算子点id用于进行计算点状态计算。
-        private List<point> _listSisCalaExpPointID_ll = null;//展开成sis点的参与计算点列表。
+        private List<point> _listSisCalaExpPointID_ll = null;//参与公式计算的sis点列表。
         public List<point> listSisCalaExpPointID_ll
         {
             set { _listSisCalaExpPointID_ll = value; }
@@ -146,8 +184,21 @@ namespace HGS
         private double? _hl = null;//报警高限
         public double? hl
         {
-            set { _hl = value;
-                Data.inst().Update(this);
+            set
+            {
+                if (_hl != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _hl = value;
+            }
+            get { return _hl; }
+        }
+        public double? _HL////浮动定值计算用
+        {
+            set
+            {
+                _hl = value;
             }
             get { return _hl; }
         }
@@ -160,19 +211,23 @@ namespace HGS
         private string _Orgformula_hl = "";//计算公式
         public string orgformula_hl
         {
-            set { _Orgformula_hl = value;
-                Data.inst().Update(this);
+            set {
+                if (_Orgformula_hl != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _Orgformula_hl = value;
             }
             get { return _Orgformula_hl; }
         }
-        private Expression _Expression_hl = null;//优化计算速度。
+        private Expression _Expression_hl = null;//已解析为表达式树,优化计算速度。
         public Expression Expression_hl
         {
             set { _Expression_hl = value; }
             get { return _Expression_hl; }
         }
         //计算子点id
-        private List<varlinktopoint> _lsCalcOrgSubPoint_hl = null;//原始参与计算点列表
+        private List<varlinktopoint> _lsCalcOrgSubPoint_hl = null;//变量与点Id的对应列表
         public List<varlinktopoint> lsCalcOrgSubPoint_hl
         {
             set { _lsCalcOrgSubPoint_hl = value; }
@@ -180,7 +235,7 @@ namespace HGS
         }
         //
         //用于进行计算点点状态计算。
-        private List<point> _listSisCalaExpPointID_hl = null;
+        private List<point> _listSisCalaExpPointID_hl = null; //参与公式计算的sis点列表。
         public List<point> listSisCalaExpPointID_hl
         {
             set { _listSisCalaExpPointID_hl = value; }
@@ -190,8 +245,13 @@ namespace HGS
         private double? _zh = null;//报警高2限
         public double? zh
         {
-            set { _zh = value;
-                Data.inst().Update(this);
+            set
+            {
+                if (_zh != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _zh = value;
             }
             get { return _zh; }
         }
@@ -206,8 +266,12 @@ namespace HGS
         private double? _zl = null;//报警低2限
         public double? zl
         {
-            set { _zl = value;
-                Data.inst().Update(this);
+            set {
+                if (_zl != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _zl = value;
             }
             get { return _zl; }
         }
@@ -215,7 +279,6 @@ namespace HGS
         public double? min_zl
         {
             set { _min_zl = value;
-                Data.inst().Update(this);
             }
             get { return _min_zl; }
         }
@@ -223,64 +286,79 @@ namespace HGS
         private pointsrc _pointsrc = 0;//点源0:sis,1:计算点
         public pointsrc pointsrc
         {
-            set { _pointsrc = value;
-                Data.inst().Update(this);
+            set {
+                if (_pointsrc != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _pointsrc = value;
             }
             get { return _pointsrc; }
         }
         private int _ownerid = 0;//专业id
         public int OwnerId
         {
-            set { _ownerid = value;
-                Data.inst().Update(this);
+            set {
+                if (_ownerid != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _ownerid = value;
             }
             get { return _ownerid; }
         }
-        private string _Orgformula_main = "";//计算公式
-        public string orgformula_main
+        
+        private int _id = -1;//点id
+        public int id
         {
-            set { _Orgformula_main = value;
-                Data.inst().Update(this);
+            set {
+                if (_id != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _id = value;
             }
-            get { return _Orgformula_main; }
-        }
-        private string _Sisformula_main = "";//展开成点的计算公式
-        public string sisformula_main
-        {
-            set { _Sisformula_main = value; }
-            get { return _Sisformula_main; }
-        }
-        private int _Id = -1;//点id
-        public int Id
-        {
-            set { _Id = value; }
-            get { return _Id; }
+            get { return _id; }
         }
         private string _eu = "";//点单位
         public string eu
         {
-            set { _eu = value;
-                Data.inst().Update(this);
+            set {
+                if (_eu != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _eu = value;
             }
             get { return _eu; }
         }
         private bool _isCalc = false;//是否进行计算
         public bool isCalc
         {
-            set { _isCalc = value;
-                Data.inst().Update(this);
+            set
+            {
+                if (_isCalc != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _isCalc = value;
             }
             get { return _isCalc; }
         }
         private bool _isAvalarm = false;//是否报警
         public bool isAvalarm
         {
-            set { _isAvalarm = value;
-                Data.inst().Update(this);
+            set
+            {
+                if (_isAvalarm != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _isAvalarm = value;
             }
             get { return _isAvalarm; }
         }
-        private PointState _ps = PointState.Good;//点状态
+        private PointState _ps = PointState.Good;//点状态,实时计算用
         public PointState ps
         {
             set { _ps = value; }
@@ -290,8 +368,12 @@ namespace HGS
         private short _fm = 1;//保留小数点位数。
         public short fm
         {
-            set { _fm = value;
-                Data.inst().Update(this);
+            set {
+                if (_fm != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _fm = value;
             }
             get { return _fm; }
         }
@@ -300,34 +382,67 @@ namespace HGS
         private bool _boolAlarmif = true;
         public bool boolAlarmif
         {
-            set { _boolAlarmif = value;
-                Data.inst().Update(this);
+            set {
+                if (_boolAlarmif != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _boolAlarmif = value;
             }
             get { return _boolAlarmif; }
         }
         private bool _isboolvAlarm = false;
         public bool isboolvAlarm
         {
-            set { _isboolvAlarm = value;
-                Data.inst().Update(this);
+            set
+            {
+                if (_isboolvAlarm != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _isboolvAlarm = value;
             }
             get { return _isboolvAlarm; }
         }
         private string _boolAlarminfo = "";//isbool 为真时的报警信息。
         public string boolAlarminfo
         {
-            set { _boolAlarminfo = value; }
+            set {
+                if (_boolAlarminfo != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _boolAlarminfo = value;
+            }
             get { return _boolAlarminfo; }
         }
         //
-        private Expression _Expression_main = null;//已展开为sis点,优化计算速度。
+        private string _Orgformula_main = "";//原始计算公式
+        public string orgformula_main
+        {
+            set {
+                if (_Orgformula_main != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _Orgformula_main = value;
+            }
+            get { return _Orgformula_main; }
+        }
+        private string _Sisformula_main = "";//已展开成SIS点的计算公式，不保存
+        public string Sisformula_main
+        {
+            set { _Sisformula_main = value; }
+            get { return _Sisformula_main; }
+        }
+        private Expression _Expression_main = null;//已解析为表达式树,优化计算速度。
         public Expression Expression_main
         {
             set { _Expression_main = value; }
             get { return _Expression_main; }
         }
         //计算子点id
-        private List<varlinktopoint> _lsCalcOrgSubPoint_main = null;//原始参与计算点列表
+        private List<varlinktopoint> _lsCalcOrgSubPoint_main = null;//变量与点Id的对应列表
         public List<varlinktopoint> lsCalcOrgSubPoint_main
         {
             set { _lsCalcOrgSubPoint_main = value; }
@@ -335,7 +450,7 @@ namespace HGS
         }
         //
         //计算子点id用于进行计算点状态计算。
-        private List<point> _listSisCalaExpPointID_main = null;//已展开成sis点的变量sis点。;
+        private List<point> _listSisCalaExpPointID_main = null;//参与公式计算的sis点列表。;
         public List<point> listSisCalaExpPointID_main
         {
             set { _listSisCalaExpPointID_main = value; }
@@ -394,19 +509,23 @@ namespace HGS
         private string _Alarmif = "";
         public string Alarmif
         {
-            set { _Alarmif = value;
-                Data.inst().Update(this);
+            set {
+                if (_Alarmif != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _Alarmif = value;
             }
             get { return _Alarmif; }
         }
-        private Expression _Expression_alarmif = null;// new Expression();//优化计算速度。
+        private Expression _Expression_alarmif = null;//已解析为表达式树,优化计算速度。
         public Expression Expression_alarmif
         {
             set { _Expression_alarmif = value; }
             get { return _Expression_alarmif; }
         }
         //计算子点id
-        private List<varlinktopoint> _lscalcOrgSubPoint_alarmif = null;// new List<varlinktopoint>();//原始参与计算点列表
+        private List<varlinktopoint> _lscalcOrgSubPoint_alarmif = null; //变量与点Id的对应列表
         public List<varlinktopoint> lsCalcOrgSubPoint_alarmif
         {
             set { _lscalcOrgSubPoint_alarmif = value; }
@@ -414,7 +533,7 @@ namespace HGS
         }
         //
         //用于进行计算点点状态计算。
-        private List<point> _listSiscalaExpPointID_alarmif = null;// new List<point>();
+        private List<point> _listSiscalaExpPointID_alarmif = null;// 参与公式计算的sis点列表。
         public List<point> listSisCalaExpPointID_alarmif
         {
             set { _listSiscalaExpPointID_alarmif = value; }
@@ -424,16 +543,24 @@ namespace HGS
         private bool _isAlarmskip = false;
         public bool isAlarmskip
         {
-            set { _isAlarmskip = value;
-                Data.inst().Update(this);
+            set {
+                if (_isAlarmskip != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _isAlarmskip = value;
             }
             get { return _isAlarmskip; }
         }
         private bool _isAlarmwave = false;
         public bool isAlarmwave
         {
-            set { _isAlarmwave = value;
-                Data.inst().Update(this);
+            set {
+                if (_isAlarmwave != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _isAlarmwave = value;
             }
             get { return _isAlarmwave; }
         }
@@ -442,8 +569,11 @@ namespace HGS
         {
             set
             {
+                if (_Skip_pp != value)
+                {
+                    Data.inst().Update(this);
+                }
                 _Skip_pp = value;
-                Data.inst().Update(this);
             }
             get { return _Skip_pp; }
         }
@@ -477,16 +607,17 @@ namespace HGS
         }
         public point(int id ,pointsrc ps)
         {
-            _Id = id;
+            _id = id;
             _pointsrc = ps;
-            Data.inst().AddNew(this);
+            if (id >= 0)//0和负值为临时测试点
+                Data.inst().AddNew(this);
         }
 
         public point(NpgsqlDataReader pgreader)
         {
             if (pgreader == null) return;
 
-            _Id = (int)pgreader["id"];
+            _id = (int)pgreader["id"];
             _nd = pgreader["nd"].ToString();
             _pn = pgreader["pn"].ToString();
             _eu = pgreader["eu"].ToString();
@@ -596,7 +727,7 @@ namespace HGS
                     //
                     Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
 
-                    dic_intQueues.Add(Id, Data.inst().cd_Point[Id]);
+                    dic_intQueues.Add(id, Data.inst().cd_Point[id]);
 
                     SisConnect.InitSensorsQueues(dic_intQueues);
                 }
@@ -712,7 +843,7 @@ namespace HGS
                         && _Skip_pp <= _WaveDetection.DeltaP_P())
                     {
                         _max_skip_pp = Math.Max(_max_skip_pp, _av.GetValueOrDefault());
-                        if(_Id % 10 == _datanums % 10 || spstatus == WaveDetection.wavestatus.error)//每10个数据计算一次。
+                        if(_id % 10 == _datanums % 10 || spstatus == WaveDetection.wavestatus.error)//每10个数据计算一次。
                         {
                             spstatus = _WaveDetection.isWave();
                         }
@@ -753,7 +884,7 @@ namespace HGS
                                 DeviceInfo info = null;
                                 if (Data_Device.dic_Device.TryGetValue(di, out info))
                                 {
-                                    if (info.dtw_alarm(Id, i))
+                                    if (info.dtw_alarm(id, i))
                                     {
                                         _AlarmLevel = alarmlevel.dtw;
                                         _Alarmininfo += string.Format("{0}的[{1}]-{2}-{3}分钟-异常报警！",

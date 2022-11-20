@@ -220,8 +220,8 @@ namespace HGS
                     try
                     {
                         if (pt.Expression_hl != null && hlps == PointState.Good)
-                            pt.hl = Convert.ToDouble(pt.Expression_hl.Evaluate());
-                        else pt.hl = null;
+                            pt._HL = Math.Round(Convert.ToDouble(pt.Expression_hl.Evaluate()),2);
+                        else pt._HL = null;
 
                     }
                     catch (Exception)
@@ -238,8 +238,8 @@ namespace HGS
                     try
                     {
                         if (pt.Expression_ll != null && llps == PointState.Good)
-                            pt.ll = Convert.ToDouble(pt.Expression_ll.Evaluate());
-                        else pt.ll = null;
+                            pt._LL = Math.Round(Convert.ToDouble(pt.Expression_ll.Evaluate()),2);
+                        else pt._LL = null;
 
                     }
                     catch (Exception)

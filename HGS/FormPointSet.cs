@@ -78,8 +78,8 @@ namespace HGS
         {
             itemtag it = new itemtag();
             itemn.Tag = it;
-            it.id = ptx.Id;
-            itemn.SubItems["ID"].Text = ptx.Id.ToString();
+            it.id = ptx.id;
+            itemn.SubItems["ID"].Text = ptx.id.ToString();
             itemn.SubItems["ND"].Text = ptx.nd;
             itemn.SubItems["PN"].Text = ptx.pn;
 
@@ -104,7 +104,7 @@ namespace HGS
         }
         private void gllistUpateItemText(GLItem item,point pt)
         {
-            if (pt.Id != ((itemtag)(item).Tag).id) throw new Exception("更换点和项目不同！");
+            if (pt.id != ((itemtag)(item).Tag).id) throw new Exception("更换点和项目不同！");
             item.SubItems["TV"].Text = pt.tv.ToString();
             item.SubItems["BV"].Text = pt.bv.ToString();
             item.SubItems["LL"].Text = pt.ll.ToString();
@@ -124,6 +124,7 @@ namespace HGS
             FormSisPointList fspl = new FormSisPointList();
             if (fspl.ShowDialog() == DialogResult.OK)
             {
+                Save();
                 List<GLItem> lsItem = new List<GLItem>();
                 HashSet<int> hs_ptid = new HashSet<int>();
                 foreach (point pt in fspl.lsitem)
@@ -138,7 +139,7 @@ namespace HGS
                         {
                             tSCB_ND.Items.Add(pt.nd);
                         }
-                        hs_ptid.Add(pt.Id);
+                        hs_ptid.Add(pt.id);
                     }
                     else 
                     {
@@ -146,7 +147,7 @@ namespace HGS
                             pt.pn),"提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
                      }
                 }
-                Save();
+               
                 TreeNode tn = treeView.SelectedNode;
                 if (tn != null && tn.Text != "全部")
                 {
@@ -221,7 +222,8 @@ namespace HGS
                                 AlarmSet.GetInst().Remove(ppt);
                             }
                             pt.isboolvAlarm = checkBoxbool.Checked;
-                            pt.boolAlarminfo = tB_boolAlarmInfo.Text;
+                            if(glc <=1 ) 
+                                pt.boolAlarminfo = tB_boolAlarmInfo.Text;
                             pt.boolAlarmif = radioButton_true.Checked;
 
                             if (textBox_pp.Text.Length > 0)
@@ -375,8 +377,8 @@ namespace HGS
             fcps.Text = "新加计算点";
             if (fcps.ShowDialog() == DialogResult.OK)
             {
-                calcpt.Id = Data.inst().GetNextPointId();
                 Save();
+                calcpt = fcps.GetNewCalcePoint();
                 GLItem item = new GLItem(glacialList1);
                 gllistInitItemTextFromPoint(calcpt, item);
                 glacialList1.Items.Add(item);
@@ -386,7 +388,7 @@ namespace HGS
                 {
                     DeviceInfo tt = (DeviceInfo)tn.Tag;
                     HashSet<int> hs_id = new HashSet<int>();
-                    hs_id.Add(calcpt.Id);
+                    hs_id.Add(calcpt.id);
                     tt.UnionWith(hs_id);
                     DataDeviceTree.UpdateNodetoDB(tn);
                 }
@@ -437,7 +439,7 @@ namespace HGS
                     foreach (int pid in lspid)
                     {
                         point pt = Data.inst().cd_Point[pid];
-                        sb.AppendLine(string.Format("[id:{0}]-{1}", pt.Id, pt.ed));
+                        sb.AppendLine(string.Format("[id:{0}]-{1}", pt.id, pt.ed));
                     }
                     MessageBox.Show(sb.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     continue;

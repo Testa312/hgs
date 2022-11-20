@@ -37,7 +37,7 @@ namespace HGS
             Refresh();
             //if (pt.pointsrc != pointsrc.calc) return null;
             List<varlinktopoint> lssubpt = null;
-            string strexp = string.Format("id={0} and cellId={1}", pt.Id, (int)cellId);
+            string strexp = string.Format("id={0} and cellId={1}", pt.id, (int)cellId);
             DataRow[] frow = dt_vartoPoint.Select(strexp);
             if (frow.Length > 0)
             {
