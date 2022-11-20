@@ -13,12 +13,12 @@ using GlacialComponents.Controls;
 using System.Diagnostics;
 namespace HGS
 {
-    public partial class FormCurves : Form
+    public partial class FormPlotCurves : Form
     {
         HashSet<int> hsPointid = null;
         DateTimePicker dateTimePicker1 = new DateTimePicker();
         DateTimePicker dateTimePicker2 = new DateTimePicker();
-        public FormCurves(HashSet<int> hsPointid )
+        public FormPlotCurves(HashSet<int> hsPointid )
         {
             this.hsPointid = hsPointid;
             InitializeComponent();

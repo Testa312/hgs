@@ -224,6 +224,12 @@
     <Compile Include="FormCountOfDeviceCalcDTW.Designer.cs">
       <DependentUpon>FormCountOfDeviceCalcDTW.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormPlotQueues.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPlotQueues.Designer.cs">
+      <DependentUpon>FormPlotQueues.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormThSet.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -284,11 +290,11 @@
     <Compile Include="FormAlarmSetList.Designer.cs">
       <DependentUpon>FormAlarmSetList.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormCurves.cs">
+    <Compile Include="FormPlotCurves.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormCurves.Designer.cs">
-      <DependentUpon>FormCurves.cs</DependentUpon>
+    <Compile Include="FormPlotCurves.Designer.cs">
+      <DependentUpon>FormPlotCurves.cs</DependentUpon>
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="GlacialList\BorderStrip.cs">
@@ -371,6 +377,9 @@
     <EmbeddedResource Include="FormCountOfDeviceCalcDTW.resx">
       <DependentUpon>FormCountOfDeviceCalcDTW.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormPlotQueues.resx">
+      <DependentUpon>FormPlotQueues.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormThSet.resx">
       <DependentUpon>FormThSet.cs</DependentUpon>
     </EmbeddedResource>
@@ -398,8 +407,8 @@
     <EmbeddedResource Include="FormAlarmSetList.resx">
       <DependentUpon>FormAlarmSetList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormCurves.resx">
-      <DependentUpon>FormCurves.cs</DependentUpon>
+    <EmbeddedResource Include="FormPlotCurves.resx">
+      <DependentUpon>FormPlotCurves.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GlacialList\BorderStrip.resx" />
     <EmbeddedResource Include="GlacialList\GlacialList.resx" />

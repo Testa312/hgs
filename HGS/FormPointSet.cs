@@ -998,14 +998,23 @@ namespace HGS
             }
             if (pointid.Count > 0)
             {
-                FormCurves fc = new FormCurves(pointid);
+                FormPlotCurves fc = new FormPlotCurves(pointid);
                 fc.Show();
             }
         }
-
-        private void toolStripButtonSave_Click(object sender, EventArgs e)
+        private void 显示队列曲线ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            if(glacialList1.SelectedItems.Count > 0)
+            {
+                GLItem item = (GLItem)glacialList1.SelectedItems[0];
+                itemtag it = (itemtag)item.Tag;
+                point pt;
+                if (Data.inst().cd_Point.TryGetValue(it.id, out pt))
+                {
+                    FormPlotQueues fpq = new FormPlotQueues(pt);
+                    fpq.Show();
+                }
+            }
         }
     }
 }

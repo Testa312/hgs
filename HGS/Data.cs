@@ -128,6 +128,7 @@ namespace HGS
             }
             return ++imax;
         }
+        //所有点装入后才能进行
         //展开公式为Sis点-------------------------------------------------
         static HashSet<int> loopvar = new HashSet<int>();
         public string  ExpandOrgFormula_Main(point pt)

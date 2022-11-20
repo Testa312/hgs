@@ -159,14 +159,14 @@ namespace HGS
             get { return _Orgformula_ll; }
         }
         //public string expformula_ll = "";//展开成点的计算公式
-        private Expression _Expression_ll = null; //已解析为表达式树,优化计算速度。
+        private Expression _Expression_ll = null;//已解析为表达式树,优化计算速度。
         public Expression Expression_ll
         {
             set { _Expression_ll = value; }
             get { return _Expression_ll; }
         }
         //计算子点id
-        private List<varlinktopoint> _lsCalcOrgSubPoint_ll = null;//变量与点Id的对应列表
+        private List<varlinktopoint> _lsCalcOrgSubPoint_ll = null;//原始参与计算点列表
         public List<varlinktopoint> lsCalcOrgSubPoint_ll
         {
             set { _lsCalcOrgSubPoint_ll = value; }
@@ -174,7 +174,7 @@ namespace HGS
         }
         //
         //计算子点id用于进行计算点状态计算。
-        private List<point> _listSisCalaExpPointID_ll = null;//参与公式计算的sis点列表。
+        private List<point> _listSisCalaExpPointID_ll = null;//展开成sis点的参与计算点列表。
         public List<point> listSisCalaExpPointID_ll
         {
             set { _listSisCalaExpPointID_ll = value; }

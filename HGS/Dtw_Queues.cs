@@ -9,15 +9,19 @@ namespace HGS
     //滑动窗口取极值,可降采样
     public class Dtw_queues
     {
-        DequeSafe<double> qdata = new DequeSafe<double>();
-        DequeSafe<int> qmax = new DequeSafe<int>();
-        DequeSafe<int> qmin = new DequeSafe<int>();
+        Deque<double> qdata = new Deque<double>();
+        Deque<int> qmax = new Deque<int>();
+        Deque<int> qmin = new Deque<int>();
+        //
+        //DequeSafe<double> qdata = new DequeSafe<double>();
+        //DequeSafe<int> qmax = new DequeSafe<int>();
+        //DequeSafe<int> qmin = new DequeSafe<int>();
         private int size = 100;//窗口size.
         private int downsamples = 1;
-        private int totalsampls = 0; 
+        private int totalsampls = 1; 
         int p = -1;
-        //滤波器用,x(n)=a*x(n-1)+b*y(n+1)+(1-a-b)*y(n);
-        double a = 0.8f, b = 0.1f, x, y1, y2;
+        //滤波器用,x(n)=a*x(n-1)+b*y(n+1)+(1-a-b)*y(n) a+b要小于1;
+        double a = 0.8f, b = 0.1f, x = 0, y1 = 0, y2 = 0;
         public Dtw_queues() { }
         public int Size
         {
@@ -46,11 +50,11 @@ namespace HGS
             totalsampls++;
             if (!bDS || (totalsampls % downsamples == 0))
             {
-                //初始化时约为120个数据
+                ///滤波，初始化时约需要120个数据
                 y1 = y2;
                 y2 = d;
                 d = x = a * x + b * y1 + (1 - a - b) * y2;
-                //
+                
                 p++;
                 int im = 0;
                 qdata.Push(d);

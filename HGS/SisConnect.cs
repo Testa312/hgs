@@ -178,7 +178,7 @@ namespace HGS
         {
             if (dic_pt == null)
                 throw new ArgumentException("初始化队列的点列表不能为空！");
-            int[] ScanSpan = Pref.Inst().ScanSpan;//分钟
+            int[] ScanSpan = new int[6] {18,36,72,144,288,576};//分钟,秒数为120的倍数
             HashSet<int> lsob = new HashSet<int>();
             foreach (int id in dic_pt.Keys)
             {
@@ -195,7 +195,7 @@ namespace HGS
                     float[] x = new float[pd.data.Count];
                     for (int m = 0; m < pd.data.Count; m++)
                     {
-                        x[pd.data.Count - 1 -m] = pd.data[pd.data.Count - 1 - m].Value;   
+                        x[m] = pd.data[pd.data.Count - 1 - m].Value;   
                     }
                     dic_pt[pd.ID].initDeviceQ(i, x);
                 }
