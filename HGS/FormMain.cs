@@ -15,7 +15,7 @@ namespace HGS
     {
         OPAPI.Connect sisconn = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
           Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
-        FormAlarmSetList formAlarmSet = null;
+        FormRealTimeAlarm formAlarmSet = null;
         FormPointSet formPointSet = null;
         FormAlarmHistoryList formAlarmList = null;
         FormCountOfDeviceCalcDTW formcodcd = null;
@@ -79,7 +79,7 @@ namespace HGS
         }
         private void 报警信息ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (formAlarmSet == null || formAlarmSet.IsDisposed) formAlarmSet = new FormAlarmSetList();
+            if (formAlarmSet == null || formAlarmSet.IsDisposed) formAlarmSet = new FormRealTimeAlarm();
 
             formAlarmSet.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
             formAlarmSet.WindowState = FormWindowState.Maximized;
@@ -268,15 +268,17 @@ namespace HGS
                 }
                 //}
                 //计算完成，加报警
-                AlarmSet.GetInst().Add(pt);
+                //AlarmSet.GetInst().Add(pt);
                 //
+                pt.AlarmCalc();
             }
+            Data_Device.AlarmCalc_All_Device();
             tssL_error_nums.Text = Data.inst().hs_FormulaErrorPoint.Count.ToString();
 
             try
             {
 #if SERVER
-                AlarmSet.GetInst().SaveAlarmInfo();
+               // AlarmSet.GetInst().SaveAlarmInfo();
 #endif
             }
             catch (Exception ee) {

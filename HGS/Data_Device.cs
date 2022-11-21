@@ -8,6 +8,11 @@ namespace HGS
 {
     public class DeviceInfo
     {
+        public DeviceInfo()
+        {
+            Random rnd = new Random();
+            TimeTick = rnd.Next(1, 100);
+        }
         public string Name = "";
         public int id = -1;
         public string path = "";
@@ -16,6 +21,9 @@ namespace HGS
         public int sort = 0;
         public int CountofDTWCalc = 0;
         private HashSet<int> hs_Sensorsid = null;
+        //
+        private int TimeTick;
+        private uint lastAlarmBit = 0, curAlarmBit = 0;
         public float[] Alarm_th_dis
         {
             get { return alarm_th_dis; }
@@ -108,50 +116,113 @@ namespace HGS
                 hs_Sensorsid = new HashSet<int>();
             hs_Sensorsid.UnionWith(sen_set);
         }
-        public bool dtw_alarm(int Sensorid, int Step)
+        //--------------------
+        static string[,] _Alarm = {
+            {"15m",  "15m参数异常！"    },
+            {"30m",  "30m参数异常！"    },
+            {"60m",  "60m参数异常！"    },
+            {"120m",  "120m参数异常！"  },
+            {"240m",  "240m参数异常！"  },
+            {"480m",  "480m参数异常！"  } };
+        //-----
+        private void AlarmCalc_dtw(point pt,int Step)
         {
             if (alarm_th_dis == null || hs_Sensorsid == null) 
-                return false;
+                return;
             if (alarm_th_dis.Length != 6) 
                 throw new Exception("设备dtw报警阈值必须为6个！");
-            if(!hs_Sensorsid.Contains(Sensorid)) 
-                throw new Exception("设备没有这个传感器！");
             if (Step < 0 || Step >= 6) 
                 throw new Exception("设备没有采集这些数据！");
             //
-            double[] maindata = Data.inst().cd_Point[Sensorid].Dtw_Queues_Array[Step].Data();
+            Queue<int> q_s = new Queue<int>();
+            q_s.Union(hs_Sensorsid);
+            double[] maindata = pt.Dtw_Queues_Array[Step].Data();
             if (maindata != null)
             {
                 int count = 0;
-                foreach (int id in hs_Sensorsid)
+                while (q_s.Count > 0)
                 {
-                    if (id != Sensorid)
+                    int sid = q_s.Dequeue();
+                    if (sid == pt.id) continue;
+                    point ptx;
+                    if (Data.inst().cd_Point.TryGetValue(sid, out ptx))
                     {
-                        point pt;
-                        if (Data.inst().cd_Point.TryGetValue(id, out pt))
+                        if (ptx.Dtw_Queues_Array != null)
                         {
-                            if (pt.Dtw_Queues_Array != null)
+                            double[] secdata = ptx.Dtw_Queues_Array[Step].Data();
+                            if (secdata != null)
                             {
-                                double[] secdata = pt.Dtw_Queues_Array[Step].Data();
-                                if (secdata != null)
+                                CountofDTWCalc++;
+                                double cost = SisConnect.GetDtw_dd_diff(maindata, secdata, alarm_th_dis[Step] * 1.414);
+                                if (cost > alarm_th_dis[Step])
                                 {
-                                    CountofDTWCalc++;
-                                    double cost = SisConnect.GetDtw_dd_diff(maindata, secdata, alarm_th_dis[Step]*1.414);
-                                    if (cost > alarm_th_dis[Step])
-                                    {
-                                        if (!double.IsInfinity(cost))
-                                            alarm_th_dis_max[Step] = (float)Math.Max(cost, alarm_th_dis_max[Step]);
-                                        return true;
-                                    }
+                                    curAlarmBit = (uint)1 << Step;
+                                    if (!double.IsInfinity(cost))
+                                        alarm_th_dis_max[Step] = (float)Math.Max(cost, alarm_th_dis_max[Step]);
+                                    return;
                                 }
-                                count++;
-                                if (count >= 2) return false;
                             }
+                            count++;
+                            if (count >= 2) return;
                         }
                     }
                 }
             }
-            return false;
+        }
+        private point Dtw_th_h(int step)
+        {
+            foreach (int sid in hs_Sensorsid)
+            {
+                point pt;
+                if (Data.inst().cd_Point.TryGetValue(sid, out pt))
+                {
+                    if (pt.Dtw_Queues_Array != null)
+                    {
+                        double p_p = pt.Dtw_Queues_Array[step].DeltaP_P();
+                        if (p_p > pt.Dtw_start_th[step])
+                            return pt;
+                    }
+                }
+            }
+            return null;
+        }
+        private string CreateAlarmSid(int bitnum)
+        {
+            return string.Format("D{0}-{1}", id, _Alarm[bitnum, 0]);
+        }
+        //-------------
+        public AlarmInfo CreateAlarmInfo(int bitnum)
+        {
+            return new AlarmInfo(CreateAlarmSid(bitnum), -1, id, "设备", Name, "",
+                alarm_th_dis_max[bitnum],
+                _Alarm[bitnum, 1]);
+        }
+        //素数181，347,727,1373,2801,5711
+        static int[] prime = { 181,347, 727, 1373, 2801, 5711 };
+        public void AlarmCalc()
+        {
+            TimeTick++;
+            for (int i = 0; i < prime.Length; i++)
+            {
+                if (TimeTick % prime[i] == 0)
+                {
+                    point pt = Dtw_th_h(i);
+                    if (pt !=null)
+                        AlarmCalc_dtw(pt,i); 
+                }
+                uint lastBit = lastAlarmBit & ((uint)1 << i);
+                uint curBit = curAlarmBit & ((uint)1 << i);
+                if (lastBit > curBit)
+                {
+                    AlarmSet.GetInst().AlarmStop(CreateAlarmSid(i));
+                }
+                else if (lastBit < curBit)
+                {
+                    AlarmSet.GetInst().AddAlarming(CreateAlarmInfo(i));
+                }
+
+            }
+            lastAlarmBit = curAlarmBit;
         }
     }
     static class Data_Device
@@ -193,6 +264,13 @@ namespace HGS
             }
             catch (Exception e) { throw new Exception(string.Format("读入设备子节点时发生错误！"), e); }
             finally { pgconn.Close(); }
+        }
+        public static void AlarmCalc_All_Device()
+        {
+            foreach (DeviceInfo dv in dic_Device.Values)
+            {
+                dv.AlarmCalc();
+            }
         }
     }
 }

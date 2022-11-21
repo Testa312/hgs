@@ -75,6 +75,8 @@
             this.从分组中移除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.显示曲线ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.显示队列曲线ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageBase = new System.Windows.Forms.TabPage();
             this.buttonCalc = new System.Windows.Forms.Button();
@@ -119,8 +121,6 @@
             this.增加节点ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.删除节点ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.节点属性ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.显示队列曲线ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -427,9 +427,9 @@
             glColumn16.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn16.CheckBoxes = false;
             glColumn16.ImageIndex = -1;
-            glColumn16.Name = "FError";
+            glColumn16.Name = "AlarmCount";
             glColumn16.NumericSort = false;
-            glColumn16.Text = "公式";
+            glColumn16.Text = "报警次数";
             glColumn16.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             glColumn16.Width = 50;
             glColumn17.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
@@ -507,53 +507,65 @@
             this.toolStripMenuItem2,
             this.显示队列曲线ToolStripMenuItem});
             this.contextMenuStrip_gl.Name = "contextMenuStrip_gl";
-            this.contextMenuStrip_gl.Size = new System.Drawing.Size(181, 176);
+            this.contextMenuStrip_gl.Size = new System.Drawing.Size(149, 154);
             this.contextMenuStrip_gl.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_gl_Opening);
             // 
             // 填加计算点ToolStripMenuItem
             // 
             this.填加计算点ToolStripMenuItem.Name = "填加计算点ToolStripMenuItem";
-            this.填加计算点ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.填加计算点ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.填加计算点ToolStripMenuItem.Text = "填加计算点...";
             this.填加计算点ToolStripMenuItem.Click += new System.EventHandler(this.toolStripButtonAddNewCalc_Click);
             // 
             // 填加SIS点ToolStripMenuItem
             // 
             this.填加SIS点ToolStripMenuItem.Name = "填加SIS点ToolStripMenuItem";
-            this.填加SIS点ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.填加SIS点ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.填加SIS点ToolStripMenuItem.Text = "填加SIS点...";
             this.填加SIS点ToolStripMenuItem.Click += new System.EventHandler(this.toolStripButtonAddSis_Click);
             // 
             // 强制点ToolStripMenuItem
             // 
             this.强制点ToolStripMenuItem.Name = "强制点ToolStripMenuItem";
-            this.强制点ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.强制点ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.强制点ToolStripMenuItem.Text = "强制点...";
             this.强制点ToolStripMenuItem.Click += new System.EventHandler(this.强制点ToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(145, 6);
             // 
             // 从分组中移除ToolStripMenuItem
             // 
             this.从分组中移除ToolStripMenuItem.Name = "从分组中移除ToolStripMenuItem";
-            this.从分组中移除ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.从分组中移除ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.从分组中移除ToolStripMenuItem.Text = "从分组中移除";
             this.从分组中移除ToolStripMenuItem.Click += new System.EventHandler(this.从分组中移除ToolStripMenuItem_Click);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(145, 6);
             // 
             // 显示曲线ToolStripMenuItem
             // 
             this.显示曲线ToolStripMenuItem.Name = "显示曲线ToolStripMenuItem";
-            this.显示曲线ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.显示曲线ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.显示曲线ToolStripMenuItem.Text = "显示曲线";
             this.显示曲线ToolStripMenuItem.Click += new System.EventHandler(this.显示曲线ToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(145, 6);
+            // 
+            // 显示队列曲线ToolStripMenuItem
+            // 
+            this.显示队列曲线ToolStripMenuItem.Name = "显示队列曲线ToolStripMenuItem";
+            this.显示队列曲线ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.显示队列曲线ToolStripMenuItem.Text = "显示队列曲线";
+            this.显示队列曲线ToolStripMenuItem.Click += new System.EventHandler(this.显示队列曲线ToolStripMenuItem_Click);
             // 
             // tabControl
             // 
@@ -1003,18 +1015,6 @@
             this.节点属性ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.节点属性ToolStripMenuItem.Text = "属性";
             this.节点属性ToolStripMenuItem.Click += new System.EventHandler(this.节点属性ToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
-            // 
-            // 显示队列曲线ToolStripMenuItem
-            // 
-            this.显示队列曲线ToolStripMenuItem.Name = "显示队列曲线ToolStripMenuItem";
-            this.显示队列曲线ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.显示队列曲线ToolStripMenuItem.Text = "显示队列曲线";
-            this.显示队列曲线ToolStripMenuItem.Click += new System.EventHandler(this.显示队列曲线ToolStripMenuItem_Click);
             // 
             // FormPointSet
             // 

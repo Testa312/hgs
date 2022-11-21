@@ -506,7 +506,7 @@ namespace HGS
                         hs_sispoint.Remove(pt);
                         dic_sisIdtoPointId.Remove(pt.Id_sis);
                     }
-                    AlarmSet.GetInst().ssAlarmPoint.Remove(pt);
+                    //AlarmSet.GetInst().ssAlarmPoint.Remove(pt);
                 }
                 foreach (point pt in hs_ModifyPoint)
                 {

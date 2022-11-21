@@ -94,7 +94,8 @@ namespace HGS
             itemn.SubItems["ZL"].Text = ptx.zl.ToString();
             itemn.SubItems["ZH"].Text = ptx.zh.ToString();
             itemn.SubItems["AlarmInfo"].Text = ptx.Alarmininfo;
-            itemn.SubItems["DS"].Text = ptx.ps.ToString();
+            itemn.SubItems["DS"].Text = ptx.ps.ToString(); 
+            itemn.SubItems["AlarmCount"].Text = ptx.AlarmCount.ToString();
 
             it.sisid = ptx.Id_sis;
             it.fm = ptx.fm;
@@ -219,7 +220,7 @@ namespace HGS
                                 item.SubItems["AlarmInfo"].Text= "";
                                 point ppt = Data.inst().cd_Point[it.id];
                                 pt.Alarmininfo = "";
-                                AlarmSet.GetInst().Remove(ppt);
+                                //AlarmSet.GetInst().Remove(ppt);
                             }
                             pt.isboolvAlarm = checkBoxbool.Checked;
                             if(glc <=1 ) 
@@ -595,7 +596,7 @@ namespace HGS
                             itemn.SubItems["AlarmInfo"].Text = "";
                             point pt = Data.inst().cd_Point[it.id];
                             pt.Alarmininfo = "";
-                            AlarmSet.GetInst().Remove(pt);
+                            //AlarmSet.GetInst().Remove(pt);
                             //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
                         }
                         //buttonAlarmIf.Enabled = fcaf.CalcPoint.alarmif.Length == 0;
@@ -770,7 +771,7 @@ namespace HGS
                                 {
                                     point pt = Data.inst().cd_Point[sensor];
                                     pt.Alarmininfo = "";
-                                    AlarmSet.GetInst().Remove(pt);
+                                    //AlarmSet.GetInst().Remove(pt);
                                 }
                                 return;
                             }

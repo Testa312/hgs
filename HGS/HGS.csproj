@@ -284,11 +284,11 @@
     <Compile Include="FormSisPointList.Designer.cs">
       <DependentUpon>FormSisPointList.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormAlarmSetList.cs">
+    <Compile Include="FormRealTimeAlarm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormAlarmSetList.Designer.cs">
-      <DependentUpon>FormAlarmSetList.cs</DependentUpon>
+    <Compile Include="FormRealTimeAlarm.Designer.cs">
+      <DependentUpon>FormRealTimeAlarm.cs</DependentUpon>
     </Compile>
     <Compile Include="FormPlotCurves.cs">
       <SubType>Form</SubType>
@@ -404,8 +404,8 @@
     <EmbeddedResource Include="FormSisPointList.resx">
       <DependentUpon>FormSisPointList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormAlarmSetList.resx">
-      <DependentUpon>FormAlarmSetList.cs</DependentUpon>
+    <EmbeddedResource Include="FormRealTimeAlarm.resx">
+      <DependentUpon>FormRealTimeAlarm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormPlotCurves.resx">
       <DependentUpon>FormPlotCurves.cs</DependentUpon>

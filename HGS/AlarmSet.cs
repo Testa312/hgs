@@ -10,16 +10,25 @@ namespace HGS
 {
     public class AlarmInfo
     {
-        public AlarmInfo(string sid,string gn,string ed,string info)
+        public AlarmInfo(string sid,int sensorid,int deviceid,string nd,string pn,string ed,double? av,string info)
         {
             _sid = sid;
             _Info = info;
-            _gn = gn;
+            _nd = nd;
+            _pn = pn;
             _ed = ed;
+            _av = av;
+            _sensorid = sensorid;
+            _deviceid = deviceid;
+            //
         }
-        string _gn;
-        string _ed;
+        public string _nd;
+        public string _pn;
+        public string _ed;
+        public int _sensorid = -1;
+        public int _deviceid = -1;
         string _sid;
+
         public string sid
         {
             set { }
@@ -29,9 +38,10 @@ namespace HGS
             }
         }
 
-        DateTime _starttime = new DateTime();
+        public DateTime _starttime = DateTime.Now;
         public DateTime stoptime;
-        string _Info;
+        public double? _av = null;
+        public string _Info;
     }
     class AlarmSet
     {
@@ -41,9 +51,12 @@ namespace HGS
         private StringBuilder sb_alarmsql = new StringBuilder();
         //
         private LinkedList<AlarmInfo> linkAlarming = new LinkedList<AlarmInfo>();
-        //private Queue<AlarmInfo> q_alarming = new Queue<AlarmInfo>();
         private Queue<AlarmInfo> q_alarm_history = new Queue<AlarmInfo>();
+        //相当于索引
         private Dictionary<string, LinkedListNode<AlarmInfo>> dic_alarminfo = new Dictionary<string, LinkedListNode<AlarmInfo>>();
+        //避免频繁保存。
+        private List<AlarmInfo> lsNewAlarmInfo = new List<AlarmInfo>();
+        private List<AlarmInfo> lsModifiedAlarmInfo = new List<AlarmInfo>();
         //
         private AlarmSet() { }
 
@@ -60,7 +73,7 @@ namespace HGS
         ~AlarmSet(){ pgconn.Close(); }
 
         //SortedSet<point> ssalarmPoint = new SortedSet<point>(new ByDateTime());//有问题，未查清，出现幻读。
-
+        /*
         HashSet<point> ssalarmPoint = new HashSet<point>();
         public HashSet<point> ssAlarmPoint
         {
@@ -111,6 +124,7 @@ namespace HGS
             }
             catch(Exception e) { throw new Exception(string.Format("保存报警信息时发生错误！"),e); }
         }
+        */
         //有线程安全问题
         public void AddAlarming(AlarmInfo ai)
         {
@@ -122,6 +136,7 @@ namespace HGS
                     linkAlarming.RemoveFirst();
                     dic_alarminfo.Remove(ai.sid);
                 }
+                lsNewAlarmInfo.Add(ai);
                 
             }
         }
@@ -132,9 +147,18 @@ namespace HGS
             {
                 lai.Value.stoptime = DateTime.Now;
                 q_alarm_history.Enqueue(lai.Value);
+                lsModifiedAlarmInfo.Add(lai.Value);
                 dic_alarminfo.Remove(sid);
                 linkAlarming.Remove(lai);
             }
+        }
+        public List<AlarmInfo> GetAlarmRealTimeInfo()
+        {
+            return linkAlarming.ToList();
+        }
+        public List<AlarmInfo> GetAlarmHistoryInfo()
+        {
+            return q_alarm_history.ToList();
         }
     }
 }

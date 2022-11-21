@@ -20,11 +20,11 @@ namespace HGS
     //sw开关量。
     public enum alarmlevel
     {
-        no,tv,hl,zh,bv,ll,zl,sw,skip,bad,dtw  //no为未设置报警,bad为坏点
+        no, tv, hl, zh, bv, ll, zl, sw, skip, bad, dtw  //no为未设置报警,bad为坏点
     }
     public class varlinktopoint
     {
-        public int sub_id {set;get;}//点id
+        public int sub_id { set; get; }//点id
         //public int cellid { set; get; }
         public string varname { set; get; }
     }
@@ -36,12 +36,20 @@ namespace HGS
     }
     public enum PointState
     {
-        Good, Timeout, Bad, Error,Force
+        Good, Timeout, Bad, Error, Force
     }
     //点计算用，用于分清计算点、高报警和低报警计算公式引用点
     public enum cellid
     {
-        main,hl,ll,alarmif
+        main, hl, ll, alarmif
+    }
+    public class AlarmClassInfo
+    {
+        public AlarmClassInfo(string name, string info)
+        {
+        }
+        public string Name { get; }
+        public string info { get; }
     }
     public class point
     {
@@ -307,7 +315,7 @@ namespace HGS
             }
             get { return _ownerid; }
         }
-        
+
         private int _id = -1;//点id
         public int id
         {
@@ -345,6 +353,8 @@ namespace HGS
             }
             get { return _isCalc; }
         }
+        public int AlarmCount = 0;
+
         private bool _isAvalarm = false;//是否报警
         public bool isAvalarm
         {
@@ -481,6 +491,7 @@ namespace HGS
         //bit6:Bool
         //biti7:skip
         //bit8:wave
+        //bit9:Bad
         private uint _lastAlarmBitInfo = 0;
         public uint lastAlarmBitInfo
         {
@@ -520,7 +531,7 @@ namespace HGS
             set { _Alarmifav = value; }
             get { return _Alarmifav; }
         }
-       
+
         private string _Alarmif = "";
         public string Alarmif
         {
@@ -620,7 +631,7 @@ namespace HGS
             set { _dtw_start_max = value; }
             get { return _dtw_start_max; }
         }
-        public point(int id ,pointsrc ps)
+        public point(int id, pointsrc ps)
         {
             _id = id;
             _pointsrc = ps;
@@ -691,7 +702,7 @@ namespace HGS
                 {
                     for (int i = 0; i < _dtw_Queues_Array.Length; i++)
                     {
-                        _dtw_Queues_Array[i].add(_av ?? 0,true);
+                        _dtw_Queues_Array[i].add(_av ?? 0, true);
                     }
                 }
             }
@@ -705,7 +716,7 @@ namespace HGS
                 if (_dtw_start_th != null)
                 {
                     if (_dtw_start_th.Length != 6)
-                        throw new Exception("dtw阈值数必须为6个!");                    
+                        throw new Exception("dtw阈值数必须为6个!");
                 }
                 initDeviceQ();
                 Data.inst().Update(this);
@@ -715,15 +726,15 @@ namespace HGS
         {
             get { return _dtw_Queues_Array; }
         }
-        public void initDeviceQ(int step,float[] v)
+        public void initDeviceQ(int step, float[] v)
         {
-            if (step < 0 || step >= 6) 
+            if (step < 0 || step >= 6)
                 throw new Exception("设备没有采集这些数据！");
-            if (v == null) 
+            if (v == null)
                 throw new Exception("数据不能为空！");
             for (int i = 0; i < v.Length; i++)
             {
-                _dtw_Queues_Array[step].add(v[i],false);
+                _dtw_Queues_Array[step].add(v[i], false);
             }
         }
         //初始化dtw队列数组
@@ -752,7 +763,7 @@ namespace HGS
         }
         public void add_device(int di)
         {
-            if (_hs_Device == null) 
+            if (_hs_Device == null)
                 _hs_Device = new HashSet<int>();
             _hs_Device.Add(di);
             initDeviceQ();
@@ -779,7 +790,7 @@ namespace HGS
             //_ll = _min_ll;//???????????????????
             //_zl = _min_zl;
             //_zh = _max_zh;
-           // _hl = _max_hl;
+            // _hl = _max_hl;
             if (_dtw_start_th != null)
             {
                 for (int i = 0; i < _dtw_start_max.Length; i++)
@@ -787,174 +798,132 @@ namespace HGS
                     _dtw_start_th[i] = Math.Max(_dtw_start_max[i], _dtw_start_th[i]);
                 }
             }
-           
+
         }
-        private string CreateAlarmSid(string AlarmName)
+        private string CreateAlarmSid(int bitnum)
         {
-            return string.Format("P{0}-{1}", id, AlarmName);
+            return string.Format("P{0}-{1}", id, _Alarm[bitnum,0]);
         }
         //-------------
-        public AlarmInfo CreateAlarmInfo(string AlarmName,string info)
+        public AlarmInfo CreateAlarmInfo(int bitnum)
         {
-            return new AlarmInfo(CreateAlarmSid(AlarmName),
-                string.Format("{0}.{1}", nd, pn),
-                ed, 
-                info);
+            return new AlarmInfo(CreateAlarmSid(bitnum),_id,-1, nd, pn,ed,
+                Functions.NullDoubleRount(_av, _fm),
+                _Alarm[bitnum, 1]) ;
         }
         //--------------------
-        public alarmlevel AlarmCalc()
+        static string[,] _Alarm = {
+            {"ZL",  "越低2限！"     },
+            {"LL",  "越低限！"      },
+            {"HL",  "越高限！"      },
+            {"ZH",  "越高2限！"     },
+            {"TV",  "越量程上限！"  },
+            {"BV",  "越量程下限！"  },
+            {"Bool" ,""             },
+            {"Skip", "跳变！"       },
+            {"Wave", "波动！"       },
+            {"Bad", "坏点！"       }};
+        //---------------------
+        public void AlarmCalc()
         {
-            _Alarmininfo = "";
-            alarmlevel last_al = _AlarmLevel;
-            _AlarmLevel = alarmlevel.no;
-
+            _datanums++;
+            uint AlarmBit = (uint)3 << 7;
+            AlarmBit &= _lastAlarmBitInfo;//保留波动检查
             if (ps != PointState.Good && ps != PointState.Force)
             {
                 _Alarmingav = -1;
-                _AlarmLevel = alarmlevel.bad;
-                _Alarmininfo = "坏点或无法计算！"; //string.Format("{0}",boolalarminfo);
-                if (_WaveDetection != null) _WaveDetection.Clear();
+                AlarmBit |= (uint)1 << 9;
+
+                if (_WaveDetection != null)
+                    _WaveDetection.Clear();
+                if (_dtw_Queues_Array != null)
+                {
+                    for (int i = 0; i < _dtw_Queues_Array.Length; i++)
+                    {
+                        _dtw_Queues_Array[i].Clear();
+                    }
+                }
             }
             else if (_Alarmifav)
             {
                 if (_isboolvAlarm)
                 {
                     bool blv = Convert.ToBoolean(av);
+
                     if (blv == _boolAlarmif)
                     {
                         _Alarmingav = Convert.ToDouble(blv);
-                        _AlarmLevel = alarmlevel.sw;
-                        _Alarmininfo = boolAlarminfo;
-                        //
-                        if ((_lastAlarmBitInfo & (uint)1) == 0)
-                        {
-                            _lastAlarmBitInfo = _lastAlarmBitInfo | (uint)1;
-                            AlarmSet.GetInst().AddAlarming(CreateAlarmInfo("D", boolAlarminfo));
-                        }
-                    }
-                    else
-                    {
-                        if ((_lastAlarmBitInfo & (uint)1) == (uint)1)
-                        {
-                            _lastAlarmBitInfo = _lastAlarmBitInfo & 0;
-                            AlarmSet.GetInst().AlarmStop(CreateAlarmSid("D"));
-                        }
+                        AlarmBit |= (uint)1 << 6;
                     }
                 }
                 else if (_isAvalarm)
                 {
                     if (_zh != null && av > _zh)
                     {
-                        _AlarmLevel = alarmlevel.zh;
-                        _Alarmininfo = string.Format("越报警高2限[{0}{1}]！", _zh, _eu);
-                        _max_zh = max_zh.HasValue ? Math.Max(max_zh.GetValueOrDefault(), _av.GetValueOrDefault()) : _av; 
+                        AlarmBit |= (uint)1 << 3;
                     }
-                    else if (_hl != null && av > _hl)
+                    if (_hl != null && av > _hl)
                     {
-                        _AlarmLevel = alarmlevel.hl;
-                        _Alarmininfo = string.Format("越报警高限[{0}{1}]！", _hl, _eu);
-                        _max_hl = max_hl.HasValue ? Math.Max(max_hl.GetValueOrDefault(), _av.GetValueOrDefault()) : _av;
+                        AlarmBit |= (uint)1 << 2;
                     }
-                    else if (_tv != null && av > _tv)
+                    if (_tv != null && av > _tv)
                     {
-                        _AlarmLevel = alarmlevel.tv;
-                        _Alarmininfo = string.Format("越量程上限[{0}{1}]！", _tv, _eu);
+                        AlarmBit |= (uint)1 << 4;
                     }
 
-                    else if (zl != null && av < zl)
+                    if (zl != null && av < zl)
                     {
-                        _AlarmLevel = alarmlevel.zl;
-                        _Alarmininfo = string.Format("越报警低2限[{0}{1}]！", _zl, _eu);
-                        _min_zl = min_zl.HasValue ? Math.Min(min_zl.GetValueOrDefault(), _av.GetValueOrDefault()) : _av;
+                        AlarmBit |= (uint)1;
                     }
-                    else if (_ll != null && av < _ll)
+                    if (_ll != null && av < _ll)
                     {
-                        _AlarmLevel = alarmlevel.ll;
-                        _Alarmininfo = string.Format("越报警低限[{0}{1}]！", _ll, _eu);
-                        _min_ll = min_ll.HasValue ? Math.Min(min_ll.GetValueOrDefault(), _av.GetValueOrDefault()) : _av;
+                        AlarmBit |= (uint)1 << 1;
                     }
-                    else if (_bv != null && av < _bv)
+                    if (_bv != null && av < _bv)
                     {
-                        _AlarmLevel = alarmlevel.bv;
-                        _Alarmininfo = string.Format("越量程下限[{0}{1}]！", _bv, _eu);
+                        AlarmBit |= (uint)1 << 5;
                     }
                     //
-                    if((_isAlarmskip || _isAlarmwave) && _Skip_pp != null
-                        && _Skip_pp <= _WaveDetection.DeltaP_P())
+                    if (_id % 10 == _datanums % 10)
                     {
-                        _max_skip_pp = Math.Max(_max_skip_pp, _av.GetValueOrDefault());
-                        if(_id % 10 == _datanums % 10 || spstatus == WaveDetection.wavestatus.error)//每10个数据计算一次。
+                        bool boolAlarmif = (_isAlarmskip || _isAlarmwave) && _Skip_pp != null;
+                        if (boolAlarmif && _Skip_pp <= _WaveDetection.DeltaP_P())
                         {
-                            spstatus = _WaveDetection.isWave();
-                        }
-                        if (spstatus != WaveDetection.wavestatus.error)
-                        {
-                            _AlarmLevel = alarmlevel.skip;
 
+                            spstatus = _WaveDetection.isWave();
                             if (spstatus == WaveDetection.wavestatus.surge)
                             {
-                                _Alarmininfo += "  跳变！";
+                                AlarmBit |= (uint)1 << 7;
                             }
                             else if (spstatus == WaveDetection.wavestatus.wave)
                             {
-                                _Alarmininfo += "  波动！";
+                                AlarmBit |= (uint)1 << 8;
                             }
                         }
-                    }
-                   
-                   
-                }
-            }    
-            if (_dtw_Queues_Array != null)// && id % 10 == datanums % 180)
-            {
-                for (int i = 0; i < 6; i++)
-                {
-#if DEBUG
-                    double texx = _dtw_Queues_Array[i].DeltaP_P();
-#endif
-                    bool bbreak = false;
-                    double p_p = _dtw_Queues_Array[i].DeltaP_P();
-                    if ( p_p > _dtw_start_th[i])
-                    {
-                        _dtw_start_max[i] = (float)Math.Max(p_p, _dtw_start_max[i]);
-                        if (_hs_Device != null)
+                        else
                         {
-                            foreach (int di in _hs_Device)
-                            {
-                                DeviceInfo info = null;
-                                if (Data_Device.dic_Device.TryGetValue(di, out info))
-                                {
-                                    if (info.dtw_alarm(id, i))
-                                    {
-                                        _AlarmLevel = alarmlevel.dtw;
-                                        _Alarmininfo += string.Format("{0}的[{1}]-{2}-{3}分钟-异常报警！",
-                                            info.Name, _pn, _ed, Pref.Inst().ScanSpan[i]);
-                                        bbreak = true;
-                                        break;
-                                    }
-                                }
-                                else
-                                {
-                                    bbreak = true;
-                                    break;
-                                }
-
-                            }
+                            uint temp = ~((uint)3 << 7);
+                            AlarmBit &= temp;
                         }
-                        if (bbreak) break;
                     }
                 }
             }
-            _Alarmingav = Math.Round(av ?? 0, _fm);
-
-            if (_AlarmLevel == alarmlevel.no && last_al != _AlarmLevel)
-                _Alarmininfo = string.Format("报警消失！");
-            if (last_al == alarmlevel.no && _AlarmLevel != last_al)
+            //
+            for (int a = 0; a <= 8; a++)
             {
-                _lastAlarmdatetime = DateTime.Now;
+                uint lastBit = _lastAlarmBitInfo & ((uint)1 << a);
+                uint curBit = AlarmBit & ((uint)1 << a);
+                if (lastBit > curBit)
+                {
+                    AlarmSet.GetInst().AlarmStop(CreateAlarmSid(a));
+                }
+                else if (lastBit < curBit)
+                {
+                    AlarmSet.GetInst().AddAlarming(CreateAlarmInfo(a));
+                    AlarmCount++;
+                }
             }
-
-            return _AlarmLevel;
+            _lastAlarmBitInfo = AlarmBit;
         }
     }
    
