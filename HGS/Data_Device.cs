@@ -135,7 +135,8 @@ namespace HGS
                 throw new Exception("设备没有采集这些数据！");
             //
             Queue<int> q_s = new Queue<int>();
-            q_s.Union(hs_Sensorsid);
+            foreach (int s in hs_Sensorsid)
+                q_s.Enqueue(s);
             double[] maindata = pt.Dtw_Queues_Array[Step].Data();
             if (maindata != null)
             {
@@ -158,7 +159,7 @@ namespace HGS
                                 {
                                     curAlarmBit = (uint)1 << Step;
                                     if (!double.IsInfinity(cost))
-                                        alarm_th_dis_max[Step] = (float)Math.Max(cost, alarm_th_dis_max[Step]);
+                                        alarm_th_dis_max[Step] = (float)Math.Round(Math.Max(cost, alarm_th_dis_max[Step]),3);
                                     return;
                                 }
                             }
@@ -193,7 +194,7 @@ namespace HGS
         //-------------
         public AlarmInfo CreateAlarmInfo(int bitnum)
         {
-            return new AlarmInfo(CreateAlarmSid(bitnum), -1, id, "设备", Name, "",
+            return new AlarmInfo(CreateAlarmSid(bitnum), -1, id, "设备", "", Name,
                 alarm_th_dis_max[bitnum],
                 _Alarm[bitnum, 1]);
         }
@@ -202,6 +203,7 @@ namespace HGS
         public void AlarmCalc()
         {
             TimeTick++;
+            curAlarmBit = 0;
             for (int i = 0; i < prime.Length; i++)
             {
                 if (TimeTick % prime[i] == 0)

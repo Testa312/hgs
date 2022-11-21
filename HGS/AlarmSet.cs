@@ -10,7 +10,7 @@ namespace HGS
 {
     public class AlarmInfo
     {
-        public AlarmInfo(string sid,int sensorid,int deviceid,string nd,string pn,string ed,double? av,string info)
+        public AlarmInfo(string sid,int sensorid,int deviceid,string nd,string pn,string ed,float? av,string info)
         {
             _sid = sid;
             _Info = info;
@@ -40,7 +40,7 @@ namespace HGS
 
         public DateTime _starttime = DateTime.Now;
         public DateTime stoptime;
-        public double? _av = null;
+        public float? _av = null;
         public string _Info;
     }
     class AlarmSet
