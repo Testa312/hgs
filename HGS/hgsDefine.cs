@@ -807,7 +807,7 @@ namespace HGS
         //-------------
         public AlarmInfo CreateAlarmInfo(int bitnum)
         {
-            return new AlarmInfo(CreateAlarmSid(bitnum),_id,-1, nd, pn,ed,
+            return new AlarmInfo(CreateAlarmSid(bitnum),_id,-1, nd, pn,ed,eu,
                 (float)Functions.NullDoubleRount(_av, _fm),
                 _Alarm[bitnum, 1]) ;
         }

@@ -10,7 +10,7 @@ namespace HGS
 {
     public class AlarmInfo
     {
-        public AlarmInfo(string sid,int sensorid,int deviceid,string nd,string pn,string ed,float? av,string info)
+        public AlarmInfo(string sid,int sensorid,int deviceid,string nd,string pn,string ed,string eu,float? av,string info)
         {
             _sid = sid;
             _Info = info;
@@ -18,6 +18,7 @@ namespace HGS
             _pn = pn;
             _ed = ed;
             _av = av;
+            _eu = eu;
             _sensorid = sensorid;
             _deviceid = deviceid;
             //
@@ -25,6 +26,7 @@ namespace HGS
         public string _nd;
         public string _pn;
         public string _ed;
+        public string _eu;
         public int _sensorid = -1;
         public int _deviceid = -1;
         string _sid;
@@ -48,7 +50,9 @@ namespace HGS
         private static AlarmSet inst;
         private static NpgsqlConnection pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
         private static NpgsqlCommand cmd;
+
         private StringBuilder sb_alarmsql = new StringBuilder();
+        //private StringBuilder sb_alarmsql_modified = new StringBuilder();
         //
         private LinkedList<AlarmInfo> linkAlarming = new LinkedList<AlarmInfo>();
         private Queue<AlarmInfo> q_alarm_history = new Queue<AlarmInfo>();
@@ -57,6 +61,9 @@ namespace HGS
         //避免频繁保存。
         private List<AlarmInfo> lsNewAlarmInfo = new List<AlarmInfo>();
         private List<AlarmInfo> lsModifiedAlarmInfo = new List<AlarmInfo>();
+
+        int TimeTick = 0;
+        int sb_lines = 0;
         //
         private AlarmSet() { }
 
@@ -70,61 +77,40 @@ namespace HGS
             }
             return inst;
         }
-        ~AlarmSet(){ pgconn.Close(); }
-
-        //SortedSet<point> ssalarmPoint = new SortedSet<point>(new ByDateTime());//有问题，未查清，出现幻读。
-        /*
-        HashSet<point> ssalarmPoint = new HashSet<point>();
-        public HashSet<point> ssAlarmPoint
+        ~AlarmSet(){ pgconn.Close(); }        
+        
+        public void AddNew(AlarmInfo ai)
         {
-            //set { ssalarmPoint = value; }
-            get { return ssalarmPoint; }
+            sb_lines++;
+            sb_alarmsql.AppendLine(string.Format(@"insert into alarmhistory (sid,alarmtime,alarminfo,alarmav,stoptime,nd,ed,pn,eu) values " +
+                                      "('{0}','{1}','{2}',{3},'{4}','{5}','{6}','{7}','{8}');",
+                                   ai.sid, ai._starttime,ai._Info, Functions.dtoNULL(ai._av), ai.stoptime,ai._nd,ai._ed,ai._pn,ai._eu));
         }
-        public void Add(point pt)
-        {          
-            if ((pt.Alarmifav && (pt.isAvalarm || pt.isboolvAlarm))|| pt.Dtw_Queues_Array != null)
-            {
-                alarmlevel la_stal = pt.AlarmLevel;
-                alarmlevel al = pt.AlarmCalc();
-
-                if (al != alarmlevel.no)
-                    ssAlarmPoint.Add(pt);
-                else
-                    ssAlarmPoint.Remove(pt);
-                //
-                if (al != la_stal)
-                {
-
-                    sb_alarmsql.AppendLine(string.Format(@"insert into alarmhistory (id,alarminfo,alarmav,datetime) values ({0},'{1}',{2},'{3}');",
-                                   pt.id, pt.Alarmininfo, Functions.dtoNULL(pt.Alarmingav), DateTime.Now));
-                }
-            }
-            else
-                ssAlarmPoint.Remove(pt);
-        }
-        public void Remove(point pt)
+        public void Modefied(AlarmInfo ai)
         {
-            if(ssAlarmPoint.Contains(pt))
-                sb_alarmsql.AppendLine(string.Format(@"insert into alarmhistory (id,alarminfo,alarmav,datetime) values ({0},'{1}',{2},'{3}');",
-                                  pt.id, "人工取消了报警！", Functions.dtoNULL(pt.Alarmingav), DateTime.Now));
-            ssAlarmPoint.Remove(pt);
+            sb_lines++;
+            sb_alarmsql.Append(string.Format(@"update alarmhistory set stoptime='{0}' where sid = '{1}' and alarmtime = '{2}';", 
+                ai.stoptime, ai.sid,ai._starttime));
         }
-            public void SaveAlarmInfo()
+        public void SaveAlarmInfoToPG()
         {
-           
+            TimeTick++;
             try
             {
-                if (sb_alarmsql.Length < 5) return;
-                if (pgconn.State == System.Data.ConnectionState.Closed) 
-                    pgconn.Open();
-                cmd.CommandText = sb_alarmsql.ToString();
-                cmd.ExecuteNonQuery();
-                sb_alarmsql.Clear();
+                if (sb_lines >= 10 || (sb_lines > 0 && TimeTick % 30 == 0))
+                {
+
+                    if (pgconn.State == System.Data.ConnectionState.Closed)
+                        pgconn.Open();
+                    cmd.CommandText = sb_alarmsql.ToString();
+                    cmd.ExecuteNonQuery();
+                    sb_alarmsql.Clear();
+                    sb_lines = 0;
+                }
 
             }
-            catch(Exception e) { throw new Exception(string.Format("保存报警信息时发生错误！"),e); }
+            catch (Exception e) { throw new Exception(string.Format("保存报警信息时发生错误！"), e); }
         }
-        */
         //有线程安全问题
         public void AddAlarming(AlarmInfo ai)
         {
@@ -136,7 +122,8 @@ namespace HGS
                     linkAlarming.RemoveFirst();
                     dic_alarminfo.Remove(ai.sid);
                 }
-                lsNewAlarmInfo.Add(ai);
+                //lsNewAlarmInfo.Add(ai);
+                AddNew(ai);
                 
             }
         }
@@ -147,7 +134,7 @@ namespace HGS
             {
                 lai.Value.stoptime = DateTime.Now;
                 q_alarm_history.Enqueue(lai.Value);
-                lsModifiedAlarmInfo.Add(lai.Value);
+                Modefied(lai.Value);
                 dic_alarminfo.Remove(sid);
                 linkAlarming.Remove(lai);
             }

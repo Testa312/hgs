@@ -194,7 +194,7 @@ namespace HGS
         //-------------
         public AlarmInfo CreateAlarmInfo(int bitnum)
         {
-            return new AlarmInfo(CreateAlarmSid(bitnum), -1, id, "设备", "", Name,
+            return new AlarmInfo(CreateAlarmSid(bitnum), -1, id, "设备", "", Name,"Ed",
                 alarm_th_dis_max[bitnum],
                 _Alarm[bitnum, 1]);
         }
