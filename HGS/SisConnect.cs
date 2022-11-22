@@ -403,7 +403,7 @@ namespace HGS
                 xx[i] = x[i] - x[i - 1];
                 yy[i] = y[i] - y[i - 1];
             }
-            return dd_dtw.dtw_distance(xx, yy, max_dist, use_pruning); ;
+            return dd_dtw.dtw_distance(xx, yy, max_dist, use_pruning); 
         }
         public static DateTime GetSisSystemTime()
         {

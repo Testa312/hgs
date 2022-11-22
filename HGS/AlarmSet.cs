@@ -189,7 +189,7 @@ namespace HGS
         public void SoundStop()
         {
             simpleSound.Stop();
-            speak.Pause();
+            //speak.Pause();
         }
     }
 }

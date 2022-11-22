@@ -10,6 +10,7 @@ using Npgsql;
 namespace HGS
 {
     //Tag of GalcialList'item 
+    
     public class itemtag
     {
         public int sisid = 0;
@@ -17,6 +18,7 @@ namespace HGS
         public short fm = 2;
         public pointsrc PointSrc = pointsrc.sis;
     }
+    
     //sw开关量。
     public enum alarmlevel
     {

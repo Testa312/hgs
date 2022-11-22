@@ -76,9 +76,9 @@ namespace HGS
         }
         private void gllistInitItemTextFromPoint(point ptx , GLItem itemn)
         {
-            itemtag it = new itemtag();
-            itemn.Tag = it;
-            it.id = ptx.id;
+            //itemtag it = new itemtag();
+            itemn.Tag = ptx;
+            //it.id = ptx.id;
             itemn.SubItems["ID"].Text = ptx.id.ToString();
             itemn.SubItems["ND"].Text = ptx.nd;
             itemn.SubItems["PN"].Text = ptx.pn;
@@ -96,16 +96,17 @@ namespace HGS
             //itemn.SubItems["AlarmInfo"].Text = ptx.Alarmininfo;
             itemn.SubItems["DS"].Text = ptx.ps.ToString(); 
             itemn.SubItems["AlarmCount"].Text = ptx.AlarmCount.ToString();
-
+            /*
             it.sisid = ptx.Id_sis;
             it.fm = ptx.fm;
             it.PointSrc = ptx.pointsrc;
+            */
 
             AlarmSubItemSymbol(itemn, ptx);
         }
         private void gllistUpateItemText(GLItem item,point pt)
         {
-            if (pt.id != ((itemtag)(item).Tag).id) throw new Exception("更换点和项目不同！");
+            if (pt.id != ((point)(item).Tag).id) throw new Exception("更换点和项目不同！");
             item.SubItems["TV"].Text = pt.tv.ToString();
             item.SubItems["BV"].Text = pt.bv.ToString();
             item.SubItems["LL"].Text = pt.ll.ToString();
@@ -130,7 +131,7 @@ namespace HGS
                 HashSet<int> hs_ptid = new HashSet<int>();
                 foreach (point pt in fspl.lsitem)
                 {
-                    if (!Data.inst().dic_SisIdtoPoint.ContainsKey(pt.Id_sis))
+                   // if (!Data.inst().dic_SisIdtoPoint.ContainsKey(pt.Id_sis))
                     {
                        
                         GLItem itemn = new GLItem(glacialList1);
@@ -142,11 +143,13 @@ namespace HGS
                         }
                         hs_ptid.Add(pt.id);
                     }
+                    /*
                     else 
                     {
                         MessageBox.Show(string.Format("点:{0}-{1}已存在！",pt.nd, 
                             pt.pn),"提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
                      }
+                    */
                 }
                
                 TreeNode tn = treeView.SelectedNode;
@@ -178,9 +181,9 @@ namespace HGS
                         foreach (GLItem item in glacialList1.SelectedItems)
                         {
                             List<double> lsav = new List<double>();
-                            itemtag it = (itemtag)item.Tag;
+                            point pt = (point)item.Tag;
 
-                            point pt = Data.inst().cd_Point[it.id];
+                            //point pt = Data.inst().cd_Point[it.id];
 
                             if (textBoxZL.Text.Length > 0)
                             { pt.zl = double.Parse(textBoxZL.Text); lsav.Add(Convert.ToDouble(pt.zl)); }
@@ -295,25 +298,25 @@ namespace HGS
             {
                 foreach (GLItem item in glacialList1.Items)
                 {
-                    itemtag it = (itemtag)(item.Tag);
+                    //itemtag it = (itemtag)(item.Tag);
                     if (glacialList1.IsItemVisible(item))
                     {
-                        point pt;
-                        if (Data.inst().cd_Point.TryGetValue(it.id, out pt))
+                        point pt = (point)(item.Tag); ;
+                        //if (Data.inst().cd_Point.TryGetValue(it.id, out pt))
+
+                        item.SubItems["AV"].Text = Functions.NullDoubleRount(pt.av, pt.fm).ToString();
+                        item.SubItems["DS"].Text = pt.ps.ToString();
+                        //item.SubItems["AlarmInfo"].Text = pt.Alarmininfo;
+                        //
+                        if (pt.orgformula_hl.Length > 0)
                         {
-                            item.SubItems["AV"].Text = Functions.NullDoubleRount(pt.av, pt.fm).ToString();
-                            item.SubItems["DS"].Text = pt.ps.ToString();
-                            //item.SubItems["AlarmInfo"].Text = pt.Alarmininfo;
-                            //
-                            if (pt.orgformula_hl.Length > 0)
-                            {
-                                item.SubItems["HL"].Text = Functions.NullDoubleRount(pt.hl, pt.fm).ToString();
-                            }
-                            if (pt.Orgformula_ll.Length > 0)
-                            {
-                                item.SubItems["LL"].Text = Functions.NullDoubleRount(pt.ll, pt.fm).ToString();
-                            }
+                            item.SubItems["HL"].Text = Functions.NullDoubleRount(pt.hl, pt.fm).ToString();
                         }
+                        if (pt.Orgformula_ll.Length > 0)
+                        {
+                            item.SubItems["LL"].Text = Functions.NullDoubleRount(pt.ll, pt.fm).ToString();
+                        }
+                        
                     }
                 }
             }
@@ -325,10 +328,10 @@ namespace HGS
             if (glacialList1.SelectedItems.Count == 1)
             {
                 GLItem item = (GLItem)glacialList1.SelectedItems[0];
-                itemtag it = (itemtag)(item.Tag);
+                //itemtag it = (itemtag)(item.Tag);
 
-                point Point;
-                if (Data.inst().cd_Point.TryGetValue(it.id, out Point))
+                point Point = (point)(item.Tag);
+                //if (Data.inst().cd_Point.TryGetValue(it.id, out Point))
                 {
                     textBoxTV.Text = Point.tv.ToString();
                     textBoxBV.Text = Point.bv.ToString();
@@ -341,7 +344,7 @@ namespace HGS
                     tB_boolAlarmInfo.Text = Point.boolAlarminfo;
                     if (Point.boolAlarminfo.Length <= 0)
                         tB_boolAlarmInfo.Text = Point.ed;
-                    buttonCalc.Enabled = (it.PointSrc == pointsrc.calc) ? true : false;
+                    buttonCalc.Enabled = (Point.pointsrc == pointsrc.calc) ? true : false;
 
                     label_formula.Text = Point.orgformula_main;
 
@@ -411,9 +414,9 @@ namespace HGS
             {
                 
                 GLItem itemn = (GLItem)glacialList1.SelectedItems[0];
-                itemtag it = (itemtag)itemn.Tag;
-                point calppt;
-                if (Data.inst().cd_Point.TryGetValue(it.id, out calppt))
+                //itemtag it = (itemtag)itemn.Tag;
+                point calppt = (point)(itemn.Tag); ;
+                //if (Data.inst().cd_Point.TryGetValue(it.id, out calppt))
                 {
                     FormCalcPointSet fcps = new FormCalcPointSet(calppt);
                     fcps.glacialLisint();
@@ -436,17 +439,17 @@ namespace HGS
             bool bfirst = false;
             foreach(GLItem itemn in  glacialList1.SelectedItems)
             {
-                itemtag it = (itemtag)itemn.Tag;
-
-                List<int> lspid = VartoPointTable.GetDeletePointIdList(it.id);
+                //itemtag it = (itemtag)itemn.Tag;
+                point pt = (point)itemn.Tag;
+                List<int> lspid = VartoPointTable.GetDeletePointIdList(pt.id);
                 if (lspid.Count > 0)
                 {
                     StringBuilder sb = new StringBuilder();
                     sb.AppendLine("被下列点引用，不能删除！");
                     foreach (int pid in lspid)
                     {
-                        point pt = Data.inst().cd_Point[pid];
-                        sb.AppendLine(string.Format("[id:{0}]-{1}", pt.id, pt.ed));
+                        point ptx = Data.inst().cd_Point[pid];
+                        sb.AppendLine(string.Format("[id:{0}]-{1}", ptx.id, ptx.ed));
                     }
                     MessageBox.Show(sb.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     continue;
@@ -455,7 +458,7 @@ namespace HGS
                     itemn.SubItems["PN"].Text,itemn.SubItems["ED"].Text), "提示",
                         MessageBoxButtons.OKCancel, MessageBoxIcon.Question))
                 {
-                    Data.inst().Delete(Data.inst().cd_Point[it.id]);
+                    Data.inst().Delete(Data.inst().cd_Point[pt.id]);
                     glacialList1.Items.Remove(itemn);
                     bfirst = true;
                 }
@@ -488,10 +491,10 @@ namespace HGS
                 FormForceValue ffv = new FormForceValue();
 
                 GLItem itemn = (GLItem)glacialList1.SelectedItems[0];
-                itemtag it = (itemtag)itemn.Tag;
+                //itemtag it = 
 
-                point Point;
-                if (Data.inst().cd_Point.TryGetValue(it.id, out Point))
+                point Point = (point)itemn.Tag; ;
+                //if (Data.inst().cd_Point.TryGetValue(it.id, out Point))
                 {
                     ffv.Text = string.Format("强制{0}点", Point.ed);
                     ffv.textBoxValue.Text = Point.Forceav.ToString();
@@ -517,10 +520,10 @@ namespace HGS
             {
                 
                 GLItem itemn = (GLItem)glacialList1.SelectedItems[0];
-                itemtag it = (itemtag)itemn.Tag;
+                //itemtag it = (itemtag)itemn.Tag;
 
-                point CalcPoint;
-                if (Data.inst().cd_Point.TryGetValue(it.id, out CalcPoint))
+                point CalcPoint = (point)itemn.Tag;;
+                //if (Data.inst().cd_Point.TryGetValue(it.id, out CalcPoint))
                 {
                     FormCalcAlarmHlSet fcps = new FormCalcAlarmHlSet(CalcPoint);
                     fcps.glacialLisint();
@@ -549,9 +552,9 @@ namespace HGS
             {
                 
                 GLItem itemn = (GLItem)glacialList1.SelectedItems[0];
-                itemtag it = (itemtag)itemn.Tag;
-                point CalcPoint;
-                if (Data.inst().cd_Point.TryGetValue(it.id, out CalcPoint))
+                //itemtag it = (itemtag)itemn.Tag;
+                point CalcPoint = (point)itemn.Tag;
+                //if (Data.inst().cd_Point.TryGetValue(it.id, out CalcPoint))
                 {
                     FormCalcAlarmLLSet fcps = new FormCalcAlarmLLSet(CalcPoint);
                     fcps.glacialLisint();
@@ -581,9 +584,9 @@ namespace HGS
             {
                 
                 GLItem itemn = (GLItem)glacialList1.SelectedItems[0];
-                itemtag it = (itemtag)itemn.Tag;
-                point CalcPoint;
-                if (Data.inst().cd_Point.TryGetValue(it.id, out CalcPoint))
+                //itemtag it = (itemtag)itemn.Tag;
+                point CalcPoint = (point)itemn.Tag; ;
+                //if (Data.inst().cd_Point.TryGetValue(it.id, out CalcPoint))
                 {
                     FormCalcAlarmIf fcaf = new FormCalcAlarmIf(CalcPoint);
                     fcaf.glacialLisint();
@@ -600,7 +603,7 @@ namespace HGS
                             buttonAlarmIf.ForeColor = Color.Red;
 
                             //itemn.SubItems["AlarmInfo"].Text = "";
-                            point pt = Data.inst().cd_Point[it.id];
+                            //point pt = Data.inst().cd_Point[it.id];
                             //pt.Alarmininfo = "";
                             //AlarmSet.GetInst().Remove(pt);
                             //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
@@ -958,7 +961,7 @@ namespace HGS
                     TreeDragData td = new TreeDragData();
                     foreach (GLItem it in glacialList1.SelectedItems)
                     {
-                        itemtag tag = (itemtag)it.Tag;
+                        point tag = (point)it.Tag;
                         //if (tag.PointSrc == pointsrc.sis)//计算点无曲线，没法比较。
                         td.pointid_set.Add(tag.id);
                         td.DragSourceNode = treeView.SelectedNode;
@@ -975,7 +978,7 @@ namespace HGS
                 DeviceInfo tt = (DeviceInfo)tn.Tag;
                 foreach (GLItem item in glacialList1.SelectedItems)
                 {
-                    int did = ((itemtag)item.Tag).id;
+                    int did = ((point)item.Tag).id;
                     DeviceInfo di;
                     if(Data_Device.dic_Device.TryGetValue(did,out di))
                     {
@@ -1000,7 +1003,7 @@ namespace HGS
             HashSet<int> pointid = new HashSet<int>();
             foreach (GLItem item in glacialList1.SelectedItems)
             {
-                itemtag it = (itemtag)item.Tag;
+                point it = (point)item.Tag;
                 pointid.Add(it.id);
             }
             if (pointid.Count > 0)
@@ -1014,11 +1017,11 @@ namespace HGS
             if(glacialList1.SelectedItems.Count > 0)
             {
                 GLItem item = (GLItem)glacialList1.SelectedItems[0];
-                itemtag it = (itemtag)item.Tag;
-                point pt;
-                if (Data.inst().cd_Point.TryGetValue(it.id, out pt))
+                point it = (point)item.Tag;
+                //point pt;
+                //if (Data.inst().cd_Point.TryGetValue(it.id, out pt))
                 {
-                    FormPlotQueues fpq = new FormPlotQueues(pt);
+                    FormPlotQueues fpq = new FormPlotQueues(it);
                     fpq.Show();
                 }
             }
