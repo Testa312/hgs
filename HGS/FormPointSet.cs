@@ -286,6 +286,8 @@ namespace HGS
         }
         private void timerUpdateValue_Tick(object sender, EventArgs e)
         {
+            if (this.Size.Height <= 100) 
+                return;
             try
             {
                 foreach (GLItem item in glacialList1.Items)
@@ -294,7 +296,7 @@ namespace HGS
                     if (glacialList1.IsItemVisible(item))
                     {
                         point pt;
-                        if(Data.inst().cd_Point.TryGetValue(it.id,out pt))
+                        if (Data.inst().cd_Point.TryGetValue(it.id, out pt))
                         {
                             item.SubItems["AV"].Text = Functions.NullDoubleRount(pt.av, pt.fm).ToString();
                             item.SubItems["DS"].Text = pt.ps.ToString();

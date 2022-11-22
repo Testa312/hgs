@@ -46,7 +46,6 @@
             GlacialComponents.Controls.GLColumn glColumn14 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn15 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn16 = new GlacialComponents.Controls.GLColumn();
-            GlacialComponents.Controls.GLColumn glColumn17 = new GlacialComponents.Controls.GLColumn();
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("全部");
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
@@ -429,17 +428,9 @@
             glColumn16.ImageIndex = -1;
             glColumn16.Name = "AlarmCount";
             glColumn16.NumericSort = false;
-            glColumn16.Text = "报警次数";
+            glColumn16.Text = "次数";
             glColumn16.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            glColumn16.Width = 50;
-            glColumn17.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
-            glColumn17.CheckBoxes = false;
-            glColumn17.ImageIndex = -1;
-            glColumn17.Name = "AlarmInfo";
-            glColumn17.NumericSort = false;
-            glColumn17.Text = "报警信息";
-            glColumn17.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn17.Width = 200;
+            glColumn16.Width = 80;
             this.glacialList1.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
             glColumn1,
             glColumn2,
@@ -456,8 +447,7 @@
             glColumn13,
             glColumn14,
             glColumn15,
-            glColumn16,
-            glColumn17});
+            glColumn16});
             this.glacialList1.ContextMenuStrip = this.contextMenuStrip_gl;
             this.glacialList1.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
             this.glacialList1.Dock = System.Windows.Forms.DockStyle.Fill;

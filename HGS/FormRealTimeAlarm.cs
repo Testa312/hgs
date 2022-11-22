@@ -12,7 +12,11 @@ namespace HGS
 {
     public partial class FormRealTimeAlarm : Form
     {
-        Dictionary<point, GLItem> dic_rec = new Dictionary<point, GLItem>();
+        HashSet<AlarmInfo> hs_rec_realtime = new HashSet<AlarmInfo>();
+        //HashSet<AlarmInfo> hs_rec_history = new HashSet<AlarmInfo>();
+        //用于提高性能。
+        HashSet<AlarmInfo> hs_realtime = new HashSet<AlarmInfo>();
+        //HashSet<AlarmInfo> hs_history = new HashSet<AlarmInfo>();
         public FormRealTimeAlarm()
         {
             InitializeComponent();
@@ -30,13 +34,14 @@ namespace HGS
                 item.SubItems["StopTime"].Text = ai.stoptime.ToString();
             item.Tag = ai;
         }
-        private void DisplayFilterItem()
+        private void DisplayFilterItem(string path)
         {
             if (tabControl1.SelectedIndex == 0)
             {
-                glacialList1.Items.Clear();
+                //glacialList1.Items.Clear();
                 List<GLItem> lsItems = new List<GLItem>();
                 List<AlarmInfo> lsrtiai = AlarmSet.GetInst().GetAlarmRealTimeInfo();
+                hs_realtime.Clear();
                 foreach (AlarmInfo ai in lsrtiai)
                 {
                     string[] filtes = tsTB_ED.Text.Split(' ');
@@ -47,22 +52,45 @@ namespace HGS
                         if (!flag) break;
                     }
                     /*(pt.OwnerId == tsCB_class.SelectedIndex || tsCB_class.SelectedIndex == 0) &&*/
-                    if (ai._nd.Contains(tsCB_ND.Text.Trim()) && flag && ai._pn.Contains(tsTB_PN.Text.Trim()) && ai._Info.Contains(tsTB_AI.Text.Trim()))
+                    if (ai._nd.Contains(tsCB_ND.Text.Trim()) && flag && ai._pn.Contains(tsTB_PN.Text.Trim()) && 
+                        ai._Info.Contains(tsTB_AI.Text.Trim())&& ai._path.Contains(path))
                     {
-                        GLItem itemx = new GLItem(glacialList1);
-                        AitoItemText(ai, itemx,true);
-                        lsItems.Add(itemx);
+                        if (!hs_rec_realtime.Contains(ai))
+                        {
+                            GLItem itemx = new GLItem(glacialList1);
+                            AitoItemText(ai, itemx, true);
+                            lsItems.Add(itemx);
+                            hs_rec_realtime.Add(ai);
+                        }
+                        hs_realtime.Add(ai);
                     }
                 }
+                List<GLItem> deleitem = new List<GLItem>();
+                foreach (GLItem item in glacialList1.Items)
+                {
+                    AlarmInfo ai = (AlarmInfo)item.Tag;
+                    if (!hs_realtime.Contains(ai))
+                    {
+                        deleitem.Add(item);
+                        hs_rec_realtime.Remove(ai);
+                    }
+
+                }
+                foreach (GLItem item in deleitem)
+                {
+                    glacialList1.Items.Remove(item);
+                }
+                deleitem.Clear();
                 glacialList1.Items.AddRange(lsItems.ToArray());
                 glacialList1.Invalidate();
                 tSLabel_Nums.Text = string.Format("实时报警总点数：{0}个", lsrtiai.Count);
             }
             else if (tabControl1.SelectedIndex == 1)
             {
-                glacialList2.Items.Clear();
+                //glacialList2.Items.Clear();
                 List<GLItem> lsItems = new List<GLItem>();
                 List<AlarmInfo> lshsiai = AlarmSet.GetInst().GetAlarmHistoryInfo();
+                hs_realtime.Clear();
                 foreach (AlarmInfo ai in lshsiai)
                 {
                     string[] filtes = tsTB_ED.Text.Split(' ');
@@ -73,19 +101,43 @@ namespace HGS
                         if (!flag) break;
                     }
                     /*(pt.OwnerId == tsCB_class.SelectedIndex || tsCB_class.SelectedIndex == 0) &&*/
-                    if (ai._nd.Contains(tsCB_ND.Text.Trim()) && flag && ai._pn.Contains(tsTB_PN.Text.Trim()) && ai._Info.Contains(tsTB_AI.Text.Trim()))
+                    if (ai._nd.Contains(tsCB_ND.Text.Trim()) && flag && ai._pn.Contains(tsTB_PN.Text.Trim()) && 
+                        ai._Info.Contains(tsTB_AI.Text.Trim()) && ai._path.Contains(path))
                     {
-                        GLItem itemx = new GLItem(glacialList2);
-                        AitoItemText(ai, itemx, false);
-                        lsItems.Add(itemx);
+                        if (!hs_rec_realtime.Contains(ai))
+                        {
+                            GLItem itemx = new GLItem(glacialList2);
+                            AitoItemText(ai, itemx, false);
+                            lsItems.Add(itemx);
+                            hs_rec_realtime.Add(ai);
+                        }
+                        hs_realtime.Add(ai);
+
                     }
 
                 }
+                List<GLItem> deleitem = new List<GLItem>();
+                foreach (GLItem item in glacialList2.Items)
+                {
+                    AlarmInfo ai = (AlarmInfo)item.Tag;
+                    if (!hs_realtime.Contains(ai))
+                    {
+                        deleitem.Add(item);
+                        hs_rec_realtime.Remove(ai);
+                    }
+
+                }
+                foreach (GLItem item in deleitem)
+                {
+                    glacialList2.Items.Remove(item);
+                }
+                deleitem.Clear();
                 glacialList2.Items.AddRange(lsItems.ToArray());
                 glacialList2.Invalidate();
                 tSLabel_Nums.Text = string.Format("报警点数：{0}个", lshsiai.Count);
             }
         }
+        /*
         private void DisplayTreeItem(TreeNode tn)
         {
             if (tn == null) return;
@@ -127,21 +179,27 @@ namespace HGS
                 tSLabel_Nums.Text = string.Format("报警点数：{0}个", lshsiai.Count);
             }
         }
+        */
         private void timer_GetAlarm_Tick(object sender, EventArgs e)
         {
-            if (treeView.SelectedNode == null || treeView.SelectedNode.Text == "全部")
+            if (this.Size.Height >= 100)
             {
+                if (treeView.SelectedNode == null || treeView.SelectedNode.Text == "全部")
+                {
 
-                DisplayFilterItem();
+                    DisplayFilterItem("");
+                }
+                else
+                    //DisplayTreeItem(treeView.SelectedNode);
+                    DisplayFilterItem(((DeviceInfo)treeView.SelectedNode.Tag).path);
             }
-            else
-                DisplayTreeItem(treeView.SelectedNode);
         }
 
         private void tsCB_class_SelectedIndexChanged(object sender, EventArgs e)
         {
-            dic_rec.Clear();
+            hs_rec_realtime.Clear();
             glacialList1.Items.Clear();
+            glacialList2.Items.Clear();
             timer_GetAlarm_Tick(sender, e);
         }
 
@@ -159,10 +217,11 @@ namespace HGS
         {
             if (e.KeyCode == Keys.Enter)
             {
-                dic_rec.Clear();
+                hs_rec_realtime.Clear();
                 glacialList1.Items.Clear();
+                glacialList2.Items.Clear();
                 timer_GetAlarm_Tick(sender, e);
-                glacialList1.Invalidate();
+                //glacialList1.Invalidate();
                 e.Handled = true;
                 e.SuppressKeyPress = true;
             }
@@ -220,19 +279,18 @@ namespace HGS
             treeView.SelectedNode = e.Node;
             if (e.Button == MouseButtons.Left)
             {
+                glacialList1.Items.Clear();
+                glacialList2.Items.Clear();
+                hs_rec_realtime.Clear();
                 DeviceInfo ttg = (DeviceInfo)e.Node.Tag;
-                if (e.Node.Text == "全部")
+                if (e.Node.Text == "全部" || ttg == null)
                 {
-                    DisplayFilterItem();
-                }
-                else if (ttg == null)
-                {
-                    glacialList1.Items.Clear();
-                    glacialList1.Invalidate();
+                    DisplayFilterItem("");
                 }
                 else 
                 {
-                    DisplayTreeItem(e.Node);
+                    //DisplayTreeItem(e.Node);
+                    DisplayFilterItem(ttg.path);
                 }
                 //tabControl.Enabled = false;
             }
@@ -253,6 +311,14 @@ namespace HGS
                 else if (ai._deviceid != -1)
                 { }
             }
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            hs_rec_realtime.Clear();
+            glacialList1.Items.Clear();
+            glacialList2.Items.Clear();
+            timer_GetAlarm_Tick(sender, e);
         }
     }
 }

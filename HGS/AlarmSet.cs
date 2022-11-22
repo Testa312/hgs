@@ -60,10 +60,7 @@ namespace HGS
         private Queue<AlarmInfo> q_alarm_history = new Queue<AlarmInfo>();
         //相当于索引
         private Dictionary<string, LinkedListNode<AlarmInfo>> dic_alarminfo = new Dictionary<string, LinkedListNode<AlarmInfo>>();
-        //避免频繁保存。
-        private List<AlarmInfo> lsNewAlarmInfo = new List<AlarmInfo>();
-        private List<AlarmInfo> lsModifiedAlarmInfo = new List<AlarmInfo>();
-
+       
         int TimeTick = 0;
         int sb_lines = 0;
         //
@@ -114,6 +111,7 @@ namespace HGS
             catch (Exception e) { throw new Exception(string.Format("保存报警信息时发生错误！"), e); }
         }
         //有线程安全问题
+        //如果信号只发报警，不发报警消失，将溢出，数据库中将没有消失时间的记录.
         public void AddAlarming(AlarmInfo ai)
         {
             if (!dic_alarminfo.ContainsKey(ai.sid))
@@ -136,6 +134,10 @@ namespace HGS
             {
                 lai.Value.stoptime = DateTime.Now;
                 q_alarm_history.Enqueue(lai.Value);
+                if (q_alarm_history.Count > 1000)
+                {
+                    q_alarm_history.Dequeue();
+                }
                 Modefied(lai.Value);
                 dic_alarminfo.Remove(sid);
                 linkAlarming.Remove(lai);

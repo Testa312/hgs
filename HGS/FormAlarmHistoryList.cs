@@ -60,9 +60,9 @@ namespace HGS
                 glacialList_UP.Invalidate();
                 pgconn.Close();
             }
-            catch (Exception)
+            catch (Exception ee)
             {
-                throw;
+                MessageBox.Show(ee.ToString(), "错误");
             }
             finally
             {
@@ -123,9 +123,9 @@ namespace HGS
                     glacialList_Down.Invalidate();
                     pgconn.Close();
                 }
-                catch (Exception)
+                catch (Exception ee)
                 {
-                    throw;
+                    MessageBox.Show(ee.ToString(), "错误");
                 }
                 finally
                 {
