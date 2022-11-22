@@ -23,6 +23,7 @@ namespace HGS
             this.hsPointid = hsPointid;
             InitializeComponent();
             InitializeFromTreeTag();
+            
         }
         private void InitializeFromTreeTag()
         {

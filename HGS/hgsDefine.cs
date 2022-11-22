@@ -148,12 +148,13 @@ namespace HGS
             }
             get { return _ll; }
         }
+        /*
         private double? _min_ll = null;//保持报警值.不保存
         public double? min_ll
         {
             set { _min_ll = value; }
             get { return _min_ll; }
-        }
+        }*/
         private string _Orgformula_ll = "";//计算公式
         public string Orgformula_ll
         {
@@ -210,12 +211,13 @@ namespace HGS
             }
             get { return _hl; }
         }
+        /*
         private double? _max_hl = null;
         public double? max_hl
         {
             set { _max_hl = value; }
             get { return _max_hl; }
-        }
+        }*/
         private string _Orgformula_hl = "";//计算公式
         public string orgformula_hl
         {
@@ -263,6 +265,7 @@ namespace HGS
             }
             get { return _zh; }
         }
+        /*
         private double? _max_zh = null;
         public double? max_zh
         {
@@ -270,7 +273,7 @@ namespace HGS
                 Data.inst().Update(this);
             }
             get { return _max_zh; }
-        }
+        }*/
         private double? _zl = null;//报警低2限
         public double? zl
         {
@@ -283,13 +286,14 @@ namespace HGS
             }
             get { return _zl; }
         }
+        /*
         private double? _min_zl = null;
         public double? min_zl
         {
             set { _min_zl = value;
             }
             get { return _min_zl; }
-        }
+        }*/
         //--------------------
         private pointsrc _pointsrc = 0;//点源0:sis,1:计算点
         public pointsrc pointsrc
@@ -468,7 +472,7 @@ namespace HGS
         }
         //
         //报警用，不存入数据库                                                            
-        //
+        /*
         //public bool calciserror = false;
         private alarmlevel _AlarmLevel = alarmlevel.no;
         public alarmlevel AlarmLevel
@@ -481,7 +485,8 @@ namespace HGS
         {
             set { _lastAlarmdatetime = value; }
             get { return _lastAlarmdatetime; }
-        }
+        }*/
+        //-------------
         //bit0:ZL
         //bit1:LL
         //bit2:HL
@@ -492,25 +497,23 @@ namespace HGS
         //biti7:skip
         //bit8:wave
         //bit9:Bad
+        //----------------
         private uint _lastAlarmBitInfo = 0;
-        public uint lastAlarmBitInfo
-        {
-            set { _lastAlarmBitInfo = value; }
-            get { return _lastAlarmBitInfo; }
-        }
-
+        /*
         private string _Alarmininfo = "";
         public string Alarmininfo
         {
             set { _Alarmininfo = value; }
             get { return _Alarmininfo; }
-        }
+        }*/
         private double? _Alarmingav = null;
+        /*
         public double? Alarmingav
         {
             set { _Alarmingav = value; }
             get { return _Alarmingav; }
         }
+        */
         //强制值，不存数据库
         private bool _isForce = false;
         public bool isForce
@@ -603,12 +606,14 @@ namespace HGS
             }
             get { return _Skip_pp; }
         }
+        /*
         private double _max_skip_pp = 0;
         public double max_Skip_pp
         {
             set { _max_skip_pp = value; }
             get { return _max_skip_pp; }
         }
+        */
         private WaveDetection _WaveDetection = null;
         public WaveDetection WaveDetection
         {
@@ -624,6 +629,16 @@ namespace HGS
         private float[] _dtw_start_th = null;
         //传感器的设备归属-不存数据库，运行时生成。
         private HashSet<int> _hs_Device = null;
+        private Dictionary<int,string> _hsDevicePath = null;
+        public string DevicePath
+        {
+            get {
+                string path = "";
+                if (_hsDevicePath != null)
+                    path = _hsDevicePath.Values.ToString();
+                return path; 
+            }
+        }
         private Dtw_queues[] _dtw_Queues_Array = null;
         private float[] _dtw_start_max = new float[6];
         public float[] dtw_start_max
@@ -760,24 +775,53 @@ namespace HGS
             }
             else
                 _dtw_Queues_Array = null;
-        }
-        public void add_device(int di)
+        }     
+        public void add_device(int di,string path)
         {
             if (_hs_Device == null)
                 _hs_Device = new HashSet<int>();
             _hs_Device.Add(di);
+            if (_hsDevicePath == null)
+                _hsDevicePath = new Dictionary<int, string>();
+            _hsDevicePath[di] = path;
             initDeviceQ();
         }
         public void remove_device(int di)
         {
             if (_hs_Device != null)
+            {
                 _hs_Device.Remove(di);
+            }
+            if (_hsDevicePath != null)
+            {
+                _hsDevicePath.Remove(di);
+            }
             if (_hs_Device.Count == 0)
             {
                 _hs_Device = null;
+                _hsDevicePath = null;
                 _dtw_Queues_Array = null;
             }
         }
+        /*
+        private void initDevicePath()
+        {
+            if (_hs_Device != null)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (int dv in _hs_Device)
+                {
+                    DeviceInfo di;
+                    if (Data_Device.dic_Device.TryGetValue(dv, out di))
+                    {
+                        sb.AppendLine(di.path);
+                    }
+                    else
+                        sb.AppendLine(Data_Device.GetDevice(dv).path);
+                }
+                _DevicePath = sb.ToString();
+            }
+        }*/
         public HashSet<int> Device_set()
         {
             HashSet<int> hs = new HashSet<int>();
@@ -785,6 +829,7 @@ namespace HGS
                 hs.UnionWith(_hs_Device);
             return hs;
         }
+        /*
         public void Accept_MaxMin_Th()
         {
             //_ll = _min_ll;//???????????????????
@@ -799,7 +844,7 @@ namespace HGS
                 }
             }
 
-        }
+        }*/
         private string CreateAlarmSid(int bitnum)
         {
             return string.Format("P{0}-{1}", id, _Alarm[bitnum,0]);
@@ -807,9 +852,13 @@ namespace HGS
         //-------------
         public AlarmInfo CreateAlarmInfo(int bitnum)
         {
+            string path = "";
+            if (_hsDevicePath != null)
+                path = _hsDevicePath.Values.ToString();
             return new AlarmInfo(CreateAlarmSid(bitnum),_id,-1, nd, pn,ed,eu,
                 (float)Functions.NullDoubleRount(_av, _fm),
-                _Alarm[bitnum, 1]) ;
+                _Alarm[bitnum, 1],
+                path) ;
         }
         //--------------------
         static string[,] _Alarm = {
@@ -919,7 +968,10 @@ namespace HGS
                 }
                 else if (lastBit < curBit)
                 {
-                    AlarmSet.GetInst().AddAlarming(CreateAlarmInfo(a));
+                    AlarmInfo ai = CreateAlarmInfo(a);
+                    if (a == 6)
+                        ai._Info = boolAlarminfo;
+                    AlarmSet.GetInst().AddAlarming(ai);
                     AlarmCount++;
                 }
             }

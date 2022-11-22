@@ -71,6 +71,7 @@ namespace HGS
             }
             return ++imax;
         }
+        
         private static string GetNodeFullPath(TreeNode tn)
         {
             StringBuilder sb = new StringBuilder();
@@ -122,13 +123,14 @@ namespace HGS
             else
                 return "NULL";
         }
+        /*
         private static float? CasttoFloat(object ob)
         {
             if (ob == DBNull.Value)
                 return null;
             else
                 return (float)ob;
-        }
+        }*/
         public static List<TreeNode> GetAllSubNode(string path)
         {
             var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);

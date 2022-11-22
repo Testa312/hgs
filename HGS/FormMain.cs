@@ -273,13 +273,12 @@ namespace HGS
                 pt.AlarmCalc();
             }
             Data_Device.AlarmCalc_All_Device();
-            AlarmSet.GetInst().SaveAlarmInfoToPG();
             tssL_error_nums.Text = Data.inst().hs_FormulaErrorPoint.Count.ToString();
 
             try
             {
 #if SERVER
-               // AlarmSet.GetInst().SaveAlarmInfo();
+               AlarmSet.GetInst().SaveAlarmInfoToPG();
 #endif
             }
             catch (Exception ee) {

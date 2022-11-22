@@ -10,7 +10,8 @@ namespace HGS
 {
     public class AlarmInfo
     {
-        public AlarmInfo(string sid,int sensorid,int deviceid,string nd,string pn,string ed,string eu,float? av,string info)
+        public AlarmInfo(string sid,int sensorid,int deviceid,string nd,string pn,
+            string ed,string eu,float? av,string info, string path)
         {
             _sid = sid;
             _Info = info;
@@ -21,6 +22,7 @@ namespace HGS
             _eu = eu;
             _sensorid = sensorid;
             _deviceid = deviceid;
+            _path = path;
             //
         }
         public string _nd;
@@ -29,8 +31,8 @@ namespace HGS
         public string _eu;
         public int _sensorid = -1;
         public int _deviceid = -1;
+        public string _path;
         string _sid;
-
         public string sid
         {
             set { }
@@ -41,7 +43,7 @@ namespace HGS
         }
 
         public DateTime _starttime = DateTime.Now;
-        public DateTime stoptime;
+        public DateTime stoptime = new DateTime(2000,1,1,0,0,0);
         public float? _av = null;
         public string _Info;
     }

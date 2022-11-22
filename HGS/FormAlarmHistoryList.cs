@@ -51,7 +51,9 @@ namespace HGS
                     itemn.SubItems["EU"].Text = pgreader["eu"].ToString();
                     itemn.SubItems["AlarmInfo"].Text = pgreader["alarminfo"].ToString();
                     itemn.SubItems["AlarmTime"].Text = pgreader["alarmtime"].ToString();
-                    itemn.SubItems["StopTime"].Text = pgreader["stoptime"].ToString();
+                    DateTime stop = (DateTime)pgreader["stoptime"];
+                    if(stop.Year > 2000)
+                        itemn.SubItems["StopTime"].Text = pgreader["stoptime"].ToString();
                 }
                 glacialList_UP.Items.AddRange(lsItems.ToArray());
                 pgconn.Close();
@@ -108,7 +110,9 @@ namespace HGS
                         lsItems.Add(itemn);
 
                         itemn.SubItems["Time"].Text = pgreader["alarmtime"].ToString();
-                        itemn.SubItems["StopTime"].Text = pgreader["stoptime"].ToString();
+                        DateTime stop = (DateTime)pgreader["stoptime"];
+                        if (stop.Year > 2000)
+                            itemn.SubItems["StopTime"].Text = pgreader["stoptime"].ToString();
                         itemn.SubItems["AlarmInfo"].Text = pgreader["alarminfo"].ToString();
                         itemn.SubItems["eu"].Text = pgreader["eu"].ToString();
                         itemn.SubItems["AlarmAv"].Text = pgreader["alarmav"].ToString();

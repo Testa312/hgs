@@ -65,7 +65,7 @@ namespace HGS
             if (hs_Sensorsid == null)
                 hs_Sensorsid = new HashSet<int>();
             hs_Sensorsid.Add(sid);
-            Data.inst().cd_Point[sid].add_device(id);
+            Data.inst().cd_Point[sid].add_device(id,path);
         }
         public void RemoveSensor(int sid)
         {
@@ -107,7 +107,7 @@ namespace HGS
                 point pt;
                 if (Data.inst().cd_Point.TryGetValue(sid, out pt))
                 {
-                    pt.add_device(id);
+                    pt.add_device(id,path);
                 }
                 //else
                     //sen_set.Remove(id);
@@ -196,7 +196,8 @@ namespace HGS
         {
             return new AlarmInfo(CreateAlarmSid(bitnum), -1, id, "设备", "", Name,"Ed",
                 alarm_th_dis_max[bitnum],
-                _Alarm[bitnum, 1]);
+                _Alarm[bitnum, 1],
+                path);
         }
         //素数181，347,727,1373,2801,5711
         static int[] prime = { 181,347, 727, 1373, 2801, 5711 };
@@ -266,6 +267,48 @@ namespace HGS
             }
             catch (Exception e) { throw new Exception(string.Format("读入设备子节点时发生错误！"), e); }
             finally { pgconn.Close(); }
+        }
+        public static DeviceInfo GetDevice(int DeviceId)
+        {
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
+            DeviceInfo di = null;
+            try
+            {
+                pgconn.Open();
+                string strsql = string.Format("select * from devicetree where id = {0} limit 1", DeviceId);
+                var cmd = new NpgsqlCommand(strsql, pgconn);
+
+                NpgsqlDataReader pgreader = cmd.ExecuteReader();
+
+                while (pgreader.Read())
+                {
+                    di = new DeviceInfo();
+                    di.Name = pgreader["nodename"].ToString();
+                    di.path = pgreader["path"].ToString();
+                    di.sort = (int)pgreader["sort"];
+                    object ob = pgreader["alarm_th_dis"];
+                    if (ob != DBNull.Value)
+                    {
+                        di.Alarm_th_dis = (float[])ob;
+                    }
+                    ob = pgreader["pointid_array"];
+                    if (ob != DBNull.Value)
+                    {
+                        di.UnionWith(new HashSet<int>((int[])ob));
+                    }
+
+                }
+                pgconn.Close();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                pgconn.Close();
+            }
+            return di;
         }
         public static void AlarmCalc_All_Device()
         {

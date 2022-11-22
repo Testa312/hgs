@@ -18,7 +18,19 @@ namespace HGS
             InitializeComponent();
             FillMyTreeView();
         }
-        private void DisplayItem()
+        private void AitoItemText(AlarmInfo ai, GLItem item,bool isRealtime)
+        {
+            item.SubItems["ND"].Text = ai._nd;
+            item.SubItems["PN"].Text = ai._pn;
+            item.SubItems["ED"].Text = ai._ed;
+            item.SubItems["AlarmingAV"].Text = ai._av.ToString();
+            item.SubItems["AlarmInfo"].Text = ai._Info;
+            item.SubItems["Time"].Text = ai._starttime.ToString();
+            if (ai.stoptime.Year >= 2000 && !isRealtime)
+                item.SubItems["StopTime"].Text = ai.stoptime.ToString();
+            item.Tag = ai;
+        }
+        private void DisplayFilterItem()
         {
             if (tabControl1.SelectedIndex == 0)
             {
@@ -38,15 +50,7 @@ namespace HGS
                     if (ai._nd.Contains(tsCB_ND.Text.Trim()) && flag && ai._pn.Contains(tsTB_PN.Text.Trim()) && ai._Info.Contains(tsTB_AI.Text.Trim()))
                     {
                         GLItem itemx = new GLItem(glacialList1);
-
-                        itemx.SubItems["ND"].Text = ai._nd;
-                        itemx.SubItems["PN"].Text = ai._pn;
-                        itemx.SubItems["ED"].Text = ai._ed;
-                        itemx.SubItems["AlarmingAV"].Text = ai._av.ToString();
-                        itemx.SubItems["AlarmInfo"].Text = ai._Info;
-                        itemx.SubItems["Time"].Text = ai._starttime.ToString();
-                        //if (ai.stoptime.Year >= 2000)
-                        //itemx.SubItems["StopTime"].Text = ai.stoptime.ToString();
+                        AitoItemText(ai, itemx,true);
                         lsItems.Add(itemx);
                     }
                 }
@@ -72,16 +76,7 @@ namespace HGS
                     if (ai._nd.Contains(tsCB_ND.Text.Trim()) && flag && ai._pn.Contains(tsTB_PN.Text.Trim()) && ai._Info.Contains(tsTB_AI.Text.Trim()))
                     {
                         GLItem itemx = new GLItem(glacialList2);
-
-                        itemx.SubItems["ND"].Text = ai._nd;
-                        itemx.SubItems["PN"].Text = ai._pn;
-                        itemx.SubItems["ED"].Text = ai._ed;
-                        itemx.SubItems["AlarmingAV"].Text = ai._av.ToString();
-                        itemx.SubItems["AlarmInfo"].Text = ai._Info;
-                        itemx.SubItems["Time"].Text = ai._starttime.ToString();
-                        if (ai.stoptime.Year >= 2000)
-                            itemx.SubItems["StopTime"].Text = ai.stoptime.ToString();
-
+                        AitoItemText(ai, itemx, false);
                         lsItems.Add(itemx);
                     }
 
@@ -91,9 +86,56 @@ namespace HGS
                 tSLabel_Nums.Text = string.Format("报警点数：{0}个", lshsiai.Count);
             }
         }
+        private void DisplayTreeItem(TreeNode tn)
+        {
+            if (tn == null) return;
+            if (tabControl1.SelectedIndex == 0)
+            {
+                glacialList1.Items.Clear();
+                List<GLItem> lsItems = new List<GLItem>();
+                List<AlarmInfo> lsrtiai = AlarmSet.GetInst().GetAlarmRealTimeInfo();
+                foreach (AlarmInfo ai in lsrtiai)
+                {
+                    if (ai._path.Contains(((DeviceInfo)tn.Tag).path))
+                    {
+                        GLItem itemx = new GLItem(glacialList1);
+                        AitoItemText(ai, itemx, true);
+                        lsItems.Add(itemx);
+                    }
+                }
+                glacialList1.Items.AddRange(lsItems.ToArray());
+                glacialList1.Invalidate();
+                tSLabel_Nums.Text = string.Format("实时报警总点数：{0}个", lsrtiai.Count);
+            }
+            else if (tabControl1.SelectedIndex == 1)
+            {
+                glacialList2.Items.Clear();
+                List<GLItem> lsItems = new List<GLItem>();
+                List<AlarmInfo> lshsiai = AlarmSet.GetInst().GetAlarmHistoryInfo();
+                foreach (AlarmInfo ai in lshsiai)
+                {
+
+                    if (ai._path.Contains(((DeviceInfo)tn.Tag).path))
+                    {
+                        GLItem itemx = new GLItem(glacialList2);
+                        AitoItemText(ai, itemx, false);
+                        lsItems.Add(itemx);
+                    }
+                }
+                glacialList2.Items.AddRange(lsItems.ToArray());
+                glacialList2.Invalidate();
+                tSLabel_Nums.Text = string.Format("报警点数：{0}个", lshsiai.Count);
+            }
+        }
         private void timer_GetAlarm_Tick(object sender, EventArgs e)
         {
-            DisplayItem();
+            if (treeView.SelectedNode == null || treeView.SelectedNode.Text == "全部")
+            {
+
+                DisplayFilterItem();
+            }
+            else
+                DisplayTreeItem(treeView.SelectedNode);
         }
 
         private void tsCB_class_SelectedIndexChanged(object sender, EventArgs e)
@@ -181,7 +223,7 @@ namespace HGS
                 DeviceInfo ttg = (DeviceInfo)e.Node.Tag;
                 if (e.Node.Text == "全部")
                 {
-                    DisplayItem();
+                    DisplayFilterItem();
                 }
                 else if (ttg == null || ttg.Sensors_set().Count <= 0)
                 {
@@ -189,30 +231,27 @@ namespace HGS
                     glacialList1.Invalidate();
                 }
                 else if (ttg.Sensors_set().Count > 0)
-                {/*
-                    List<GLItem> lsItem = new List<GLItem>();
-                    foreach (int id in ttg.Sensors_set())
-                    {
-                        GLItem item = new GLItem(glacialList1);
-                        point pt;
-                        if (Data.inst().cd_Point.TryGetValue(id, out pt))
-                        {
-                            //gllistInitItemTextFromPoint(pt, item);
-                            lsItem.Add(item);
-                        }
-                        else
-                        {
-                            ttg.RemoveSensor(id);
-                            DataDeviceTree.UpdateNodetoDB(e.Node);
-                        }
-                    }
-                    glacialList1.Items.Clear();
-                    glacialList1.Items.AddRange(lsItem.ToArray());
-                    glacialList1.Invalidate();
-                   // DisplayHints(lsItem.Count);
-                    */
+                {
+                    DisplayTreeItem(e.Node);
                 }
                 //tabControl.Enabled = false;
+            }
+        }
+
+        private void glacialList1_DoubleClick(object sender, EventArgs e)
+        {
+            if (glacialList1.Items.SelectedItems.Count > 0)
+            {
+                AlarmInfo ai = (AlarmInfo)((GLItem)glacialList1.Items.SelectedItems[0]).Tag;
+                if (ai._sensorid != -1)
+                {
+                    HashSet<int> pid = new HashSet<int>();
+                    pid.Add(ai._sensorid);
+                    FormPlotCurves frta = new FormPlotCurves(pid);
+                    frta.Show();
+                }
+                else if (ai._deviceid != -1)
+                { }
             }
         }
     }
