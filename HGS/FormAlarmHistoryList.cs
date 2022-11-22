@@ -18,14 +18,15 @@ namespace HGS
             InitializeComponent();
             dateTimePickerTo.Value = DateTime.Now.AddHours(1);
             dateTimePickerFrom.Value = DateTime.Now.AddDays(-1);
+            FillMyTreeView();
         }
-        private void glacialListInit()
+        private void glacialListInit(string path)
         {
             var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
             try
             {
-                string sqlx = string.Format(" nd like'%{0}%' and pn like '%{1}%' and ed like '%{2}%'",
-                    tsTB_ND.Text, tsTB_PN.Text, tsTB_ED.Text);
+                string sqlx = string.Format(" nd like'%{0}%' and pn like '%{1}%' and ed like '%{2}%' and device_path like '{3}%'",
+                    tsTB_ND.Text, tsTB_PN.Text, tsTB_ED.Text,path);
                 string strsql = string.Format("select distinct on (sid) sid,nd,pn,ed,eu,alarmav,alarminfo,alarmtime ,stoptime  " +
                    "from alarmhistory where {0} order by sid,alarmtime desc;", sqlx);
 
@@ -56,6 +57,7 @@ namespace HGS
                         itemn.SubItems["StopTime"].Text = pgreader["stoptime"].ToString();
                 }
                 glacialList_UP.Items.AddRange(lsItems.ToArray());
+                glacialList_UP.Invalidate();
                 pgconn.Close();
             }
             catch (Exception)
@@ -72,7 +74,7 @@ namespace HGS
         }
         private void toolStripButtonFind_Click(object sender, EventArgs e)
         {
-            glacialListInit();
+            glacialListInit("");
         }
 
         private void FormAlarmList_Shown(object sender, EventArgs e)
@@ -180,10 +182,80 @@ namespace HGS
         {
             if (e.KeyCode == Keys.Enter)
             {
-                glacialListInit();
+                glacialListInit("");
                 glacialList_UP.Invalidate();
                 e.Handled = true;
                 e.SuppressKeyPress = true;
+            }
+        }
+        private void FillMyTreeView()
+        {
+            // Display a wait cursor while the TreeNodes are being created.
+            Cursor.Current = Cursors.WaitCursor;
+
+            // Suppress repainting the TreeView until all the objects have been created.
+            treeView.BeginUpdate();
+            treeView.Nodes.Clear();
+            treeView.Nodes.AddRange(DataDeviceTree.GetAllSubNode(@"").ToArray());
+            // Clear the TreeView each time the method is called.
+            if (treeView.Nodes.Count > 0)
+            {
+                treeView.Nodes[0].Nodes.AddRange(DataDeviceTree.GetAllSubNode(@"/1").ToArray());
+                treeView.Nodes[0].Expand();
+            }
+            //treeView.Nodes[0].Expand();
+            // Reset the cursor to the default for all controls.
+            Cursor.Current = Cursors.Default;
+
+            // Begin repainting the TreeView.
+            treeView.EndUpdate();
+        }
+        private void treeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            RefreshSubs(e.Node);
+        }
+        private void RefreshSubs(TreeNode tn)
+        {
+            if (tn == null) return;
+            // Display a wait cursor while the TreeNodes are being created.
+            Cursor.Current = Cursors.WaitCursor;
+
+            // Suppress repainting the TreeView until all the objects have been created.
+            treeView.BeginUpdate();
+            tn.Nodes.Clear();
+            tn.Nodes.AddRange(DataDeviceTree.GetAllSubNode(((DeviceInfo)tn.Tag).path).ToArray());
+            foreach (TreeNode ttn in tn.Nodes)
+            {
+                ttn.Nodes.Clear();
+                ttn.Nodes.AddRange(DataDeviceTree.GetAllSubNode(((DeviceInfo)ttn.Tag).path).ToArray());
+            }
+            // Reset the cursor to the default for all controls.
+            Cursor.Current = Cursors.Default;
+
+            // Begin repainting the TreeView.
+            treeView.EndUpdate();
+        }
+        private void treeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            //if (e.Button == MouseButtons.Right)
+            treeView.SelectedNode = e.Node;
+            if (e.Button == MouseButtons.Left)
+            {
+                DeviceInfo ttg = (DeviceInfo)e.Node.Tag;
+                if (e.Node.Text == "全部")
+                {
+                    glacialListInit("");
+                }
+                else if (ttg == null)
+                {
+                    glacialList_UP.Items.Clear();
+                    glacialList_UP.Invalidate();
+                }
+                else
+                {
+                    glacialListInit(ttg.path);
+                }
+                //tabControl.Enabled = false;
             }
         }
     }

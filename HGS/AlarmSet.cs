@@ -84,9 +84,9 @@ namespace HGS
         public void AddNew(AlarmInfo ai)
         {
             sb_lines++;
-            sb_alarmsql.AppendLine(string.Format(@"insert into alarmhistory (sid,alarmtime,alarminfo,alarmav,stoptime,nd,ed,pn,eu) values " +
-                                      "('{0}','{1}','{2}',{3},'{4}','{5}','{6}','{7}','{8}');",
-                                   ai.sid, ai._starttime,ai._Info, Functions.dtoNULL(ai._av), ai.stoptime,ai._nd,ai._ed,ai._pn,ai._eu));
+            sb_alarmsql.AppendLine(string.Format(@"insert into alarmhistory (sid,alarmtime,alarminfo,alarmav,stoptime,nd,ed,pn,eu,device_path) values " +
+                                      "('{0}','{1}','{2}',{3},'{4}','{5}','{6}','{7}','{8}','{9}');",
+                                   ai.sid, ai._starttime,ai._Info, Functions.dtoNULL(ai._av), ai.stoptime,ai._nd,ai._ed,ai._pn,ai._eu,ai._path));
         }
         public void Modefied(AlarmInfo ai)
         {

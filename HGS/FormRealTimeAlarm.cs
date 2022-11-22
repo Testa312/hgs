@@ -225,12 +225,12 @@ namespace HGS
                 {
                     DisplayFilterItem();
                 }
-                else if (ttg == null || ttg.Sensors_set().Count <= 0)
+                else if (ttg == null)
                 {
                     glacialList1.Items.Clear();
                     glacialList1.Invalidate();
                 }
-                else if (ttg.Sensors_set().Count > 0)
+                else 
                 {
                     DisplayTreeItem(e.Node);
                 }
