@@ -156,6 +156,7 @@ namespace HGS
                         ttag.Name = tn.Text;
                         ttag.sort = (int)pgreader["sort"];
                         ttag.path = pgreader["path"].ToString();
+                        ttag.Sound = (int)pgreader["sound"];
                         object ob = pgreader["alarm_th_dis"];
                         if (ob != DBNull.Value)
                         {
@@ -188,9 +189,9 @@ namespace HGS
                 tag.id = GetNextTreeNodeId();
                 if (tag.sort <= 0) tag.sort = GetMaxSortV();
                 tag.path = GetNodeFullPath(tn);
-                string sql = string.Format(@"insert into devicetree (id,nodename,path,alarm_th_dis,sort,pointid_array)" +
-                                    " values ({0},'{1}','{2}',{3},{4},{5});",
-                                    tag.id, tag.Name, tag.path,ArraytoString(tag.Alarm_th_dis), tag.sort, GetNodeArray(tn));
+                string sql = string.Format(@"insert into devicetree (id,nodename,path,alarm_th_dis,sort,pointid_array,sound)" +
+                                    " values ({0},'{1}','{2}',{3},{4},{5},{6});",
+                                    tag.id, tag.Name, tag.path,ArraytoString(tag.Alarm_th_dis), tag.sort, GetNodeArray(tn),tag.Sound);
                 var cmd = new NpgsqlCommand(sql, pgconn);
                 pgconn.Open();
                 cmd.ExecuteNonQuery();          
@@ -202,8 +203,8 @@ namespace HGS
         {
             DeviceInfo tag = (DeviceInfo)tn.Tag;
             tag.path = GetNodeFullPath(tn);
-            string sql = string.Format(@"update devicetree set nodename='{0}',path='{1}',alarm_th_dis={2},sort={3},pointid_array={4} where id = {5};",
-                                    tag.Name, tag.path, ArraytoString(tag.Alarm_th_dis), tag.sort, GetNodeArray(tn), tag.id);
+            string sql = string.Format(@"update devicetree set nodename='{0}',path='{1}',alarm_th_dis={2},sort={3},pointid_array={4},sound={5} where id = {6};",
+                                    tag.Name, tag.path, ArraytoString(tag.Alarm_th_dis), tag.sort, GetNodeArray(tn),tag.Sound, tag.id);
             return sql;
         }
         public static void UpdateNodetoDB(TreeNode tn)

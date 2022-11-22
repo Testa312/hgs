@@ -436,12 +436,13 @@ namespace HGS
                                          "pn='{8}',orgformula_main='{9}',fm={10},iscalc = {11}," +
                                         "isavalarm = {12},ed = '{13}',isboolv = {14},boolalarminfo = '{15}'," +
                                                    " orgformula_hl = '{16}',orgformula_ll = '{17}',alarmif = '{18}' ,boolalarmif = {19} ,isalarmskip = {20},isalarmwave = {21}," +
-                                                   "skip_pp = {22},dtw_start_th = {23} where id = {24};",
+                                                   "skip_pp = {22},dtw_start_th = {23},sound = {24} where id = {25};",
                                         Functions.dtoNULL(pt.tv), Functions.dtoNULL(pt.bv), Functions.dtoNULL(pt.ll), Functions.dtoNULL(pt.hl),
                                         Functions.dtoNULL(pt.zl), Functions.dtoNULL(pt.zh),
                                         DateTime.Now,pt.eu, pt.pn, pt.orgformula_main,pt.fm,
                                         pt.isCalc,pt.isAvalarm, pt.ed,pt.isboolvAlarm,pt.boolAlarminfo, pt.orgformula_hl,
-                                        pt.Orgformula_ll,pt.Alarmif,pt.boolAlarmif,pt.isAlarmskip,pt.isAlarmwave, Functions.dtoNULL(pt.Skip_pp), ArraytoString(pt.Dtw_start_th), pt.id));
+                                        pt.Orgformula_ll,pt.Alarmif,pt.boolAlarmif,pt.isAlarmskip,pt.isAlarmwave, Functions.dtoNULL(pt.Skip_pp),
+                                        ArraytoString(pt.Dtw_start_th),pt.Sound, pt.id));
                 sb.AppendLine(string.Format("delete  from formula_point where id = {0};", pt.id));
                 GetinsertsubSql(sb, pt);
             }
@@ -452,14 +453,15 @@ namespace HGS
 
                 sb.AppendLine(string.Format(@"insert into point (id,nd,pn,ed,eu,tv,bv,ll,hl,zl,"+
                                             "zh,id_sis,pointsrc,mt,ownerid,orgformula_main,fm,iscalc,isavalarm,isboolv,boolalarminfo," +
-                                            "orgformula_hl,orgformula_ll,alarmif,boolalarmif,isalarmskip,isalarmwave,skip_pp,dtw_start_th) " + 
+                                            "orgformula_hl,orgformula_ll,alarmif,boolalarmif,isalarmskip,isalarmwave,skip_pp,dtw_start_th,sound) " + 
                                     "values ({0},'{1}','{2}','{3}','{4}',{5},{6},{7},{8},{9},"+
-                                            "{10},{11},{12},'{13}',{14},'{15}',{16},{17},{18},{19},'{20}','{21}','{22}','{23}',{24},{25},{26},{27},{28});",
+                                            "{10},{11},{12},'{13}',{14},'{15}',{16},{17},{18},{19},'{20}','{21}','{22}','{23}',{24},{25}," +
+                                            "{26},{27},{28},{29});",
                                     pt.id, pt.nd, pt.pn, pt.ed, pt.eu, Functions.dtoNULL(pt.tv), Functions.dtoNULL(pt.bv), 
                                     Functions.dtoNULL(pt.ll), Functions.dtoNULL(pt.hl), Functions.dtoNULL(pt.zl),
                                     Functions.dtoNULL(pt.zh), pt.Id_sis,(int)pt.pointsrc, DateTime.Now, Auth.GetInst().LoginID, pt.orgformula_main,
                                     pt.fm,pt.isCalc,pt.isAvalarm,pt.isboolvAlarm,pt.boolAlarminfo, pt.orgformula_hl, pt.Orgformula_ll,pt.Alarmif,
-                                    pt.boolAlarmif,pt.isAlarmskip,pt.isAlarmwave, Functions.dtoNULL(pt.Skip_pp), ArraytoString(pt.Dtw_start_th)));
+                                    pt.boolAlarmif,pt.isAlarmskip,pt.isAlarmwave, Functions.dtoNULL(pt.Skip_pp), ArraytoString(pt.Dtw_start_th),pt.Sound));
                 GetinsertsubSql(sb, pt);
                // pt.id = ptid;
                // ptid++;

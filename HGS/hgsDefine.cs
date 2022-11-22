@@ -148,6 +148,19 @@ namespace HGS
             }
             get { return _ll; }
         }
+        private int _Sound = 0;
+        public int Sound
+        {
+            set
+            {
+                if (_Sound != value)
+                {
+                    Data.inst().Update(this);
+                }
+                _Sound = value;
+            }
+            get { return _Sound; }
+        }
         /*
         private double? _min_ll = null;//保持报警值.不保存
         public double? min_ll
@@ -690,6 +703,7 @@ namespace HGS
 
             _isAlarmskip = (bool)pgreader["isalarmskip"];
             _isAlarmwave = (bool)pgreader["isalarmwave"];
+            _Sound = (int)pgreader["sound"];
             if ((_isAlarmwave || _isAlarmskip) && _Skip_pp != null)
                 _WaveDetection = new WaveDetection();
             //
@@ -861,19 +875,20 @@ namespace HGS
             return new AlarmInfo(CreateAlarmSid(bitnum), _id, -1, nd, pn, ed, eu,
                 (float)Functions.NullDoubleRount(_av, _fm),
                 _Alarm[bitnum, 1],
-                sb.ToString()) ;
+                sb.ToString(),
+                _Sound) ;
         }
         //--------------------
         static string[,] _Alarm = {
-            {"ZL",  "越低2限！"     },
-            {"LL",  "越低限！"      },
-            {"HL",  "越高限！"      },
-            {"ZH",  "越高2限！"     },
-            {"TV",  "越量程上限！"  },
-            {"BV",  "越量程下限！"  },
+            {"ZL",  "越低2限报警！"     },
+            {"LL",  "越低限报警！"      },
+            {"HL",  "越高限报警！"      },
+            {"ZH",  "越高2限报警！"     },
+            {"TV",  "越量程上限报警！"  },
+            {"BV",  "越量程下限报警！"  },
             {"Bool" ,""             },
-            {"Skip", "跳变！"       },
-            {"Wave", "波动！"       },
+            {"Skip", "跳变报警！"       },
+            {"Wave", "波动报警！"       },
             {"Bad", "坏点！"       }};
         //---------------------
         public void AlarmCalc()

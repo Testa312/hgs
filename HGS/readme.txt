@@ -43,3 +43,5 @@ UPDATE owner SET password = crypt('123456', gen_salt('bf',10));
 2022.11.6 oxyplot安装时出现 冲突，在nuGet卸载相应模块即可。
 2022-11-13-----------------
 dtaidistance DTW 配置max_dist,use_pruning参数后速度很快。
+2022-11-22
+char:报警声音：0不发声，1超限，2异常，3故障，4朗读。

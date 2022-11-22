@@ -215,6 +215,7 @@ namespace HGS
                             gllistUpateItemText(item, pt);
                            
                             pt.isAvalarm = checkBoxAlarm.Checked;
+                            /*
                             if (!pt.isAvalarm)
                             {
                                 item.SubItems["AlarmInfo"].Text= "";
@@ -222,6 +223,7 @@ namespace HGS
                                 //pt.Alarmininfo = "";
                                 //AlarmSet.GetInst().Remove(ppt);
                             }
+                            */
                             pt.isboolvAlarm = checkBoxbool.Checked;
                             if(glc <=1 ) 
                                 pt.boolAlarminfo = tB_boolAlarmInfo.Text;
@@ -247,6 +249,7 @@ namespace HGS
                             }
                             if ((pt.isAlarmwave || pt.isAlarmskip) && pt.Skip_pp == null && pt.Skip_pp > 0)
                                 MessageBox.Show("阈值不应为空且大于0！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            pt.Sound = comboBox_Sound.SelectedIndex;
                         }
                         Save();
                         //toolStripButtonFind.Enabled = glc == 0;
@@ -367,6 +370,7 @@ namespace HGS
                     {
                         buttonAlarmIf.ForeColor = Color.Red;
                     }
+                    comboBox_Sound.SelectedIndex = Point.Sound;
                 }
 
             }
@@ -595,7 +599,7 @@ namespace HGS
                         {
                             buttonAlarmIf.ForeColor = Color.Red;
 
-                            itemn.SubItems["AlarmInfo"].Text = "";
+                            //itemn.SubItems["AlarmInfo"].Text = "";
                             point pt = Data.inst().cd_Point[it.id];
                             //pt.Alarmininfo = "";
                             //AlarmSet.GetInst().Remove(pt);

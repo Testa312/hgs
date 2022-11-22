@@ -20,6 +20,7 @@ namespace HGS
         public float[] alarm_th_dis_max = new float[6];
         public int sort = 0;
         public int CountofDTWCalc = 0;
+        public int Sound = 0;
         private HashSet<int> hs_Sensorsid = null;
         //
         private int TimeTick;
@@ -118,12 +119,12 @@ namespace HGS
         }
         //--------------------
         static string[,] _Alarm = {
-            {"15m",  "15m参数异常！"    },
-            {"30m",  "30m参数异常！"    },
-            {"60m",  "60m参数异常！"    },
-            {"120m",  "120m参数异常！"  },
-            {"240m",  "240m参数异常！"  },
-            {"480m",  "480m参数异常！"  } };
+            {"15m",  "15分钟段参数异常！"    },
+            {"30m",  "30分钟段参数异常！"    },
+            {"60m",  "1小时段参数异常！"    },
+            {"120m",  "2小时段参数异常！"  },
+            {"240m",  "4小时参数异常！"  },
+            {"480m",  "8小时参数异常！"  } };
         //-----
         private void AlarmCalc_dtw(point pt,int Step)
         {
@@ -197,7 +198,7 @@ namespace HGS
             return new AlarmInfo(CreateAlarmSid(bitnum), -1, id, "设备", "", Name,"Ed",
                 alarm_th_dis_max[bitnum],
                 _Alarm[bitnum, 1],
-                path);
+                path,Sound);
         }
         //素数181，347,727,1373,2801,5711
         static int[] prime = { 181,347, 727, 1373, 2801, 5711 };
@@ -250,6 +251,7 @@ namespace HGS
                     di.Name = pgreader["nodename"].ToString();
                     di.sort = (int)pgreader["sort"];
                     di.path = pgreader["path"].ToString();
+                    di.Sound = (int)pgreader["sound"];
                     object ob = pgreader["alarm_th_dis"];
                     if (ob != DBNull.Value)
                     {
@@ -285,6 +287,7 @@ namespace HGS
                     di = new DeviceInfo();
                     di.Name = pgreader["nodename"].ToString();
                     di.path = pgreader["path"].ToString();
+                    di.Sound = (int)pgreader["sound"];
                     di.sort = (int)pgreader["sort"];
                     object ob = pgreader["alarm_th_dis"];
                     if (ob != DBNull.Value)

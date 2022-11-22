@@ -344,5 +344,10 @@ namespace HGS
             formcodcd.WindowState = FormWindowState.Maximized;
             formcodcd.Show();
         }
+
+        private void 消音ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AlarmSet.GetInst().SoundStop();
+        }
     }
 }

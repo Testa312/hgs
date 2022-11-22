@@ -78,6 +78,8 @@
             this.显示队列曲线ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageBase = new System.Windows.Forms.TabPage();
+            this.comboBox_Sound = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.buttonCalc = new System.Windows.Forms.Button();
             this.label_formula = new System.Windows.Forms.Label();
             this.labelf = new System.Windows.Forms.Label();
@@ -572,6 +574,8 @@
             // 
             this.tabPageBase.AutoScroll = true;
             this.tabPageBase.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.tabPageBase.Controls.Add(this.comboBox_Sound);
+            this.tabPageBase.Controls.Add(this.label4);
             this.tabPageBase.Controls.Add(this.buttonCalc);
             this.tabPageBase.Controls.Add(this.label_formula);
             this.tabPageBase.Controls.Add(this.labelf);
@@ -586,6 +590,29 @@
             this.tabPageBase.Size = new System.Drawing.Size(1117, 203);
             this.tabPageBase.TabIndex = 0;
             this.tabPageBase.Text = "基本";
+            // 
+            // comboBox_Sound
+            // 
+            this.comboBox_Sound.FormattingEnabled = true;
+            this.comboBox_Sound.Items.AddRange(new object[] {
+            "无",
+            "超限",
+            "异常",
+            "故障",
+            "朗读"});
+            this.comboBox_Sound.Location = new System.Drawing.Point(305, 134);
+            this.comboBox_Sound.Name = "comboBox_Sound";
+            this.comboBox_Sound.Size = new System.Drawing.Size(89, 20);
+            this.comboBox_Sound.TabIndex = 4;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(241, 139);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(41, 12);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "声音：";
             // 
             // buttonCalc
             // 
@@ -1123,5 +1150,7 @@
         private System.Windows.Forms.ToolStripMenuItem 显示曲线ToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem 显示队列曲线ToolStripMenuItem;
+        private System.Windows.Forms.ComboBox comboBox_Sound;
+        private System.Windows.Forms.Label label4;
     }
 }

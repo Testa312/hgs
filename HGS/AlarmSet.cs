@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using Npgsql;
 using Queues;
+using System.Speech.Synthesis;
+using System.Speech;
+using System.Speech.Recognition;
 namespace HGS
 {
     public class AlarmInfo
     {
         public AlarmInfo(string sid,int sensorid,int deviceid,string nd,string pn,
-            string ed,string eu,float? av,string info, string path)
+            string ed,string eu,float? av,string info, string path,int sound)
         {
             _sid = sid;
             _Info = info;
@@ -23,6 +26,7 @@ namespace HGS
             _sensorid = sensorid;
             _deviceid = deviceid;
             _path = path;
+            _sound = sound;
             //
         }
         public string _nd;
@@ -32,6 +36,7 @@ namespace HGS
         public int _sensorid = -1;
         public int _deviceid = -1;
         public string _path;
+        public int _sound;
         string _sid;
         public string sid
         {
@@ -60,7 +65,10 @@ namespace HGS
         private Queue<AlarmInfo> q_alarm_history = new Queue<AlarmInfo>();
         //相当于索引
         private Dictionary<string, LinkedListNode<AlarmInfo>> dic_alarminfo = new Dictionary<string, LinkedListNode<AlarmInfo>>();
-       
+        //
+        static SpeechSynthesizer speak = new SpeechSynthesizer();
+        System.Media.SoundPlayer simpleSound = new System.Media.SoundPlayer();
+
         int TimeTick = 0;
         int sb_lines = 0;
         //
@@ -73,19 +81,22 @@ namespace HGS
                 inst = new AlarmSet();
                 pgconn.Open();
                 cmd = new NpgsqlCommand("", pgconn);
+                speak.Rate = -2;
+                speak.Volume = 100;
+
             }
             return inst;
         }
         ~AlarmSet(){ pgconn.Close(); }        
         
-        public void AddNew(AlarmInfo ai)
+        public void AddNewSQL(AlarmInfo ai)
         {
             sb_lines++;
             sb_alarmsql.AppendLine(string.Format(@"insert into alarmhistory (sid,alarmtime,alarminfo,alarmav,stoptime,nd,ed,pn,eu,device_path) values " +
                                       "('{0}','{1}','{2}',{3},'{4}','{5}','{6}','{7}','{8}','{9}');",
                                    ai.sid, ai._starttime,ai._Info, Functions.dtoNULL(ai._av), ai.stoptime,ai._nd,ai._ed,ai._pn,ai._eu,ai._path));
         }
-        public void Modefied(AlarmInfo ai)
+        public void ModefiedSQL(AlarmInfo ai)
         {
             sb_lines++;
             sb_alarmsql.Append(string.Format(@"update alarmhistory set stoptime='{0}' where sid = '{1}' and alarmtime = '{2}';", 
@@ -123,8 +134,8 @@ namespace HGS
                     dic_alarminfo.Remove(ai.sid);
                 }
                 //lsNewAlarmInfo.Add(ai);
-                AddNew(ai);
-                
+                AddNewSQL(ai);
+                SounfPlay(ai);
             }
         }
         public void AlarmStop(string sid)
@@ -138,7 +149,7 @@ namespace HGS
                 {
                     q_alarm_history.Dequeue();
                 }
-                Modefied(lai.Value);
+                ModefiedSQL(lai.Value);
                 dic_alarminfo.Remove(sid);
                 linkAlarming.Remove(lai);
             }
@@ -150,6 +161,35 @@ namespace HGS
         public List<AlarmInfo> GetAlarmHistoryInfo()
         {
             return q_alarm_history.ToList();
+        }
+        private void SounfPlay(AlarmInfo ai)
+        {
+            switch (ai._sound)
+            {
+                case 0:
+                    break;
+                case 1:
+                    simpleSound.SoundLocation = @"1.wav";
+                    simpleSound.Play();
+                    break;
+                case 2:
+                    simpleSound.SoundLocation = @"2.wav";
+                    simpleSound.Play();
+                    break;
+                case 3:
+                    simpleSound.SoundLocation = @"3.wav";
+                    simpleSound.Play();
+                    break;
+                case 4:
+                    speak.SpeakAsync(string.Format("{0}{1}",ai._ed,ai._Info));
+                    break;
+                default: { }break;
+            }
+        }
+        public void SoundStop()
+        {
+            simpleSound.Stop();
+            speak.Pause();
         }
     }
 }

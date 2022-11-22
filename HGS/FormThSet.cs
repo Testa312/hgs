@@ -87,6 +87,7 @@ namespace HGS
                     }
                     lsItem.Add(item);
                 }
+                comboBox_Sound.SelectedIndex = ttg.Sound;
                 glacialList2.Items.Clear();
                 glacialList2.Items.AddRange(lsItem.ToArray());
                 glacialList2.Invalidate();
@@ -351,6 +352,7 @@ namespace HGS
                 if (textBox_Name.Text.Trim().Length == 0)
                     throw new Exception("节点名不能为空！");
                 ttg.Name = textBox_Name.Text.Trim();
+                ttg.Sound = comboBox_Sound.SelectedIndex;
                 //设备
                 bool flag = false;
                 float[] th = new float[ScanSpan.Length];
