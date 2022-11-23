@@ -30,9 +30,9 @@ namespace HGS
     }
     static class SisConnect
     {
-        public static OPAPI.Connect sisconn = null; //new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
-            //Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
-        public static Dictionary<int, PointData> GetsisData(object[] keys, DateTime begin, DateTime end,int count = 100)
+        //public static OPAPI.Connect sisconn = null;
+        public static OPAPI.Connect sisconj_keep = null;//主连接由FormMain使用，负责建立、保活和销毁。
+        private static Dictionary<int, PointData> GetsisData(OPAPI.Connect sisconn,object[] keys, DateTime begin, DateTime end,int count = 100)
         {
             Dictionary<int, PointData> dic_data = new Dictionary<int, PointData>();
             if (keys.Length == 0) return dic_data;
@@ -70,7 +70,9 @@ namespace HGS
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                string sise = string.Format("Sis连接出错！:\rsisconn:isAlive{0}\r{1}", sisconn.isAlive(),
+                    sisconn.ToString());
+                throw new Exception(sise, e);
             }
             finally
             {
@@ -93,7 +95,7 @@ namespace HGS
             }
             return dic_data;
         }
-        public static Dictionary<int, PointData> GetPointData_dic(HashSet<int> hspid, DateTime begin, 
+        public static Dictionary<int, PointData> GetPointData_dic(OPAPI.Connect sisconn,HashSet<int> hspid, DateTime begin, 
             DateTime end, int count = 100)
         {
             Dictionary<int, PointData> dic_pd = new Dictionary<int, PointData>();
@@ -110,7 +112,7 @@ namespace HGS
                         calcpt.Add(pt);
                 }
 
-                    Dictionary<int, PointData> dic_pd_sis = SisConnect.GetsisData(sisid.ToArray(), begin, end, count);
+                    Dictionary<int, PointData> dic_pd_sis = SisConnect.GetsisData(sisconn,sisid.ToArray(), begin, end, count);
                 foreach (PointData pd in dic_pd_sis.Values)
                 {
                     point pt = Data.inst().dic_SisIdtoPoint[pd.ID_sis];
@@ -121,14 +123,14 @@ namespace HGS
 
                 foreach (point pt in calcpt)
                 {
-                    PointData pdcalc = SisConnect.GetCalcPointData(pt, begin, end, count);
+                    PointData pdcalc = SisConnect.GetCalcPointData(sisconn,pt, begin, end, count);
                     pdcalc.ED = pt.ed;
                     dic_pd.Add(pdcalc.ID, pdcalc);
                 }
             }
             return dic_pd;
         }
-        public static PointData GetCalcPointData(point calcpt, DateTime begin, DateTime end, int count = 100)
+        private static PointData GetCalcPointData(OPAPI.Connect sisconn,point calcpt, DateTime begin, DateTime end, int count = 100)
         {
             if (calcpt.pointsrc != pointsrc.calc)
                 throw new ArgumentException("必须为计算点！");
@@ -140,7 +142,7 @@ namespace HGS
                 siskeys.Add(Convert.ToInt64(sispt.Id_sis));
             }
             //
-            Dictionary<int, PointData> data = GetsisData(siskeys.ToArray(), begin, end, count);
+            Dictionary<int, PointData> data = GetsisData(sisconn,siskeys.ToArray(), begin, end, count);
             int c = 0;
             if (data.Keys.Count >= 1)
             {
@@ -176,32 +178,34 @@ namespace HGS
         }
         public static void InitSensorsQueues(Dictionary<int,point> dic_pt)
         {
+
             if (dic_pt == null)
                 throw new ArgumentException("初始化队列的点列表不能为空！");
-            int[] ScanSpan = new int[6] {18,36,72,144,288,576};//分钟,秒数为120的倍数
+            int[] ScanSpan = new int[6] { 18, 36, 72, 144, 288, 576 };//分钟,秒数为120的倍数
             HashSet<int> lsob = new HashSet<int>();
             foreach (int id in dic_pt.Keys)
             {
                 lsob.Add(id);
             }
-            DateTime end = GetSisSystemTime().AddSeconds(-5);
+            DateTime end = GetSisSystemTime(sisconj_keep).AddSeconds(-5);
             for (int i = 0; i < ScanSpan.Length; i++)
             {
                 DateTime begin = end.AddMinutes(-ScanSpan[i]);
                 //
-                Dictionary<int, PointData> dic_pd = GetPointData_dic(lsob, begin, end,120);
+                Dictionary<int, PointData> dic_pd = GetPointData_dic(sisconj_keep,lsob, begin, end, 120);
                 foreach (PointData pd in dic_pd.Values)
                 {
                     float[] x = new float[pd.data.Count];
                     for (int m = 0; m < pd.data.Count; m++)
                     {
-                        x[m] = pd.data[pd.data.Count - 1 - m].Value;   
+                        x[m] = pd.data[pd.data.Count - 1 - m].Value;
                     }
                     dic_pt[pd.ID].initDeviceQ(i, x);
                 }
             }
+
         }
-        public static Dictionary<int, PointData> GetsisStat(HashSet<int> hspid, DateTime begin, DateTime end,int span)
+        public static Dictionary<int, PointData> GetsisStat(OPAPI.Connect sisconn,HashSet<int> hspid, DateTime begin, DateTime end,int span)
         {
             //
             Dictionary<int, PointData> dic_data_stat = new Dictionary<int, PointData>();
@@ -242,7 +246,9 @@ namespace HGS
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                string sise = string.Format("Sis连接出错！:\rsisconn:isAlive{0}\r{1}", sisconn.isAlive(),
+                    sisconn.ToString());
+                throw new Exception(sise, e);
             }
             finally
             {
@@ -405,13 +411,13 @@ namespace HGS
             }
             return dd_dtw.dtw_distance(xx, yy, max_dist, use_pruning); 
         }
-        public static DateTime GetSisSystemTime()
+        public static DateTime GetSisSystemTime(OPAPI.Connect sisconn)
         {
             DateTime sysdt = DateTime.Now.AddSeconds(-120);
             string sql = "select TM from Realtime where ID in (2053,9092,220865)";
             bool flag = false;
 
-            OPAPI.ResultSet resultSet = SisConnect.sisconn.executeQuery(sql);//执行SQL
+            OPAPI.ResultSet resultSet = sisconn.executeQuery(sql);//执行SQL
             try
             {
                 while (resultSet.next())//next()执行一次，游标下移一行
@@ -423,7 +429,9 @@ namespace HGS
             }
             catch (Exception ee)
             {
-                throw new Exception("取点系统时间出错！" + ee.ToString());
+                string sise = string.Format("Sis连接出错！:\rsisconn:isAlive{0}\r{1}", sisconn.isAlive(), 
+                    sisconn.ToString());
+                throw new Exception(sise,ee);
 
             }
             finally

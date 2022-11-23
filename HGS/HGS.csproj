@@ -243,12 +243,6 @@
     <Compile Include="FormForceValue.Designer.cs">
       <DependentUpon>FormForceValue.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormImportFromFile.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormImportFromFile.Designer.cs">
-      <DependentUpon>FormImportFromFile.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -386,9 +380,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormForceValue.resx">
       <DependentUpon>FormForceValue.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormImportFromFile.resx">
-      <DependentUpon>FormImportFromFile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>

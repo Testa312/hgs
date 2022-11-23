@@ -49,7 +49,7 @@ namespace HGS
             Dtws.max_dist = max_dist;
             return dtw_distance_ndim(s1, s1.LongLength, s2, s2.LongLength, ndim,Dtws);
         }
-        //------------------------------
+        //CS版,比C要慢20%------------------------------
         public static double  dtw_distance_new(double[] s1, long l1,
                       double[] s2, long l2,
                       DTWSettings settings)

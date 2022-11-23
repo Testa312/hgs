@@ -13,8 +13,6 @@ namespace HGS
 {
     public partial class FormMain : Form
     {
-        OPAPI.Connect sisconn = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
-          Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
         FormRealTimeAlarm formAlarmSet = null;
         FormPointSet formPointSet = null;
         FormAlarmHistoryList formAlarmList = null;
@@ -27,7 +25,7 @@ namespace HGS
             tssL_error_nums.Text = "";
             try
             {
-                SisConnect.sisconn = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
+                SisConnect.sisconj_keep = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
             Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
                 Data.inst().LoadFromPG();
             }
@@ -39,8 +37,8 @@ namespace HGS
         }
          ~FormMain()
         {
-            SisConnect.sisconn.close();
-            sisconn.close();
+            SisConnect.sisconj_keep.close();
+            //sisconn.close();
         }
         private void 点设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -101,7 +99,7 @@ namespace HGS
             string sql = string.Format("select ID,TM,DS,AV from Realtime where ID in ({0})", sbid.ToString());
             try
             {
-                OPAPI.ResultSet resultSet = sisconn.executeQuery(sql);//执行SQL
+                OPAPI.ResultSet resultSet = SisConnect.sisconj_keep.executeQuery(sql);//执行SQL
 
                 const short gb1 = -32256;
                 const short gb2 = -32768;
@@ -347,7 +345,31 @@ namespace HGS
 
         private void 消音ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AlarmSet.GetInst().SoundStop();
+            AlarmSet.GetInst().bPlay = !AlarmSet.GetInst().bPlay;
+            if (!AlarmSet.GetInst().bPlay)
+                AlarmSet.GetInst().SoundStop();
+        }
+
+        private void 静音ToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        {
+        }
+
+        private void toolStripMenuItem1_DropDownOpening(object sender, EventArgs e)
+        {
+
+            ToolStripMenuItem tmi = (ToolStripMenuItem)sender;
+            ToolStripItem[] tmx = tmi.DropDownItems.Find("静音ToolStripMenuItem",false);
+            if (tmx.Length > 0)
+            {
+                if (AlarmSet.GetInst().bPlay)
+                {
+                    tmx[0].Text = "静音";
+                }
+                else
+                {
+                    tmx[0].Text = "取消静音";
+                }
+            }
         }
     }
 }

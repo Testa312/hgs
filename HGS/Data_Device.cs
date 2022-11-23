@@ -119,12 +119,12 @@ namespace HGS
         }
         //--------------------
         static string[,] _Alarm = {
-            {"15m",  "15分钟段参数异常！"    },
-            {"30m",  "30分钟段参数异常！"    },
-            {"60m",  "1小时段参数异常！"    },
-            {"120m",  "2小时段参数异常！"  },
-            {"240m",  "4小时参数异常！"  },
-            {"480m",  "8小时参数异常！"  } };
+            {"15m",  "15分钟内参数异常！"    },
+            {"30m",  "30分钟内参数异常！"    },
+            {"60m",  "1小时内参数异常！"    },
+            {"120m",  "2小内段参数异常！"  },
+            {"240m",  "4小内参数异常！"  },
+            {"480m",  "8小内参数异常！"  } };
         //-----
         private void AlarmCalc_dtw(point pt,int Step)
         {
@@ -205,11 +205,12 @@ namespace HGS
         public void AlarmCalc()
         {
             TimeTick++;
-            curAlarmBit = 0;
+           
             for (int i = 0; i < prime.Length; i++)
             {
                 if (TimeTick % prime[i] == 0)
                 {
+                    curAlarmBit = 0;
                     point pt = Dtw_th_h(i);
                     if (pt !=null)
                         AlarmCalc_dtw(pt,i); 

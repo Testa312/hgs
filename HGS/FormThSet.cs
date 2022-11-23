@@ -21,6 +21,9 @@ namespace HGS
         DateTimePicker dateTimePicker1 = new DateTimePicker();
         DateTimePicker dateTimePicker2 = new DateTimePicker();
         //
+        OPAPI.Connect sisconn_temp = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
+       Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
+        //
         readonly int[] ScanSpan = Pref.Inst().ScanSpan;//分钟
         const double MULTI = 1.1;
         public FormThSet(DeviceInfo ttg)
@@ -32,7 +35,7 @@ namespace HGS
             Size size = new Size(159, 21);
             //
 
-            dateTimePicker2.Value = SisConnect.GetSisSystemTime().AddSeconds(-5);
+            dateTimePicker2.Value = SisConnect.GetSisSystemTime(sisconn_temp).AddSeconds(-5);
             dateTimePicker2.Size = size;
             dateTimePicker2.Format = DateTimePickerFormat.Custom;
             dateTimePicker2.CustomFormat = sformat;
@@ -96,9 +99,13 @@ namespace HGS
             else
                 ttg = new DeviceInfo();
         }
+        ~FormThSet()
+        {
+            sisconn_temp.close();
+        }
         private PlotModel PlotPoint(int count = 600)
         {
-            Dictionary<int, PointData> dic_pd = SisConnect.GetPointData_dic(ttg.Sensors_set(), dateTimePicker1.Value, dateTimePicker2.Value, count);
+            Dictionary<int, PointData> dic_pd = SisConnect.GetPointData_dic(sisconn_temp,ttg.Sensors_set(), dateTimePicker1.Value, dateTimePicker2.Value, count);
             if (dic_pd == null || dic_pd.Count <= 0) return null;
 
             //string title = string.Format("{0}---{1}  [{2}]", dateTimePicker1.Value, dateTimePicker2.Value,
@@ -177,11 +184,11 @@ namespace HGS
                     cost = 0;
                     maxpp = double.MinValue;
                     Dictionary<int, PointData> dic_pd = null;
-                    Dictionary<int, PointData> dic_pd_stat = SisConnect.GetsisStat(ttg.Sensors_set(), 
+                    Dictionary<int, PointData> dic_pd_stat = SisConnect.GetsisStat(sisconn_temp,ttg.Sensors_set(), 
                         dateTimePicker1.Value, dateTimePicker2.Value, ScanSpan[i] * 60);
                     while (begin >= dateTimePicker1.Value)
                     {
-                        dic_pd = SisConnect.GetPointData_dic(ttg.Sensors_set(),begin,end);
+                        dic_pd = SisConnect.GetPointData_dic(sisconn_temp,ttg.Sensors_set(),begin,end);
                        
                         List<PointData> lspd = new List<PointData>(dic_pd.Values.ToArray());
                         
@@ -293,7 +300,7 @@ namespace HGS
         {
             DateTime begin = dateTimePicker1.Value;
             DateTime end = dateTimePicker2.Value;
-            DateTime sistime = SisConnect.GetSisSystemTime();
+            DateTime sistime = SisConnect.GetSisSystemTime(sisconn_temp);
 
             int span = (int)(((end - begin).TotalSeconds * 0.414) / 2);
             end = end.AddSeconds(span);
@@ -327,7 +334,7 @@ namespace HGS
         {
             DateTime begin = dateTimePicker1.Value;
             DateTime end = dateTimePicker2.Value;
-            DateTime sistime = SisConnect.GetSisSystemTime();
+            DateTime sistime = SisConnect.GetSisSystemTime(sisconn_temp);
 
             int span = (int)((end - begin).TotalSeconds / 3);
             end = end.AddSeconds(span);
@@ -489,6 +496,11 @@ namespace HGS
 
             glacialList1.Invalidate();
             glacialList2.Invalidate();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            SisConnect.GetSisSystemTime(sisconn_temp);//保持连接
         }
     }
 }

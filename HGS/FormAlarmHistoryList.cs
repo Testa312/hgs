@@ -28,7 +28,7 @@ namespace HGS
                 string sqlx = string.Format(" nd like'%{0}%' and pn like '%{1}%' and ed like '%{2}%' and device_path like '{3}%'",
                     tsTB_ND.Text, tsTB_PN.Text, tsTB_ED.Text,path);
                 string strsql = string.Format("select distinct on (sid) sid,nd,pn,ed,eu,alarmav,alarminfo,alarmtime ,stoptime  " +
-                   "from alarmhistory where {0} order by sid,alarmtime desc;", sqlx);
+                   "from alarmhistory where {0} order by sid, alarmtime desc;", sqlx);
 
                 glacialList_UP.Items.Clear();
 
@@ -42,19 +42,30 @@ namespace HGS
                 {
 
                     GLItem itemn = new GLItem(glacialList_UP);
+                   
                     lsItems.Add(itemn);
-                    itemn.Tag = pgreader["sid"].ToString();
+                    //itemn.Tag = pgreader["sid"].ToString();
+                   
 
                     itemn.SubItems["ND"].Text = pgreader["nd"].ToString();
                     itemn.SubItems["PN"].Text = pgreader["pn"].ToString();
                     itemn.SubItems["ED"].Text = pgreader["ed"].ToString();
                     itemn.SubItems["AV"].Text = pgreader["alarmav"].ToString();
                     itemn.SubItems["EU"].Text = pgreader["eu"].ToString();
+
                     itemn.SubItems["AlarmInfo"].Text = pgreader["alarminfo"].ToString();
-                    itemn.SubItems["AlarmTime"].Text = pgreader["alarmtime"].ToString();
+                    DateTime start =  (DateTime)pgreader["alarmtime"];
+                    itemn.SubItems["AlarmTime"].Text = start.ToString();// pgreader["alarmtime"].ToString();
                     DateTime stop = (DateTime)pgreader["stoptime"];
-                    if(stop.Year > 2000)
-                        itemn.SubItems["StopTime"].Text = pgreader["stoptime"].ToString();
+                    //itemn.SubItems["StopTime"].Text = pgreader["stoptime"].ToString();
+                   if (stop.Year > 2000)
+                        itemn.SubItems["StopTime"].Text = stop.ToString();
+                    //
+                    AlarmInfo ai = new AlarmInfo(pgreader["sid"].ToString(), -1, -1, "", "", "", "", 0, "", "", 0);
+                    
+                    ai._starttime = start;
+                    ai.stoptime = stop;
+                    itemn.Tag = ai;
                 }
                 glacialList_UP.Items.AddRange(lsItems.ToArray());
                 glacialList_UP.Invalidate();
@@ -102,7 +113,7 @@ namespace HGS
                     string strsql = string.Format("select sid,eu, alarmav, alarminfo, alarmtime,stoptime  from " +
                         "alarmhistory where alarmtime >= '{0}' and alarmtime <= '{1}' and  sid = " +
                         "'{2}' order by alarmtime desc limit 1000;", tfrom, tto,
-                        ((string)((GLItem)glacialList_UP.SelectedItems[0]).Tag));
+                        (((AlarmInfo)((GLItem)glacialList_UP.SelectedItems[0]).Tag).sid));
                     var cmd = new NpgsqlCommand(strsql,pgconn);
                     NpgsqlDataReader pgreader = cmd.ExecuteReader();
                     List<GLItem> lsItems = new List<GLItem>();
@@ -110,14 +121,20 @@ namespace HGS
                     {
                         GLItem itemn = new GLItem(glacialList_Down);
                         lsItems.Add(itemn);
-
-                        itemn.SubItems["Time"].Text = pgreader["alarmtime"].ToString();
+                        DateTime start = (DateTime)pgreader["alarmtime"];
+                        itemn.SubItems["Time"].Text =start.ToString();
                         DateTime stop = (DateTime)pgreader["stoptime"];
                         if (stop.Year > 2000)
                             itemn.SubItems["StopTime"].Text = pgreader["stoptime"].ToString();
                         itemn.SubItems["AlarmInfo"].Text = pgreader["alarminfo"].ToString();
                         itemn.SubItems["eu"].Text = pgreader["eu"].ToString();
                         itemn.SubItems["AlarmAv"].Text = pgreader["alarmav"].ToString();
+                        //
+                        AlarmInfo ai = new AlarmInfo(pgreader["sid"].ToString(), -1, -1, "", "", "", "", 0, "", "", 0);
+
+                        ai._starttime = start;
+                        ai.stoptime = stop;
+                        itemn.Tag = ai;
                     }
                     glacialList_Down.Items.AddRange(lsItems.ToArray());
                     glacialList_Down.Invalidate();
@@ -256,6 +273,75 @@ namespace HGS
                     glacialListInit(ttg.path);
                 }
                 //tabControl.Enabled = false;
+            }
+        }
+        private void Plot(AlarmInfo ai)
+        {
+            if (ai == null) return;
+            if (ai.sid.Length <= 2) return;
+            string[] temp = ai.sid.Split('-');
+            char c = temp[0][0];
+            string sid = temp[0].Remove(0, 1);
+            HashSet<int> lspointid = null;
+            if (c == 'P')
+            {
+                int pid;
+                if (int.TryParse(sid, out pid))
+                {
+                    point pt;
+                    if (Data.inst().cd_Point.TryGetValue(pid, out pt))
+                    {
+                        if (ai.stoptime.Year <= 2000)
+                            ai.stoptime = DateTime.Now;
+
+                        lspointid = new HashSet<int>();
+                        lspointid.Add(pid);
+                    }
+                }
+            }
+            else if (c == 'D')
+            {
+                int did;
+                if (int.TryParse(sid, out did))
+                {
+                    DeviceInfo di;
+                    if (Data_Device.dic_Device.TryGetValue(did, out di))
+                    {
+                        if (ai.stoptime.Year <= 2000)
+                            ai.stoptime = DateTime.Now;
+                        lspointid = di.Sensors_set();                       
+                    }
+                    else
+                    {
+                        di = Data_Device.GetDevice(did);
+                        if (ai.stoptime.Year <= 2000)
+                            ai.stoptime = DateTime.Now;
+                        lspointid = di.Sensors_set();                       
+                    }
+                }
+            }
+            if (lspointid != null)
+            {
+                FormPlotCurves frta = new FormPlotCurves(lspointid, ai._starttime, ai.stoptime);
+                frta.Show();
+            }
+        }
+        private void glacialList_UP_DoubleClick(object sender, EventArgs e)
+        {
+            //历史
+            if (glacialList_UP.Items.SelectedItems.Count > 0)
+            {
+                AlarmInfo ai = (AlarmInfo)((GLItem)glacialList_UP.Items.SelectedItems[0]).Tag;
+                Plot(ai);
+            }
+        }
+
+        private void glacialList_Down_DoubleClick(object sender, EventArgs e)
+        {
+            if (glacialList_Down.Items.SelectedItems.Count > 0)
+            {
+                AlarmInfo ai = (AlarmInfo)((GLItem)glacialList_Down.Items.SelectedItems[0]).Tag;
+                Plot(ai);
             }
         }
     }

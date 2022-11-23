@@ -17,10 +17,18 @@ namespace HGS
     {
         HashSet<string> hs_ND = new HashSet<string>();
         bool isFirst = true;
+
+        OPAPI.Connect sisconn_temp = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
+        Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
         public FormPointSet()
         {
             InitializeComponent();
             FillMyTreeView();
+        }
+        ~FormPointSet()
+
+        {
+            sisconn_temp.close();
         }
         private void DisplayHints(int PointNums)
         {
@@ -47,9 +55,16 @@ namespace HGS
             List<GLItem> lsItem = new List<GLItem>();
             foreach (point ptx in Data.inst().hsAllPoint)
             {
+                string[] filtes =  tSTB_ED.Text.Trim().Split(' ');
+                bool flag = true;
+                for (int i = 0; i < filtes.Length; i++)
+                {
+                    flag = flag && ptx.ed.Contains(filtes[i]);
+                    if (!flag) break;
+                }
                 if ((ptx.pointsrc == pointsrc.sis || (Auth.GetInst().LoginID == 0 || ptx.OwnerId == Auth.GetInst().LoginID || 
                     ptx.OwnerId == 0)) &&
-                    ptx.nd.Contains(tSCB_ND.Text.Trim()) && ptx.ed.Contains(tSTB_ED.Text.Trim()) &&
+                    ptx.nd.Contains(tSCB_ND.Text.Trim()) &&
                     ptx.pn.Contains(tSTB_PN.Text.Trim()) && ptx.orgformula_main.Contains(tSTB_F.Text.Trim()))
                 {
                     GLItem item = new GLItem(glacialList1);
@@ -292,8 +307,10 @@ namespace HGS
         }
         private void timerUpdateValue_Tick(object sender, EventArgs e)
         {
-            if (this.Size.Height <= 100) 
-                return;
+            if (this.Size.Height <= 100)
+                timerUpdateValue.Interval = 30000;
+            else
+                timerUpdateValue.Interval = 2000;
             try
             {
                 foreach (GLItem item in glacialList1.Items)
@@ -1008,7 +1025,8 @@ namespace HGS
             }
             if (pointid.Count > 0)
             {
-                FormPlotCurves fc = new FormPlotCurves(pointid);
+                DateTime end = SisConnect.GetSisSystemTime(sisconn_temp);
+                FormPlotCurves fc = new FormPlotCurves(pointid,end.AddMinutes(-15),end,true);
                 fc.Show();
             }
         }

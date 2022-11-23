@@ -37,6 +37,7 @@
             this.form1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dTW计算次数ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.静音ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tssL_error_nums = new System.Windows.Forms.ToolStripStatusLabel();
@@ -47,7 +48,6 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.打开OToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出XToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.消音ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -70,11 +70,12 @@
             this.报警记录ToolStripMenuItem,
             this.form1ToolStripMenuItem,
             this.dTW计算次数ToolStripMenuItem,
-            this.退出ToolStripMenuItem,
-            this.消音ToolStripMenuItem});
+            this.静音ToolStripMenuItem,
+            this.退出ToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(44, 21);
             this.toolStripMenuItem1.Text = "文件";
+            this.toolStripMenuItem1.DropDownOpening += new System.EventHandler(this.toolStripMenuItem1_DropDownOpening);
             // 
             // 报警信息ToolStripMenuItem
             // 
@@ -110,6 +111,14 @@
             this.退出ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.退出ToolStripMenuItem.Text = "退出(&X)";
             this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
+            // 
+            // 静音ToolStripMenuItem
+            // 
+            this.静音ToolStripMenuItem.Name = "静音ToolStripMenuItem";
+            this.静音ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.静音ToolStripMenuItem.Text = "静音";
+            this.静音ToolStripMenuItem.DropDownOpening += new System.EventHandler(this.静音ToolStripMenuItem_DropDownOpening);
+            this.静音ToolStripMenuItem.Click += new System.EventHandler(this.消音ToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
@@ -184,13 +193,6 @@
             this.退出XToolStripMenuItem.Text = "退出（&X）";
             this.退出XToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
             // 
-            // 消音ToolStripMenuItem
-            // 
-            this.消音ToolStripMenuItem.Name = "消音ToolStripMenuItem";
-            this.消音ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.消音ToolStripMenuItem.Text = "消音";
-            this.消音ToolStripMenuItem.Click += new System.EventHandler(this.消音ToolStripMenuItem_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -234,7 +236,7 @@
         private System.Windows.Forms.ToolStripMenuItem 退出XToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 打开OToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dTW计算次数ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 消音ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 静音ToolStripMenuItem;
     }
 }
 

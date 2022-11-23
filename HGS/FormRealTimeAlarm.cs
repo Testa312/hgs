@@ -182,17 +182,20 @@ namespace HGS
         */
         private void timer_GetAlarm_Tick(object sender, EventArgs e)
         {
-            if (this.Size.Height >= 100)
-            {
-                if (treeView.SelectedNode == null || treeView.SelectedNode.Text == "全部")
-                {
+            if (this.Size.Height <= 100)
+                timer_GetAlarm.Interval = 30000;
+            else
+                timer_GetAlarm.Interval = 5000;
 
-                    DisplayFilterItem("");
-                }
-                else
-                    //DisplayTreeItem(treeView.SelectedNode);
-                    DisplayFilterItem(((DeviceInfo)treeView.SelectedNode.Tag).path);
+            if (treeView.SelectedNode == null || treeView.SelectedNode.Text == "全部")
+            {
+
+                DisplayFilterItem("");
             }
+            else
+                //DisplayTreeItem(treeView.SelectedNode);
+                DisplayFilterItem(((DeviceInfo)treeView.SelectedNode.Tag).path);
+            
         }
 
         private void tsCB_class_SelectedIndexChanged(object sender, EventArgs e)
@@ -305,11 +308,51 @@ namespace HGS
                 {
                     HashSet<int> pid = new HashSet<int>();
                     pid.Add(ai._sensorid);
-                    FormPlotCurves frta = new FormPlotCurves(pid);
+                    FormPlotCurves frta = new FormPlotCurves(pid,ai._starttime.AddMinutes(-5),ai._starttime);
                     frta.Show();
                 }
                 else if (ai._deviceid != -1)
-                { }
+                {
+                    DeviceInfo dv;
+                    if (Data_Device.dic_Device.TryGetValue(ai._deviceid, out dv))
+                    {
+                        FormPlotCurves frta = new FormPlotCurves(dv.Sensors_set(), ai._starttime.AddMinutes(-5), ai._starttime);
+                        frta.Show();
+                    }
+                }
+            }
+        }
+
+        private void glacialList2_DoubleClick(object sender, EventArgs e)
+        {
+            //历史
+            if (glacialList2.Items.SelectedItems.Count > 0)
+            {
+                AlarmInfo ai = (AlarmInfo)((GLItem)glacialList2.Items.SelectedItems[0]).Tag;
+                if (ai._sensorid != -1)
+                {
+                    HashSet<int> pid = new HashSet<int>();
+                    pid.Add(ai._sensorid);
+                    FormPlotCurves frta = new FormPlotCurves(pid, ai._starttime.AddMinutes(-5), ai.stoptime);
+                    frta.Show();
+                }
+                else if (ai._deviceid != -1)
+                {
+                    DeviceInfo dv;
+                    if (Data_Device.dic_Device.TryGetValue(ai._deviceid, out dv))
+                    {
+                        FormPlotCurves frta = new FormPlotCurves(dv.Sensors_set(), ai._starttime.AddMinutes(-5), 
+                            ai.stoptime);
+                        frta.Show();
+                    }
+                    else
+                    {
+                        dv = Data_Device.GetDevice(ai._deviceid);
+                        FormPlotCurves frta = new FormPlotCurves(dv.Sensors_set(), ai._starttime.AddMinutes(-5),
+                            ai.stoptime);
+                        frta.Show(); ;
+                    }
+                }
             }
         }
 
@@ -320,5 +363,6 @@ namespace HGS
             glacialList2.Items.Clear();
             timer_GetAlarm_Tick(sender, e);
         }
+
     }
 }

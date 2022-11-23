@@ -422,6 +422,7 @@ namespace HGS
             this.glacialList2.SuperFlatHeaderColor = System.Drawing.Color.White;
             this.glacialList2.TabIndex = 0;
             this.glacialList2.Text = "glacialList2";
+            this.glacialList2.DoubleClick += new System.EventHandler(this.glacialList2_DoubleClick);
             // 
             // splitContainer1
             // 

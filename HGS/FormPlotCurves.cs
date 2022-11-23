@@ -18,51 +18,85 @@ namespace HGS
         HashSet<int> hsPointid = null;
         DateTimePicker dateTimePicker1 = new DateTimePicker();
         DateTimePicker dateTimePicker2 = new DateTimePicker();
-        public FormPlotCurves(HashSet<int> hsPointid )
+        //
+        OPAPI.Connect sisconn_temp = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
+        Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
+        public FormPlotCurves(HashSet<int> hsPointid, DateTime begin, DateTime end, bool bAdmin = false )
         {
             this.hsPointid = hsPointid;
             InitializeComponent();
-            InitializeFromTreeTag();
-            
+            if (!bAdmin)
+                glacialList1.ContextMenuStrip = null;
+            dateTimePicker1.Value = begin;
+            dateTimePicker2.Value = end;
+
+            if ((end - begin).TotalSeconds < 1)
+                MessageBox.Show("时间间隔太短！");
+            InitializeFromTreeTag();          
+        }
+        ~FormPlotCurves()
+        {
+            sisconn_temp.close();
         }
         private void InitializeFromTreeTag()
         {
-            //
-            const string sformat = "yyyy-MM-dd HH:mm:ss";
-            Size size = new Size(159, 21);
-            //
-
-            dateTimePicker2.Value = SisConnect.GetSisSystemTime().AddSeconds(-5);
-            dateTimePicker2.Size = size;
-            dateTimePicker2.Format = DateTimePickerFormat.Custom;
-            dateTimePicker2.CustomFormat = sformat;
-            //
-            dateTimePicker1.Value = dateTimePicker1.Value.AddMinutes(-15);
-            dateTimePicker1.Size = size;
-            dateTimePicker1.Format = DateTimePickerFormat.Custom;
-            dateTimePicker1.CustomFormat = sformat;
-            //           
-            ToolStripControlHost host1 = new ToolStripControlHost(dateTimePicker1);
-            host1 = new ToolStripControlHost(dateTimePicker1);
-            toolStrip1.Items.Insert(1, host1);
-            //
-            ToolStripControlHost host2 = new ToolStripControlHost(dateTimePicker2);
-            host1 = new ToolStripControlHost(dateTimePicker2);
-            toolStrip1.Items.Insert(3, host1);
-            //
-            
-            if (hsPointid != null)
+            try
             {
-                plotView1.Model = PlotPoint();
+                const string sformat = "yyyy-MM-dd HH:mm:ss";
+                Size size = new Size(159, 21);
+                /*
+                try
+                {
+                    dateTimePicker2.Value = SisConnect.GetSisSystemTime(sisconn_temp).AddSeconds(-5);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.ToString(), "错误");
+                }*/
+                dateTimePicker2.Size = size;
+                dateTimePicker2.Format = DateTimePickerFormat.Custom;
+                dateTimePicker2.CustomFormat = sformat;
+                //
+                //dateTimePicker1.Value = dateTimePicker1.Value.AddMinutes(-15);
+                dateTimePicker1.Size = size;
+                dateTimePicker1.Format = DateTimePickerFormat.Custom;
+                dateTimePicker1.CustomFormat = sformat;
+                //           
+                ToolStripControlHost host1 = new ToolStripControlHost(dateTimePicker1);
+                host1 = new ToolStripControlHost(dateTimePicker1);
+                toolStrip1.Items.Insert(1, host1);
+                //
+                ToolStripControlHost host2 = new ToolStripControlHost(dateTimePicker2);
+                host1 = new ToolStripControlHost(dateTimePicker2);
+                toolStrip1.Items.Insert(3, host1);
+                //
+
+                if (hsPointid != null)
+                {
+                    plotView1.Model = PlotPoint();
+                }
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show(ee.ToString(), "错误");
             }
         }
         private PlotModel PlotPoint(int count = 1200)
         {
-            Dictionary<int, PointData> dic_pd = SisConnect.GetPointData_dic(hsPointid, 
-                dateTimePicker1.Value, dateTimePicker2.Value, count);
+            Dictionary<int, PointData> dic_pd = null;
+            Dictionary<int, PointData> dic_pd_stat = null;
+            try
+            {
+                dic_pd = SisConnect.GetPointData_dic(sisconn_temp,hsPointid,
+                    dateTimePicker1.Value, dateTimePicker2.Value, count);
 
-            Dictionary<int, PointData> dic_pd_stat = SisConnect.GetsisStat(hsPointid,
-                dateTimePicker1.Value, dateTimePicker2.Value,(int)(dateTimePicker2.Value- dateTimePicker2.Value).TotalSeconds);
+                dic_pd_stat = SisConnect.GetsisStat(sisconn_temp,hsPointid,
+                    dateTimePicker1.Value, dateTimePicker2.Value, (int)(dateTimePicker2.Value - dateTimePicker2.Value).TotalSeconds);
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show(ee.ToString(), "错误");
+            }
 
             if (dic_pd == null || dic_pd.Count <= 0) return null;
             List<GLItem> lsitem = new List<GLItem>();
@@ -89,7 +123,7 @@ namespace HGS
             //string title = string.Format("{0}---{1}  [{2}]", dateTimePicker1.Value, dateTimePicker2.Value,
             //(dateTimePicker2.Value - dateTimePicker1.Value));
 
-            string title = string.Format("[{0}]", (dateTimePicker2.Value - dateTimePicker1.Value));
+            string title = string.Format("[{0}]", (dateTimePicker2.Value - dateTimePicker1.Value),0);
             var pm = new PlotModel
             {
                 Title = title,
@@ -159,7 +193,7 @@ namespace HGS
         {
             DateTime begin = dateTimePicker1.Value;
             DateTime end = dateTimePicker2.Value;
-            DateTime sistime = SisConnect.GetSisSystemTime();
+            DateTime sistime = SisConnect.GetSisSystemTime(sisconn_temp);
 
             int span = (int)(((end - begin).TotalSeconds * 0.414) / 2);
             end = end.AddSeconds(span);
@@ -192,7 +226,7 @@ namespace HGS
         {
             DateTime begin = dateTimePicker1.Value;
             DateTime end = dateTimePicker2.Value;
-            DateTime sistime = SisConnect.GetSisSystemTime();
+            DateTime sistime = SisConnect.GetSisSystemTime(sisconn_temp);
 
             int span = (int)((end - begin).TotalSeconds / 3);
             end = end.AddSeconds(span);
@@ -228,7 +262,7 @@ namespace HGS
 
             DateTime begin = dateTimePicker1.Value;
             DateTime end = dateTimePicker2.Value;
-            DateTime sistime = SisConnect.GetSisSystemTime();
+            DateTime sistime = SisConnect.GetSisSystemTime(sisconn_temp);
 
             int span = (int)((end - begin).TotalSeconds / 5);
             end = end.AddSeconds(span);
@@ -260,6 +294,11 @@ namespace HGS
             }
             if (glacialList1.Items.SelectedItems.Count > 0)
                 Data.inst().SavetoPG();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            SisConnect.GetSisSystemTime(sisconn_temp);//保持连接
         }
     }
 }

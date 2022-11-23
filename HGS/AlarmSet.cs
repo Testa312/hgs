@@ -68,6 +68,8 @@ namespace HGS
         //
         static SpeechSynthesizer speak = new SpeechSynthesizer();
         System.Media.SoundPlayer simpleSound = new System.Media.SoundPlayer();
+        //
+        public bool bPlay = true;
 
         int TimeTick = 0;
         int sb_lines = 0;
@@ -135,7 +137,8 @@ namespace HGS
                 }
                 //lsNewAlarmInfo.Add(ai);
                 AddNewSQL(ai);
-                SounfPlay(ai);
+                if (bPlay)
+                    SounfPlay(ai);
             }
         }
         public void AlarmStop(string sid)
