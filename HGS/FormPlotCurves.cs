@@ -123,10 +123,10 @@ namespace HGS
             //string title = string.Format("{0}---{1}  [{2}]", dateTimePicker1.Value, dateTimePicker2.Value,
             //(dateTimePicker2.Value - dateTimePicker1.Value));
 
-            string title = string.Format("[{0}]", (dateTimePicker2.Value - dateTimePicker1.Value),0);
+            //string title = string.Format("[{0}]", (dateTimePicker2.Value - dateTimePicker1.Value),0);
             var pm = new PlotModel
             {
-                Title = title,
+                Title = (dateTimePicker2.Value - dateTimePicker1.Value).ToString(@"dd\.hh\:mm\:ss"),
                 PlotType = PlotType.XY,
                 Background = OxyColors.White
             };

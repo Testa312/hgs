@@ -282,6 +282,12 @@ namespace HGS
             string[] temp = ai.sid.Split('-');
             char c = temp[0][0];
             string sid = temp[0].Remove(0, 1);
+            DateTime begin = ai._starttime;
+            DateTime end = ai.stoptime;
+            if (end.Year <= 2000)
+                end = DateTime.Now;
+            if ((end - begin).TotalMinutes <= 5)
+                begin = begin.AddMinutes(-5);
             HashSet<int> lspointid = null;
             if (c == 'P')
             {
@@ -291,9 +297,6 @@ namespace HGS
                     point pt;
                     if (Data.inst().cd_Point.TryGetValue(pid, out pt))
                     {
-                        if (ai.stoptime.Year <= 2000)
-                            ai.stoptime = DateTime.Now;
-
                         lspointid = new HashSet<int>();
                         lspointid.Add(pid);
                     }
@@ -307,22 +310,18 @@ namespace HGS
                     DeviceInfo di;
                     if (Data_Device.dic_Device.TryGetValue(did, out di))
                     {
-                        if (ai.stoptime.Year <= 2000)
-                            ai.stoptime = DateTime.Now;
                         lspointid = di.Sensors_set();                       
                     }
                     else
                     {
                         di = Data_Device.GetDevice(did);
-                        if (ai.stoptime.Year <= 2000)
-                            ai.stoptime = DateTime.Now;
                         lspointid = di.Sensors_set();                       
                     }
                 }
             }
             if (lspointid != null)
             {
-                FormPlotCurves frta = new FormPlotCurves(lspointid, ai._starttime, ai.stoptime);
+                FormPlotCurves frta = new FormPlotCurves(lspointid,begin, end);
                 frta.Show();
             }
         }
