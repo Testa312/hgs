@@ -21,14 +21,15 @@ namespace HGS
         DateTimePicker dateTimePicker1 = new DateTimePicker();
         DateTimePicker dateTimePicker2 = new DateTimePicker();
         //
-        OPAPI.Connect sisconn_temp = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
-       Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
+        OPAPI.Connect sisconn_temp = null; 
         //
         readonly int[] ScanSpan = Pref.Inst().ScanSpan;//分钟
         const double MULTI = 1.1;
         public FormThSet(DeviceInfo ttg)
         {
             InitializeComponent();
+            sisconn_temp = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
+                    Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
             this.ttg = ttg;
             //
             const string sformat = "yyyy-MM-dd HH:mm:ss";
@@ -58,7 +59,10 @@ namespace HGS
             if (ttg != null)
             {
                 textBox_Name.Text = ttg.Name;
+                textBox_ND.Text = ttg.nd;
+                textBox_PN.Text = ttg.pn;
                 maskedTextBox_Sort.Text = ttg.sort.ToString();
+                button_AlarmIf.ForeColor = ttg.Orgformula_If.Length > 0 ? Color.Red : Color.Black;
                 List<GLItem> lsItem = new List<GLItem>();
                 if (ttg.Alarm_th_dis != null)
                 {
@@ -99,13 +103,10 @@ namespace HGS
             else
                 ttg = new DeviceInfo();
         }
-        ~FormThSet()
-        {
-            sisconn_temp.close();
-        }
         private PlotModel PlotPoint(int count = 600)
         {
-            Dictionary<int, PointData> dic_pd = SisConnect.GetPointData_dic(sisconn_temp,ttg.Sensors_set(), dateTimePicker1.Value, dateTimePicker2.Value, count);
+            Dictionary<int, PointData> dic_pd = SisConnect.GetPointData_dic(sisconn_temp,ttg.Sensors_set(), 
+                dateTimePicker1.Value, dateTimePicker2.Value, count);
             if (dic_pd == null || dic_pd.Count <= 0) return null;
 
             //string title = string.Format("{0}---{1}  [{2}]", dateTimePicker1.Value, dateTimePicker2.Value,
@@ -359,6 +360,8 @@ namespace HGS
                 if (textBox_Name.Text.Trim().Length == 0)
                     throw new Exception("节点名不能为空！");
                 ttg.Name = textBox_Name.Text.Trim();
+                ttg.nd = textBox_ND.Text.Trim();
+                ttg.pn = textBox_PN.Text.Trim();
                 ttg.Sound = comboBox_Sound.SelectedIndex;
                 //设备
                 bool flag = false;
@@ -501,6 +504,22 @@ namespace HGS
         private void timer1_Tick(object sender, EventArgs e)
         {
             SisConnect.GetSisSystemTime(sisconn_temp);//保持连接
+        }
+
+        private void button_AlarmIf_Click(object sender, EventArgs e)
+        {
+            FormCalcDeviceAlarmIf fcdai = new FormCalcDeviceAlarmIf(ttg);
+            fcdai.glacialLisint();
+            if (fcdai.ShowDialog() == DialogResult.OK)
+            {
+                button_AlarmIf.ForeColor = ttg.Orgformula_If.Length > 0 ? Color.Red : Color.Black;
+            }
+        }
+
+        private void FormThSet_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            timer1.Enabled = false;
+            sisconn_temp.close();
         }
     }
 }

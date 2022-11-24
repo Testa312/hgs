@@ -430,6 +430,7 @@ namespace HGS
             foreach (point pt in hs_ModifyPoint)
             {
                 if (pt.id <= 0) continue;
+                //循环引用检查
                 pt.listSisCalcExpPointID_main = ExpandOrgPointToSisPoint_Main(pt);
 
                 sb.AppendLine(string.Format(@"update point set tv={0},bv={1},ll={2},hl={3},zl={4},zh={5},mt='{6}',eu='{7}',"+

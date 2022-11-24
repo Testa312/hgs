@@ -35,11 +35,6 @@ namespace HGS
                 this.Close();
             }
         }
-         ~FormMain()
-        {
-            SisConnect.sisconj_keep.close();
-            //sisconn.close();
-        }
         private void 点设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (formPointSet == null || formPointSet.IsDisposed) formPointSet = new FormPointSet();
@@ -326,6 +321,8 @@ namespace HGS
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
         {
             notifyIcon1.Dispose();
+            timerCalc.Enabled = false;
+            SisConnect.sisconj_keep.close();
         }
 
         private void 打开OToolStripMenuItem_Click(object sender, EventArgs e)

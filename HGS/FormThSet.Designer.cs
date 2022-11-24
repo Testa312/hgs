@@ -83,11 +83,17 @@ namespace HGS
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.glacialList1 = new GlacialComponents.Controls.GlacialList();
+            this.button_AlarmIf = new System.Windows.Forms.Button();
             this.comboBox_Sound = new System.Windows.Forms.ComboBox();
+            this.textBox_ND = new System.Windows.Forms.TextBox();
+            this.textBox_PN = new System.Windows.Forms.TextBox();
             this.textBox_Name = new System.Windows.Forms.TextBox();
             this.maskedTextBox_Sort = new MaskedTextBox.MaskedTextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.plotView1 = new OxyPlot.WindowsForms.PlotView();
@@ -122,7 +128,7 @@ namespace HGS
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
             this.toolStripStatusLabel2});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 506);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 545);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1052, 22);
             this.statusStrip1.TabIndex = 0;
@@ -256,8 +262,8 @@ namespace HGS
             this.splitContainer1.Panel2.Controls.Add(this.buttonCancel);
             this.splitContainer1.Panel2.Controls.Add(this.button_dell);
             this.splitContainer1.Panel2.Controls.Add(this.buttonOK);
-            this.splitContainer1.Size = new System.Drawing.Size(1052, 456);
-            this.splitContainer1.SplitterDistance = 395;
+            this.splitContainer1.Size = new System.Drawing.Size(1052, 495);
+            this.splitContainer1.SplitterDistance = 434;
             this.splitContainer1.TabIndex = 4;
             // 
             // splitContainer2
@@ -274,7 +280,7 @@ namespace HGS
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer4);
-            this.splitContainer2.Size = new System.Drawing.Size(1052, 395);
+            this.splitContainer2.Size = new System.Drawing.Size(1052, 434);
             this.splitContainer2.SplitterDistance = 153;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -291,14 +297,20 @@ namespace HGS
             // 
             // splitContainer3.Panel2
             // 
+            this.splitContainer3.Panel2.Controls.Add(this.button_AlarmIf);
             this.splitContainer3.Panel2.Controls.Add(this.comboBox_Sound);
+            this.splitContainer3.Panel2.Controls.Add(this.textBox_ND);
+            this.splitContainer3.Panel2.Controls.Add(this.textBox_PN);
             this.splitContainer3.Panel2.Controls.Add(this.textBox_Name);
             this.splitContainer3.Panel2.Controls.Add(this.maskedTextBox_Sort);
+            this.splitContainer3.Panel2.Controls.Add(this.label6);
             this.splitContainer3.Panel2.Controls.Add(this.label3);
+            this.splitContainer3.Panel2.Controls.Add(this.label4);
             this.splitContainer3.Panel2.Controls.Add(this.label2);
+            this.splitContainer3.Panel2.Controls.Add(this.label5);
             this.splitContainer3.Panel2.Controls.Add(this.label1);
-            this.splitContainer3.Size = new System.Drawing.Size(153, 395);
-            this.splitContainer3.SplitterDistance = 150;
+            this.splitContainer3.Size = new System.Drawing.Size(153, 434);
+            this.splitContainer3.SplitterDistance = 164;
             this.splitContainer3.TabIndex = 0;
             // 
             // glacialList1
@@ -541,11 +553,21 @@ namespace HGS
             this.glacialList1.SelectionColor = System.Drawing.Color.DarkBlue;
             this.glacialList1.ShowBorder = true;
             this.glacialList1.ShowFocusRect = false;
-            this.glacialList1.Size = new System.Drawing.Size(153, 150);
+            this.glacialList1.Size = new System.Drawing.Size(153, 164);
             this.glacialList1.SortType = GlacialComponents.Controls.SortTypes.InsertionSort;
             this.glacialList1.SuperFlatHeaderColor = System.Drawing.Color.White;
             this.glacialList1.TabIndex = 0;
             this.glacialList1.Text = "glacialList1";
+            // 
+            // button_AlarmIf
+            // 
+            this.button_AlarmIf.Location = new System.Drawing.Point(28, 221);
+            this.button_AlarmIf.Name = "button_AlarmIf";
+            this.button_AlarmIf.Size = new System.Drawing.Size(89, 23);
+            this.button_AlarmIf.TabIndex = 4;
+            this.button_AlarmIf.Text = "公式...";
+            this.button_AlarmIf.UseVisualStyleBackColor = true;
+            this.button_AlarmIf.Click += new System.EventHandler(this.button_AlarmIf_Click);
             // 
             // comboBox_Sound
             // 
@@ -556,48 +578,89 @@ namespace HGS
             "异常",
             "故障",
             "朗读"});
-            this.comboBox_Sound.Location = new System.Drawing.Point(12, 142);
+            this.comboBox_Sound.Location = new System.Drawing.Point(48, 149);
             this.comboBox_Sound.Name = "comboBox_Sound";
-            this.comboBox_Sound.Size = new System.Drawing.Size(95, 20);
+            this.comboBox_Sound.Size = new System.Drawing.Size(93, 20);
             this.comboBox_Sound.TabIndex = 3;
+            // 
+            // textBox_ND
+            // 
+            this.textBox_ND.Location = new System.Drawing.Point(48, 13);
+            this.textBox_ND.Name = "textBox_ND";
+            this.textBox_ND.Size = new System.Drawing.Size(93, 21);
+            this.textBox_ND.TabIndex = 2;
+            // 
+            // textBox_PN
+            // 
+            this.textBox_PN.Location = new System.Drawing.Point(48, 46);
+            this.textBox_PN.Name = "textBox_PN";
+            this.textBox_PN.Size = new System.Drawing.Size(93, 21);
+            this.textBox_PN.TabIndex = 2;
             // 
             // textBox_Name
             // 
-            this.textBox_Name.Location = new System.Drawing.Point(14, 37);
+            this.textBox_Name.Location = new System.Drawing.Point(48, 82);
             this.textBox_Name.Name = "textBox_Name";
             this.textBox_Name.Size = new System.Drawing.Size(93, 21);
             this.textBox_Name.TabIndex = 2;
             // 
             // maskedTextBox_Sort
             // 
-            this.maskedTextBox_Sort.Location = new System.Drawing.Point(14, 91);
+            this.maskedTextBox_Sort.Location = new System.Drawing.Point(48, 115);
             this.maskedTextBox_Sort.Masked = MaskedTextBox.Mask.Digit;
             this.maskedTextBox_Sort.Name = "maskedTextBox_Sort";
             this.maskedTextBox_Sort.Size = new System.Drawing.Size(93, 21);
             this.maskedTextBox_Sort.TabIndex = 1;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(8, 190);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(65, 12);
+            this.label6.TabIndex = 0;
+            this.label6.Text = "报警条件：";
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 124);
+            this.label3.Location = new System.Drawing.Point(8, 152);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 12);
             this.label3.TabIndex = 0;
             this.label3.Text = "声音：";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(8, 16);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(41, 12);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "节点：";
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 74);
+            this.label2.Location = new System.Drawing.Point(8, 118);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(41, 12);
             this.label2.TabIndex = 0;
             this.label2.Text = "排序：";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(8, 49);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 12);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "点名：";
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 20);
+            this.label1.Location = new System.Drawing.Point(8, 85);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(41, 12);
             this.label1.TabIndex = 0;
@@ -617,7 +680,7 @@ namespace HGS
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.glacialList2);
-            this.splitContainer4.Size = new System.Drawing.Size(895, 395);
+            this.splitContainer4.Size = new System.Drawing.Size(895, 434);
             this.splitContainer4.SplitterDistance = 261;
             this.splitContainer4.TabIndex = 1;
             // 
@@ -627,7 +690,7 @@ namespace HGS
             this.plotView1.Location = new System.Drawing.Point(0, 0);
             this.plotView1.Name = "plotView1";
             this.plotView1.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotView1.Size = new System.Drawing.Size(261, 395);
+            this.plotView1.Size = new System.Drawing.Size(261, 434);
             this.plotView1.TabIndex = 0;
             this.plotView1.Text = "plotView1";
             this.plotView1.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
@@ -741,7 +804,7 @@ namespace HGS
             this.glacialList2.SelectionColor = System.Drawing.Color.DarkBlue;
             this.glacialList2.ShowBorder = true;
             this.glacialList2.ShowFocusRect = false;
-            this.glacialList2.Size = new System.Drawing.Size(630, 395);
+            this.glacialList2.Size = new System.Drawing.Size(630, 434);
             this.glacialList2.SortType = GlacialComponents.Controls.SortTypes.None;
             this.glacialList2.SuperFlatHeaderColor = System.Drawing.Color.White;
             this.glacialList2.TabIndex = 0;
@@ -789,7 +852,7 @@ namespace HGS
             this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1052, 528);
+            this.ClientSize = new System.Drawing.Size(1052, 567);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip1);
@@ -798,6 +861,7 @@ namespace HGS
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "属性设置";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormThSet_FormClosed);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.menuStrip2.ResumeLayout(false);
@@ -859,5 +923,11 @@ namespace HGS
         private System.Windows.Forms.ComboBox comboBox_Sound;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button button_AlarmIf;
+        private System.Windows.Forms.TextBox textBox_ND;
+        private System.Windows.Forms.TextBox textBox_PN;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
     }
 }

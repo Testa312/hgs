@@ -66,7 +66,7 @@ namespace HGS
             textBoxmDiscription.Text = CalcPoint.ed;
             textBoxPN.Text = CalcPoint.pn;
             comboBox_eu.Text = CalcPoint.eu;
-            checkBoxCalc.Checked = CalcPoint.isCalc;
+            //checkBoxCalc.Checked = CalcPoint.isCalc;
             numericUpDown.Value = CalcPoint.fm;
             timer1.Enabled = true;
             DisplayStats();

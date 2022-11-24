@@ -16,6 +16,8 @@ namespace HGS
             TimeTick = rnd.Next(1, 100);
         }
         public string Name = "";
+        public string nd = "";
+        public string pn = "";
         public int id = -1;
         public string path = "";
         private float[] alarm_th_dis = null;
@@ -48,9 +50,6 @@ namespace HGS
                                     pt.Dtw_start_th = null;
                             }
                         }
-                        _lsVartoPoint_If = null;
-                        _listSisCalaExpPointID_If = null;
-                        _Expression_If = null;
                     }
                 }
                 else
@@ -58,12 +57,7 @@ namespace HGS
                     if (!Data_Device.dic_Device.ContainsKey(id))
                     {
                         Data_Device.dic_Device.Add(id, this);
-                        if (_Orgformula_If != null && _Orgformula_If.Length > 0)
-                        {
-                            _lsVartoPoint_If = VartoDeviceTable.Point_Var_List(this);
-                            _listSisCalaExpPointID_If = ExpandOrgPointToSisPoint();
-                            _Expression_If = _ce.Parse(ExpandOrgFormula());
-                        }
+                        
                     }
                 }
             }
@@ -78,18 +72,34 @@ namespace HGS
         {
             set
             {
-                if (_Orgformula_If != value)
+                if (_Orgformula_If != value && value != null && value.Length > 0 )
                 {
-                    //Data.inst().Update(this);//??????????????
+                    _Orgformula_If = value;
+
+                    _lsVartoPoint_If = VartoDeviceTable.Point_Var_List(this);
+                    _listSisCalaExpPointID_If = ExpandOrgPointToSisPoint();
+                    _Expression_If = _ce.Parse(ExpandOrgFormula());
                 }
-                _Orgformula_If = value;
+                else if(value == null || value.Length == 0)
+                {
+                    _Orgformula_If = value;
+                    _lsVartoPoint_If = null;
+                    _listSisCalaExpPointID_If = null;
+                    _Expression_If = null;
+                }
+                
             }
             get { return _Orgformula_If; }
         }
-        public Expression _Expression_If = null;//已解析为表达式树,优化计算速度。
+        private Expression _Expression_If = null;//已解析为表达式树,优化计算速度。
  
         //计算子点id
         private List<varlinktopoint> _lsVartoPoint_If = null;//变量与点Id的对应列表
+        public List<varlinktopoint> lsVartoPoint_If
+        {
+            set { _lsVartoPoint_If = value; }
+            get { return _lsVartoPoint_If; }
+        }
         //
         //计算子点id用于进行计算点状态计算。
         private List<point> _listSisCalaExpPointID_If = null;//参与公式计算的sis点列表。;
@@ -161,7 +171,7 @@ namespace HGS
         //------------------------------------------------------------
         static HashSet<int> xloopvar = new HashSet<int>();
         //返回计算点展开成sis点的列表,同时用于检查循环引用问题。
-        public List<point> ExpandOrgPointToSisPoint(point pt)
+        private List<point> ExpandOrgPointToSisPoint(point pt)
         {
             if (pt.lsCalcOrgSubPoint_main == null) return null;
             List<point> ExpandPoint = new List<point>();
@@ -208,7 +218,7 @@ namespace HGS
         //所有点装入后才能进行
         //展开公式为Sis点-------------------------------------------------
         static HashSet<int> loopvar = new HashSet<int>();
-        public string ExpandOrgFormula(point pt)
+        private string ExpandOrgFormula(point pt)
         {
             if (pt.Orgformula_main.Length == 0) return "";
             if (loopvar.Contains(pt.id))
@@ -350,6 +360,9 @@ namespace HGS
         static int[] prime = { 181,347, 727, 1373, 2801, 5711 };
         public void AlarmCalc()
         {
+            if (_Expression_If != null && !Convert.ToBoolean(_ce.Evaluate(_Expression_If))) 
+                return;
+
             TimeTick++;        
             for (int i = 0; i < prime.Length; i++)
             {
@@ -399,11 +412,14 @@ namespace HGS
                     di.Name = pgreader["nodename"].ToString();
                     di.sort = (int)pgreader["sort"];
                     di.path = pgreader["path"].ToString();
+                    di.nd = pgreader["nd"].ToString();
+                    di.pn = pgreader["pn"].ToString();
+                    di.Orgformula_If = pgreader["alarmif"].ToString();
                     di.Sound = (int)pgreader["sound"];
                     object ob = pgreader["alarm_th_dis"];
                     if (ob != DBNull.Value)
                     {
-                        di.Alarm_th_dis = (float[])ob;
+                        di.Alarm_th_dis = (float[])ob;//同时加入字典进行管理
                     }
                     ob = pgreader["pointid_array"];
                     if (ob != DBNull.Value)
@@ -435,6 +451,9 @@ namespace HGS
                     di = new DeviceInfo();
                     di.Name = pgreader["nodename"].ToString();
                     di.path = pgreader["path"].ToString();
+                    di.nd = pgreader["nd"].ToString();
+                    di.pn = pgreader["pn"].ToString();
+                    di.Orgformula_If = pgreader["alarmif"].ToString();
                     di.Sound = (int)pgreader["sound"];
                     di.sort = (int)pgreader["sort"];
                     object ob = pgreader["alarm_th_dis"];

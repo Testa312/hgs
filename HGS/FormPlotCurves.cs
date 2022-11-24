@@ -34,10 +34,6 @@ namespace HGS
                 MessageBox.Show("时间间隔太短！");
             InitializeFromTreeTag();          
         }
-        ~FormPlotCurves()
-        {
-            sisconn_temp.close();
-        }
         private void InitializeFromTreeTag()
         {
             try
@@ -310,6 +306,12 @@ namespace HGS
         private void timer1_Tick(object sender, EventArgs e)
         {
             SisConnect.GetSisSystemTime(sisconn_temp);//保持连接
+        }
+
+        private void FormPlotCurves_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            timer1.Enabled = false;
+            sisconn_temp.close();
         }
     }
 }

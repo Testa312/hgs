@@ -724,7 +724,7 @@ namespace HGS
             set
             {
                 _av = value;
-                _datanums++;
+                //_datanums++;
                 if (Skip_pp != null && (isAlarmskip || isAlarmwave))
                 {
                     WaveDetection.add(_av ?? 0);
@@ -958,19 +958,20 @@ namespace HGS
                         uint temp = ~((uint)3 << 7);
                         AlarmBit &= temp;
                         bool boolAlarmif = (_isAlarmskip || _isAlarmwave) && _Skip_pp != null;
-                        if (boolAlarmif && _Skip_pp <= _WaveDetection.DeltaP_P())
-                        {
+                        if (boolAlarmif)
+                            if (_Skip_pp <= _WaveDetection.DeltaP_P())
+                            {
 
-                            spstatus = _WaveDetection.isWave();
-                            if (spstatus == WaveDetection.wavestatus.surge)
-                            {
-                                AlarmBit |= (uint)1 << 7;
+                                spstatus = _WaveDetection.isWave();
+                                if (spstatus == WaveDetection.wavestatus.surge)
+                                {
+                                    AlarmBit |= (uint)1 << 7;
+                                }
+                                else if (spstatus == WaveDetection.wavestatus.wave)
+                                {
+                                    AlarmBit |= (uint)1 << 8;
+                                }
                             }
-                            else if (spstatus == WaveDetection.wavestatus.wave)
-                            {
-                                AlarmBit |= (uint)1 << 8;
-                            }
-                        }
                     }
                 }
             }

@@ -268,7 +268,6 @@
             // 
             // numericUpDown
             // 
-            this.numericUpDown.Enabled = false;
             this.numericUpDown.Location = new System.Drawing.Point(422, 53);
             this.numericUpDown.Maximum = new decimal(new int[] {
             3,
@@ -289,7 +288,6 @@
             this.checkBoxCalc.AutoSize = true;
             this.checkBoxCalc.Checked = true;
             this.checkBoxCalc.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxCalc.Enabled = false;
             this.checkBoxCalc.Location = new System.Drawing.Point(153, 57);
             this.checkBoxCalc.Name = "checkBoxCalc";
             this.checkBoxCalc.Size = new System.Drawing.Size(48, 16);
@@ -299,7 +297,6 @@
             // 
             // comboBox_eu
             // 
-            this.comboBox_eu.Enabled = false;
             this.comboBox_eu.FormattingEnabled = true;
             this.comboBox_eu.Items.AddRange(new object[] {
             "℃",

@@ -25,11 +25,6 @@ namespace HGS
             InitializeComponent();
             FillMyTreeView();
         }
-        ~FormPointSet()
-
-        {
-            sisconn_temp.close();
-        }
         private void DisplayHints(int PointNums)
         {
             tSSLabel_count.Text = string.Format("点数：{0}。",PointNums);
@@ -304,6 +299,8 @@ namespace HGS
         {
             glacialList1.Dispose();
             timerUpdateValue.Enabled = false;
+            sisconn_temp.close();
+
         }
         private void timerUpdateValue_Tick(object sender, EventArgs e)
         {
@@ -471,6 +468,24 @@ namespace HGS
                     MessageBox.Show(sb.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     continue;
                 }
+                //
+                List<int> lsDeiveid = VartoDeviceTable.GetDeletePointIdList(pt.id);
+                if (lsDeiveid.Count > 0)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendLine("被下列点引用，不能删除！");
+                    foreach (int did in lsDeiveid)
+                    {
+                        DeviceInfo di;
+                        if (!Data_Device.dic_Device.TryGetValue(did, out di))
+                        {        
+                            di = Data_Device.GetDevice(did);;
+                        }
+                        sb.AppendLine(string.Format("[id:{0}]-{1}", di.id, di.Name));
+                    }
+                    MessageBox.Show(sb.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    continue;
+                }
                 if (bfirst || DialogResult.OK == MessageBox.Show(string.Format("是否删除点[{0}]-{1}？",
                     itemn.SubItems["PN"].Text,itemn.SubItems["ED"].Text), "提示",
                         MessageBoxButtons.OKCancel, MessageBoxIcon.Question))
@@ -614,23 +629,11 @@ namespace HGS
 
                         Data.inst().hs_FormulaErrorPoint.Remove(CalcPoint);
 
-                        buttonAlarmIf.ForeColor = Color.Black;
-                        if (CalcPoint.Alarmif.Length > 0)
-                        {
-                            buttonAlarmIf.ForeColor = Color.Red;
-
-                            //itemn.SubItems["AlarmInfo"].Text = "";
-                            //point pt = Data.inst().cd_Point[it.id];
-                            //pt.Alarmininfo = "";
-                            //AlarmSet.GetInst().Remove(pt);
-                            //button_HL.Text = Functions.NullDoubleRount(Point.hl, Point.fm).ToString();
-                        }
-                        //buttonAlarmIf.Enabled = fcaf.CalcPoint.alarmif.Length == 0;
+                        buttonAlarmIf.ForeColor = CalcPoint.Alarmif.Length > 0 ? Color.Red : Color.Black;
+      
                         Save();
                     }
                 }
-                //itemn.Tag = it;
-
             }
         }
        
@@ -716,7 +719,7 @@ namespace HGS
                             DataDeviceTree.UpdateNodetoDB(e.Node);
                         }
                     }
-                        glacialList1.Items.Clear();
+                    glacialList1.Items.Clear();
                     glacialList1.Items.AddRange(lsItem.ToArray());
                     glacialList1.Invalidate();
                     DisplayHints(lsItem.Count);

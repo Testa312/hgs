@@ -156,6 +156,9 @@ namespace HGS
                         ttag.Name = tn.Text;
                         ttag.sort = (int)pgreader["sort"];
                         ttag.path = pgreader["path"].ToString();
+                        ttag.nd = pgreader["nd"].ToString();
+                        ttag.pn = pgreader["pn"].ToString();
+                        ttag.Orgformula_If = pgreader["alarmif"].ToString();
                         ttag.Sound = (int)pgreader["sound"];
                         object ob = pgreader["alarm_th_dis"];
                         if (ob != DBNull.Value)
@@ -166,13 +169,10 @@ namespace HGS
                         if (ob != DBNull.Value)
                         {
                             ttag.SensorUnionWith(new HashSet<int>((int[])ob));
-                            //ttag.sisid_set = new HashSet<object>();
-                            //ttag.sisid_set.UnionWith(Data.inst().GetSisIdSet(ttag.pointid_set));
                         }
                     }
                     tn.Tag = ttag;
                     ltn.Add(tn);
-                    //
                 }
             }
             catch (Exception e) { throw new Exception(string.Format("读入设备子节点时发生错误！"), e); }
@@ -189,23 +189,43 @@ namespace HGS
                 tag.id = GetNextTreeNodeId();
                 if (tag.sort <= 0) tag.sort = GetMaxSortV();
                 tag.path = GetNodeFullPath(tn);
-                string sql = string.Format(@"insert into devicetree (id,nodename,path,alarm_th_dis,sort,pointid_array,sound)" +
-                                    " values ({0},'{1}','{2}',{3},{4},{5},{6});",
-                                    tag.id, tag.Name, tag.path,ArraytoString(tag.Alarm_th_dis), tag.sort, GetNodeArray(tn),tag.Sound);
-                var cmd = new NpgsqlCommand(sql, pgconn);
+                StringBuilder sb = new StringBuilder();
+
+                sb.AppendLine(string.Format(@"insert into devicetree (id,nodename,path,alarm_th_dis,sort,pointid_array,sound,nd,pn,alarmif)" +
+                                    " values ({0},'{1}','{2}',{3},{4},{5},{6},'{7}','{8}');",
+                                    tag.id, tag.Name, tag.path,ArraytoString(tag.Alarm_th_dis), tag.sort, GetNodeArray(tn),
+                                    tag.Sound,tag.nd,tag.pn,tag.Orgformula_If));
+                GetinsertsubSql(sb, tag);
+                var cmd = new NpgsqlCommand(sb.ToString(), pgconn);
                 pgconn.Open();
                 cmd.ExecuteNonQuery();          
             }
             catch (Exception e) { throw new Exception(string.Format("增加设备节点时发生错误！"), e); }
             finally { pgconn.Close(); }
         }
+        private static void GetinsertsubSql(StringBuilder sb, DeviceInfo di)
+        {
+            if (di.lsVartoPoint_If is null) return;
+            foreach (varlinktopoint supt in di.lsVartoPoint_If)
+            {
+                sb.AppendLine(string.Format("insert into formula_device (id,pointid,varname) values({0},{1},'{2}');",
+                    di.id, supt.sub_id, supt.varname));
+            }
+        }
         private static string  GetUpdateSql(TreeNode tn)
         {
             DeviceInfo tag = (DeviceInfo)tn.Tag;
+            if (tag.id < 0) return "";
             tag.path = GetNodeFullPath(tn);
-            string sql = string.Format(@"update devicetree set nodename='{0}',path='{1}',alarm_th_dis={2},sort={3},pointid_array={4},sound={5} where id = {6};",
-                                    tag.Name, tag.path, ArraytoString(tag.Alarm_th_dis), tag.sort, GetNodeArray(tn),tag.Sound, tag.id);
-            return sql;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(string.Format(@"update devicetree set nodename='{0}',path='{1}',alarm_th_dis={2},sort={3},pointid_array={4},"+
+                                    "sound={5},nd='{6}',pn='{7}',alarmif = '{8}' where id = {9};",
+                                    tag.Name, tag.path, ArraytoString(tag.Alarm_th_dis), tag.sort, GetNodeArray(tn),tag.Sound,
+                                    tag.nd,tag.pn,tag.Orgformula_If, tag.id));
+            sb.AppendLine(string.Format("delete  from formula_device where id = {0};", tag.id));
+            
+            GetinsertsubSql(sb, tag);
+            return sb.ToString();
         }
         public static void UpdateNodetoDB(TreeNode tn)
         {
@@ -242,6 +262,7 @@ namespace HGS
             catch (Exception e) { throw new Exception(string.Format("更新所有子节点时发生错误！"), e); }
             finally { pgconn.Close(); }
         }
+       
         public static void UpdateNode(string sql)
         {
             var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);

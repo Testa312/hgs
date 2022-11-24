@@ -13,16 +13,16 @@ using System.Text.RegularExpressions;
 using Npgsql;
 namespace HGS
 {
-    public partial class FormCalcAlarmLLSet : Form
+    public partial class FormCalcDeviceAlarmIf : Form
     {
-        HashSet<int> onlyid = new HashSet<int>();
-        private point CalcPoint;
+        //HashSet<int> onlyid = new HashSet<int>();
+        private DeviceInfo DiPoint;
         int PointNums = 0;
         //--------------------------------
-        public FormCalcAlarmLLSet(point pt)
+        public FormCalcDeviceAlarmIf(DeviceInfo di)
         {
             InitializeComponent();
-            CalcPoint = pt;
+            DiPoint = di;
         }
         private void DisplayStats()
         {
@@ -33,9 +33,9 @@ namespace HGS
             PointNums = 0;
             timer1.Enabled = false;
             List<GLItem> lsItmems = new List<GLItem>();
-            if (CalcPoint.lsVar_Point_ll != null)
+            if (DiPoint.lsVartoPoint_If != null)
             {
-                foreach (varlinktopoint subpt in CalcPoint.lsVar_Point_ll)
+                foreach (varlinktopoint subpt in DiPoint.lsVartoPoint_If)
                 {
                     GLItem itemn = new GLItem(glacialList1);
                     lsItmems.Add(itemn);
@@ -52,8 +52,8 @@ namespace HGS
                     itemn.SubItems["ED"].Text = Point.ed;
                     //itemn.SubItems[1].Text = Pref.GetInst().GetVarName(Point);
                     it.sisid = Point.Id_sis;
-                    if (onlyid.Contains(CalcPoint.id)) throw new Exception("不能引用自身！");
-                    onlyid.Add(it.id);//唯一性
+                    //if (onlyid.Contains(DiPoint.id)) throw new Exception("不能引用自身！");
+                    //onlyid.Add(it.id);//唯一性
                                       //
                     itemn.SubItems["VarName"].Text = subpt.varname;
                     itemn.Tag = it;
@@ -61,13 +61,14 @@ namespace HGS
                 }
             }
             glacialList1.Items.AddRange(lsItmems.ToArray());
-            onlyid.Add(CalcPoint.id);//排除自已。
-            textBoxFormula.Text = CalcPoint.Orgformula_ll;
-            textBoxmDiscription.Text = CalcPoint.ed;
-            comboBox_eu.Text = CalcPoint.eu;
-            textBoxPN.Text = CalcPoint.pn;
-            //checkBoxCalc.Checked = CalcPoint.isCalc;
-            numericUpDown.Value = CalcPoint.fm;
+            //onlyid.Add(DiPoint.id);//排除自已。
+            textBoxFormula.Text = DiPoint.Orgformula_If;
+            textBoxmDiscription.Text = DiPoint.Name;
+            
+            textBoxPN.Text = DiPoint.pn;
+            //comboBox_eu.Text = DiPoint.eu;
+            //checkBoxCalc.Checked = DiPoint.isCalc;
+            //numericUpDown.Value = DiPoint.fm;
             timer1.Enabled = true;
             DisplayStats();
         }
@@ -100,6 +101,7 @@ namespace HGS
         {
             const string cvn = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
             FormCalcPointList fcpl = new FormCalcPointList();
+            HashSet<int> onlyid = new HashSet<int>();//不需要检查
             fcpl.glacialLisint(onlyid);
             if (fcpl.ShowDialog() == DialogResult.OK)
             {
@@ -152,8 +154,8 @@ namespace HGS
         {
             HashSet<string> hsVar = new HashSet<string>();
             CalcEngine.CalcEngine ce = new CalcEngine.CalcEngine();
-            point Point = new point(-1,pointsrc.calc);
-            Point.lsVar_Point_ll = new List<varlinktopoint>();
+            DeviceInfo DiPoint = new DeviceInfo();
+            DiPoint.lsVartoPoint_If = new List<varlinktopoint>();
             //-----
             //可加内部变量
             //hsVar.Add(???);
@@ -180,23 +182,24 @@ namespace HGS
                 varlinktopoint subpt = new varlinktopoint();
                 subpt.varname = item.SubItems["VarName"].Text;
                 subpt.sub_id = it.id;
-                Point.lsVar_Point_ll.Add(subpt);
+                DiPoint.lsVartoPoint_If.Add(subpt);
+
                 ce.Variables[subpt.varname] = Data.inst().cd_Point[it.id].av;//测试用。
             }
             if (textBoxmDiscription.Text.Length < 1)
             {
                 throw new Exception("计算点的的描述不能为空！");
             }
-            Point.Orgformula_ll = textBoxFormula.Text;
+            DiPoint.Orgformula_If = textBoxFormula.Text;
             //
-            double? orgv = null;
-            if(Point.Orgformula_ll.Length > 0 ) 
-                orgv = Math.Round(Convert.ToDouble(ce.Evaluate(Point.Orgformula_ll)), Point.fm); //验证表达式的合法性
-                                                                                               //
+            bool orgv = true;
+            if (DiPoint.Orgformula_If.Length > 0 )
+                orgv = Convert.ToBoolean(ce.Evaluate(DiPoint.Orgformula_If)); //验证表达式的合法性
+                                                                                           
             ce.Variables = Data.inst().Variables;
-            double? expv = null;
-            if(Point.Orgformula_ll.Length > 0)
-                expv = Math.Round(Convert.ToDouble(ce.Evaluate(Data.inst().ExpandOrgFormula_LL(Point))), Point.fm);//验证表达式展开sis点的合法性。
+            bool expv = true;
+            if(DiPoint.Orgformula_If.Length > 0 )
+                expv = Convert.ToBoolean(ce.Evaluate(DiPoint.ExpandOrgFormula()));//验证表达式展开sis点的合法性。
             if (rsl)
                 MessageBox.Show(string.Format("原公式计算值＝{0}\n展开公式计算值＝{1}",orgv,expv), 
                     "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -206,9 +209,9 @@ namespace HGS
             try
             {
                 Dovalidity(false);
-                CalcPoint.Orgformula_ll = textBoxFormula.Text.Trim().Replace("\r\n", ""); ;
+                DiPoint.Orgformula_If = textBoxFormula.Text.Trim().Replace("\r\n","");
 
-                CalcPoint.lsVar_Point_ll = new List<varlinktopoint>();
+                DiPoint.lsVartoPoint_If= new List<varlinktopoint>();
 
                 foreach (GLItem item in glacialList1.Items)
                 {
@@ -216,7 +219,7 @@ namespace HGS
                     varlinktopoint subpt = new varlinktopoint();
                     subpt.varname = item.SubItems["VarName"].Text;
                     subpt.sub_id = it.id;
-                    CalcPoint.lsVar_Point_ll.Add(subpt);
+                    DiPoint.lsVartoPoint_If.Add(subpt);
                 }
             }
             catch (Exception ee)

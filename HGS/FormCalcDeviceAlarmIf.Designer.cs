@@ -1,6 +1,6 @@
 ﻿namespace HGS
 {
-    partial class FormCalcAlarmHlSet
+    partial class FormCalcDeviceAlarmIf
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCalcAlarmHlSet));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCalcDeviceAlarmIf));
             GlacialComponents.Controls.GLColumn glColumn1 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn2 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn3 = new GlacialComponents.Controls.GLColumn();
@@ -42,7 +42,6 @@
             this.tSB_del = new System.Windows.Forms.ToolStripButton();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.glacialList1 = new GlacialComponents.Controls.GlacialList();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageCalc = new System.Windows.Forms.TabPage();
             this.numericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -61,6 +60,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.tSSLabel_varnums = new System.Windows.Forms.ToolStripStatusLabel();
+            this.glacialList1 = new GlacialComponents.Controls.GlacialList();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -125,112 +125,6 @@
             this.splitContainer1.Size = new System.Drawing.Size(728, 498);
             this.splitContainer1.SplitterDistance = 265;
             this.splitContainer1.TabIndex = 1;
-            // 
-            // glacialList1
-            // 
-            this.glacialList1.AllowColumnResize = true;
-            this.glacialList1.AllowMultiselect = false;
-            this.glacialList1.AlternateBackground = System.Drawing.Color.DarkGreen;
-            this.glacialList1.AlternatingColors = false;
-            this.glacialList1.AutoHeight = true;
-            this.glacialList1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.glacialList1.BackgroundStretchToFit = true;
-            glColumn1.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
-            glColumn1.CheckBoxes = false;
-            glColumn1.ImageIndex = -1;
-            glColumn1.Name = "VarName";
-            glColumn1.NumericSort = false;
-            glColumn1.Text = "  变量名";
-            glColumn1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn1.Width = 80;
-            glColumn2.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
-            glColumn2.CheckBoxes = false;
-            glColumn2.ImageIndex = -1;
-            glColumn2.Name = "ND";
-            glColumn2.NumericSort = false;
-            glColumn2.Text = "  节点";
-            glColumn2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn2.Width = 80;
-            glColumn3.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
-            glColumn3.CheckBoxes = false;
-            glColumn3.ImageIndex = -1;
-            glColumn3.Name = "PN";
-            glColumn3.NumericSort = false;
-            glColumn3.Text = "  点名（SIS）";
-            glColumn3.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn3.Width = 150;
-            glColumn4.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
-            glColumn4.CheckBoxes = false;
-            glColumn4.ImageIndex = -1;
-            glColumn4.Name = "AV";
-            glColumn4.NumericSort = true;
-            glColumn4.Text = "值  ";
-            glColumn4.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
-            glColumn4.Width = 70;
-            glColumn5.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
-            glColumn5.CheckBoxes = false;
-            glColumn5.ImageIndex = -1;
-            glColumn5.Name = "EU";
-            glColumn5.NumericSort = false;
-            glColumn5.Text = "单位";
-            glColumn5.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            glColumn5.Width = 50;
-            glColumn6.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
-            glColumn6.CheckBoxes = false;
-            glColumn6.ImageIndex = -1;
-            glColumn6.Name = "ED";
-            glColumn6.NumericSort = false;
-            glColumn6.Text = "  描述";
-            glColumn6.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn6.Width = 180;
-            glColumn7.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
-            glColumn7.CheckBoxes = false;
-            glColumn7.ImageIndex = -1;
-            glColumn7.Name = "DS";
-            glColumn7.NumericSort = false;
-            glColumn7.Text = "质量";
-            glColumn7.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            glColumn7.Width = 80;
-            this.glacialList1.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
-            glColumn1,
-            glColumn2,
-            glColumn3,
-            glColumn4,
-            glColumn5,
-            glColumn6,
-            glColumn7});
-            this.glacialList1.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
-            this.glacialList1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.glacialList1.FullRowSelect = false;
-            this.glacialList1.GridColor = System.Drawing.Color.LightGray;
-            this.glacialList1.GridLines = GlacialComponents.Controls.GLGridLines.gridBoth;
-            this.glacialList1.GridLineStyle = GlacialComponents.Controls.GLGridLineStyles.gridSolid;
-            this.glacialList1.GridTypes = GlacialComponents.Controls.GLGridTypes.gridOnExists;
-            this.glacialList1.HeaderHeight = 22;
-            this.glacialList1.HeaderVisible = true;
-            this.glacialList1.HeaderWordWrap = false;
-            this.glacialList1.HotColumnTracking = true;
-            this.glacialList1.HotItemTracking = true;
-            this.glacialList1.HotTrackingColor = System.Drawing.Color.LightGray;
-            this.glacialList1.HoverEvents = true;
-            this.glacialList1.HoverTime = 1;
-            this.glacialList1.ImageList = null;
-            this.glacialList1.ItemHeight = 19;
-            this.glacialList1.ItemWordWrap = false;
-            this.glacialList1.Location = new System.Drawing.Point(0, 0);
-            this.glacialList1.Name = "glacialList1";
-            this.glacialList1.Selectable = true;
-            this.glacialList1.SelectedTextColor = System.Drawing.Color.White;
-            this.glacialList1.SelectionColor = System.Drawing.Color.DarkBlue;
-            this.glacialList1.ShowBorder = true;
-            this.glacialList1.ShowFocusRect = true;
-            this.glacialList1.Size = new System.Drawing.Size(728, 265);
-            this.glacialList1.SortType = GlacialComponents.Controls.SortTypes.InsertionSort;
-            this.glacialList1.SuperFlatHeaderColor = System.Drawing.Color.White;
-            this.glacialList1.TabIndex = 1;
-            this.glacialList1.Text = "glacialList1";
-            this.glacialList1.DoubleClick += new System.EventHandler(this.glacialList1_DoubleClick);
-            this.glacialList1.Leave += new System.EventHandler(this.glacialList1_Leave);
             // 
             // tabControl1
             // 
@@ -438,7 +332,113 @@
             this.tSSLabel_varnums.Size = new System.Drawing.Size(56, 17);
             this.tSSLabel_varnums.Text = "变量数：";
             // 
-            // FormCalcAlarmHlSet
+            // glacialList1
+            // 
+            this.glacialList1.AllowColumnResize = true;
+            this.glacialList1.AllowMultiselect = false;
+            this.glacialList1.AlternateBackground = System.Drawing.Color.DarkGreen;
+            this.glacialList1.AlternatingColors = false;
+            this.glacialList1.AutoHeight = true;
+            this.glacialList1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.glacialList1.BackgroundStretchToFit = true;
+            glColumn1.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn1.CheckBoxes = false;
+            glColumn1.ImageIndex = -1;
+            glColumn1.Name = "VarName";
+            glColumn1.NumericSort = false;
+            glColumn1.Text = "  变量名";
+            glColumn1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn1.Width = 80;
+            glColumn2.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn2.CheckBoxes = false;
+            glColumn2.ImageIndex = -1;
+            glColumn2.Name = "ND";
+            glColumn2.NumericSort = false;
+            glColumn2.Text = "  节点";
+            glColumn2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn2.Width = 80;
+            glColumn3.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn3.CheckBoxes = false;
+            glColumn3.ImageIndex = -1;
+            glColumn3.Name = "PN";
+            glColumn3.NumericSort = false;
+            glColumn3.Text = "  点名（SIS）";
+            glColumn3.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn3.Width = 150;
+            glColumn4.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn4.CheckBoxes = false;
+            glColumn4.ImageIndex = -1;
+            glColumn4.Name = "AV";
+            glColumn4.NumericSort = true;
+            glColumn4.Text = "值  ";
+            glColumn4.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
+            glColumn4.Width = 70;
+            glColumn5.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn5.CheckBoxes = false;
+            glColumn5.ImageIndex = -1;
+            glColumn5.Name = "EU";
+            glColumn5.NumericSort = false;
+            glColumn5.Text = "单位";
+            glColumn5.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            glColumn5.Width = 50;
+            glColumn6.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn6.CheckBoxes = false;
+            glColumn6.ImageIndex = -1;
+            glColumn6.Name = "ED";
+            glColumn6.NumericSort = false;
+            glColumn6.Text = "  描述";
+            glColumn6.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn6.Width = 180;
+            glColumn7.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn7.CheckBoxes = false;
+            glColumn7.ImageIndex = -1;
+            glColumn7.Name = "DS";
+            glColumn7.NumericSort = false;
+            glColumn7.Text = "质量";
+            glColumn7.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            glColumn7.Width = 80;
+            this.glacialList1.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
+            glColumn1,
+            glColumn2,
+            glColumn3,
+            glColumn4,
+            glColumn5,
+            glColumn6,
+            glColumn7});
+            this.glacialList1.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
+            this.glacialList1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.glacialList1.FullRowSelect = false;
+            this.glacialList1.GridColor = System.Drawing.Color.LightGray;
+            this.glacialList1.GridLines = GlacialComponents.Controls.GLGridLines.gridBoth;
+            this.glacialList1.GridLineStyle = GlacialComponents.Controls.GLGridLineStyles.gridSolid;
+            this.glacialList1.GridTypes = GlacialComponents.Controls.GLGridTypes.gridOnExists;
+            this.glacialList1.HeaderHeight = 22;
+            this.glacialList1.HeaderVisible = true;
+            this.glacialList1.HeaderWordWrap = false;
+            this.glacialList1.HotColumnTracking = true;
+            this.glacialList1.HotItemTracking = true;
+            this.glacialList1.HotTrackingColor = System.Drawing.Color.LightGray;
+            this.glacialList1.HoverEvents = true;
+            this.glacialList1.HoverTime = 1;
+            this.glacialList1.ImageList = null;
+            this.glacialList1.ItemHeight = 19;
+            this.glacialList1.ItemWordWrap = false;
+            this.glacialList1.Location = new System.Drawing.Point(0, 0);
+            this.glacialList1.Name = "glacialList1";
+            this.glacialList1.Selectable = true;
+            this.glacialList1.SelectedTextColor = System.Drawing.Color.White;
+            this.glacialList1.SelectionColor = System.Drawing.Color.DarkBlue;
+            this.glacialList1.ShowBorder = true;
+            this.glacialList1.ShowFocusRect = true;
+            this.glacialList1.Size = new System.Drawing.Size(728, 265);
+            this.glacialList1.SortType = GlacialComponents.Controls.SortTypes.InsertionSort;
+            this.glacialList1.SuperFlatHeaderColor = System.Drawing.Color.White;
+            this.glacialList1.TabIndex = 1;
+            this.glacialList1.Text = "glacialList1";
+            this.glacialList1.DoubleClick += new System.EventHandler(this.glacialList1_DoubleClick);
+            this.glacialList1.Leave += new System.EventHandler(this.glacialList1_Leave);
+            // 
+            // FormCalcDeviceAlarmIf
             // 
             this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -447,9 +447,9 @@
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
-            this.Name = "FormCalcAlarmHlSet";
+            this.Name = "FormCalcDeviceAlarmIf";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "报警高值设置";
+            this.Text = "报警条件设置";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormPointSet_FormClosed);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
