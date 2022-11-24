@@ -1010,11 +1010,6 @@ namespace HGS
             }
         }
 
-        private void glacialList1_SelectedIndexChanged(object source, ClickEventArgs e)
-        {
-            
-        }
-
         private void 显示曲线ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             HashSet<int> pointid = new HashSet<int>();

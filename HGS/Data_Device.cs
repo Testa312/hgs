@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Npgsql;
+using CalcEngine;
+using System.Text.RegularExpressions;
 namespace HGS
 {
     public class DeviceInfo
@@ -54,6 +56,48 @@ namespace HGS
                 }
             }
         }
+        //
+        private string _Orgformula_device = "";//原始计算公式
+        public string Orgformula_device
+        {
+            set
+            {
+                if (_Orgformula_device != value)
+                {
+                    //Data.inst().Update(this);//??????????????
+                }
+                _Orgformula_device = value;
+            }
+            get { return _Orgformula_device; }
+        }
+        private string _Sisformula_device = "";//已展开成SIS点的计算公式，不保存
+        public string Sisformula_device
+        {
+            set { _Sisformula_device = value; }
+            get { return _Sisformula_device; }
+        }
+        private Expression _Expression_device = null;//已解析为表达式树,优化计算速度。
+        public Expression Expression_device
+        {
+            set { _Expression_device = value; }
+            get { return _Expression_device; }
+        }
+        //计算子点id
+        private List<varlinktopoint> _lsCalcOrgSubPoint_device = null;//变量与点Id的对应列表
+        public List<varlinktopoint> lsCalcOrgSubPoint_device
+        {
+            set { _lsCalcOrgSubPoint_device = value; }
+            get { return _lsCalcOrgSubPoint_device; }
+        }
+        //
+        //计算子点id用于进行计算点状态计算。
+        private List<point> _listSisCalaExpPointID_device = null;//参与公式计算的sis点列表。;
+        public List<point> listSisCalaExpPointID_device
+        {
+            set { _listSisCalaExpPointID_device = value; }
+            get { return _listSisCalaExpPointID_device; }
+        }
+        //
         public HashSet<int> Sensors_set()
         {
             HashSet<int> hs = new HashSet<int>();
@@ -122,9 +166,9 @@ namespace HGS
             {"15m",  "15分钟内参数异常！"    },
             {"30m",  "30分钟内参数异常！"    },
             {"60m",  "1小时内参数异常！"    },
-            {"120m",  "2小内段参数异常！"  },
-            {"240m",  "4小内参数异常！"  },
-            {"480m",  "8小内参数异常！"  } };
+            {"120m",  "2小时内段参数异常！"  },
+            {"240m",  "4小时内参数异常！"  },
+            {"480m",  "8小时内参数异常！"  } };
         //-----
         private void AlarmCalc_dtw(point pt,int Step)
         {
@@ -204,30 +248,31 @@ namespace HGS
         static int[] prime = { 181,347, 727, 1373, 2801, 5711 };
         public void AlarmCalc()
         {
-            TimeTick++;
-           
+            TimeTick++;        
             for (int i = 0; i < prime.Length; i++)
             {
                 if (TimeTick % prime[i] == 0)
                 {
-                    curAlarmBit = 0;
-                    point pt = Dtw_th_h(i);
-                    if (pt !=null)
-                        AlarmCalc_dtw(pt,i); 
-                }
-                uint lastBit = lastAlarmBit & ((uint)1 << i);
-                uint curBit = curAlarmBit & ((uint)1 << i);
-                if (lastBit > curBit)
-                {
-                    AlarmSet.GetInst().AlarmStop(CreateAlarmSid(i));
-                }
-                else if (lastBit < curBit)
-                {
-                    AlarmSet.GetInst().AddAlarming(CreateAlarmInfo(i));
-                }
+                    uint temp = ~((uint)1 << i);
+                    curAlarmBit &= temp;
 
-            }
-            lastAlarmBit = curAlarmBit;
+                    point pt = Dtw_th_h(i);
+                    if (pt != null)
+                        AlarmCalc_dtw(pt, i);
+
+                    uint lastBit = lastAlarmBit & ((uint)1 << i);
+                    uint curBit = curAlarmBit & ((uint)1 << i);
+                    if (lastBit > curBit)
+                    {
+                        AlarmSet.GetInst().AlarmStop(CreateAlarmSid(i));
+                    }
+                    else if (lastBit < curBit)
+                    {
+                        AlarmSet.GetInst().AddAlarming(CreateAlarmInfo(i));
+                    }
+                    lastAlarmBit = curAlarmBit;
+                }             
+            }            
         }
     }
     static class Data_Device
@@ -321,5 +366,112 @@ namespace HGS
                 dv.AlarmCalc();
             }
         }
+
+        //-------------------
+        //展开公式为Sis点-------------------------------------------------
+        static HashSet<int> loopvar = new HashSet<int>();
+        public static string ExpandOrgFormula_Device(point pt)
+        {
+            if (pt.orgformula_main.Length == 0) return "";
+            if (loopvar.Contains(pt.id))
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (int sid in loopvar)
+                {
+                    point Point = Data.inst().cd_Point[sid];
+                    sb.Append(string.Format("[{0}]:{1},", Point.id, Point.ed));
+                }
+                throw new ArgumentException(sb.Append("循环变量引用！").ToString());
+            }
+            loopvar.Add(pt.id);
+            string orgf = pt.orgformula_main;
+            if (pt.lsCalcOrgSubPoint_main != null)
+            {
+                ExpandOrgFormulaSub(ref orgf, pt.lsCalcOrgSubPoint_main);
+            }
+            loopvar.Clear();
+            return orgf;
+        }
+        //展开device_if公式为Sis点-------------------------------------------------
+        private static void ExpandOrgFormulaSub(ref string orgf, List<varlinktopoint> lscosp)
+        {
+            foreach (varlinktopoint subpt in lscosp)
+            {
+                point Point = Data.inst().cd_Point[subpt.sub_id];
+                if (Point.pointsrc == pointsrc.calc)
+                {
+                    string rpl = string.Format("({0})", ExpandOrgFormula_Device(Point));
+                    string pat = string.Format(@"\b{0}\b(?=[^(])|\b{0}$", subpt.varname);
+
+                    orgf = Regex.Replace(orgf, pat, rpl);
+                }
+                else
+                {
+                    string rpl = string.Format("{0}", Pref.Inst().GetVarName(Point));
+                    string pat = string.Format(@"\b{0}\b(?=[^(])|\b{0}$", subpt.varname);
+                    orgf = Regex.Replace(orgf, pat, rpl);
+                }
+            }
+        }
+        public static string ExpandOrgFormula_AlarmIf(point pt)
+        {
+            if (pt.Alarmif.Length == 0) return "";
+            string orgf = pt.Alarmif;
+            if (pt.lsCalcOrgSubPoint_alarmif != null)
+            {
+                foreach (varlinktopoint subpt in pt.lsCalcOrgSubPoint_alarmif)
+                {
+                    ExpandOrgFormulaSub(ref orgf, pt.lsCalcOrgSubPoint_alarmif);
+                }
+            }
+            return orgf;
+        }
+        private static void ExpandOrgPointToSisPoinSub(List<point> exppt, List<varlinktopoint> lcosp)
+        {
+            foreach (varlinktopoint subpt in lcosp)
+            {
+                point Pointx = Data.inst().cd_Point[subpt.sub_id];
+                if (Pointx.pointsrc == pointsrc.calc)
+                {
+                    List<point> lsexp = ExpandOrgPointToSisPoint_Main(Pointx);
+                    if (lsexp != null)
+                        exppt.AddRange(lsexp);
+                }
+                else
+                {
+                    exppt.Add(Pointx);
+                }
+            }
+        }
+        //返回AlarmIf公式展开成sis点的列表。
+        public static List<point> ExpandOrgPointToSisPoint_AlarmIf(point pt)
+        {
+            if (pt.lsCalcOrgSubPoint_alarmif == null) return null;
+            List<point> ExpandPoint = new List<point>();
+            ExpandOrgPointToSisPoinSub(ExpandPoint, pt.lsCalcOrgSubPoint_alarmif);
+            return ExpandPoint;
+        }
+        static HashSet<int> xloopvar = new HashSet<int>();
+        //返回计算点展开成sis点的列表,同时用于检查循环引用问题。
+        public static List<point> ExpandOrgPointToSisPoint_Main(point pt)
+        {
+            if (pt.lsCalcOrgSubPoint_main == null) return null;
+            List<point> ExpandPoint = new List<point>();
+            if (xloopvar.Contains(pt.id))
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (int sid in xloopvar)
+                {
+                    point Point = Data.inst().cd_Point[sid];
+                    sb.Append(string.Format("[{0}]:{1},", Point.id, Point.ed));
+                }
+                throw new ArgumentException(sb.Append("循环变量引用！").ToString());
+            }
+            xloopvar.Add(pt.id);
+            ExpandOrgPointToSisPoinSub(ExpandPoint, pt.lsCalcOrgSubPoint_main);
+            xloopvar.Clear();
+            return ExpandPoint;
+        }
+
     }
 }

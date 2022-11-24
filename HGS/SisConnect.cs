@@ -22,6 +22,7 @@ namespace HGS
         public int ID_sis = -1;
         public string GN = "";
         public string ED = "";
+        public string EU = "";
         public float MaxAv = float.MinValue;
         public float MinAv = float.MaxValue;
         public float MeanAV = 0;
@@ -118,6 +119,7 @@ namespace HGS
                     point pt = Data.inst().dic_SisIdtoPoint[pd.ID_sis];
                     pd.ED = pt.ed;
                     pd.ID = pt.id;
+                    pd.EU = pt.eu;
                     dic_pd.Add(pd.ID, pd);
                 }
 
@@ -125,6 +127,7 @@ namespace HGS
                 {
                     PointData pdcalc = SisConnect.GetCalcPointData(sisconn,pt, begin, end, count);
                     pdcalc.ED = pt.ed;
+                    pdcalc.EU = pt.eu;
                     dic_pd.Add(pdcalc.ID, pdcalc);
                 }
             }

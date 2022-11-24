@@ -286,8 +286,9 @@ namespace HGS
             DateTime end = ai.stoptime;
             if (end.Year <= 2000)
                 end = DateTime.Now;
-            if ((end - begin).TotalMinutes <= 5)
-                begin = begin.AddMinutes(-5);
+            TimeSpan ts = end - begin;
+            if (ts.TotalMinutes < 5)
+                begin = begin.AddMinutes((ts.TotalMinutes)-10 );
             HashSet<int> lspointid = null;
             if (c == 'P')
             {

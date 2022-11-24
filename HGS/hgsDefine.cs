@@ -955,6 +955,8 @@ namespace HGS
                     //
                     if (_id % 10 == _datanums % 10)
                     {
+                        uint temp = ~((uint)3 << 7);
+                        AlarmBit &= temp;
                         bool boolAlarmif = (_isAlarmskip || _isAlarmwave) && _Skip_pp != null;
                         if (boolAlarmif && _Skip_pp <= _WaveDetection.DeltaP_P())
                         {
@@ -968,11 +970,6 @@ namespace HGS
                             {
                                 AlarmBit |= (uint)1 << 8;
                             }
-                        }
-                        else
-                        {
-                            uint temp = ~((uint)3 << 7);
-                            AlarmBit &= temp;
                         }
                     }
                 }

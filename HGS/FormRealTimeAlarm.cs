@@ -28,6 +28,7 @@ namespace HGS
             item.SubItems["PN"].Text = ai._pn;
             item.SubItems["ED"].Text = ai._ed;
             item.SubItems["AlarmingAV"].Text = ai._av.ToString();
+            item.SubItems["EU"].Text = ai._eu;
             item.SubItems["AlarmInfo"].Text = ai._Info;
             item.SubItems["Time"].Text = ai._starttime.ToString();
             if (ai.stoptime.Year >= 2000 && !isRealtime)
@@ -301,58 +302,84 @@ namespace HGS
 
         private void glacialList1_DoubleClick(object sender, EventArgs e)
         {
-            if (glacialList1.Items.SelectedItems.Count > 0)
+            OPAPI.Connect sisconn_temp = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
+                                                    Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
+            try
             {
-                AlarmInfo ai = (AlarmInfo)((GLItem)glacialList1.Items.SelectedItems[0]).Tag;
-                if (ai._sensorid != -1)
+                DateTime now = SisConnect.GetSisSystemTime(sisconn_temp);
+                if (glacialList1.Items.SelectedItems.Count > 0)
                 {
-                    HashSet<int> pid = new HashSet<int>();
-                    pid.Add(ai._sensorid);
-                    FormPlotCurves frta = new FormPlotCurves(pid,ai._starttime.AddMinutes(-5),ai._starttime);
-                    frta.Show();
-                }
-                else if (ai._deviceid != -1)
-                {
-                    DeviceInfo dv;
-                    if (Data_Device.dic_Device.TryGetValue(ai._deviceid, out dv))
-                    {
-                        FormPlotCurves frta = new FormPlotCurves(dv.Sensors_set(), ai._starttime.AddMinutes(-5), ai._starttime);
-                        frta.Show();
-                    }
+                    AlarmInfo ai = (AlarmInfo)((GLItem)glacialList1.Items.SelectedItems[0]).Tag;
+                    TimeSpan ts = now - ai._starttime;
+
+                    if (ts.TotalMinutes >= 5)
+                        Plot(ai, ai._starttime.AddMinutes(-5), ai._starttime.AddMinutes(5));
+                    else
+                        Plot(ai, ai._starttime.AddMinutes(-5), ai._starttime);
                 }
             }
+            catch (Exception ee)
+            {
+                MessageBox.Show(ee.ToString(), "错误");
+            }
+            finally
+            {
+                sisconn_temp.close();
+            }
         }
-
+        private void Plot(AlarmInfo ai, DateTime begin, DateTime end)
+        {
+            HashSet<int> pointid = null;
+            if (ai._sensorid != -1)
+            {
+                pointid = new HashSet<int>();
+                pointid.Add(ai._sensorid);
+            }
+            else if (ai._deviceid != -1)
+            {
+                DeviceInfo dv;
+                if (Data_Device.dic_Device.TryGetValue(ai._deviceid, out dv))
+                {
+                    pointid = dv.Sensors_set();
+                    
+                }
+            }
+            if (pointid != null)
+            {
+                FormPlotCurves frta = new FormPlotCurves(pointid, begin, end);
+                frta.Show();
+            }
+        }
+    
         private void glacialList2_DoubleClick(object sender, EventArgs e)
         {
-            //历史
-            if (glacialList2.Items.SelectedItems.Count > 0)
+            OPAPI.Connect sisconn_temp = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
+                                                   Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
+            try
             {
-                AlarmInfo ai = (AlarmInfo)((GLItem)glacialList2.Items.SelectedItems[0]).Tag;
-                if (ai._sensorid != -1)
+                //历史
+                if (glacialList2.Items.SelectedItems.Count > 0)
                 {
-                    HashSet<int> pid = new HashSet<int>();
-                    pid.Add(ai._sensorid);
-                    FormPlotCurves frta = new FormPlotCurves(pid, ai._starttime.AddMinutes(-5), ai.stoptime);
-                    frta.Show();
-                }
-                else if (ai._deviceid != -1)
-                {
-                    DeviceInfo dv;
-                    if (Data_Device.dic_Device.TryGetValue(ai._deviceid, out dv))
-                    {
-                        FormPlotCurves frta = new FormPlotCurves(dv.Sensors_set(), ai._starttime.AddMinutes(-5), 
-                            ai.stoptime);
-                        frta.Show();
-                    }
+                    AlarmInfo ai = (AlarmInfo)((GLItem)glacialList2.Items.SelectedItems[0]).Tag;
+                    DateTime now = SisConnect.GetSisSystemTime(sisconn_temp);
+                    TimeSpan ts = now - ai.stoptime;
+
+                    if (ts.TotalDays >= 7)
+                        Plot(ai, ai._starttime.AddMinutes(-5), ai._starttime.AddDays(7));
+                    else if (ts.TotalMinutes >= 5)
+                        Plot(ai, ai._starttime.AddMinutes(-5), ai.stoptime.AddMinutes(5));
+
                     else
-                    {
-                        dv = Data_Device.GetDevice(ai._deviceid);
-                        FormPlotCurves frta = new FormPlotCurves(dv.Sensors_set(), ai._starttime.AddMinutes(-5),
-                            ai.stoptime);
-                        frta.Show(); ;
-                    }
+                        Plot(ai, ai._starttime.AddMinutes(-5), now);
                 }
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show(ee.ToString(), "错误");
+            }
+            finally
+            {
+                sisconn_temp.close();
             }
         }
 

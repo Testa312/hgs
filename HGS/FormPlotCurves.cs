@@ -85,6 +85,7 @@ namespace HGS
         {
             Dictionary<int, PointData> dic_pd = null;
             Dictionary<int, PointData> dic_pd_stat = null;
+            Dictionary<int, PointData> dic_pd_stat_128s = null;
             try
             {
                 dic_pd = SisConnect.GetPointData_dic(sisconn_temp,hsPointid,
@@ -92,6 +93,8 @@ namespace HGS
 
                 dic_pd_stat = SisConnect.GetsisStat(sisconn_temp,hsPointid,
                     dateTimePicker1.Value, dateTimePicker2.Value, (int)(dateTimePicker2.Value - dateTimePicker2.Value).TotalSeconds);
+                dic_pd_stat_128s = SisConnect.GetsisStat(sisconn_temp, hsPointid,
+                    dateTimePicker1.Value, dateTimePicker2.Value, 128);
             }
             catch (Exception ee)
             {
@@ -106,15 +109,21 @@ namespace HGS
                 GLItem itm = new GLItem(glacialList1);
                 itm.SubItems["PN"].Text = pd.GN;
                 itm.SubItems["ED"].Text = pd.ED;
+                itm.SubItems["EU"].Text = pd.EU;
                 itm.Tag = pd;
                 PointData pd_stat;
-                if (dic_pd.TryGetValue(pd.ID, out pd_stat))
+                if (dic_pd_stat.TryGetValue(pd.ID, out pd_stat))
                 {
                     pd.MaxAv = pd_stat.MaxAv;
                     pd.MinAv = pd_stat.MinAv;
                 }
+                if (dic_pd_stat_128s.TryGetValue(pd.ID, out pd_stat))
+                {
+                    pd.DifAV = pd_stat.DifAV;
+                }
                 itm.SubItems["MAX"].Text = Math.Round(pd.MaxAv * 1.1, 3).ToString();
                 itm.SubItems["MIN"].Text = Math.Round(pd.MinAv * 0.9, 3).ToString(); 
+                itm.SubItems["Skip_pp"].Text = Math.Round(pd.DifAV * 0.9, 3).ToString();
                 lsitem.Add(itm);
             }
             glacialList1.Items.AddRange(lsitem.ToArray());
@@ -290,6 +299,8 @@ namespace HGS
                 {                  
                     pt.ll = Math.Round(pd.MinAv * 0.9,3);
                     pt.hl = Math.Round(pd.MaxAv * 1.1,3);
+                    if(pd.DifAV > 0)
+                        pt.Skip_pp = Math.Round(pd.DifAV * 1.1,3);
                 }
             }
             if (glacialList1.Items.SelectedItems.Count > 0)
