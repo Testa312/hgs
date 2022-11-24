@@ -347,10 +347,6 @@ namespace HGS
                 AlarmSet.GetInst().SoundStop();
         }
 
-        private void 静音ToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
-        {
-        }
-
         private void toolStripMenuItem1_DropDownOpening(object sender, EventArgs e)
         {
 

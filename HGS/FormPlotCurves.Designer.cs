@@ -329,13 +329,14 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.接受为报警高低限ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(185, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(238, 48);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // 接受为报警高低限ToolStripMenuItem
             // 
             this.接受为报警高低限ToolStripMenuItem.Name = "接受为报警高低限ToolStripMenuItem";
-            this.接受为报警高低限ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
-            this.接受为报警高低限ToolStripMenuItem.Text = "接受为报警高－低限";
+            this.接受为报警高低限ToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.接受为报警高低限ToolStripMenuItem.Text = "接受为报警[高－低限-pp阈值]";
             this.接受为报警高低限ToolStripMenuItem.Click += new System.EventHandler(this.接受为报警高低限ToolStripMenuItem_Click);
             // 
             // plotView1

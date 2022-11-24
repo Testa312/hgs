@@ -313,5 +313,16 @@ namespace HGS
             timer1.Enabled = false;
             sisconn_temp.close();
         }
+
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+
+            ToolStripMenuItem tmi = (ToolStripMenuItem)sender;
+            ToolStripItem[] tmx = tmi.DropDownItems.Find("接受为报警高低限ToolStripMenuItem", false);
+            if (tmx.Length > 0)
+            {
+                tmx[0].Enabled = glacialList1.Items.SelectedItems.Count > 0;
+            }
+        }
     }
 }

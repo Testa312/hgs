@@ -225,7 +225,7 @@ namespace HGS
                             {
                                 if (pt.bv > pt.tv) { throw new Exception("量程上限应大于量程下限！"); }
                             }
-                            gllistUpateItemText(item, pt);
+                            //gllistUpateItemText(item, pt);
                            
                             pt.isAvalarm = checkBoxAlarm.Checked;
                             /*
@@ -263,6 +263,7 @@ namespace HGS
                             if ((pt.isAlarmwave || pt.isAlarmskip) && pt.Skip_pp == null && pt.Skip_pp > 0)
                                 MessageBox.Show("阈值不应为空且大于0！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             pt.Sound = comboBox_Sound.SelectedIndex;
+                            gllistUpateItemText(item, pt);
                         }
                         Save();
                         //toolStripButtonFind.Enabled = glc == 0;
@@ -288,11 +289,12 @@ namespace HGS
             {
                 //timerUpdateValue.Enabled = true;
             }
+            /*
             if (treeView.SelectedNode != null)
             {
                 TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(treeView.SelectedNode, MouseButtons.Left, 0, 0, 0);
                 treeView_NodeMouseClick(null, ee);
-            }
+            }*/
         }
 
         private void FormPointSet_FormClosed(object sender, FormClosedEventArgs e)

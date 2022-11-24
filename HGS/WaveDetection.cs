@@ -14,6 +14,11 @@ namespace HGS
         DequeSafe<int> qmin = new DequeSafe<int>();
         private int size = 128;//窗口size.
 
+        private 
+        //
+        //滤波器用,x(n)=a*x(n-1)+b*y(n+1)+(1-a-b)*y(n) a+b要小于1;
+        double a = 0.7f, b = 0.15f, x = 0, y1 = 0, y2 = 0;
+        //
         FFTWReal fft = new FFTWReal();
         int p = -1;
         public WaveDetection() { }
@@ -42,6 +47,12 @@ namespace HGS
             
         public void add(double d)
         {
+
+            ///滤波，初始化时约需要120个数据
+            y1 = y2;
+            y2 = d;
+            d = x = a * x + b * y1 + (1 - a - b) * y2;
+            //
             p++;
             int im = 0;
             qdata.Push(d);
@@ -75,34 +86,38 @@ namespace HGS
         }
         private double Max()
         {
-            if (qdata.Count <= 0) throw new Exception("没有数据！");
+            if (qdata.Count <= 0) 
+                throw new Exception("没有数据！");
             int start = p - size + 1;
             start = start >= 0 ? start : 0;
             return qdata[qmax.PeekFirst() - start];
         }
         private double Min()
         {
-            if (qdata.Count <= 0) throw new Exception("没有数据！");
+            if (qdata.Count <= 0) throw 
+                    new Exception("没有数据！");
             int start = p - size + 1;
             start = start >= 0 ? start : 0;
             return qdata[qmin.PeekFirst() - start];
         }
         private double[] Data()
         {
-            if (qdata.Count <= 0) return null;// throw new Exception("没有数据！");
+            if (qdata.Count < size) 
+                return null;
             return qdata.ToArray();
         }
         //返回极差
         public double DeltaP_P()
         {
-            if (qdata.Count <= 0) return 0;// throw new Exception("没有数据！");
+            if (qdata.Count < size) 
+                return 0;
             return Math.Abs(Max() - Min());
         }
         //数据跳变返回true，数据波动返回false;
         //调用前要保证数据极差异常，否则结果是错的。
         public wavestatus isWave()
         {
-            if (size < 64 || qdata.Count != size)
+            if (p < 144 || qdata.Count != size)//有滤波，数据量要20个左右才能稳定。
                 return wavestatus.error;
 
             double[] Spectrum = fft.Spectrum(qdata.ToArray(), true);

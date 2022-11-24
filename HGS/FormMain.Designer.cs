@@ -36,8 +36,8 @@
             this.报警记录ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.form1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dTW计算次数ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.静音ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tssL_error_nums = new System.Windows.Forms.ToolStripStatusLabel();
@@ -105,20 +105,19 @@
             this.dTW计算次数ToolStripMenuItem.Text = "DTW计算次数...";
             this.dTW计算次数ToolStripMenuItem.Click += new System.EventHandler(this.dTW计算次数ToolStripMenuItem_Click);
             // 
+            // 静音ToolStripMenuItem
+            // 
+            this.静音ToolStripMenuItem.Name = "静音ToolStripMenuItem";
+            this.静音ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.静音ToolStripMenuItem.Text = "静音";
+            this.静音ToolStripMenuItem.Click += new System.EventHandler(this.消音ToolStripMenuItem_Click);
+            // 
             // 退出ToolStripMenuItem
             // 
             this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
             this.退出ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.退出ToolStripMenuItem.Text = "退出(&X)";
             this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
-            // 
-            // 静音ToolStripMenuItem
-            // 
-            this.静音ToolStripMenuItem.Name = "静音ToolStripMenuItem";
-            this.静音ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.静音ToolStripMenuItem.Text = "静音";
-            this.静音ToolStripMenuItem.DropDownOpening += new System.EventHandler(this.静音ToolStripMenuItem_DropDownOpening);
-            this.静音ToolStripMenuItem.Click += new System.EventHandler(this.消音ToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
