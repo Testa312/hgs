@@ -165,7 +165,7 @@ namespace HGS
                         ob = pgreader["pointid_array"];
                         if (ob != DBNull.Value)
                         {
-                            ttag.UnionWith(new HashSet<int>((int[])ob));
+                            ttag.SensorUnionWith(new HashSet<int>((int[])ob));
                             //ttag.sisid_set = new HashSet<object>();
                             //ttag.sisid_set.UnionWith(Data.inst().GetSisIdSet(ttag.pointid_set));
                         }

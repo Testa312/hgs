@@ -32,7 +32,7 @@ namespace HGS
             return lsptid;
         }
         //取得计算点的相关点列表。
-        public static List<varlinktopoint> Sub_PointtoVarList(DeviceInfo di)
+        public static List<varlinktopoint> Point_Var_List(DeviceInfo di)
         {
             Refresh();
             //if (pt.pointsrc != pointsrc.calc) return null;

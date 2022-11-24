@@ -190,7 +190,7 @@ namespace HGS
                 }
                 if (Data.inst().hs_FormulaErrorPoint.Contains(calcpt)) continue;
 
-                calcpt.ps = GetCalcPointState(calcpt.listSisCalaExpPointID_main);
+                calcpt.ps = GetCalcPointState(calcpt.listSisCalcExpPointID_main);
 
                 try
                 {
@@ -250,7 +250,7 @@ namespace HGS
                 pt.Alarmifav = true;
                 if (pt.Alarmif.Trim().Length > 0)
                 {
-                    PointState alarmifps = GetCalcPointState(pt.listSisCalaExpPointID_alarmif);
+                    PointState alarmifps = GetCalcPointState(pt.listSisCalcExpPointID_alarmif);
 
                     try
                     {

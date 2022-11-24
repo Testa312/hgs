@@ -65,7 +65,7 @@ namespace HGS
                 if ((ptx.pointsrc == pointsrc.sis || (Auth.GetInst().LoginID == 0 || ptx.OwnerId == Auth.GetInst().LoginID || 
                     ptx.OwnerId == 0)) &&
                     ptx.nd.Contains(tSCB_ND.Text.Trim()) &&
-                    ptx.pn.Contains(tSTB_PN.Text.Trim()) && ptx.orgformula_main.Contains(tSTB_F.Text.Trim()))
+                    ptx.pn.Contains(tSTB_PN.Text.Trim()) && ptx.Orgformula_main.Contains(tSTB_F.Text.Trim()))
                 {
                     GLItem item = new GLItem(glacialList1);
                     gllistInitItemTextFromPoint(ptx,item);
@@ -171,7 +171,7 @@ namespace HGS
                 if (tn != null && tn.Text != "全部")
                 {
                     DeviceInfo tt = (DeviceInfo)tn.Tag;
-                    tt.UnionWith(hs_ptid);
+                    tt.SensorUnionWith(hs_ptid);
                     DataDeviceTree.UpdateNodetoDB(tn);
                 }
                 if (tn != null && hs_ptid.Count > 0)
@@ -363,7 +363,7 @@ namespace HGS
                         tB_boolAlarmInfo.Text = Point.ed;
                     buttonCalc.Enabled = (Point.pointsrc == pointsrc.calc) ? true : false;
 
-                    label_formula.Text = Point.orgformula_main;
+                    label_formula.Text = Point.Orgformula_main;
 
                     radioButton_true.Checked = Point.boolAlarmif;
                     radioButton_false.Checked = !Point.boolAlarmif;
@@ -416,7 +416,7 @@ namespace HGS
                     DeviceInfo tt = (DeviceInfo)tn.Tag;
                     HashSet<int> hs_id = new HashSet<int>();
                     hs_id.Add(calcpt.id);
-                    tt.UnionWith(hs_id);
+                    tt.SensorUnionWith(hs_id);
                     DataDeviceTree.UpdateNodetoDB(tn);
                 }
                 if (tn != null)
@@ -938,7 +938,7 @@ namespace HGS
                         if (myData.DragSourceNode != null && myData.DragSourceNode.Text != "全部")
                         {
                             DeviceInfo tt = (DeviceInfo)myData.DragSourceNode.Tag;
-                            tt.ExceptWith(myData.pointid_set);
+                            tt.SensorExceptWith(myData.pointid_set);
                             DataDeviceTree.UpdateNodetoDB(myData.DragSourceNode);
                         }
                     }
@@ -947,7 +947,7 @@ namespace HGS
 
                         DeviceInfo ttg = (DeviceInfo)DropNode.Tag;
 
-                        ttg.UnionWith(myData.pointid_set);
+                        ttg.SensorUnionWith(myData.pointid_set);
                        
                         DataDeviceTree.UpdateNodetoDB(DropNode);
                         TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(DropNode, MouseButtons.Left, 0, 0, 0);

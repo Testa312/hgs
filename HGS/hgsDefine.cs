@@ -190,11 +190,11 @@ namespace HGS
             get { return _Expression_ll; }
         }
         //计算子点id
-        private List<varlinktopoint> _lsCalcOrgSubPoint_ll = null;//原始参与计算点列表
-        public List<varlinktopoint> lsCalcOrgSubPoint_ll
+        private List<varlinktopoint> _lsVar_Point_ll = null;//原始参与计算点列表
+        public List<varlinktopoint> lsVar_Point_ll
         {
-            set { _lsCalcOrgSubPoint_ll = value; }
-            get { return _lsCalcOrgSubPoint_ll; }
+            set { _lsVar_Point_ll = value; }
+            get { return _lsVar_Point_ll; }
         }
         //
         //计算子点id用于进行计算点状态计算。
@@ -252,19 +252,19 @@ namespace HGS
             get { return _Expression_hl; }
         }
         //计算子点id
-        private List<varlinktopoint> _lsCalcOrgSubPoint_hl = null;//变量与点Id的对应列表
+        private List<varlinktopoint> _lsVartoPoint_hl = null;//变量与点Id的对应列表
         public List<varlinktopoint> lsCalcOrgSubPoint_hl
         {
-            set { _lsCalcOrgSubPoint_hl = value; }
-            get { return _lsCalcOrgSubPoint_hl; }
+            set { _lsVartoPoint_hl = value; }
+            get { return _lsVartoPoint_hl; }
         }
         //
         //用于进行计算点点状态计算。
-        private List<point> _listSisCalaExpPointID_hl = null; //参与公式计算的sis点列表。
+        private List<point> _listSisCalcExpPointID_hl = null; //参与公式计算的sis点列表。
         public List<point> listSisCalaExpPointID_hl
         {
-            set { _listSisCalaExpPointID_hl = value; }
-            get { return _listSisCalaExpPointID_hl; }
+            set { _listSisCalcExpPointID_hl = value; }
+            get { return _listSisCalcExpPointID_hl; }
         }
         //-----------------------------------------
         private double? _zh = null;//报警高2限
@@ -447,7 +447,7 @@ namespace HGS
         }
         //
         private string _Orgformula_main = "";//原始计算公式
-        public string orgformula_main
+        public string Orgformula_main
         {
             set {
                 if (_Orgformula_main != value)
@@ -471,19 +471,19 @@ namespace HGS
             get { return _Expression_main; }
         }
         //计算子点id
-        private List<varlinktopoint> _lsCalcOrgSubPoint_main = null;//变量与点Id的对应列表
+        private List<varlinktopoint> _lsVartoPoint_main = null;//变量与点Id的对应列表
         public List<varlinktopoint> lsCalcOrgSubPoint_main
         {
-            set { _lsCalcOrgSubPoint_main = value; }
-            get { return _lsCalcOrgSubPoint_main; }
+            set { _lsVartoPoint_main = value; }
+            get { return _lsVartoPoint_main; }
         }
         //
         //计算子点id用于进行计算点状态计算。
-        private List<point> _listSisCalaExpPointID_main = null;//参与公式计算的sis点列表。;
-        public List<point> listSisCalaExpPointID_main
+        private List<point> _listSisCalcExpPointID_main = null;//参与公式计算的sis点列表。;
+        public List<point> listSisCalcExpPointID_main
         {
-            set { _listSisCalaExpPointID_main = value; }
-            get { return _listSisCalaExpPointID_main; }
+            set { _listSisCalcExpPointID_main = value; }
+            get { return _listSisCalcExpPointID_main; }
         }
         //
         //报警用，不存入数据库                                                            
@@ -569,19 +569,19 @@ namespace HGS
             get { return _Expression_alarmif; }
         }
         //计算子点id
-        private List<varlinktopoint> _lscalcOrgSubPoint_alarmif = null; //变量与点Id的对应列表
+        private List<varlinktopoint> _lsVartoPoint_alarmif = null; //变量与点Id的对应列表
         public List<varlinktopoint> lsCalcOrgSubPoint_alarmif
         {
-            set { _lscalcOrgSubPoint_alarmif = value; }
-            get { return _lscalcOrgSubPoint_alarmif; }
+            set { _lsVartoPoint_alarmif = value; }
+            get { return _lsVartoPoint_alarmif; }
         }
         //
         //用于进行计算点点状态计算。
-        private List<point> _listSiscalaExpPointID_alarmif = null;// 参与公式计算的sis点列表。
-        public List<point> listSisCalaExpPointID_alarmif
+        private List<point> _listSisCalcExpPointID_alarmif = null;// 参与公式计算的sis点列表。
+        public List<point> listSisCalcExpPointID_alarmif
         {
-            set { _listSiscalaExpPointID_alarmif = value; }
-            get { return _listSiscalaExpPointID_alarmif; }
+            set { _listSisCalcExpPointID_alarmif = value; }
+            get { return _listSisCalcExpPointID_alarmif; }
         }
         //-------------------
         private bool _isAlarmskip = false;

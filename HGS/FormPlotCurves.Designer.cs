@@ -242,7 +242,7 @@
             glColumn3.NumericSort = false;
             glColumn3.Text = "下限";
             glColumn3.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
-            glColumn3.Width = 100;
+            glColumn3.Width = 80;
             glColumn4.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn4.CheckBoxes = false;
             glColumn4.ImageIndex = -1;
@@ -250,7 +250,7 @@
             glColumn4.NumericSort = false;
             glColumn4.Text = "上限";
             glColumn4.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
-            glColumn4.Width = 100;
+            glColumn4.Width = 80;
             glColumn5.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn5.CheckBoxes = false;
             glColumn5.ImageIndex = -1;

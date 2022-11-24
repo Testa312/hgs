@@ -33,9 +33,9 @@ namespace HGS
             PointNums = 0;
             timer1.Enabled = false;
             List<GLItem> lsItmems = new List<GLItem>();
-            if (CalcPoint.lsCalcOrgSubPoint_ll != null)
+            if (CalcPoint.lsVar_Point_ll != null)
             {
-                foreach (varlinktopoint subpt in CalcPoint.lsCalcOrgSubPoint_ll)
+                foreach (varlinktopoint subpt in CalcPoint.lsVar_Point_ll)
                 {
                     GLItem itemn = new GLItem(glacialList1);
                     lsItmems.Add(itemn);
@@ -153,7 +153,7 @@ namespace HGS
             HashSet<string> hsVar = new HashSet<string>();
             CalcEngine.CalcEngine ce = new CalcEngine.CalcEngine();
             point Point = new point(-1,pointsrc.calc);
-            Point.lsCalcOrgSubPoint_ll = new List<varlinktopoint>();
+            Point.lsVar_Point_ll = new List<varlinktopoint>();
             //-----
             //可加内部变量
             //hsVar.Add(???);
@@ -180,7 +180,7 @@ namespace HGS
                 varlinktopoint subpt = new varlinktopoint();
                 subpt.varname = item.SubItems["VarName"].Text;
                 subpt.sub_id = it.id;
-                Point.lsCalcOrgSubPoint_ll.Add(subpt);
+                Point.lsVar_Point_ll.Add(subpt);
                 ce.Variables[subpt.varname] = Data.inst().cd_Point[it.id].av;//测试用。
             }
             if (textBoxmDiscription.Text.Length < 1)
@@ -208,7 +208,7 @@ namespace HGS
                 Dovalidity(false);
                 CalcPoint.Orgformula_ll = textBoxFormula.Text.Trim().Replace("\r\n", ""); ;
 
-                CalcPoint.lsCalcOrgSubPoint_ll = new List<varlinktopoint>();
+                CalcPoint.lsVar_Point_ll = new List<varlinktopoint>();
 
                 foreach (GLItem item in glacialList1.Items)
                 {
@@ -216,7 +216,7 @@ namespace HGS
                     varlinktopoint subpt = new varlinktopoint();
                     subpt.varname = item.SubItems["VarName"].Text;
                     subpt.sub_id = it.id;
-                    CalcPoint.lsCalcOrgSubPoint_ll.Add(subpt);
+                    CalcPoint.lsVar_Point_ll.Add(subpt);
                 }
             }
             catch (Exception ee)

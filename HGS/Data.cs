@@ -134,7 +134,7 @@ namespace HGS
         static HashSet<int> loopvar = new HashSet<int>();
         public string  ExpandOrgFormula_Main(point pt)
         {
-            if ( pt.orgformula_main.Length == 0) return "";
+            if ( pt.Orgformula_main.Length == 0) return "";
             if (loopvar.Contains(pt.id))
             {
                 StringBuilder sb = new StringBuilder();
@@ -146,7 +146,7 @@ namespace HGS
                 throw new ArgumentException(sb.Append("循环变量引用！").ToString());
             }
             loopvar.Add(pt.id);
-            string orgf = pt.orgformula_main;
+            string orgf = pt.Orgformula_main;
             if (pt.lsCalcOrgSubPoint_main != null)
             {
                 ExpandOrgFormulaSub(ref orgf, pt.lsCalcOrgSubPoint_main);
@@ -191,9 +191,9 @@ namespace HGS
         {
             if (pt.Orgformula_ll.Length == 0) return "";
             string orgf = pt.Orgformula_ll;
-            if (pt.lsCalcOrgSubPoint_ll != null)
+            if (pt.lsVar_Point_ll != null)
             {
-                ExpandOrgFormulaSub(ref orgf, pt.lsCalcOrgSubPoint_ll);
+                ExpandOrgFormulaSub(ref orgf, pt.lsVar_Point_ll);
             }
             return orgf;
         }
@@ -262,9 +262,9 @@ namespace HGS
         //返回LL公式展开成sis点的列表。
         public List<point> ExpandOrgPointToSisPoint_LL(point pt)
         {
-            if (pt.lsCalcOrgSubPoint_ll == null) return null;
+            if (pt.lsVar_Point_ll == null) return null;
             List<point> ExpandPoint = new List<point>();
-            ExpandOrgPointToSisPoinSub(ExpandPoint, pt.lsCalcOrgSubPoint_ll);
+            ExpandOrgPointToSisPoinSub(ExpandPoint, pt.lsVar_Point_ll);
             return ExpandPoint;
         }
         //返回AlarmIf公式展开成sis点的列表。
@@ -283,7 +283,7 @@ namespace HGS
                 pt.lsCalcOrgSubPoint_main = VartoPointTable.Sub_PointtoVarList(pt, cellid.main);
             }
             pt.lsCalcOrgSubPoint_hl = VartoPointTable.Sub_PointtoVarList(pt, cellid.hl);
-            pt.lsCalcOrgSubPoint_ll = VartoPointTable.Sub_PointtoVarList(pt, cellid.ll);
+            pt.lsVar_Point_ll = VartoPointTable.Sub_PointtoVarList(pt, cellid.ll);
             pt.lsCalcOrgSubPoint_alarmif = VartoPointTable.Sub_PointtoVarList(pt, cellid.alarmif);
             
         }
@@ -292,11 +292,11 @@ namespace HGS
         {
             if (pt.pointsrc == pointsrc.calc)
             {
-                pt.listSisCalaExpPointID_main = ExpandOrgPointToSisPoint_Main(pt);
+                pt.listSisCalcExpPointID_main = ExpandOrgPointToSisPoint_Main(pt);
             }
             if (pt.lsCalcOrgSubPoint_hl != null) pt.listSisCalaExpPointID_hl = ExpandOrgPointToSisPoint_HL(pt);
-            if (pt.lsCalcOrgSubPoint_ll != null) pt.listSisCalaExpPointID_ll = ExpandOrgPointToSisPoint_LL(pt);
-            if (pt.lsCalcOrgSubPoint_alarmif != null) pt.listSisCalaExpPointID_alarmif = ExpandOrgPointToSisPoint_AlarmIf(pt);          
+            if (pt.lsVar_Point_ll != null) pt.listSisCalaExpPointID_ll = ExpandOrgPointToSisPoint_LL(pt);
+            if (pt.lsCalcOrgSubPoint_alarmif != null) pt.listSisCalcExpPointID_alarmif = ExpandOrgPointToSisPoint_AlarmIf(pt);          
         }
         public void ParseFormula(point pt)
         {
@@ -305,7 +305,7 @@ namespace HGS
             pt.Expression_ll = null;
             if (pt.pointsrc == pointsrc.calc)
             {
-                if (pt.orgformula_main.Length > 0)
+                if (pt.Orgformula_main.Length > 0)
                 {
                     pt.Sisformula_main = ExpandOrgFormula_Main(pt);
                     pt.Expression_main = _ce.Parse(pt.Sisformula_main);
@@ -419,7 +419,7 @@ namespace HGS
 
             GetinsertsubSql(sb, pt.lsCalcOrgSubPoint_hl, pt, cellid.hl);
 
-            GetinsertsubSql(sb, pt.lsCalcOrgSubPoint_ll, pt, cellid.ll);
+            GetinsertsubSql(sb, pt.lsVar_Point_ll, pt, cellid.ll);
 
             GetinsertsubSql(sb, pt.lsCalcOrgSubPoint_alarmif, pt, cellid.alarmif);
         }
@@ -430,7 +430,7 @@ namespace HGS
             foreach (point pt in hs_ModifyPoint)
             {
                 if (pt.id <= 0) continue;
-                pt.listSisCalaExpPointID_main = ExpandOrgPointToSisPoint_Main(pt);
+                pt.listSisCalcExpPointID_main = ExpandOrgPointToSisPoint_Main(pt);
 
                 sb.AppendLine(string.Format(@"update point set tv={0},bv={1},ll={2},hl={3},zl={4},zh={5},mt='{6}',eu='{7}',"+
                                          "pn='{8}',orgformula_main='{9}',fm={10},iscalc = {11}," +
@@ -439,7 +439,7 @@ namespace HGS
                                                    "skip_pp = {22},dtw_start_th = {23},sound = {24} where id = {25};",
                                         Functions.dtoNULL(pt.tv), Functions.dtoNULL(pt.bv), Functions.dtoNULL(pt.ll), Functions.dtoNULL(pt.hl),
                                         Functions.dtoNULL(pt.zl), Functions.dtoNULL(pt.zh),
-                                        DateTime.Now,pt.eu, pt.pn, pt.orgformula_main,pt.fm,
+                                        DateTime.Now,pt.eu, pt.pn, pt.Orgformula_main,pt.fm,
                                         pt.isCalc,pt.isAvalarm, pt.ed,pt.isboolvAlarm,pt.boolAlarminfo, pt.orgformula_hl,
                                         pt.Orgformula_ll,pt.Alarmif,pt.boolAlarmif,pt.isAlarmskip,pt.isAlarmwave, Functions.dtoNULL(pt.Skip_pp),
                                         ArraytoString(pt.Dtw_start_th),pt.Sound, pt.id));
@@ -449,7 +449,7 @@ namespace HGS
             foreach (point pt in hs_NewPoint)
             {
                 if (pt.id <= 0) continue;
-                pt.listSisCalaExpPointID_main = ExpandOrgPointToSisPoint_Main(pt);
+                pt.listSisCalcExpPointID_main = ExpandOrgPointToSisPoint_Main(pt);
 
                 sb.AppendLine(string.Format(@"insert into point (id,nd,pn,ed,eu,tv,bv,ll,hl,zl,"+
                                             "zh,id_sis,pointsrc,mt,ownerid,orgformula_main,fm,iscalc,isavalarm,isboolv,boolalarminfo," +
@@ -459,7 +459,7 @@ namespace HGS
                                             "{26},{27},{28},{29});",
                                     pt.id, pt.nd, pt.pn, pt.ed, pt.eu, Functions.dtoNULL(pt.tv), Functions.dtoNULL(pt.bv), 
                                     Functions.dtoNULL(pt.ll), Functions.dtoNULL(pt.hl), Functions.dtoNULL(pt.zl),
-                                    Functions.dtoNULL(pt.zh), pt.Id_sis,(int)pt.pointsrc, DateTime.Now, Auth.GetInst().LoginID, pt.orgformula_main,
+                                    Functions.dtoNULL(pt.zh), pt.Id_sis,(int)pt.pointsrc, DateTime.Now, Auth.GetInst().LoginID, pt.Orgformula_main,
                                     pt.fm,pt.isCalc,pt.isAvalarm,pt.isboolvAlarm,pt.boolAlarminfo, pt.orgformula_hl, pt.Orgformula_ll,pt.Alarmif,
                                     pt.boolAlarmif,pt.isAlarmskip,pt.isAlarmwave, Functions.dtoNULL(pt.Skip_pp), ArraytoString(pt.Dtw_start_th),pt.Sound));
                 GetinsertsubSql(sb, pt);

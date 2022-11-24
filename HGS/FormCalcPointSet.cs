@@ -71,7 +71,7 @@ namespace HGS
             }
             glacialList1.Items.AddRange(lsItmems.ToArray());
             onlyid.Add(CalcPoint.id);//排除自已。
-            textBoxFormula.Text = CalcPoint.orgformula_main;
+            textBoxFormula.Text = CalcPoint.Orgformula_main;
             textBoxmDiscription.Text = CalcPoint.ed;
             comboBox_eu.Text = CalcPoint.eu;
             checkBoxCalc.Checked = CalcPoint.isCalc;
@@ -198,15 +198,15 @@ namespace HGS
             {
                 throw new Exception("计算点的的描述不能为空！");
             }
-            Point.orgformula_main = textBoxFormula.Text.Trim().Replace("\r\n","");//去掉回车
+            Point.Orgformula_main = textBoxFormula.Text.Trim().Replace("\r\n","");//去掉回车
             Point.fm = (byte)numericUpDown.Value;
             double? orgv = null;
-            if(Point.orgformula_main.Length > 0)
-                orgv = Math.Round(Convert.ToDouble(ce.Evaluate(Point.orgformula_main)), Point.fm); //验证表达式的合法性
+            if(Point.Orgformula_main.Length > 0)
+                orgv = Math.Round(Convert.ToDouble(ce.Evaluate(Point.Orgformula_main)), Point.fm); //验证表达式的合法性
                                                //
             ce.Variables = Data.inst().Variables;
             double? expv = null;
-            if(Point.orgformula_main.Length > 0)
+            if(Point.Orgformula_main.Length > 0)
                 expv = Math.Round(Convert.ToDouble(ce.Evaluate(Data.inst().ExpandOrgFormula_Main(Point))), Point.fm);//验证表达式展开sis点的合法性。
             if(rsl)
                 MessageBox.Show(string.Format("原公式计算值＝{0}\n展开公式计算值＝{1}",orgv,expv), 
@@ -219,7 +219,7 @@ namespace HGS
                 Dovalidity(false);
                 CalcPoint = new point(Data.inst().GetNextPointId(),pointsrc.calc);
                 CalcPoint.ed = textBoxmDiscription.Text;
-                CalcPoint.orgformula_main = textBoxFormula.Text.Trim().Replace("\r\n", "");//去掉回车
+                CalcPoint.Orgformula_main = textBoxFormula.Text.Trim().Replace("\r\n", "");//去掉回车
                 CalcPoint.eu = comboBox_eu.Text;
                 CalcPoint.pn = textBoxPN.Text;
                 CalcPoint.OwnerId = Auth.GetInst().LoginID;

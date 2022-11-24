@@ -140,7 +140,7 @@ namespace HGS
 
             List<object> siskeys = new List<object>();
             CalcEngine.CalcEngine ce = new CalcEngine.CalcEngine();
-            foreach (point sispt in calcpt.listSisCalaExpPointID_main)
+            foreach (point sispt in calcpt.listSisCalcExpPointID_main)
             {
                 siskeys.Add(Convert.ToInt64(sispt.Id_sis));
             }
