@@ -21,6 +21,9 @@ namespace HGS
         //
         OPAPI.Connect sisconn_temp = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
         Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
+
+        public delegate void MyDelegate();
+        public event MyDelegate MessageEvent;//也可不要event
         public FormPlotCurves(HashSet<int> hsPointid, DateTime begin, DateTime end, bool bAdmin = false )
         {
             this.hsPointid = hsPointid;
@@ -300,7 +303,10 @@ namespace HGS
                 }
             }
             if (glacialList1.Items.SelectedItems.Count > 0)
+            {
                 Data.inst().SavetoPG();
+                MessageEvent();
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -316,13 +322,7 @@ namespace HGS
 
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
-
-            ToolStripMenuItem tmi = (ToolStripMenuItem)sender;
-            ToolStripItem[] tmx = tmi.DropDownItems.Find("接受为报警高低限ToolStripMenuItem", false);
-            if (tmx.Length > 0)
-            {
-                tmx[0].Enabled = glacialList1.Items.SelectedItems.Count > 0;
-            }
+            接受为报警高低限ToolStripMenuItem.Visible  = glacialList1.Items.SelectedItems.Count > 0;
         }
     }
 }

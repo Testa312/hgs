@@ -629,13 +629,13 @@ namespace HGS
             get { return _max_skip_pp; }
         }
         */
-        private WaveDetection _WaveDetection = null;
-        public WaveDetection WaveDetection
+        private WaveDetector_3S _WaveDetection = null;
+        public WaveDetector_3S WaveDetection
         {
             set { _WaveDetection = value; }
             get { return _WaveDetection; }
         }
-        private WaveDetection.wavestatus spstatus = WaveDetection.wavestatus.error;
+        private WaveDetector_3S.wavestatus spstatus = WaveDetector_3S.wavestatus.error;
         private int _datanums = -1;
 
         private double? _av = null;//点值，实时或计算。
@@ -707,7 +707,7 @@ namespace HGS
             _isAlarmwave = (bool)pgreader["isalarmwave"];
             _Sound = (int)pgreader["sound"];
             if ((_isAlarmwave || _isAlarmskip) && _Skip_pp != null)
-                _WaveDetection = new WaveDetection();
+                _WaveDetection = new WaveDetector_3S(1);
             //
             object ob = pgreader["dtw_start_th"];
             if (ob != DBNull.Value)
@@ -893,6 +893,40 @@ namespace HGS
             {"Wave", "波动报警！"       },
             {"Bad", "坏点！"       }};
         //---------------------
+        private void SetAlarmBit_H(ref uint alarmbit,int bitnum,double? th)
+        {
+            const double RATION = 0.98f;
+            if (th != null)
+            {
+                if (_av > th)
+                {
+                    alarmbit |= (uint)1 << bitnum;
+                }
+                else if (_av < th * RATION)
+                {
+                    alarmbit &= ~(uint)1 << bitnum;
+                }
+            }
+            else
+                alarmbit &= ~(uint)1 << bitnum;
+        }
+        private void SetAlarmBit_L(ref uint alarmbit, int bitnum, double? th)
+        {
+            const double RATION = 1.02f;
+            if (th != null)
+            {
+                if (_av < th)
+                {
+                    alarmbit |= (uint)1<< bitnum;
+                }
+                else if (_av > th * RATION)
+                {
+                    alarmbit &= ~(uint)1<< bitnum;
+                }
+            }
+            else
+                alarmbit &= ~(uint)1 << bitnum;
+        }
         public void AlarmCalc()
         {
             _datanums++;
@@ -917,7 +951,7 @@ namespace HGS
             {
                 if (_isboolvAlarm)
                 {
-                    bool blv = Convert.ToBoolean(av);
+                    bool blv = Convert.ToBoolean(_av);
 
                     if (blv == _boolAlarmif)
                     {
@@ -927,51 +961,31 @@ namespace HGS
                 }
                 else if (_isAvalarm)
                 {
-                    if (_zh != null && av > _zh)
-                    {
-                        AlarmBit |= (uint)1 << 3;
-                    }
-                    if (_hl != null && av > _hl)
-                    {
-                        AlarmBit |= (uint)1 << 2;
-                    }
-                    if (_tv != null && av > _tv)
-                    {
-                        AlarmBit |= (uint)1 << 4;
-                    }
+                    SetAlarmBit_H(ref AlarmBit, 3, _zh);
+                    SetAlarmBit_H(ref AlarmBit, 2, _hl);
+                    SetAlarmBit_H(ref AlarmBit, 4, _tv);
 
-                    if (zl != null && av < zl)
-                    {
-                        AlarmBit |= (uint)1;
-                    }
-                    if (_ll != null && av < _ll)
-                    {
-                        AlarmBit |= (uint)1 << 1;
-                    }
-                    if (_bv != null && av < _bv)
-                    {
-                        AlarmBit |= (uint)1 << 5;
-                    }
-                    //
+                    SetAlarmBit_L(ref AlarmBit, 0, _zl);
+                    SetAlarmBit_L(ref AlarmBit, 1, _ll);
+                    SetAlarmBit_L(ref AlarmBit, 5, _bv);
+
                     if (_id % 10 == _datanums % 10)
                     {
                         uint temp = ~((uint)3 << 7);
                         AlarmBit &= temp;
-                        bool boolAlarmif = (_isAlarmskip || _isAlarmwave) && _Skip_pp != null;
-                        if (boolAlarmif)
-                            if (_Skip_pp <= _WaveDetection.DeltaP_P())
+                        //bool boolAlarmif = (_isAlarmskip || _isAlarmwave) && ;
+                        if (_Skip_pp != null && (_isAlarmskip || _isAlarmwave))// && _Skip_pp <= _WaveDetection.DeltaP_P())
+                        {
+                            spstatus = _WaveDetection.IsNormal(_Skip_pp??0);//.isWave();
+                            if (spstatus == WaveDetector_3S.wavestatus.surge && _isAlarmskip)
                             {
-
-                                spstatus = _WaveDetection.isWave();
-                                if (spstatus == WaveDetection.wavestatus.surge)
-                                {
-                                    AlarmBit |= (uint)1 << 7;
-                                }
-                                else if (spstatus == WaveDetection.wavestatus.wave)
-                                {
-                                    AlarmBit |= (uint)1 << 8;
-                                }
+                                AlarmBit |= (uint)1 << 7;
                             }
+                            else if (spstatus == WaveDetector_3S.wavestatus.wave && _isAlarmwave)
+                            {
+                                AlarmBit |= (uint)1 << 8;
+                            }
+                        }
                     }
                 }
             }

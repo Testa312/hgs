@@ -7,21 +7,19 @@ using Queues;
 namespace HGS
 {
     //滑动窗口取极值
-    public class WaveDetection
+    public class WaveDetection_x
     {
         DequeSafe<double> qdata = new DequeSafe<double>();
         DequeSafe<int> qmax = new DequeSafe<int>();
         DequeSafe<int> qmin = new DequeSafe<int>();
         private int size = 128;//窗口size.
 
-        private 
-        //
         //滤波器用,x(n)=a*x(n-1)+b*y(n+1)+(1-a-b)*y(n) a+b要小于1;
         double a = 0.7f, b = 0.15f, x = 0, y1 = 0, y2 = 0;
         //
         FFTWReal fft = new FFTWReal();
         int p = -1;
-        public WaveDetection() { }
+        public WaveDetection_x() { }
         public enum wavestatus
         {
             surge,wave,error

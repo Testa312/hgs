@@ -323,7 +323,7 @@ namespace HGS
             if (lspointid != null)
             {
                 FormPlotCurves frta = new FormPlotCurves(lspointid,begin, end);
-                frta.Show();
+                frta.ShowDialog();
             }
         }
         private void glacialList_UP_DoubleClick(object sender, EventArgs e)

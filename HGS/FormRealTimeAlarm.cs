@@ -53,7 +53,7 @@ namespace HGS
                         if (!flag) break;
                     }
                     /*(pt.OwnerId == tsCB_class.SelectedIndex || tsCB_class.SelectedIndex == 0) &&*/
-                    if (ai._nd.Contains(tsCB_ND.Text.Trim()) && flag && ai._pn.Contains(tsTB_PN.Text.Trim()) && 
+                    if (flag && ai._nd.Contains(tsCB_ND.Text.Trim()) && flag && ai._pn.Contains(tsTB_PN.Text.Trim()) && 
                         ai._Info.Contains(tsTB_AI.Text.Trim())&& ai._path.Contains(path))
                     {
                         if (!hs_rec_realtime.Contains(ai))
@@ -102,7 +102,7 @@ namespace HGS
                         if (!flag) break;
                     }
                     /*(pt.OwnerId == tsCB_class.SelectedIndex || tsCB_class.SelectedIndex == 0) &&*/
-                    if (ai._nd.Contains(tsCB_ND.Text.Trim()) && flag && ai._pn.Contains(tsTB_PN.Text.Trim()) && 
+                    if (flag && ai._nd.Contains(tsCB_ND.Text.Trim()) && flag && ai._pn.Contains(tsTB_PN.Text.Trim()) && 
                         ai._Info.Contains(tsTB_AI.Text.Trim()) && ai._path.Contains(path))
                     {
                         if (!hs_rec_realtime.Contains(ai))
@@ -347,7 +347,7 @@ namespace HGS
             if (pointid != null)
             {
                 FormPlotCurves frta = new FormPlotCurves(pointid, begin, end);
-                frta.Show();
+                frta.ShowDialog();
             }
         }
     

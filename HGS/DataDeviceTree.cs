@@ -192,7 +192,7 @@ namespace HGS
                 StringBuilder sb = new StringBuilder();
 
                 sb.AppendLine(string.Format(@"insert into devicetree (id,nodename,path,alarm_th_dis,sort,pointid_array,sound,nd,pn,alarmif)" +
-                                    " values ({0},'{1}','{2}',{3},{4},{5},{6},'{7}','{8}');",
+                                    " values ({0},'{1}','{2}',{3},{4},{5},{6},'{7}','{8}','{9}');",
                                     tag.id, tag.Name, tag.path,ArraytoString(tag.Alarm_th_dis), tag.sort, GetNodeArray(tn),
                                     tag.Sound,tag.nd,tag.pn,tag.Orgformula_If));
                 GetinsertsubSql(sb, tag);

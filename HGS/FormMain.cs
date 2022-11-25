@@ -349,19 +349,13 @@ namespace HGS
 
         private void toolStripMenuItem1_DropDownOpening(object sender, EventArgs e)
         {
-
-            ToolStripMenuItem tmi = (ToolStripMenuItem)sender;
-            ToolStripItem[] tmx = tmi.DropDownItems.Find("静音ToolStripMenuItem",false);
-            if (tmx.Length > 0)
+            if (AlarmSet.GetInst().bPlay)
             {
-                if (AlarmSet.GetInst().bPlay)
-                {
-                    tmx[0].Text = "静音";
-                }
-                else
-                {
-                    tmx[0].Text = "取消静音";
-                }
+                静音ToolStripMenuItem.Text = "静音";
+            }
+            else
+            {
+                静音ToolStripMenuItem.Text = "取消静音";
             }
         }
     }

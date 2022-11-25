@@ -45,6 +45,7 @@ namespace HGS
                         flag = flag && ptx.ed.Contains(filtes[i]);
                         if (!flag) break;
                     }
+                    if (!flag) continue;
                     if (ptx.nd.Contains(tSCBNode.Text.Trim()) && flag &&
                         ptx.pn.Contains(tSTBPN.Text.Trim()))
                     {

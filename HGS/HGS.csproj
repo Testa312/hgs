@@ -355,9 +355,10 @@
     <Compile Include="SharpFFTW\Transform.cs" />
     <Compile Include="SisConnect.cs" />
     <Compile Include="VartoDeviceTable.cs" />
-    <Compile Include="WaveDetection.cs" />
+    <Compile Include="WaveDetection_fft.cs" />
     <Compile Include="Dtw_Queues.cs" />
     <Compile Include="VartoPointTable.cs" />
+    <Compile Include="WaveDetector_3S.cs" />
     <Compile Include="XmlConst.cs" />
     <Compile Include="XmlSettings.cs" />
     <Compile Include="XmlSettingsProperty.cs" />

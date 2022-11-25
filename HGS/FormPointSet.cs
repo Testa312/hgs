@@ -20,6 +20,8 @@ namespace HGS
 
         OPAPI.Connect sisconn_temp = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
         Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
+
+        List<GLItem> lsPlotItem = new List<GLItem>();
         public FormPointSet()
         {
             InitializeComponent();
@@ -57,7 +59,8 @@ namespace HGS
                     flag = flag && ptx.ed.Contains(filtes[i]);
                     if (!flag) break;
                 }
-                if ((ptx.pointsrc == pointsrc.sis || (Auth.GetInst().LoginID == 0 || ptx.OwnerId == Auth.GetInst().LoginID || 
+
+                if (flag && (ptx.pointsrc == pointsrc.sis || (Auth.GetInst().LoginID == 0 || ptx.OwnerId == Auth.GetInst().LoginID || 
                     ptx.OwnerId == 0)) &&
                     ptx.nd.Contains(tSCB_ND.Text.Trim()) &&
                     ptx.pn.Contains(tSTB_PN.Text.Trim()) && ptx.Orgformula_main.Contains(tSTB_F.Text.Trim()))
@@ -178,14 +181,14 @@ namespace HGS
                 
             }
         }
-        private void buttonSet_Click(object sender, EventArgs e)
+        private void ThSet()
         {
             int glc = glacialList1.SelectedItems.Count;
             if (glc > 0)
             {
                 try
                 {
-                    if (glc == 1 || MessageBox.Show("是否更改所有选择的模拟量报警值？", "提示", 
+                    if (glc == 1 || MessageBox.Show("是否更改所有选择的模拟量报警值？", "提示",
                         MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
                         foreach (GLItem item in glacialList1.SelectedItems)
@@ -199,7 +202,7 @@ namespace HGS
                             { pt.zl = double.Parse(textBoxZL.Text); lsav.Add(Convert.ToDouble(pt.zl)); }
                             else pt.zl = null;
 
-                            if (textBoxLL.Text.Length > 0 && 
+                            if (textBoxLL.Text.Length > 0 &&
                                 pt.Orgformula_ll.Length == 0) { pt.ll = double.Parse(textBoxLL.Text); lsav.Add(Convert.ToDouble(pt.ll)); }
                             else pt.ll = null;
 
@@ -208,16 +211,16 @@ namespace HGS
 
                             if (textBoxTV.Text.Length > 0)
                             { pt.tv = double.Parse(textBoxTV.Text);/*lsav.Add(Convert.ToDouble(pt.tv));*/}
-                            else pt.tv = null;                         
+                            else pt.tv = null;
 
                             if (textBoxHL.Text.Length > 0 &&
-                                pt.orgformula_hl.Length == 0){pt.hl = double.Parse(textBoxHL.Text); lsav.Add(Convert.ToDouble(pt.hl)); }
+                                pt.orgformula_hl.Length == 0) { pt.hl = double.Parse(textBoxHL.Text); lsav.Add(Convert.ToDouble(pt.hl)); }
                             else pt.hl = null;
 
                             if (textBoxZH.Text.Length > 0)
                             { pt.zh = double.Parse(textBoxZH.Text); lsav.Add(Convert.ToDouble(pt.zh)); }
                             else pt.zh = null;
-                            for(int i = 1; i< lsav.Count;i++)
+                            for (int i = 1; i < lsav.Count; i++)
                             {
                                 if (lsav[i - 1] > lsav[i]) { throw new Exception("报警数值大小应按报警高低限值排序！"); }
                             }
@@ -226,7 +229,7 @@ namespace HGS
                                 if (pt.bv > pt.tv) { throw new Exception("量程上限应大于量程下限！"); }
                             }
                             //gllistUpateItemText(item, pt);
-                           
+
                             pt.isAvalarm = checkBoxAlarm.Checked;
                             /*
                             if (!pt.isAvalarm)
@@ -238,12 +241,12 @@ namespace HGS
                             }
                             */
                             pt.isboolvAlarm = checkBoxbool.Checked;
-                            if(glc <=1 ) 
+                            if (glc <= 1)
                                 pt.boolAlarminfo = tB_boolAlarmInfo.Text;
                             pt.boolAlarmif = radioButton_true.Checked;
 
                             if (textBox_pp.Text.Length > 0)
-                            { pt.Skip_pp = double.Parse(textBox_pp.Text);}
+                            { pt.Skip_pp = double.Parse(textBox_pp.Text); }
                             else pt.Skip_pp = null;
                             pt.isAlarmskip = checkBox_isSkip.Checked;
                             pt.isAlarmwave = checkBox_isWave.Checked;
@@ -252,11 +255,11 @@ namespace HGS
                             {
                                 if (pt.WaveDetection == null)
                                 {
-                                    pt.WaveDetection = new WaveDetection();
-                                }                               
-                            } 
-                            else if(pt.WaveDetection != null)
-                            {                               
+                                    pt.WaveDetection = new WaveDetector_3S(1);
+                                }
+                            }
+                            else if (pt.WaveDetection != null)
+                            {
                                 pt.WaveDetection.Clear();
                                 pt.WaveDetection = null;
                             }
@@ -267,13 +270,17 @@ namespace HGS
                         }
                         Save();
                         //toolStripButtonFind.Enabled = glc == 0;
-                    }                  
+                    }
                 }
                 catch (Exception ee)
                 {
                     MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+        private void buttonSet_Click(object sender, EventArgs e)
+        {
+            ThSet();
         }   
         private void Save()
         {
@@ -339,58 +346,59 @@ namespace HGS
             catch (Exception)
             { }
         }
+        private void Displayset(point Point)
+        {
+            if (Point == null) return;
+            textBoxTV.Text = Point.tv.ToString();
+            textBoxBV.Text = Point.bv.ToString();
+            textBoxLL.Text = Point.ll.ToString();
+            textBoxHL.Text = Point.hl.ToString();
+            textBoxZL.Text = Point.zl.ToString();
+            textBoxZH.Text = Point.zh.ToString();
+            checkBoxAlarm.Checked = Point.isAvalarm;
+            checkBoxbool.Checked = Point.isboolvAlarm;
+            tB_boolAlarmInfo.Text = Point.boolAlarminfo;
+            if (Point.boolAlarminfo.Length <= 0)
+                tB_boolAlarmInfo.Text = Point.ed;
+            buttonCalc.Enabled = (Point.pointsrc == pointsrc.calc) ? true : false;
+
+            label_formula.Text = Point.Orgformula_main;
+
+            radioButton_true.Checked = Point.boolAlarmif;
+            radioButton_false.Checked = !Point.boolAlarmif;
+
+            checkBox_isSkip.Checked = Point.isAlarmskip;
+            checkBox_isWave.Checked = Point.isAlarmwave;
+            textBox_pp.Text = Point.Skip_pp.ToString();
+            //
+            button_HL.ForeColor = Color.Black;
+            button_LL.ForeColor = Color.Black;
+            if (Point.orgformula_hl.Length > 0)
+            {
+                button_HL.ForeColor = Color.Red;
+            }
+            if (Point.Orgformula_ll.Length > 0)
+            {
+                button_LL.ForeColor = Color.Red;
+            }
+            textBoxHL.Enabled = Point.orgformula_hl.Length == 0;
+            textBoxLL.Enabled = Point.Orgformula_ll.Length == 0;
+
+            buttonAlarmIf.ForeColor = Color.Black;
+            if (Point.Alarmif.Length > 0)
+            {
+                buttonAlarmIf.ForeColor = Color.Red;
+            }
+            comboBox_Sound.SelectedIndex = Point.Sound;
+        }
         private void glacialList1_Click(object sender, EventArgs e)
         {
             if (glacialList1.SelectedItems.Count == 1)
             {
                 GLItem item = (GLItem)glacialList1.SelectedItems[0];
-                //itemtag it = (itemtag)(item.Tag);
-
                 point Point = (point)(item.Tag);
-                //if (Data.inst().cd_Point.TryGetValue(it.id, out Point))
-                {
-                    textBoxTV.Text = Point.tv.ToString();
-                    textBoxBV.Text = Point.bv.ToString();
-                    textBoxLL.Text = Point.ll.ToString();
-                    textBoxHL.Text = Point.hl.ToString();
-                    textBoxZL.Text = Point.zl.ToString();
-                    textBoxZH.Text = Point.zh.ToString();
-                    checkBoxAlarm.Checked = Point.isAvalarm;
-                    checkBoxbool.Checked = Point.isboolvAlarm;
-                    tB_boolAlarmInfo.Text = Point.boolAlarminfo;
-                    if (Point.boolAlarminfo.Length <= 0)
-                        tB_boolAlarmInfo.Text = Point.ed;
-                    buttonCalc.Enabled = (Point.pointsrc == pointsrc.calc) ? true : false;
-
-                    label_formula.Text = Point.Orgformula_main;
-
-                    radioButton_true.Checked = Point.boolAlarmif;
-                    radioButton_false.Checked = !Point.boolAlarmif;
-
-                    checkBox_isSkip.Checked = Point.isAlarmskip;
-                    checkBox_isWave.Checked = Point.isAlarmwave;
-                    textBox_pp.Text = Point.Skip_pp.ToString();
-                    //
-                    button_HL.ForeColor = Color.Black;
-                    button_LL.ForeColor = Color.Black;
-                    if (Point.orgformula_hl.Length > 0)
-                    {
-                        button_HL.ForeColor = Color.Red;
-                    }
-                    if (Point.Orgformula_ll.Length > 0)
-                    {
-                        button_LL.ForeColor = Color.Red;
-                    }
-                    textBoxHL.Enabled = Point.orgformula_hl.Length == 0;
-                    textBoxLL.Enabled = Point.Orgformula_ll.Length == 0;
-
-                    buttonAlarmIf.ForeColor = Color.Black;
-                    if (Point.Alarmif.Length > 0)
-                    {
-                        buttonAlarmIf.ForeColor = Color.Red;
-                    }
-                    comboBox_Sound.SelectedIndex = Point.Sound;
-                }
+                Displayset(Point);
+                tabControl.Tag = Point;
 
             }
             tabControl.Enabled = glacialList1.SelectedItems.Count > 0;
@@ -545,7 +553,7 @@ namespace HGS
 
         private void contextMenuStrip_gl_Opening(object sender, CancelEventArgs e)
         {
-            强制点ToolStripMenuItem.Visible = glacialList1.SelectedItems.Count == 1;
+            显示曲线ToolStripMenuItem.Visible = 强制点ToolStripMenuItem.Visible = glacialList1.SelectedItems.Count == 1;          
         }
 
         private void button_HL_Click(object sender, EventArgs e)
@@ -1017,17 +1025,20 @@ namespace HGS
 
         private void 显示曲线ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            lsPlotItem.Clear();
             HashSet<int> pointid = new HashSet<int>();
             foreach (GLItem item in glacialList1.SelectedItems)
             {
                 point it = (point)item.Tag;
                 pointid.Add(it.id);
+                lsPlotItem.Add(item);
             }
             if (pointid.Count > 0)
             {
                 DateTime end = SisConnect.GetSisSystemTime(sisconn_temp);
                 FormPlotCurves fc = new FormPlotCurves(pointid,end.AddMinutes(-15),end,true);
-                fc.Show();
+                fc.MessageEvent += DisplayMessage;
+                fc.ShowDialog(this);
             }
         }
         private void 显示队列曲线ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1040,9 +1051,20 @@ namespace HGS
                 //if (Data.inst().cd_Point.TryGetValue(it.id, out pt))
                 {
                     FormPlotQueues fpq = new FormPlotQueues(it);
-                    fpq.Show();
+                    fpq.ShowDialog(this);
                 }
             }
+        }
+        private void DisplayMessage()
+        {
+            foreach (GLItem item in lsPlotItem)
+            {
+                gllistUpateItemText(item, (point)item.Tag);
+
+            }
+            point pt = (point)tabControl.Tag;
+            Displayset(pt);
+            
         }
     }
 }
