@@ -195,7 +195,7 @@ namespace HGS
             {
                 DateTime begin = end.AddMinutes(-ScanSpan[i]);
                 //
-                Dictionary<int, PointData> dic_pd = GetPointData_dic(sisconj_keep,lsob, begin, end, 120);
+                Dictionary<int, PointData> dic_pd = GetPointData_dic(sisconj_keep,lsob, begin, end, 130);
                 foreach (PointData pd in dic_pd.Values)
                 {
                     float[] x = new float[pd.data.Count];
@@ -204,6 +204,35 @@ namespace HGS
                         x[m] = pd.data[pd.data.Count - 1 - m].Value;
                     }
                     dic_pt[pd.ID].initDeviceQ(i, x);
+                }
+            }
+
+        }
+        public static void InitSensorsWave3sQueues(Dictionary<int, point> dic_pt)
+        {
+
+            if (dic_pt == null)
+                throw new ArgumentException("初始化队列的点列表不能为空！");
+            int[] ScanSpan = new int[6] { 30, 60, 120, 240, 480, 960 };//秒数
+            HashSet<int> lsob = new HashSet<int>();
+            foreach (int id in dic_pt.Keys)
+            {
+                lsob.Add(id);
+            }
+            DateTime end = GetSisSystemTime(sisconj_keep).AddSeconds(-5);
+            for (int i = 0; i < ScanSpan.Length; i++)
+            {
+                DateTime begin = end.AddMinutes(-ScanSpan[i]);
+                //
+                Dictionary<int, PointData> dic_pd = GetPointData_dic(sisconj_keep, lsob, begin, end, 50);//?
+                foreach (PointData pd in dic_pd.Values)
+                {
+                    float[] x = new float[pd.data.Count];
+                    for (int m = 0; m < pd.data.Count; m++)
+                    {
+                        x[m] = pd.data[pd.data.Count - 1 - m].Value;
+                    }
+                    dic_pt[pd.ID].initWave3sQ(i, x);
                 }
             }
 

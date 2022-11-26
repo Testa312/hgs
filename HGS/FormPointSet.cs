@@ -1066,5 +1066,22 @@ namespace HGS
             Displayset(pt);
             
         }
+
+        private void 显示波动统计曲线ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            HashSet<int> pointid = new HashSet<int>();
+            foreach (GLItem item in glacialList1.SelectedItems)
+            {
+                point it = (point)item.Tag;
+                pointid.Add(it.id);
+                lsPlotItem.Add(item);
+            }
+            if (pointid.Count > 0)
+            {
+                DateTime end = SisConnect.GetSisSystemTime(sisconn_temp);
+                FormPlotCurves_Wave fc = new FormPlotCurves_Wave(pointid, end.AddMinutes(-15), end, true);
+                fc.ShowDialog(this);
+            }
+        }
     }
 }

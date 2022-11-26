@@ -42,11 +42,11 @@ namespace HGS
         {
             downsamples = DownSample < 1 ? 1 : DownSample;
         }
-        public double add(double d)
+        public double add(double d, bool bDS)
         {
             double first = 0;
             totalsampls++;
-            if ((totalsampls % downsamples == 0))
+            if (!bDS || (totalsampls % downsamples == 0))
             {
                 p++;               
                 int im;
@@ -97,6 +97,11 @@ namespace HGS
             start = start >= 0 ? start : 0;
             return qdata[qmin.PeekFirst() - start];
         }
+        public double[] Data()
+        {
+            if (qdata.Count != size) return null;
+            return qdata.ToArray();
+        }
         //返回极差
         public double DeltaP_P()
         {
@@ -127,14 +132,22 @@ namespace HGS
             step2 = new SlideWindow(DownSample);
             step3 = new SlideWindow(DownSample);
         }
-        public void add(double d)
+        public void add(double d, bool bDS)
         {
             ///滤波，初始化时约需要120个数据
             y1 = y2;
             y2 = d;
             d = x = a * x + b * y1 + (1 - a - b) * y2;
 
-            step3.add(step2.add(step1.add(d)));
+            step3.add(step2.add(step1.add(d, bDS), bDS), bDS);
+        }
+        public double[] Data()
+        {
+            List<double> rsl = new List<double>();
+            rsl.AddRange(step1.Data());
+            rsl.AddRange(step2.Data());
+            rsl.AddRange(step3.Data());
+            return rsl.ToArray();
         }
         public void Clear()
         {

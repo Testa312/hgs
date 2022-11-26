@@ -661,6 +661,8 @@ namespace HGS
             set { _dtw_start_max = value; }
             get { return _dtw_start_max; }
         }
+        private WaveDetector_3S[] _wd3s_Queues_Array = null;
+        private float[] _wd3s_th = null;//30s,60s,120s,240s,480s,960s 阈值。
         public point(int id, pointsrc ps)
         {
             _id = id;
@@ -714,6 +716,11 @@ namespace HGS
             {
                 _dtw_start_th = (float[])ob;
             }
+            ob = pgreader["wave_th"];
+            if (ob != DBNull.Value)
+            {
+                _wd3s_th = (float[])ob;
+            }
             Data.inst().Add(this);
         }
         //-----------------------------
@@ -727,7 +734,7 @@ namespace HGS
                 //_datanums++;
                 if (Skip_pp != null && (isAlarmskip || isAlarmwave))
                 {
-                    WaveDetection.add(_av ?? 0);
+                    WaveDetection.add(_av ?? 0,true);
                 }
                 if (_dtw_Queues_Array != null)
                 {
@@ -753,6 +760,7 @@ namespace HGS
                 Data.inst().Update(this);
             }
         }
+        
         public Dtw_queues[] Dtw_Queues_Array
         {
             get { return _dtw_Queues_Array; }
@@ -791,7 +799,63 @@ namespace HGS
             }
             else
                 _dtw_Queues_Array = null;
-        }     
+        }
+        //--------------------
+        public WaveDetector_3S[] Wd3s_Queues_Array
+        {
+            get { return _wd3s_Queues_Array; }
+        }
+        public float[] Wd3s_th
+        {
+            get { return _wd3s_th; }
+            set
+            {
+                _wd3s_th = value;
+                if (_wd3s_th != null)
+                {
+                    if (_wd3s_th.Length != 6)
+                        throw new Exception("dtw阈值数必须为6个!");
+                }
+                initWave3sQ();
+                Data.inst().Update(this);
+            }
+        }
+        public void initWave3sQ(int step, float[] v)
+        {
+            if (step < 0 || step >= 6)
+                throw new Exception("设备没有采集这些数据！");
+            if (v == null)
+                throw new Exception("数据不能为空！");
+            for (int i = 0; i < v.Length; i++)
+            {
+                _wd3s_Queues_Array[step].add(v[i],false);
+            }
+        }
+        //初始化dtw队列数组
+        private void initWave3sQ()
+        {
+            if (_wd3s_th != null)
+            {
+                if (_wd3s_Queues_Array == null)
+                {
+                    _wd3s_Queues_Array = new WaveDetector_3S[6];
+                    for (int i = 0; i < _dtw_Queues_Array.Length; i++)
+                    {
+                        _wd3s_Queues_Array[i] = new WaveDetector_3S(i);
+                        //_dtw_Queues_Array[i].DownSamples = (int)(9 * Math.Pow(2, i));
+                    }
+                    //
+                    Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
+
+                    dic_intQueues.Add(id, Data.inst().cd_Point[id]);
+
+                    SisConnect.InitSensorsWave3sQueues(dic_intQueues);
+                }
+            }
+            else
+                _wd3s_Queues_Array = null;
+        }
+        //----------------
         public void add_device(int di,string path)
         {
             if (_hs_Device == null)
