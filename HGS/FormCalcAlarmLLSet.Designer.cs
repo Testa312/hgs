@@ -443,6 +443,7 @@
             this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.buttonCancell;
             this.ClientSize = new System.Drawing.Size(728, 523);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.splitContainer1);

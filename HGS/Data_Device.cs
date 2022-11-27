@@ -116,14 +116,15 @@ namespace HGS
             if (hs_Sensorsid == null)
                 hs_Sensorsid = new HashSet<int>();
             hs_Sensorsid.Add(sid);
-            Data.inst().cd_Point[sid].add_device(id,path);
+            Data.inst().cd_Point[sid].addtodevice(id,path);
         }
+        
         public void RemoveSensor(int sid)
         {
             hs_Sensorsid.Remove(sid);
             point pt;
             if (Data.inst().cd_Point.TryGetValue(sid, out pt))
-                pt.remove_device(id);
+                pt.removefromdevice(id);
             if (hs_Sensorsid.Count <= 1)
             {
                 Alarm_th_dis = null;
@@ -139,7 +140,7 @@ namespace HGS
             {
                 point pt;
                 if (Data.inst().cd_Point.TryGetValue(sid, out pt))
-                    pt.remove_device(id);
+                    pt.removefromdevice(id);
             }
             hs_Sensorsid.ExceptWith(sen_set);
             if (hs_Sensorsid.Count <= 1)
@@ -158,7 +159,7 @@ namespace HGS
                 point pt;
                 if (Data.inst().cd_Point.TryGetValue(sid, out pt))
                 {
-                    pt.add_device(id,path);
+                    pt.addtodevice(id,path);
                 }
                 //else
                     //sen_set.Remove(id);
@@ -275,12 +276,12 @@ namespace HGS
         
         //报警信息----------------------------
         static string[,] _Alarm = {
-            {"15m",  "15分钟内参数异常！"    },
-            {"30m",  "30分钟内参数异常！"    },
-            {"60m",  "1小时内参数异常！"    },
-            {"120m",  "2小时内段参数异常！"  },
-            {"240m",  "4小时内参数异常！"  },
-            {"480m",  "8小时内参数异常！"  } };
+            {"Dtw15m",  "15分钟内参数异常！"    },//0
+            {"Dtw30m",  "30分钟内参数异常！"    },//1
+            {"Dtw60m",  "1小时内参数异常！"     },//2
+            {"Dtw120m",  "2小时内段参数异常！"  },//3
+            {"Dtw240m",  "4小时内参数异常！"    },//4
+            {"Dtw480m",  "8小时内参数异常！"    } };//5
         //-------------------------------------
         private void AlarmCalc_dtw(point pt,int Step)
         {

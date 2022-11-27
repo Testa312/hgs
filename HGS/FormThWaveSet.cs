@@ -13,20 +13,18 @@ using GlacialComponents.Controls;
 using System.Diagnostics;
 namespace HGS
 {
-    public partial class FormPlotCurves_Wave : Form
+    public partial class FormThWaveSet : Form
     {
-        HashSet<int> hsPointid = null;
+        HashSet<point> hsPoint = null;
         DateTimePicker dateTimePicker1 = new DateTimePicker();
         DateTimePicker dateTimePicker2 = new DateTimePicker();
         //
         OPAPI.Connect sisconn_temp = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
         Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
 
-        public delegate void MyDelegate();
-        public event MyDelegate MessageEvent;//也可不要event
+        readonly int[] step = new int[] { 30, 60, 120, 240, 480, 960 };
         //------------
         Dictionary<int, PointData> dic_pd = null;
-        Dictionary<int, PointData> dic_pd_stat = null;
         Dictionary<int, PointData> dic_pd_stat_30s = null;
         Dictionary<int, PointData> dic_pd_stat_60s = null;
         Dictionary<int, PointData> dic_pd_stat_120s = null;
@@ -34,12 +32,12 @@ namespace HGS
         Dictionary<int, PointData> dic_pd_stat_480s = null;
         Dictionary<int, PointData> dic_pd_stat_960s = null;
         //---------------
-        public FormPlotCurves_Wave(HashSet<int> hsPointid, DateTime begin, DateTime end, bool bAdmin = false )
+        public FormThWaveSet(HashSet<point> hsPoint, DateTime begin, DateTime end, bool bAdmin = false )
         {
-            this.hsPointid = hsPointid;
+            this.hsPoint = hsPoint;
             InitializeComponent();
             if (!bAdmin)
-                glacialList1.ContextMenuStrip = null;
+                glacialList_new.ContextMenuStrip = null;
             dateTimePicker1.Value = begin;
             dateTimePicker2.Value = end;
 
@@ -79,97 +77,56 @@ namespace HGS
                 host1 = new ToolStripControlHost(dateTimePicker2);
                 toolStrip1.Items.Insert(3, host1);
                 //
+                initgl(glacialList_org);
+                plotView1.Model = PlotPoint();
 
-                if (hsPointid != null)
-                {
-                    plotView1.Model = PlotPoint();
-                }
             }
             catch (Exception ee)
             {
                 MessageBox.Show(ee.ToString(), "错误");
             }
         }
+        private void initgl(GlacialList gl)
+        {
+            if (hsPoint != null)
+            {
+                List<GLItem> lsitem = new List<GLItem>();
+                gl.Items.Clear();
+                foreach (point pt in hsPoint)
+                {
+                    GLItem itm = new GLItem(gl);
+                    itm.SubItems["PN"].Text = pt.pn;
+                    itm.SubItems["ED"].Text = pt.ed;
+                    itm.SubItems["EU"].Text = pt.eu;
+                    itm.Tag = pt;
+                    if (pt.Wd3s_th != null)
+                    {
+                        for (int i = 0; i < pt.Wd3s_th.Length; i++)
+                        {
+                            itm.SubItems[string.Format("pp{0}s", (int)(Math.Pow(2, i) * 30))].Text =
+                                Math.Round(pt.Wd3s_th[i], 3).ToString();
+                        }
+                    }
+
+                    lsitem.Add(itm);
+                }
+                gl.Items.AddRange(lsitem.ToArray());
+                gl.Invalidate();
+                //-----------
+            }
+        }
         private PlotModel PlotPoint(int count = 1200)
         {
             try
             {
-                dic_pd = SisConnect.GetPointData_dic(sisconn_temp,hsPointid,
+                dic_pd = SisConnect.GetPointData_dic(sisconn_temp, hsPoint,
                     dateTimePicker1.Value, dateTimePicker2.Value, count);
-
-                dic_pd_stat = SisConnect.GetsisStat(sisconn_temp,hsPointid,
-                    dateTimePicker1.Value, dateTimePicker2.Value, (int)(dateTimePicker2.Value - dateTimePicker2.Value).TotalSeconds);
-
-                dic_pd_stat_30s = SisConnect.GetsisStat(sisconn_temp, hsPointid,
-                    dateTimePicker1.Value, dateTimePicker2.Value, 30);
-                dic_pd_stat_60s = SisConnect.GetsisStat(sisconn_temp, hsPointid,
-                    dateTimePicker1.Value, dateTimePicker2.Value, 60);
-                dic_pd_stat_120s = SisConnect.GetsisStat(sisconn_temp, hsPointid,
-                    dateTimePicker1.Value, dateTimePicker2.Value, 120);
-                dic_pd_stat_240s = SisConnect.GetsisStat(sisconn_temp, hsPointid,
-                    dateTimePicker1.Value, dateTimePicker2.Value, 240);
-                dic_pd_stat_480s = SisConnect.GetsisStat(sisconn_temp, hsPointid,
-                    dateTimePicker1.Value, dateTimePicker2.Value, 480);
-                dic_pd_stat_960s = SisConnect.GetsisStat(sisconn_temp, hsPointid,
-                    dateTimePicker1.Value, dateTimePicker2.Value, 960);
             }
             catch (Exception ee)
             {
                 MessageBox.Show(ee.ToString(), "错误");
             }
-
             if (dic_pd == null || dic_pd.Count <= 0) return null;
-            List<GLItem> lsitem = new List<GLItem>();
-            glacialList1.Items.Clear();
-            foreach(PointData pd in dic_pd.Values)
-            {
-                GLItem itm = new GLItem(glacialList1);
-                itm.SubItems["PN"].Text = pd.GN;
-                itm.SubItems["ED"].Text = pd.ED;
-                itm.SubItems["EU"].Text = pd.EU;
-                itm.Tag = pd;
-                PointData pd_stat;
-                if (dic_pd_stat.TryGetValue(pd.ID, out pd_stat))
-                {
-                    pd.MaxAv = pd_stat.MaxAv;
-                    pd.MinAv = pd_stat.MinAv;
-                }
-                if (dic_pd_stat_30s.TryGetValue(pd.ID, out pd_stat))
-                {
-                    pd.DifAV = pd_stat.DifAV;
-                }
-                if (dic_pd_stat_60s.TryGetValue(pd.ID, out pd_stat))
-                {
-                    itm.SubItems["pp60s"].Text = Math.Round(pd_stat.DifAV, 3).ToString();
-                }
-                if (dic_pd_stat_120s.TryGetValue(pd.ID, out pd_stat))
-                {
-                    itm.SubItems["pp120s"].Text = Math.Round(pd_stat.DifAV, 3).ToString();
-                }
-                if (dic_pd_stat_240s.TryGetValue(pd.ID, out pd_stat))
-                {
-                    itm.SubItems["pp240s"].Text = Math.Round(pd_stat.DifAV, 3).ToString();
-                }
-                if (dic_pd_stat_480s.TryGetValue(pd.ID, out pd_stat))
-                {
-                    itm.SubItems["pp480s"].Text = Math.Round(pd_stat.DifAV, 3).ToString();
-                }
-                if (dic_pd_stat_960s.TryGetValue(pd.ID, out pd_stat))
-                {
-                    itm.SubItems["pp960s"].Text = Math.Round(pd_stat.DifAV, 3).ToString();
-                }
-                itm.SubItems["MAX"].Text = Math.Round(pd.MaxAv * 1.1, 3).ToString();
-                itm.SubItems["MIN"].Text = Math.Round(pd.MinAv * 0.9, 3).ToString(); 
-                itm.SubItems["pp30s"].Text = Math.Round(pd.DifAV, 3).ToString();
-                lsitem.Add(itm);
-            }
-            glacialList1.Items.AddRange(lsitem.ToArray());
-            glacialList1.Invalidate();
-
-            //string title = string.Format("{0}---{1}  [{2}]", dateTimePicker1.Value, dateTimePicker2.Value,
-            //(dateTimePicker2.Value - dateTimePicker1.Value));
-
-            //string title = string.Format("[{0}]", (dateTimePicker2.Value - dateTimePicker1.Value),0);
             var pm = new PlotModel
             {
                 Title = (dateTimePicker2.Value - dateTimePicker1.Value).ToString(@"dd\.hh\:mm\:ss"),
@@ -328,7 +285,7 @@ namespace HGS
 
         private void 接受为报警高低限ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (GLItem item in glacialList1.Items.SelectedItems)
+            foreach (GLItem item in glacialList_new.Items.SelectedItems)
             {
                 PointData pd = (PointData)item.Tag;
                 point pt;
@@ -340,7 +297,7 @@ namespace HGS
                         pt.Skip_pp = Math.Round(pd.DifAV * 1.1,3);
                 }
             }
-            if (glacialList1.Items.SelectedItems.Count > 0)
+            if (glacialList_new.Items.SelectedItems.Count > 0)
             {
                 Data.inst().SavetoPG();
                 //MessageEvent();
@@ -357,10 +314,139 @@ namespace HGS
             timer1.Enabled = false;
             sisconn_temp.close();
         }
-
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        private void button_ok_Click(object sender, EventArgs e)
         {
-            接受为报警高低限ToolStripMenuItem.Visible  = glacialList1.Items.SelectedItems.Count > 0;
+            try
+            {
+                foreach (GLItem item in glacialList_new.Items)
+                {
+                    bool flag = false;
+                    float[] th_wave = new float[step.Length];
+                    for (int i = 0; i < step.Length; i++)
+                    {
+                        th_wave[i] = float.MaxValue;
+                        string txt_th = item.SubItems[string.Format("pp{0}s", step[i])].Text;
+                        if (txt_th.Length > 0)
+                        {
+                            float fv;
+                            if (float.TryParse(txt_th, out fv))
+                            {
+                                th_wave[i] = fv;
+                                flag = true;
+                                if (fv < 0.1)
+                                {
+                                    MessageBox.Show(string.Format("阈值可能太小[{0}]!", fv));
+                                }
+                            }
+                            else
+                                throw new Exception(string.Format("无法解析[{0}]！", txt_th));
+                        }
+                    }
+
+                    point pt = Data.inst().cd_Point[(int)item.Tag];
+                    pt.Wd3s_th = flag ? th_wave : null;
+                }
+                Data.inst().SavetoPG();
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.DialogResult = DialogResult.None;
+            }
+        }
+
+        private void button_del_Click(object sender, EventArgs e)
+        {
+            if (hsPoint != null)
+            {
+                List<GLItem> lsitem = new List<GLItem>();
+                glacialList_new.Items.Clear();
+                foreach (point pt in hsPoint)
+                {
+                    GLItem itm = new GLItem(glacialList_new);
+                    itm.SubItems["PN"].Text = pt.pn;
+                    itm.SubItems["ED"].Text = pt.ed;
+                    itm.SubItems["EU"].Text = pt.eu;
+                    itm.Tag = pt.id;
+                    if (pt.Wd3s_th != null)
+                    {
+                        for (int i = 0; i < pt.Wd3s_th.Length; i++)
+                        {
+                            itm.SubItems[string.Format("pp{0}s", (int)(Math.Pow(2, i) * 30))].Text =
+                                Math.Round(pt.Wd3s_th[i], 3).ToString();
+                        }
+                    }
+
+                    lsitem.Add(itm);
+                }
+                glacialList_new.Items.AddRange(lsitem.ToArray());
+                glacialList_new.Invalidate();
+                //-----------
+            }
+        }
+
+        private void toolStripButton_stat_th_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                dic_pd_stat_30s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
+                    dateTimePicker1.Value, dateTimePicker2.Value, 30);
+                dic_pd_stat_60s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
+                    dateTimePicker1.Value, dateTimePicker2.Value, 60);
+                dic_pd_stat_120s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
+                    dateTimePicker1.Value, dateTimePicker2.Value, 120);
+                dic_pd_stat_240s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
+                    dateTimePicker1.Value, dateTimePicker2.Value, 240);
+                dic_pd_stat_480s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
+                    dateTimePicker1.Value, dateTimePicker2.Value, 480);
+                dic_pd_stat_960s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
+                    dateTimePicker1.Value, dateTimePicker2.Value, 960);
+
+                List<GLItem> lsitem = new List<GLItem>();
+                glacialList_new.Items.Clear();
+                foreach (PointData pd in dic_pd.Values)
+                {
+                    GLItem itm = new GLItem(glacialList_new);
+                    itm.SubItems["PN"].Text = pd.GN;
+                    itm.SubItems["ED"].Text = pd.ED;
+                    itm.SubItems["EU"].Text = pd.EU;
+                    itm.Tag = pd.ID;
+                    PointData pd_stat;
+                    if (dic_pd_stat_30s.TryGetValue(pd.ID, out pd_stat))
+                    {
+                        itm.SubItems["pp30s"].Text = Math.Round(pd_stat.DifAV, 3).ToString();
+                    }
+                    if (dic_pd_stat_60s.TryGetValue(pd.ID, out pd_stat))
+                    {
+                        itm.SubItems["pp60s"].Text = Math.Round(pd_stat.DifAV, 3).ToString();
+                    }
+                    if (dic_pd_stat_120s.TryGetValue(pd.ID, out pd_stat))
+                    {
+                        itm.SubItems["pp120s"].Text = Math.Round(pd_stat.DifAV, 3).ToString();
+                    }
+                    if (dic_pd_stat_240s.TryGetValue(pd.ID, out pd_stat))
+                    {
+                        itm.SubItems["pp240s"].Text = Math.Round(pd_stat.DifAV, 3).ToString();
+                    }
+                    if (dic_pd_stat_480s.TryGetValue(pd.ID, out pd_stat))
+                    {
+                        itm.SubItems["pp480s"].Text = Math.Round(pd_stat.DifAV, 3).ToString();
+                    }
+                    if (dic_pd_stat_960s.TryGetValue(pd.ID, out pd_stat))
+                    {
+                        itm.SubItems["pp960s"].Text = Math.Round(pd_stat.DifAV, 3).ToString();
+                    }
+
+                    lsitem.Add(itm);
+                }
+                glacialList_new.Items.AddRange(lsitem.ToArray());
+                glacialList_new.Invalidate();
+                tabControl.SelectedIndex = 1;
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show(ee.ToString(), "错误");
+            }
         }
     }
 }

@@ -62,8 +62,8 @@ namespace HGS
                 if (_id_sis != value)
                 {
                     Data.inst().Update(this);
+                    _id_sis = value;
                 }
-                _id_sis = value;
             }
             get { return _id_sis; }
         }
@@ -74,8 +74,8 @@ namespace HGS
                 if (_nd != value)
                 {
                     Data.inst().Update(this);
+                    _nd = value;
                 }
-                _nd = value;
             }
             get { return _nd; }
         }
@@ -86,8 +86,8 @@ namespace HGS
                 if (_pn != value)
                 {
                     Data.inst().Update(this);
+                    _pn = value;
                 }
-                _pn = value;
             }
             get { return _pn; }
         }
@@ -99,8 +99,8 @@ namespace HGS
                 if (_ed != value)
                 {
                     Data.inst().Update(this);
+                    _ed = value;
                 }
-                _ed = value;
             }
             get { return _ed; }
         }
@@ -112,8 +112,8 @@ namespace HGS
                 if (_tv != value)
                 {
                     Data.inst().Update(this);
+                    _tv = value;
                 }
-                _tv = value;
             }
             get { return _tv; }
         }
@@ -124,8 +124,8 @@ namespace HGS
                 if (_bv != value)
                 {
                     Data.inst().Update(this);
+                    _bv = value;
                 }
-                _bv = value;
             }
             get { return _bv; }
         }
@@ -137,8 +137,8 @@ namespace HGS
                 if (_ll != value)
                 {
                     Data.inst().Update(this);
+                    _ll = value;
                 }
-                _ll = value;
             }
             get { return _ll; }
         }
@@ -158,8 +158,8 @@ namespace HGS
                 if (_Sound != value)
                 {
                     Data.inst().Update(this);
+                    _Sound = value;
                 }
-                _Sound = value;
             }
             get { return _Sound; }
         }
@@ -177,8 +177,8 @@ namespace HGS
                 if (_Orgformula_ll != value)
                 {
                     Data.inst().Update(this);
+                    _Orgformula_ll = value;
                 }
-                _Orgformula_ll = value;
             }
             get { return _Orgformula_ll; }
         }
@@ -213,8 +213,8 @@ namespace HGS
                 if (_hl != value)
                 {
                     Data.inst().Update(this);
+                    _hl = value;
                 }
-                _hl = value;
             }
             get { return _hl; }
         }
@@ -240,8 +240,8 @@ namespace HGS
                 if (_Orgformula_hl != value)
                 {
                     Data.inst().Update(this);
+                    _Orgformula_hl = value;
                 }
-                _Orgformula_hl = value;
             }
             get { return _Orgformula_hl; }
         }
@@ -275,8 +275,8 @@ namespace HGS
                 if (_zh != value)
                 {
                     Data.inst().Update(this);
+                    _zh = value;
                 }
-                _zh = value;
             }
             get { return _zh; }
         }
@@ -296,8 +296,8 @@ namespace HGS
                 if (_zl != value)
                 {
                     Data.inst().Update(this);
+                    _zl = value;
                 }
-                _zl = value;
             }
             get { return _zl; }
         }
@@ -317,8 +317,8 @@ namespace HGS
                 if (_pointsrc != value)
                 {
                     Data.inst().Update(this);
+                    _pointsrc = value;
                 }
-                _pointsrc = value;
             }
             get { return _pointsrc; }
         }
@@ -329,8 +329,8 @@ namespace HGS
                 if (_ownerid != value)
                 {
                     Data.inst().Update(this);
+                    _ownerid = value;
                 }
-                _ownerid = value;
             }
             get { return _ownerid; }
         }
@@ -342,8 +342,8 @@ namespace HGS
                 if (_id != value)
                 {
                     Data.inst().Update(this);
+                    _id = value;
                 }
-                _id = value;
             }
             get { return _id; }
         }
@@ -354,8 +354,8 @@ namespace HGS
                 if (_eu != value)
                 {
                     Data.inst().Update(this);
+                    _eu = value;
                 }
-                _eu = value;
             }
             get { return _eu; }
         }
@@ -367,8 +367,8 @@ namespace HGS
                 if (_isCalc != value)
                 {
                     Data.inst().Update(this);
+                    _isCalc = value;
                 }
-                _isCalc = value;
             }
             get { return _isCalc; }
         }
@@ -382,8 +382,8 @@ namespace HGS
                 if (_isAvalarm != value)
                 {
                     Data.inst().Update(this);
+                    _isAvalarm = value;
                 }
-                _isAvalarm = value;
             }
             get { return _isAvalarm; }
         }
@@ -401,8 +401,8 @@ namespace HGS
                 if (_fm != value)
                 {
                     Data.inst().Update(this);
+                    _fm = value;
                 }
-                _fm = value;
             }
             get { return _fm; }
         }
@@ -415,8 +415,8 @@ namespace HGS
                 if (_boolAlarmif != value)
                 {
                     Data.inst().Update(this);
+                    _boolAlarmif = value;
                 }
-                _boolAlarmif = value;
             }
             get { return _boolAlarmif; }
         }
@@ -428,8 +428,8 @@ namespace HGS
                 if (_isboolvAlarm != value)
                 {
                     Data.inst().Update(this);
+                    _isboolvAlarm = value;
                 }
-                _isboolvAlarm = value;
             }
             get { return _isboolvAlarm; }
         }
@@ -440,8 +440,8 @@ namespace HGS
                 if (_boolAlarminfo != value)
                 {
                     Data.inst().Update(this);
+                    _boolAlarminfo = value;
                 }
-                _boolAlarminfo = value;
             }
             get { return _boolAlarminfo; }
         }
@@ -453,8 +453,8 @@ namespace HGS
                 if (_Orgformula_main != value)
                 {
                     Data.inst().Update(this);
+                    _Orgformula_main = value;
                 }
-                _Orgformula_main = value;
             }
             get { return _Orgformula_main; }
         }
@@ -543,13 +543,14 @@ namespace HGS
             get { return _Forceav; }
         }
         ////---------------------报警公式，值为真时才允许报警。
+        
         private bool _Alarmifav = true;
         public bool Alarmifav
         {
             set { _Alarmifav = value; }
             get { return _Alarmifav; }
         }
-
+        
         private string _Alarmif = "";
         public string Alarmif
         {
@@ -557,8 +558,8 @@ namespace HGS
                 if (_Alarmif != value)
                 {
                     Data.inst().Update(this);
+                    _Alarmif = value;
                 }
-                _Alarmif = value;
             }
             get { return _Alarmif; }
         }
@@ -583,7 +584,7 @@ namespace HGS
             set { _listSisCalcExpPointID_alarmif = value; }
             get { return _listSisCalcExpPointID_alarmif; }
         }
-        //-------------------
+        /*/-------------------
         private bool _isAlarmskip = false;
         public bool isAlarmskip
         {
@@ -607,7 +608,7 @@ namespace HGS
                 _isAlarmwave = value;
             }
             get { return _isAlarmwave; }
-        }
+        }*/
         private double? _Skip_pp = null;
         public double? Skip_pp
         {
@@ -616,8 +617,16 @@ namespace HGS
                 if (_Skip_pp != value)
                 {
                     Data.inst().Update(this);
+                    _Skip_pp = value;
+                    if (_Skip_pp != null && DetectionSkip == null)
+                    {
+                        DetectionSkip = new DetectionSkip();
+                    }
+                    else if (_Skip_pp == null)
+                    {
+                        DetectionSkip = null;
+                    }
                 }
-                _Skip_pp = value;
             }
             get { return _Skip_pp; }
         }
@@ -629,14 +638,14 @@ namespace HGS
             get { return _max_skip_pp; }
         }
         */
-        private WaveDetector_3S _WaveDetection = null;
-        public WaveDetector_3S WaveDetection
+        private DetectionSkip _DetectionSkip = null;
+        public DetectionSkip DetectionSkip
         {
-            set { _WaveDetection = value; }
-            get { return _WaveDetection; }
+            set { _DetectionSkip = value; }
+            get { return _DetectionSkip; }
         }
-        private WaveDetector_3S.wavestatus spstatus = WaveDetector_3S.wavestatus.error;
-        private int _datanums = -1;
+        //private DetectorWave.wavestatus spstatus = DetectorWave.wavestatus.error;
+        private int _TimeTick = -1;
 
         private double? _av = null;//点值，实时或计算。
         //-----------------------------
@@ -661,7 +670,7 @@ namespace HGS
             set { _dtw_start_max = value; }
             get { return _dtw_start_max; }
         }
-        private WaveDetector_3S[] _wd3s_Queues_Array = null;
+        private DetectorWave[] _wd3s_Queues_Array = null;
         private float[] _wd3s_th = null;//30s,60s,120s,240s,480s,960s 阈值。
         public point(int id, pointsrc ps)
         {
@@ -705,11 +714,11 @@ namespace HGS
             _Alarmif = pgreader["alarmif"].ToString();
             _boolAlarmif = (bool)pgreader["boolalarmif"];
 
-            _isAlarmskip = (bool)pgreader["isalarmskip"];
-            _isAlarmwave = (bool)pgreader["isalarmwave"];
+            //_isAlarmskip = (bool)pgreader["isalarmskip"];
+            //_isAlarmwave = (bool)pgreader["isalarmwave"];
             _Sound = (int)pgreader["sound"];
-            if ((_isAlarmwave || _isAlarmskip) && _Skip_pp != null)
-                _WaveDetection = new WaveDetector_3S(1);
+            if (Skip_pp != null)
+                _DetectionSkip = new DetectionSkip();
             //
             object ob = pgreader["dtw_start_th"];
             if (ob != DBNull.Value)
@@ -732,15 +741,23 @@ namespace HGS
             {
                 _av = value;
                 //_datanums++;
-                if (Skip_pp != null && (isAlarmskip || isAlarmwave))
+                if (_DetectionSkip != null)
                 {
-                    WaveDetection.add(_av ?? 0,true);
+                    _DetectionSkip.add(_av ?? 0);
                 }
                 if (_dtw_Queues_Array != null)
                 {
                     for (int i = 0; i < _dtw_Queues_Array.Length; i++)
                     {
                         _dtw_Queues_Array[i].add(_av ?? 0, true);
+                    }
+                }
+                //
+                if (_wd3s_Queues_Array != null)
+                {
+                    for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
+                    {
+                        _wd3s_Queues_Array[i].add(_av ?? 0, true);
                     }
                 }
             }
@@ -750,17 +767,19 @@ namespace HGS
             get { return _dtw_start_th; }
             set
             {
-                _dtw_start_th = value;
-                if (_dtw_start_th != null)
+                if (_dtw_start_th != value)
                 {
-                    if (_dtw_start_th.Length != 6)
-                        throw new Exception("dtw阈值数必须为6个!");
+                    Data.inst().Update(this);
+                    _dtw_start_th = value;
+                    if (_dtw_start_th != null)
+                    {
+                        if (_dtw_start_th.Length != 6)
+                            throw new Exception("dtw阈值数必须为6个!");
+                    }
+                    initDeviceQ();
                 }
-                initDeviceQ();
-                Data.inst().Update(this);
             }
-        }
-        
+        }      
         public Dtw_queues[] Dtw_Queues_Array
         {
             get { return _dtw_Queues_Array; }
@@ -771,6 +790,15 @@ namespace HGS
                 throw new Exception("设备没有采集这些数据！");
             if (v == null)
                 throw new Exception("数据不能为空！");
+            if (_dtw_Queues_Array == null)
+            {
+                _dtw_Queues_Array = new Dtw_queues[6];
+                for (int i = 0; i < _dtw_Queues_Array.Length; i++)
+                {
+                    _dtw_Queues_Array[i] = new Dtw_queues();
+                    _dtw_Queues_Array[i].DownSamples = (int)(9 * Math.Pow(2, i));
+                }
+            }
             for (int i = 0; i < v.Length; i++)
             {
                 _dtw_Queues_Array[step].add(v[i], false);
@@ -791,17 +819,15 @@ namespace HGS
                     }
                     //
                     Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
-
                     dic_intQueues.Add(id, Data.inst().cd_Point[id]);
-
-                    SisConnect.InitSensorsQueues(dic_intQueues);
+                    SisConnect.InitPointDtwQueues(dic_intQueues);
                 }
             }
             else
                 _dtw_Queues_Array = null;
         }
         //--------------------
-        public WaveDetector_3S[] Wd3s_Queues_Array
+        public DetectorWave[] Wd3s_Queues_Array
         {
             get { return _wd3s_Queues_Array; }
         }
@@ -810,14 +836,17 @@ namespace HGS
             get { return _wd3s_th; }
             set
             {
-                _wd3s_th = value;
-                if (_wd3s_th != null)
+                if (_wd3s_th != value)
                 {
-                    if (_wd3s_th.Length != 6)
-                        throw new Exception("dtw阈值数必须为6个!");
+                    Data.inst().Update(this);
+                    _wd3s_th = value;
+                    if (_wd3s_th != null)
+                    {
+                        if (_wd3s_th.Length != 6)
+                            throw new Exception("dtw阈值数必须为6个!");
+                    }
+                    initWave3sQ();
                 }
-                initWave3sQ();
-                Data.inst().Update(this);
             }
         }
         public void initWave3sQ(int step, float[] v)
@@ -826,9 +855,17 @@ namespace HGS
                 throw new Exception("设备没有采集这些数据！");
             if (v == null)
                 throw new Exception("数据不能为空！");
+            if (_wd3s_Queues_Array == null)
+            {
+                _wd3s_Queues_Array = new DetectorWave[6];
+                for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
+                {
+                    _wd3s_Queues_Array[i] = new DetectorWave(i);
+                }
+            }
             for (int i = 0; i < v.Length; i++)
             {
-                _wd3s_Queues_Array[step].add(v[i],false);
+                _wd3s_Queues_Array[step].add(v[i], false);
             }
         }
         //初始化dtw队列数组
@@ -838,25 +875,22 @@ namespace HGS
             {
                 if (_wd3s_Queues_Array == null)
                 {
-                    _wd3s_Queues_Array = new WaveDetector_3S[6];
-                    for (int i = 0; i < _dtw_Queues_Array.Length; i++)
+                    _wd3s_Queues_Array = new DetectorWave[6];
+                    for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
                     {
-                        _wd3s_Queues_Array[i] = new WaveDetector_3S(i);
-                        //_dtw_Queues_Array[i].DownSamples = (int)(9 * Math.Pow(2, i));
+                        _wd3s_Queues_Array[i] = new DetectorWave(i);
                     }
                     //
                     Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
-
                     dic_intQueues.Add(id, Data.inst().cd_Point[id]);
-
-                    SisConnect.InitSensorsWave3sQueues(dic_intQueues);
+                    SisConnect.InitSensorsWaveQueues(dic_intQueues);
                 }
             }
             else
                 _wd3s_Queues_Array = null;
         }
         //----------------
-        public void add_device(int di,string path)
+        public void addtodevice(int di,string path)
         {
             if (_hs_Device == null)
                 _hs_Device = new HashSet<int>();
@@ -864,9 +898,9 @@ namespace HGS
             if (_hsDevicePath == null)
                 _hsDevicePath = new Dictionary<int, string>();
             _hsDevicePath[di] = path;
-            initDeviceQ();
+            //initDeviceQ();
         }
-        public void remove_device(int di)
+        public void removefromdevice(int di)
         {
             if (_hs_Device != null)
             {
@@ -881,6 +915,8 @@ namespace HGS
                 _hs_Device = null;
                 _hsDevicePath = null;
                 _dtw_Queues_Array = null;
+                Dtw_start_th = null;
+                Data.inst().SavetoPG();
             }
         }
         /*
@@ -905,7 +941,7 @@ namespace HGS
         public HashSet<int> Device_set()
         {
             HashSet<int> hs = new HashSet<int>();
-            if (_hs_Device == null)
+            if (_hs_Device != null)
                 hs.UnionWith(_hs_Device);
             return hs;
         }
@@ -946,16 +982,23 @@ namespace HGS
         }
         //--------------------
         static string[,] _Alarm = {
-            {"ZL",  "越低2限报警！"     },
-            {"LL",  "越低限报警！"      },
-            {"HL",  "越高限报警！"      },
-            {"ZH",  "越高2限报警！"     },
-            {"TV",  "越量程上限报警！"  },
-            {"BV",  "越量程下限报警！"  },
-            {"Bool" ,""             },
-            {"Skip", "跳变报警！"       },
-            {"Wave", "波动报警！"       },
-            {"Bad", "坏点！"       }};
+            {"ZL",  "越低2限报警！"     },//0
+            {"LL",  "越低限报警！"      },//1
+            {"HL",  "越高限报警！"      },//2
+            {"ZH",  "越高2限报警！"     },//3
+            {"TV",  "越量程上限报警！"  },//4
+            {"BV",  "越量程下限报警！"  },//5
+            {"Bool" ,""                 },//6
+            {"Skip", "跳变报警！"       },//7
+            {"NULL", "NULL"             },//8
+            {"NULL", "NULL"             },//9
+
+            {"Wave90s", "90秒内波动报警"       },//10
+            {"Wave180s", "3分钟内波动报警"     },//11
+            {"Wave360s", "6分钟内波动报警"     },//12
+            {"Wave720s", "12分钟内波动报警"    },//13
+            {"Wave1440s", "24分钟内波动报警"   },//14
+            {"Wave2880s", "48分钟内波动报警"   }};//15
         //---------------------
         private void SetAlarmBit_H(ref uint alarmbit,int bitnum,double? th)
         {
@@ -991,23 +1034,35 @@ namespace HGS
             else
                 alarmbit &= ~(uint)1 << bitnum;
         }
+        //素数11, 23, 43, 83, 167, 317
+        static int[] prime = { 11, 23, 43, 83, 167, 317 };
         public void AlarmCalc()
         {
-            _datanums++;
-            uint AlarmBit = (uint)3 << 7;
-            AlarmBit &= _lastAlarmBitInfo;//保留波动检查
+            _TimeTick++;
+            uint curAlarmBit = (uint)1 << 7;
+
+            curAlarmBit |= (uint)63 << 10;
+            curAlarmBit &= _lastAlarmBitInfo;//保留波动和跳变检查
             if (ps != PointState.Good && ps != PointState.Force)
             {
                 _Alarmingav = -1;
-                AlarmBit |= (uint)1 << 9;
+                curAlarmBit |= (uint)1 << 9;
 
-                if (_WaveDetection != null)
-                    _WaveDetection.Clear();
+                if (_DetectionSkip != null)
+                    _DetectionSkip.Clear();
                 if (_dtw_Queues_Array != null)
                 {
                     for (int i = 0; i < _dtw_Queues_Array.Length; i++)
                     {
                         _dtw_Queues_Array[i].Clear();
+                    }
+                }
+                //
+                if (_wd3s_Queues_Array != null)
+                {
+                    for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
+                    {
+                        _wd3s_Queues_Array[i].Clear();
                     }
                 }
             }
@@ -1020,44 +1075,48 @@ namespace HGS
                     if (blv == _boolAlarmif)
                     {
                         _Alarmingav = Convert.ToDouble(blv);
-                        AlarmBit |= (uint)1 << 6;
+                        curAlarmBit |= (uint)1 << 6;
                     }
                 }
                 else if (_isAvalarm)
                 {
-                    SetAlarmBit_H(ref AlarmBit, 3, _zh);
-                    SetAlarmBit_H(ref AlarmBit, 2, _hl);
-                    SetAlarmBit_H(ref AlarmBit, 4, _tv);
+                    SetAlarmBit_H(ref curAlarmBit, 3, _zh);
+                    SetAlarmBit_H(ref curAlarmBit, 2, _hl);
+                    SetAlarmBit_H(ref curAlarmBit, 4, _tv);
 
-                    SetAlarmBit_L(ref AlarmBit, 0, _zl);
-                    SetAlarmBit_L(ref AlarmBit, 1, _ll);
-                    SetAlarmBit_L(ref AlarmBit, 5, _bv);
+                    SetAlarmBit_L(ref curAlarmBit, 0, _zl);
+                    SetAlarmBit_L(ref curAlarmBit, 1, _ll);
+                    SetAlarmBit_L(ref curAlarmBit, 5, _bv);
 
-                    if (_id % 10 == _datanums % 10)
+                    if ((_id + _TimeTick) % 7 == 0)
                     {
-                        uint temp = ~((uint)3 << 7);
-                        AlarmBit &= temp;
-                        //bool boolAlarmif = (_isAlarmskip || _isAlarmwave) && ;
-                        if (_Skip_pp != null && (_isAlarmskip || _isAlarmwave))// && _Skip_pp <= _WaveDetection.DeltaP_P())
+                        curAlarmBit &= ~((uint)1 << 7);
+                        if (_Skip_pp != null && _DetectionSkip != null &&
+                            _DetectionSkip.isSkip(_Skip_pp ?? 0))
                         {
-                            spstatus = _WaveDetection.IsNormal(_Skip_pp??0);//.isWave();
-                            if (spstatus == WaveDetector_3S.wavestatus.surge && _isAlarmskip)
+                            curAlarmBit |= (uint)1 << 7;
+                        }
+                    }
+                    if (Wd3s_Queues_Array != null && Wd3s_th != null)
+                    {
+                        for (int i = 0; i < prime.Length; i++)
+                        {
+                            if ((_id + _TimeTick) % prime[i] == 0)
                             {
-                                AlarmBit |= (uint)1 << 7;
-                            }
-                            else if (spstatus == WaveDetector_3S.wavestatus.wave && _isAlarmwave)
-                            {
-                                AlarmBit |= (uint)1 << 8;
+                                curAlarmBit &= ~((uint)1 << (i + 10)); ;
+                                if (Wd3s_Queues_Array[i].IsWave(Wd3s_th[i]))
+                                    curAlarmBit |= ((uint)1 << (i + 10));
                             }
                         }
                     }
                 }
+                    //--------------
             }
             //
-            for (int a = 0; a <= 8; a++)
+            for (int a = 0; a <= 15; a++)
             {
                 uint lastBit = _lastAlarmBitInfo & ((uint)1 << a);
-                uint curBit = AlarmBit & ((uint)1 << a);
+                uint curBit = curAlarmBit & ((uint)1 << a);
                 if (lastBit > curBit)
                 {
                     AlarmSet.GetInst().AlarmStop(CreateAlarmSid(a));
@@ -1071,7 +1130,7 @@ namespace HGS
                     AlarmCount++;
                 }
             }
-            _lastAlarmBitInfo = AlarmBit;
+            _lastAlarmBitInfo = curAlarmBit;
         }
     }
    

@@ -360,18 +360,23 @@ namespace HGS
                 Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
                 foreach (point v in hsAllPoint)
                 {
-                    if (v.Dtw_Queues_Array != null)
-                        dic_intQueues.Add(v.id, v);
+                    if (v.Dtw_start_th != null)
+                    {
+                        if (v.Device_set().Count > 0)
+                            dic_intQueues.Add(v.id, v);
+                        else
+                            MessageBox.Show(string.Format("传感器[id={0}]-{1}不属于任何设备！",v.id,v.ed));
+                    }
                 }
-                SisConnect.InitSensorsQueues(dic_intQueues);
+                SisConnect.InitPointDtwQueues(dic_intQueues);
                 //
                 dic_intQueues.Clear();
                 foreach (point v in hsAllPoint)
                 {
-                    if (v.Wd3s_Queues_Array != null)
+                    if (v.Wd3s_th != null)
                         dic_intQueues.Add(v.id, v);
                 }
-                SisConnect.InitSensorsWave3sQueues(dic_intQueues);
+                SisConnect.InitSensorsWaveQueues(dic_intQueues);
             }
             catch (Exception e)
             
@@ -447,13 +452,12 @@ namespace HGS
                                          "pn='{8}',orgformula_main='{9}',fm={10},iscalc = {11}," +
                                         "isavalarm = {12},ed = '{13}',isboolv = {14},boolalarminfo = '{15}'," +
                                                    " orgformula_hl = '{16}',orgformula_ll = '{17}',alarmif = '{18}' ,boolalarmif = {19} ," +
-                                                   "isalarmskip = {20},isalarmwave = {21}," +
-                                                   "skip_pp = {22},dtw_start_th = {23},sound = {24},wave_th = {25} where id = {26};",
+                                                   "skip_pp = {20},dtw_start_th = {21},sound = {22},wave_th = {23} where id = {24};",
                                         Functions.dtoNULL(pt.tv), Functions.dtoNULL(pt.bv), Functions.dtoNULL(pt.ll), Functions.dtoNULL(pt.hl),
                                         Functions.dtoNULL(pt.zl), Functions.dtoNULL(pt.zh),
                                         DateTime.Now,pt.eu, pt.pn, pt.Orgformula_main,pt.fm,
                                         pt.isCalc,pt.isAvalarm, pt.ed,pt.isboolvAlarm,pt.boolAlarminfo, pt.orgformula_hl,
-                                        pt.Orgformula_ll,pt.Alarmif,pt.boolAlarmif,pt.isAlarmskip,pt.isAlarmwave, Functions.dtoNULL(pt.Skip_pp),
+                                        pt.Orgformula_ll,pt.Alarmif,pt.boolAlarmif, Functions.dtoNULL(pt.Skip_pp),
                                         ArraytoString(pt.Dtw_start_th),pt.Sound,ArraytoString(pt.Wd3s_th), pt.id));
                 sb.AppendLine(string.Format("delete  from formula_point where id = {0};", pt.id));
                 GetinsertsubSql(sb, pt);
@@ -465,15 +469,15 @@ namespace HGS
 
                 sb.AppendLine(string.Format(@"insert into point (id,nd,pn,ed,eu,tv,bv,ll,hl,zl,"+
                                             "zh,id_sis,pointsrc,mt,ownerid,orgformula_main,fm,iscalc,isavalarm,isboolv,boolalarminfo," +
-                                            "orgformula_hl,orgformula_ll,alarmif,boolalarmif,isalarmskip,isalarmwave,skip_pp,dtw_start_th,sound,wave_th) " + 
+                                            "orgformula_hl,orgformula_ll,alarmif,boolalarmif,skip_pp,dtw_start_th,sound,wave_th) " + 
                                     "values ({0},'{1}','{2}','{3}','{4}',{5},{6},{7},{8},{9},"+
                                             "{10},{11},{12},'{13}',{14},'{15}',{16},{17},{18},{19},'{20}','{21}','{22}','{23}',{24},{25}," +
-                                            "{26},{27},{28},{29},{30});",
+                                            "{26},{27},{28});",
                                     pt.id, pt.nd, pt.pn, pt.ed, pt.eu, Functions.dtoNULL(pt.tv), Functions.dtoNULL(pt.bv), 
                                     Functions.dtoNULL(pt.ll), Functions.dtoNULL(pt.hl), Functions.dtoNULL(pt.zl),
                                     Functions.dtoNULL(pt.zh), pt.Id_sis,(int)pt.pointsrc, DateTime.Now, Auth.GetInst().LoginID, pt.Orgformula_main,
                                     pt.fm,pt.isCalc,pt.isAvalarm,pt.isboolvAlarm,pt.boolAlarminfo, pt.orgformula_hl, pt.Orgformula_ll,pt.Alarmif,
-                                    pt.boolAlarmif,pt.isAlarmskip,pt.isAlarmwave, Functions.dtoNULL(pt.Skip_pp), 
+                                    pt.boolAlarmif,Functions.dtoNULL(pt.Skip_pp), 
                                     ArraytoString(pt.Dtw_start_th),pt.Sound,ArraytoString(pt.Wd3s_th)));
                 GetinsertsubSql(sb, pt);
                // pt.id = ptid;

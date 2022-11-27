@@ -57,5 +57,21 @@ namespace HGS
             }
             return r;
         }
+        public static HashSet<point> set_idtopoint(HashSet<int> sid)
+        {
+            HashSet<point> hsp = new HashSet<point>();
+            if (sid != null)
+            {
+                foreach (int id in sid)
+                {
+                    point pt;
+                    if (Data.inst().cd_Point.TryGetValue(id, out pt))
+                    {
+                        hsp.Add(pt);
+                    }
+                }
+            }
+            return hsp;
+        }
     }
 }

@@ -289,7 +289,7 @@ namespace HGS
             TimeSpan ts = end - begin;
             if (ts.TotalMinutes < 5)
                 begin = begin.AddMinutes((ts.TotalMinutes)-10 );
-            HashSet<int> lspointid = null;
+            HashSet<point> hsPoint = null;
             if (c == 'P')
             {
                 int pid;
@@ -298,8 +298,8 @@ namespace HGS
                     point pt;
                     if (Data.inst().cd_Point.TryGetValue(pid, out pt))
                     {
-                        lspointid = new HashSet<int>();
-                        lspointid.Add(pid);
+                        hsPoint = new HashSet<point>();
+                        hsPoint.Add(pt);
                     }
                 }
             }
@@ -311,18 +311,18 @@ namespace HGS
                     DeviceInfo di;
                     if (Data_Device.dic_Device.TryGetValue(did, out di))
                     {
-                        lspointid = di.Sensors_set();                       
+                        hsPoint = Functions.set_idtopoint(di.Sensors_set());                       
                     }
                     else
                     {
                         di = Data_Device.GetDevice(did);
-                        lspointid = di.Sensors_set();                       
+                        hsPoint = Functions.set_idtopoint(di.Sensors_set());                       
                     }
                 }
             }
-            if (lspointid != null)
+            if (hsPoint != null)
             {
-                FormPlotCurves frta = new FormPlotCurves(lspointid,begin, end);
+                FormPlotCurves frta = new FormPlotCurves(hsPoint,begin, end);
                 frta.ShowDialog();
             }
         }

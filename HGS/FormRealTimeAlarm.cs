@@ -329,24 +329,24 @@ namespace HGS
         }
         private void Plot(AlarmInfo ai, DateTime begin, DateTime end)
         {
-            HashSet<int> pointid = null;
+            HashSet<point> point = null;
             if (ai._sensorid != -1)
             {
-                pointid = new HashSet<int>();
-                pointid.Add(ai._sensorid);
+                point = Functions.set_idtopoint(new HashSet<int>(new int[] { ai._sensorid }));
+                //pointid.Add(ai._sensorid);
             }
             else if (ai._deviceid != -1)
             {
                 DeviceInfo dv;
                 if (Data_Device.dic_Device.TryGetValue(ai._deviceid, out dv))
                 {
-                    pointid = dv.Sensors_set();
+                    point = Functions.set_idtopoint(dv.Sensors_set());
                     
                 }
             }
-            if (pointid != null)
+            if (point != null)
             {
-                FormPlotCurves frta = new FormPlotCurves(pointid, begin, end);
+                FormPlotCurves frta = new FormPlotCurves(point, begin, end);
                 frta.ShowDialog();
             }
         }

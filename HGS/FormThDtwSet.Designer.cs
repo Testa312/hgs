@@ -1,7 +1,7 @@
 ﻿
 namespace HGS
 {
-    partial class FormThSet
+    partial class FormThDtwSet
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@ namespace HGS
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormThSet));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormThDtwSet));
             GlacialComponents.Controls.GLColumn glColumn1 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn2 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLItem glItem1 = new GlacialComponents.Controls.GLItem();
@@ -59,12 +59,46 @@ namespace HGS
             GlacialComponents.Controls.GLSubItem glSubItem18 = new GlacialComponents.Controls.GLSubItem();
             GlacialComponents.Controls.GLColumn glColumn3 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn4 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLItem glItem7 = new GlacialComponents.Controls.GLItem();
+            GlacialComponents.Controls.GLSubItem glSubItem19 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem20 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem21 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLItem glItem8 = new GlacialComponents.Controls.GLItem();
+            GlacialComponents.Controls.GLSubItem glSubItem22 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem23 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem24 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLItem glItem9 = new GlacialComponents.Controls.GLItem();
+            GlacialComponents.Controls.GLSubItem glSubItem25 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem26 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem27 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLItem glItem10 = new GlacialComponents.Controls.GLItem();
+            GlacialComponents.Controls.GLSubItem glSubItem28 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem29 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem30 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLItem glItem11 = new GlacialComponents.Controls.GLItem();
+            GlacialComponents.Controls.GLSubItem glSubItem31 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem32 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem33 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLItem glItem12 = new GlacialComponents.Controls.GLItem();
+            GlacialComponents.Controls.GLSubItem glSubItem34 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem35 = new GlacialComponents.Controls.GLSubItem();
+            GlacialComponents.Controls.GLSubItem glSubItem36 = new GlacialComponents.Controls.GLSubItem();
             GlacialComponents.Controls.GLColumn glColumn5 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn6 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn7 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn8 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn9 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn10 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn11 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn12 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn13 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn14 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn15 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn16 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn17 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn18 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn19 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn20 = new GlacialComponents.Controls.GLColumn();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -82,7 +116,11 @@ namespace HGS
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.glacialList1 = new GlacialComponents.Controls.GlacialList();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.glacialList_dev_org = new GlacialComponents.Controls.GlacialList();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.glacialList_dev_new = new GlacialComponents.Controls.GlacialList();
             this.button_AlarmIf = new System.Windows.Forms.Button();
             this.comboBox_Sound = new System.Windows.Forms.ComboBox();
             this.textBox_ND = new System.Windows.Forms.TextBox();
@@ -97,7 +135,11 @@ namespace HGS
             this.label1 = new System.Windows.Forms.Label();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.plotView1 = new OxyPlot.WindowsForms.PlotView();
-            this.glacialList2 = new GlacialComponents.Controls.GlacialList();
+            this.tabControl2 = new System.Windows.Forms.TabControl();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.glacialList_sensor_org = new GlacialComponents.Controls.GlacialList();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.glacialList_sensor_new = new GlacialComponents.Controls.GlacialList();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.button_dell = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
@@ -117,10 +159,16 @@ namespace HGS
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
             this.splitContainer4.SuspendLayout();
+            this.tabControl2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.tabPage4.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -293,7 +341,7 @@ namespace HGS
             // 
             // splitContainer3.Panel1
             // 
-            this.splitContainer3.Panel1.Controls.Add(this.glacialList1);
+            this.splitContainer3.Panel1.Controls.Add(this.tabControl1);
             // 
             // splitContainer3.Panel2
             // 
@@ -313,15 +361,37 @@ namespace HGS
             this.splitContainer3.SplitterDistance = 164;
             this.splitContainer3.TabIndex = 0;
             // 
-            // glacialList1
+            // tabControl1
             // 
-            this.glacialList1.AllowColumnResize = true;
-            this.glacialList1.AllowMultiselect = false;
-            this.glacialList1.AlternateBackground = System.Drawing.Color.DarkGreen;
-            this.glacialList1.AlternatingColors = false;
-            this.glacialList1.AutoHeight = true;
-            this.glacialList1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.glacialList1.BackgroundStretchToFit = true;
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(153, 164);
+            this.tabControl1.TabIndex = 0;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.glacialList_dev_org);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(145, 138);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "现阈值";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // glacialList_dev_org
+            // 
+            this.glacialList_dev_org.AllowColumnResize = true;
+            this.glacialList_dev_org.AllowMultiselect = false;
+            this.glacialList_dev_org.AlternateBackground = System.Drawing.Color.DarkGreen;
+            this.glacialList_dev_org.AlternatingColors = false;
+            this.glacialList_dev_org.AutoHeight = true;
+            this.glacialList_dev_org.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.glacialList_dev_org.BackgroundStretchToFit = true;
             glColumn1.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn1.CheckBoxes = false;
             glColumn1.ImageIndex = -1;
@@ -338,26 +408,26 @@ namespace HGS
             glColumn2.Text = "报警值";
             glColumn2.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn2.Width = 60;
-            this.glacialList1.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
+            this.glacialList_dev_org.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
             glColumn1,
             glColumn2});
-            this.glacialList1.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
-            this.glacialList1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.glacialList1.FullRowSelect = true;
-            this.glacialList1.GridColor = System.Drawing.Color.LightGray;
-            this.glacialList1.GridLines = GlacialComponents.Controls.GLGridLines.gridBoth;
-            this.glacialList1.GridLineStyle = GlacialComponents.Controls.GLGridLineStyles.gridSolid;
-            this.glacialList1.GridTypes = GlacialComponents.Controls.GLGridTypes.gridOnExists;
-            this.glacialList1.HeaderHeight = 22;
-            this.glacialList1.HeaderVisible = true;
-            this.glacialList1.HeaderWordWrap = false;
-            this.glacialList1.HotColumnTracking = false;
-            this.glacialList1.HotItemTracking = false;
-            this.glacialList1.HotTrackingColor = System.Drawing.Color.LightGray;
-            this.glacialList1.HoverEvents = false;
-            this.glacialList1.HoverTime = 1;
-            this.glacialList1.ImageList = null;
-            this.glacialList1.ItemHeight = 19;
+            this.glacialList_dev_org.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
+            this.glacialList_dev_org.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.glacialList_dev_org.FullRowSelect = true;
+            this.glacialList_dev_org.GridColor = System.Drawing.Color.LightGray;
+            this.glacialList_dev_org.GridLines = GlacialComponents.Controls.GLGridLines.gridBoth;
+            this.glacialList_dev_org.GridLineStyle = GlacialComponents.Controls.GLGridLineStyles.gridSolid;
+            this.glacialList_dev_org.GridTypes = GlacialComponents.Controls.GLGridTypes.gridOnExists;
+            this.glacialList_dev_org.HeaderHeight = 22;
+            this.glacialList_dev_org.HeaderVisible = true;
+            this.glacialList_dev_org.HeaderWordWrap = false;
+            this.glacialList_dev_org.HotColumnTracking = false;
+            this.glacialList_dev_org.HotItemTracking = false;
+            this.glacialList_dev_org.HotTrackingColor = System.Drawing.Color.LightGray;
+            this.glacialList_dev_org.HoverEvents = false;
+            this.glacialList_dev_org.HoverTime = 1;
+            this.glacialList_dev_org.ImageList = null;
+            this.glacialList_dev_org.ItemHeight = 19;
             glItem1.BackColor = System.Drawing.Color.White;
             glItem1.ForeColor = System.Drawing.Color.Black;
             glItem1.RowBorderColor = System.Drawing.Color.Black;
@@ -538,26 +608,283 @@ namespace HGS
             glSubItem17,
             glSubItem18});
             glItem6.Text = "8h";
-            this.glacialList1.Items.AddRange(new GlacialComponents.Controls.GLItem[] {
+            this.glacialList_dev_org.Items.AddRange(new GlacialComponents.Controls.GLItem[] {
             glItem1,
             glItem2,
             glItem3,
             glItem4,
             glItem5,
             glItem6});
-            this.glacialList1.ItemWordWrap = false;
-            this.glacialList1.Location = new System.Drawing.Point(0, 0);
-            this.glacialList1.Name = "glacialList1";
-            this.glacialList1.Selectable = true;
-            this.glacialList1.SelectedTextColor = System.Drawing.Color.White;
-            this.glacialList1.SelectionColor = System.Drawing.Color.DarkBlue;
-            this.glacialList1.ShowBorder = true;
-            this.glacialList1.ShowFocusRect = false;
-            this.glacialList1.Size = new System.Drawing.Size(153, 164);
-            this.glacialList1.SortType = GlacialComponents.Controls.SortTypes.InsertionSort;
-            this.glacialList1.SuperFlatHeaderColor = System.Drawing.Color.White;
-            this.glacialList1.TabIndex = 0;
-            this.glacialList1.Text = "glacialList1";
+            this.glacialList_dev_org.ItemWordWrap = false;
+            this.glacialList_dev_org.Location = new System.Drawing.Point(3, 3);
+            this.glacialList_dev_org.Name = "glacialList_dev_org";
+            this.glacialList_dev_org.Selectable = false;
+            this.glacialList_dev_org.SelectedTextColor = System.Drawing.Color.White;
+            this.glacialList_dev_org.SelectionColor = System.Drawing.Color.DarkBlue;
+            this.glacialList_dev_org.ShowBorder = true;
+            this.glacialList_dev_org.ShowFocusRect = false;
+            this.glacialList_dev_org.Size = new System.Drawing.Size(139, 132);
+            this.glacialList_dev_org.SortType = GlacialComponents.Controls.SortTypes.InsertionSort;
+            this.glacialList_dev_org.SuperFlatHeaderColor = System.Drawing.Color.White;
+            this.glacialList_dev_org.TabIndex = 0;
+            this.glacialList_dev_org.Text = "glacialList1";
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.glacialList_dev_new);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(145, 138);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "新阈值";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // glacialList_dev_new
+            // 
+            this.glacialList_dev_new.AllowColumnResize = true;
+            this.glacialList_dev_new.AllowMultiselect = false;
+            this.glacialList_dev_new.AlternateBackground = System.Drawing.Color.DarkGreen;
+            this.glacialList_dev_new.AlternatingColors = false;
+            this.glacialList_dev_new.AutoHeight = true;
+            this.glacialList_dev_new.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.glacialList_dev_new.BackgroundStretchToFit = true;
+            glColumn3.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn3.CheckBoxes = false;
+            glColumn3.ImageIndex = -1;
+            glColumn3.Name = "TW";
+            glColumn3.NumericSort = false;
+            glColumn3.Text = "时间窗";
+            glColumn3.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            glColumn3.Width = 60;
+            glColumn4.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn4.CheckBoxes = false;
+            glColumn4.ImageIndex = -1;
+            glColumn4.Name = "alarm_th";
+            glColumn4.NumericSort = true;
+            glColumn4.Text = "报警值";
+            glColumn4.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
+            glColumn4.Width = 60;
+            this.glacialList_dev_new.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
+            glColumn3,
+            glColumn4});
+            this.glacialList_dev_new.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
+            this.glacialList_dev_new.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.glacialList_dev_new.FullRowSelect = true;
+            this.glacialList_dev_new.GridColor = System.Drawing.Color.LightGray;
+            this.glacialList_dev_new.GridLines = GlacialComponents.Controls.GLGridLines.gridBoth;
+            this.glacialList_dev_new.GridLineStyle = GlacialComponents.Controls.GLGridLineStyles.gridSolid;
+            this.glacialList_dev_new.GridTypes = GlacialComponents.Controls.GLGridTypes.gridOnExists;
+            this.glacialList_dev_new.HeaderHeight = 22;
+            this.glacialList_dev_new.HeaderVisible = true;
+            this.glacialList_dev_new.HeaderWordWrap = false;
+            this.glacialList_dev_new.HotColumnTracking = false;
+            this.glacialList_dev_new.HotItemTracking = false;
+            this.glacialList_dev_new.HotTrackingColor = System.Drawing.Color.LightGray;
+            this.glacialList_dev_new.HoverEvents = false;
+            this.glacialList_dev_new.HoverTime = 1;
+            this.glacialList_dev_new.ImageList = null;
+            this.glacialList_dev_new.ItemHeight = 19;
+            glItem7.BackColor = System.Drawing.Color.White;
+            glItem7.ForeColor = System.Drawing.Color.Black;
+            glItem7.RowBorderColor = System.Drawing.Color.Black;
+            glItem7.RowBorderSize = 0;
+            glSubItem19.BackColor = System.Drawing.Color.Empty;
+            glSubItem19.Checked = false;
+            glSubItem19.ForceText = false;
+            glSubItem19.ForeColor = System.Drawing.Color.Black;
+            glSubItem19.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem19.ImageIndex = -1;
+            glSubItem19.Text = "15m";
+            glSubItem20.BackColor = System.Drawing.Color.Empty;
+            glSubItem20.Checked = false;
+            glSubItem20.ForceText = false;
+            glSubItem20.ForeColor = System.Drawing.Color.Black;
+            glSubItem20.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem20.ImageIndex = -1;
+            glSubItem20.Text = "";
+            glSubItem21.BackColor = System.Drawing.Color.Empty;
+            glSubItem21.Checked = false;
+            glSubItem21.ForceText = false;
+            glSubItem21.ForeColor = System.Drawing.Color.Black;
+            glSubItem21.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem21.ImageIndex = -1;
+            glSubItem21.Text = "";
+            glItem7.SubItems.AddRange(new GlacialComponents.Controls.GLSubItem[] {
+            glSubItem19,
+            glSubItem20,
+            glSubItem21});
+            glItem7.Text = "15m";
+            glItem8.BackColor = System.Drawing.Color.White;
+            glItem8.ForeColor = System.Drawing.Color.Black;
+            glItem8.RowBorderColor = System.Drawing.Color.Black;
+            glItem8.RowBorderSize = 0;
+            glSubItem22.BackColor = System.Drawing.Color.Empty;
+            glSubItem22.Checked = false;
+            glSubItem22.ForceText = false;
+            glSubItem22.ForeColor = System.Drawing.Color.Black;
+            glSubItem22.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem22.ImageIndex = -1;
+            glSubItem22.Text = "30m";
+            glSubItem23.BackColor = System.Drawing.Color.Empty;
+            glSubItem23.Checked = false;
+            glSubItem23.ForceText = false;
+            glSubItem23.ForeColor = System.Drawing.Color.Black;
+            glSubItem23.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem23.ImageIndex = -1;
+            glSubItem23.Text = "";
+            glSubItem24.BackColor = System.Drawing.Color.Empty;
+            glSubItem24.Checked = false;
+            glSubItem24.ForceText = false;
+            glSubItem24.ForeColor = System.Drawing.Color.Black;
+            glSubItem24.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem24.ImageIndex = -1;
+            glSubItem24.Text = "";
+            glItem8.SubItems.AddRange(new GlacialComponents.Controls.GLSubItem[] {
+            glSubItem22,
+            glSubItem23,
+            glSubItem24});
+            glItem8.Text = "30m";
+            glItem9.BackColor = System.Drawing.Color.White;
+            glItem9.ForeColor = System.Drawing.Color.Black;
+            glItem9.RowBorderColor = System.Drawing.Color.Black;
+            glItem9.RowBorderSize = 0;
+            glSubItem25.BackColor = System.Drawing.Color.Empty;
+            glSubItem25.Checked = false;
+            glSubItem25.ForceText = false;
+            glSubItem25.ForeColor = System.Drawing.Color.Black;
+            glSubItem25.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem25.ImageIndex = -1;
+            glSubItem25.Text = "1h";
+            glSubItem26.BackColor = System.Drawing.Color.Empty;
+            glSubItem26.Checked = false;
+            glSubItem26.ForceText = false;
+            glSubItem26.ForeColor = System.Drawing.Color.Black;
+            glSubItem26.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem26.ImageIndex = -1;
+            glSubItem26.Text = "";
+            glSubItem27.BackColor = System.Drawing.Color.Empty;
+            glSubItem27.Checked = false;
+            glSubItem27.ForceText = false;
+            glSubItem27.ForeColor = System.Drawing.Color.Black;
+            glSubItem27.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem27.ImageIndex = -1;
+            glSubItem27.Text = "";
+            glItem9.SubItems.AddRange(new GlacialComponents.Controls.GLSubItem[] {
+            glSubItem25,
+            glSubItem26,
+            glSubItem27});
+            glItem9.Text = "1h";
+            glItem10.BackColor = System.Drawing.Color.White;
+            glItem10.ForeColor = System.Drawing.Color.Black;
+            glItem10.RowBorderColor = System.Drawing.Color.Black;
+            glItem10.RowBorderSize = 0;
+            glSubItem28.BackColor = System.Drawing.Color.Empty;
+            glSubItem28.Checked = false;
+            glSubItem28.ForceText = false;
+            glSubItem28.ForeColor = System.Drawing.Color.Black;
+            glSubItem28.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem28.ImageIndex = -1;
+            glSubItem28.Text = "2h";
+            glSubItem29.BackColor = System.Drawing.Color.Empty;
+            glSubItem29.Checked = false;
+            glSubItem29.ForceText = false;
+            glSubItem29.ForeColor = System.Drawing.Color.Black;
+            glSubItem29.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem29.ImageIndex = -1;
+            glSubItem29.Text = "";
+            glSubItem30.BackColor = System.Drawing.Color.Empty;
+            glSubItem30.Checked = false;
+            glSubItem30.ForceText = false;
+            glSubItem30.ForeColor = System.Drawing.Color.Black;
+            glSubItem30.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem30.ImageIndex = -1;
+            glSubItem30.Text = "";
+            glItem10.SubItems.AddRange(new GlacialComponents.Controls.GLSubItem[] {
+            glSubItem28,
+            glSubItem29,
+            glSubItem30});
+            glItem10.Text = "2h";
+            glItem11.BackColor = System.Drawing.Color.White;
+            glItem11.ForeColor = System.Drawing.Color.Black;
+            glItem11.RowBorderColor = System.Drawing.Color.Black;
+            glItem11.RowBorderSize = 0;
+            glSubItem31.BackColor = System.Drawing.Color.Empty;
+            glSubItem31.Checked = false;
+            glSubItem31.ForceText = false;
+            glSubItem31.ForeColor = System.Drawing.Color.Black;
+            glSubItem31.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem31.ImageIndex = -1;
+            glSubItem31.Text = "4h";
+            glSubItem32.BackColor = System.Drawing.Color.Empty;
+            glSubItem32.Checked = false;
+            glSubItem32.ForceText = false;
+            glSubItem32.ForeColor = System.Drawing.Color.Black;
+            glSubItem32.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem32.ImageIndex = -1;
+            glSubItem32.Text = "";
+            glSubItem33.BackColor = System.Drawing.Color.Empty;
+            glSubItem33.Checked = false;
+            glSubItem33.ForceText = false;
+            glSubItem33.ForeColor = System.Drawing.Color.Black;
+            glSubItem33.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem33.ImageIndex = -1;
+            glSubItem33.Text = "";
+            glItem11.SubItems.AddRange(new GlacialComponents.Controls.GLSubItem[] {
+            glSubItem31,
+            glSubItem32,
+            glSubItem33});
+            glItem11.Text = "4h";
+            glItem12.BackColor = System.Drawing.Color.White;
+            glItem12.ForeColor = System.Drawing.Color.Black;
+            glItem12.RowBorderColor = System.Drawing.Color.Black;
+            glItem12.RowBorderSize = 0;
+            glSubItem34.BackColor = System.Drawing.Color.Empty;
+            glSubItem34.Checked = false;
+            glSubItem34.ForceText = false;
+            glSubItem34.ForeColor = System.Drawing.Color.Black;
+            glSubItem34.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem34.ImageIndex = -1;
+            glSubItem34.Text = "8h";
+            glSubItem35.BackColor = System.Drawing.Color.Empty;
+            glSubItem35.Checked = false;
+            glSubItem35.ForceText = false;
+            glSubItem35.ForeColor = System.Drawing.Color.Black;
+            glSubItem35.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem35.ImageIndex = -1;
+            glSubItem35.Text = "";
+            glSubItem36.BackColor = System.Drawing.Color.Empty;
+            glSubItem36.Checked = false;
+            glSubItem36.ForceText = false;
+            glSubItem36.ForeColor = System.Drawing.Color.Black;
+            glSubItem36.ImageAlignment = System.Windows.Forms.HorizontalAlignment.Left;
+            glSubItem36.ImageIndex = -1;
+            glSubItem36.Text = "";
+            glItem12.SubItems.AddRange(new GlacialComponents.Controls.GLSubItem[] {
+            glSubItem34,
+            glSubItem35,
+            glSubItem36});
+            glItem12.Text = "8h";
+            this.glacialList_dev_new.Items.AddRange(new GlacialComponents.Controls.GLItem[] {
+            glItem7,
+            glItem8,
+            glItem9,
+            glItem10,
+            glItem11,
+            glItem12});
+            this.glacialList_dev_new.ItemWordWrap = false;
+            this.glacialList_dev_new.Location = new System.Drawing.Point(3, 3);
+            this.glacialList_dev_new.Name = "glacialList_dev_new";
+            this.glacialList_dev_new.Selectable = true;
+            this.glacialList_dev_new.SelectedTextColor = System.Drawing.Color.White;
+            this.glacialList_dev_new.SelectionColor = System.Drawing.Color.DarkBlue;
+            this.glacialList_dev_new.ShowBorder = true;
+            this.glacialList_dev_new.ShowFocusRect = false;
+            this.glacialList_dev_new.Size = new System.Drawing.Size(139, 132);
+            this.glacialList_dev_new.SortType = GlacialComponents.Controls.SortTypes.InsertionSort;
+            this.glacialList_dev_new.SuperFlatHeaderColor = System.Drawing.Color.White;
+            this.glacialList_dev_new.TabIndex = 1;
+            this.glacialList_dev_new.Text = "glacialList3";
             // 
             // button_AlarmIf
             // 
@@ -679,7 +1006,7 @@ namespace HGS
             // 
             // splitContainer4.Panel2
             // 
-            this.splitContainer4.Panel2.Controls.Add(this.glacialList2);
+            this.splitContainer4.Panel2.Controls.Add(this.tabControl2);
             this.splitContainer4.Size = new System.Drawing.Size(895, 434);
             this.splitContainer4.SplitterDistance = 261;
             this.splitContainer4.TabIndex = 1;
@@ -697,118 +1024,264 @@ namespace HGS
             this.plotView1.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
             this.plotView1.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
             // 
-            // glacialList2
+            // tabControl2
             // 
-            this.glacialList2.AllowColumnResize = true;
-            this.glacialList2.AllowMultiselect = false;
-            this.glacialList2.AlternateBackground = System.Drawing.Color.DarkGreen;
-            this.glacialList2.AlternatingColors = false;
-            this.glacialList2.AutoHeight = true;
-            this.glacialList2.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.glacialList2.BackgroundStretchToFit = true;
-            glColumn3.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
-            glColumn3.CheckBoxes = false;
-            glColumn3.ImageIndex = -1;
-            glColumn3.Name = "PN";
-            glColumn3.NumericSort = false;
-            glColumn3.Text = "点名";
-            glColumn3.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn3.Width = 100;
-            glColumn4.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
-            glColumn4.CheckBoxes = false;
-            glColumn4.ImageIndex = -1;
-            glColumn4.Name = "ED";
-            glColumn4.NumericSort = false;
-            glColumn4.Text = "描述";
-            glColumn4.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn4.Width = 200;
-            glColumn5.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            this.tabControl2.Controls.Add(this.tabPage3);
+            this.tabControl2.Controls.Add(this.tabPage4);
+            this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl2.Location = new System.Drawing.Point(0, 0);
+            this.tabControl2.Name = "tabControl2";
+            this.tabControl2.SelectedIndex = 0;
+            this.tabControl2.Size = new System.Drawing.Size(630, 434);
+            this.tabControl2.TabIndex = 1;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.glacialList_sensor_org);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(622, 408);
+            this.tabPage3.TabIndex = 0;
+            this.tabPage3.Text = "原阈值";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // glacialList_sensor_org
+            // 
+            this.glacialList_sensor_org.AllowColumnResize = true;
+            this.glacialList_sensor_org.AllowMultiselect = false;
+            this.glacialList_sensor_org.AlternateBackground = System.Drawing.Color.DarkGreen;
+            this.glacialList_sensor_org.AlternatingColors = false;
+            this.glacialList_sensor_org.AutoHeight = true;
+            this.glacialList_sensor_org.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.glacialList_sensor_org.BackgroundStretchToFit = true;
+            glColumn5.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn5.CheckBoxes = false;
             glColumn5.ImageIndex = -1;
-            glColumn5.Name = "m15";
+            glColumn5.Name = "PN";
             glColumn5.NumericSort = false;
-            glColumn5.Text = "15m";
-            glColumn5.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
-            glColumn5.Width = 50;
-            glColumn6.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn5.Text = "点名";
+            glColumn5.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn5.Width = 100;
+            glColumn6.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn6.CheckBoxes = false;
             glColumn6.ImageIndex = -1;
-            glColumn6.Name = "m30";
+            glColumn6.Name = "ED";
             glColumn6.NumericSort = false;
-            glColumn6.Text = "30m";
-            glColumn6.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
-            glColumn6.Width = 50;
+            glColumn6.Text = "描述";
+            glColumn6.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn6.Width = 200;
             glColumn7.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
             glColumn7.CheckBoxes = false;
             glColumn7.ImageIndex = -1;
-            glColumn7.Name = "m60";
+            glColumn7.Name = "m15";
             glColumn7.NumericSort = false;
-            glColumn7.Text = "60m";
+            glColumn7.Text = "15m";
             glColumn7.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn7.Width = 50;
             glColumn8.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
             glColumn8.CheckBoxes = false;
             glColumn8.ImageIndex = -1;
-            glColumn8.Name = "m120";
+            glColumn8.Name = "m30";
             glColumn8.NumericSort = false;
-            glColumn8.Text = "120m";
+            glColumn8.Text = "30m";
             glColumn8.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn8.Width = 50;
             glColumn9.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
             glColumn9.CheckBoxes = false;
             glColumn9.ImageIndex = -1;
-            glColumn9.Name = "m240";
+            glColumn9.Name = "m60";
             glColumn9.NumericSort = false;
-            glColumn9.Text = "240m";
+            glColumn9.Text = "60m";
             glColumn9.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn9.Width = 50;
             glColumn10.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
             glColumn10.CheckBoxes = false;
             glColumn10.ImageIndex = -1;
-            glColumn10.Name = "m480";
+            glColumn10.Name = "m120";
             glColumn10.NumericSort = false;
-            glColumn10.Text = "480m";
+            glColumn10.Text = "120m";
             glColumn10.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn10.Width = 50;
-            this.glacialList2.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
-            glColumn3,
-            glColumn4,
+            glColumn11.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn11.CheckBoxes = false;
+            glColumn11.ImageIndex = -1;
+            glColumn11.Name = "m240";
+            glColumn11.NumericSort = false;
+            glColumn11.Text = "240m";
+            glColumn11.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
+            glColumn11.Width = 50;
+            glColumn12.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn12.CheckBoxes = false;
+            glColumn12.ImageIndex = -1;
+            glColumn12.Name = "m480";
+            glColumn12.NumericSort = false;
+            glColumn12.Text = "480m";
+            glColumn12.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
+            glColumn12.Width = 50;
+            this.glacialList_sensor_org.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
             glColumn5,
             glColumn6,
             glColumn7,
             glColumn8,
             glColumn9,
-            glColumn10});
-            this.glacialList2.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
-            this.glacialList2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.glacialList2.FullRowSelect = true;
-            this.glacialList2.GridColor = System.Drawing.Color.LightGray;
-            this.glacialList2.GridLines = GlacialComponents.Controls.GLGridLines.gridBoth;
-            this.glacialList2.GridLineStyle = GlacialComponents.Controls.GLGridLineStyles.gridSolid;
-            this.glacialList2.GridTypes = GlacialComponents.Controls.GLGridTypes.gridOnExists;
-            this.glacialList2.HeaderHeight = 22;
-            this.glacialList2.HeaderVisible = true;
-            this.glacialList2.HeaderWordWrap = false;
-            this.glacialList2.HotColumnTracking = false;
-            this.glacialList2.HotItemTracking = false;
-            this.glacialList2.HotTrackingColor = System.Drawing.Color.LightGray;
-            this.glacialList2.HoverEvents = false;
-            this.glacialList2.HoverTime = 1;
-            this.glacialList2.ImageList = null;
-            this.glacialList2.ItemHeight = 19;
-            this.glacialList2.ItemWordWrap = false;
-            this.glacialList2.Location = new System.Drawing.Point(0, 0);
-            this.glacialList2.Name = "glacialList2";
-            this.glacialList2.Selectable = true;
-            this.glacialList2.SelectedTextColor = System.Drawing.Color.White;
-            this.glacialList2.SelectionColor = System.Drawing.Color.DarkBlue;
-            this.glacialList2.ShowBorder = true;
-            this.glacialList2.ShowFocusRect = false;
-            this.glacialList2.Size = new System.Drawing.Size(630, 434);
-            this.glacialList2.SortType = GlacialComponents.Controls.SortTypes.None;
-            this.glacialList2.SuperFlatHeaderColor = System.Drawing.Color.White;
-            this.glacialList2.TabIndex = 0;
-            this.glacialList2.Text = "glacialList2";
+            glColumn10,
+            glColumn11,
+            glColumn12});
+            this.glacialList_sensor_org.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
+            this.glacialList_sensor_org.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.glacialList_sensor_org.FullRowSelect = true;
+            this.glacialList_sensor_org.GridColor = System.Drawing.Color.LightGray;
+            this.glacialList_sensor_org.GridLines = GlacialComponents.Controls.GLGridLines.gridBoth;
+            this.glacialList_sensor_org.GridLineStyle = GlacialComponents.Controls.GLGridLineStyles.gridSolid;
+            this.glacialList_sensor_org.GridTypes = GlacialComponents.Controls.GLGridTypes.gridOnExists;
+            this.glacialList_sensor_org.HeaderHeight = 22;
+            this.glacialList_sensor_org.HeaderVisible = true;
+            this.glacialList_sensor_org.HeaderWordWrap = false;
+            this.glacialList_sensor_org.HotColumnTracking = false;
+            this.glacialList_sensor_org.HotItemTracking = false;
+            this.glacialList_sensor_org.HotTrackingColor = System.Drawing.Color.LightGray;
+            this.glacialList_sensor_org.HoverEvents = false;
+            this.glacialList_sensor_org.HoverTime = 1;
+            this.glacialList_sensor_org.ImageList = null;
+            this.glacialList_sensor_org.ItemHeight = 19;
+            this.glacialList_sensor_org.ItemWordWrap = false;
+            this.glacialList_sensor_org.Location = new System.Drawing.Point(3, 3);
+            this.glacialList_sensor_org.Name = "glacialList_sensor_org";
+            this.glacialList_sensor_org.Selectable = false;
+            this.glacialList_sensor_org.SelectedTextColor = System.Drawing.Color.White;
+            this.glacialList_sensor_org.SelectionColor = System.Drawing.Color.DarkBlue;
+            this.glacialList_sensor_org.ShowBorder = true;
+            this.glacialList_sensor_org.ShowFocusRect = false;
+            this.glacialList_sensor_org.Size = new System.Drawing.Size(616, 402);
+            this.glacialList_sensor_org.SortType = GlacialComponents.Controls.SortTypes.None;
+            this.glacialList_sensor_org.SuperFlatHeaderColor = System.Drawing.Color.White;
+            this.glacialList_sensor_org.TabIndex = 0;
+            this.glacialList_sensor_org.Text = "glacialList2";
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.glacialList_sensor_new);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(622, 408);
+            this.tabPage4.TabIndex = 1;
+            this.tabPage4.Text = "新阈值";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // glacialList_sensor_new
+            // 
+            this.glacialList_sensor_new.AllowColumnResize = true;
+            this.glacialList_sensor_new.AllowMultiselect = false;
+            this.glacialList_sensor_new.AlternateBackground = System.Drawing.Color.DarkGreen;
+            this.glacialList_sensor_new.AlternatingColors = false;
+            this.glacialList_sensor_new.AutoHeight = true;
+            this.glacialList_sensor_new.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.glacialList_sensor_new.BackgroundStretchToFit = true;
+            glColumn13.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn13.CheckBoxes = false;
+            glColumn13.ImageIndex = -1;
+            glColumn13.Name = "PN";
+            glColumn13.NumericSort = false;
+            glColumn13.Text = "点名";
+            glColumn13.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn13.Width = 100;
+            glColumn14.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn14.CheckBoxes = false;
+            glColumn14.ImageIndex = -1;
+            glColumn14.Name = "ED";
+            glColumn14.NumericSort = false;
+            glColumn14.Text = "描述";
+            glColumn14.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn14.Width = 200;
+            glColumn15.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn15.CheckBoxes = false;
+            glColumn15.ImageIndex = -1;
+            glColumn15.Name = "m15";
+            glColumn15.NumericSort = false;
+            glColumn15.Text = "15m";
+            glColumn15.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
+            glColumn15.Width = 50;
+            glColumn16.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn16.CheckBoxes = false;
+            glColumn16.ImageIndex = -1;
+            glColumn16.Name = "m30";
+            glColumn16.NumericSort = false;
+            glColumn16.Text = "30m";
+            glColumn16.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
+            glColumn16.Width = 50;
+            glColumn17.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn17.CheckBoxes = false;
+            glColumn17.ImageIndex = -1;
+            glColumn17.Name = "m60";
+            glColumn17.NumericSort = false;
+            glColumn17.Text = "60m";
+            glColumn17.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
+            glColumn17.Width = 50;
+            glColumn18.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn18.CheckBoxes = false;
+            glColumn18.ImageIndex = -1;
+            glColumn18.Name = "m120";
+            glColumn18.NumericSort = false;
+            glColumn18.Text = "120m";
+            glColumn18.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
+            glColumn18.Width = 50;
+            glColumn19.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn19.CheckBoxes = false;
+            glColumn19.ImageIndex = -1;
+            glColumn19.Name = "m240";
+            glColumn19.NumericSort = false;
+            glColumn19.Text = "240m";
+            glColumn19.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
+            glColumn19.Width = 50;
+            glColumn20.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn20.CheckBoxes = false;
+            glColumn20.ImageIndex = -1;
+            glColumn20.Name = "m480";
+            glColumn20.NumericSort = false;
+            glColumn20.Text = "480m";
+            glColumn20.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
+            glColumn20.Width = 50;
+            this.glacialList_sensor_new.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
+            glColumn13,
+            glColumn14,
+            glColumn15,
+            glColumn16,
+            glColumn17,
+            glColumn18,
+            glColumn19,
+            glColumn20});
+            this.glacialList_sensor_new.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
+            this.glacialList_sensor_new.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.glacialList_sensor_new.FullRowSelect = true;
+            this.glacialList_sensor_new.GridColor = System.Drawing.Color.LightGray;
+            this.glacialList_sensor_new.GridLines = GlacialComponents.Controls.GLGridLines.gridBoth;
+            this.glacialList_sensor_new.GridLineStyle = GlacialComponents.Controls.GLGridLineStyles.gridSolid;
+            this.glacialList_sensor_new.GridTypes = GlacialComponents.Controls.GLGridTypes.gridOnExists;
+            this.glacialList_sensor_new.HeaderHeight = 22;
+            this.glacialList_sensor_new.HeaderVisible = true;
+            this.glacialList_sensor_new.HeaderWordWrap = false;
+            this.glacialList_sensor_new.HotColumnTracking = false;
+            this.glacialList_sensor_new.HotItemTracking = false;
+            this.glacialList_sensor_new.HotTrackingColor = System.Drawing.Color.LightGray;
+            this.glacialList_sensor_new.HoverEvents = false;
+            this.glacialList_sensor_new.HoverTime = 1;
+            this.glacialList_sensor_new.ImageList = null;
+            this.glacialList_sensor_new.ItemHeight = 19;
+            this.glacialList_sensor_new.ItemWordWrap = false;
+            this.glacialList_sensor_new.Location = new System.Drawing.Point(3, 3);
+            this.glacialList_sensor_new.Name = "glacialList_sensor_new";
+            this.glacialList_sensor_new.Selectable = true;
+            this.glacialList_sensor_new.SelectedTextColor = System.Drawing.Color.White;
+            this.glacialList_sensor_new.SelectionColor = System.Drawing.Color.DarkBlue;
+            this.glacialList_sensor_new.ShowBorder = true;
+            this.glacialList_sensor_new.ShowFocusRect = false;
+            this.glacialList_sensor_new.Size = new System.Drawing.Size(616, 402);
+            this.glacialList_sensor_new.SortType = GlacialComponents.Controls.SortTypes.None;
+            this.glacialList_sensor_new.SuperFlatHeaderColor = System.Drawing.Color.White;
+            this.glacialList_sensor_new.TabIndex = 1;
+            this.glacialList_sensor_new.Text = "glacialList4";
             // 
             // buttonCancel
             // 
@@ -847,17 +1320,18 @@ namespace HGS
             this.timer1.Interval = 30000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // FormThSet
+            // FormThDtwSet
             // 
             this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(1052, 567);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip2);
-            this.Name = "FormThSet";
+            this.Name = "FormThDtwSet";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "属性设置";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -881,10 +1355,16 @@ namespace HGS
             this.splitContainer3.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
             this.splitContainer4.Panel1.ResumeLayout(false);
             this.splitContainer4.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
             this.splitContainer4.ResumeLayout(false);
+            this.tabControl2.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -898,7 +1378,7 @@ namespace HGS
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private GlacialComponents.Controls.GlacialList glacialList1;
+        private GlacialComponents.Controls.GlacialList glacialList_dev_org;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonOK;
         private OxyPlot.WindowsForms.PlotView plotView1;
@@ -917,7 +1397,7 @@ namespace HGS
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.SplitContainer splitContainer4;
-        private GlacialComponents.Controls.GlacialList glacialList2;
+        private GlacialComponents.Controls.GlacialList glacialList_sensor_org;
         private System.Windows.Forms.Button button_dell;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ComboBox comboBox_Sound;
@@ -929,5 +1409,13 @@ namespace HGS
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabControl tabControl2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage tabPage4;
+        private GlacialComponents.Controls.GlacialList glacialList_dev_new;
+        private GlacialComponents.Controls.GlacialList glacialList_sensor_new;
     }
 }

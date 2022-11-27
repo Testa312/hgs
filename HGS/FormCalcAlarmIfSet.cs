@@ -13,13 +13,13 @@ using System.Text.RegularExpressions;
 using Npgsql;
 namespace HGS
 {
-    public partial class FormCalcAlarmIf : Form
+    public partial class FormCalcAlarmIfSet : Form
     {
         HashSet<int> onlyid = new HashSet<int>();
         private point CalcPoint;
         int PointNums = 0;
         //--------------------------------
-        public FormCalcAlarmIf(point pt)
+        public FormCalcAlarmIfSet(point pt)
         {
             InitializeComponent();
             CalcPoint = pt;

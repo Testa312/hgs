@@ -201,17 +201,17 @@
     <Compile Include="FormAlarmHistoryList.Designer.cs">
       <DependentUpon>FormAlarmHistoryList.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormCalcDeviceAlarmIf.cs">
+    <Compile Include="FormCalcDeviceAlarmIfSet.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormCalcDeviceAlarmIf.Designer.cs">
-      <DependentUpon>FormCalcDeviceAlarmIf.cs</DependentUpon>
+    <Compile Include="FormCalcDeviceAlarmIfSet.Designer.cs">
+      <DependentUpon>FormCalcDeviceAlarmIfSet.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormCalcAlarmIf.cs">
+    <Compile Include="FormCalcAlarmIfSet.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormCalcAlarmIf.Designer.cs">
-      <DependentUpon>FormCalcAlarmIf.cs</DependentUpon>
+    <Compile Include="FormCalcAlarmIfSet.Designer.cs">
+      <DependentUpon>FormCalcAlarmIfSet.cs</DependentUpon>
     </Compile>
     <Compile Include="FormCalcAlarmLLSet.cs">
       <SubType>Form</SubType>
@@ -231,11 +231,11 @@
     <Compile Include="FormCountOfDeviceCalcDTW.Designer.cs">
       <DependentUpon>FormCountOfDeviceCalcDTW.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormPlotCurves_Wave.cs">
+    <Compile Include="FormThWaveSet.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormPlotCurves_Wave.Designer.cs">
-      <DependentUpon>FormPlotCurves_Wave.cs</DependentUpon>
+    <Compile Include="FormThWaveSet.Designer.cs">
+      <DependentUpon>FormThWaveSet.cs</DependentUpon>
     </Compile>
     <Compile Include="FormPlotQueues.cs">
       <SubType>Form</SubType>
@@ -243,11 +243,11 @@
     <Compile Include="FormPlotQueues.Designer.cs">
       <DependentUpon>FormPlotQueues.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormThSet.cs">
+    <Compile Include="FormThDtwSet.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormThSet.Designer.cs">
-      <DependentUpon>FormThSet.cs</DependentUpon>
+    <Compile Include="FormThDtwSet.Designer.cs">
+      <DependentUpon>FormThDtwSet.cs</DependentUpon>
     </Compile>
     <Compile Include="FormForceValue.cs">
       <SubType>Form</SubType>
@@ -361,21 +361,21 @@
     <Compile Include="SharpFFTW\Transform.cs" />
     <Compile Include="SisConnect.cs" />
     <Compile Include="VartoDeviceTable.cs" />
-    <Compile Include="WaveDetection_fft.cs" />
+    <Compile Include="DetectionSkip.cs" />
     <Compile Include="Dtw_Queues.cs" />
     <Compile Include="VartoPointTable.cs" />
-    <Compile Include="WaveDetector_3S.cs" />
+    <Compile Include="DetectorWave.cs" />
     <Compile Include="XmlConst.cs" />
     <Compile Include="XmlSettings.cs" />
     <Compile Include="XmlSettingsProperty.cs" />
     <EmbeddedResource Include="FormAlarmHistoryList.resx">
       <DependentUpon>FormAlarmHistoryList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormCalcDeviceAlarmIf.resx">
-      <DependentUpon>FormCalcDeviceAlarmIf.cs</DependentUpon>
+    <EmbeddedResource Include="FormCalcDeviceAlarmIfSet.resx">
+      <DependentUpon>FormCalcDeviceAlarmIfSet.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormCalcAlarmIf.resx">
-      <DependentUpon>FormCalcAlarmIf.cs</DependentUpon>
+    <EmbeddedResource Include="FormCalcAlarmIfSet.resx">
+      <DependentUpon>FormCalcAlarmIfSet.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormCalcAlarmLLSet.resx">
       <DependentUpon>FormCalcAlarmLLSet.cs</DependentUpon>
@@ -389,14 +389,14 @@
     <EmbeddedResource Include="FormCountOfDeviceCalcDTW.resx">
       <DependentUpon>FormCountOfDeviceCalcDTW.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormPlotCurves_Wave.resx">
-      <DependentUpon>FormPlotCurves_Wave.cs</DependentUpon>
+    <EmbeddedResource Include="FormThWaveSet.resx">
+      <DependentUpon>FormThWaveSet.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormPlotQueues.resx">
       <DependentUpon>FormPlotQueues.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormThSet.resx">
-      <DependentUpon>FormThSet.cs</DependentUpon>
+    <EmbeddedResource Include="FormThDtwSet.resx">
+      <DependentUpon>FormThDtwSet.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormForceValue.resx">
       <DependentUpon>FormForceValue.cs</DependentUpon>

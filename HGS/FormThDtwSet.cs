@@ -15,7 +15,7 @@ using GlacialComponents.Controls;
 using System.Diagnostics;
 namespace HGS
 {
-    public partial class FormThSet : Form
+    public partial class FormThDtwSet : Form
     {
         private DeviceInfo ttg;
         DateTimePicker dateTimePicker1 = new DateTimePicker();
@@ -25,7 +25,7 @@ namespace HGS
         //
         readonly int[] ScanSpan = Pref.Inst().ScanSpan;//分钟
         const double MULTI = 1.1;
-        public FormThSet(DeviceInfo ttg)
+        public FormThDtwSet(DeviceInfo ttg)
         {
             InitializeComponent();
             sisconn_temp = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
@@ -70,20 +70,20 @@ namespace HGS
                     for (int i = 0; i < ScanSpan.Length; i++)
                     {
                         //                   
-                        GLItem item = new GLItem(glacialList1);
+                        GLItem item = new GLItem(glacialList_dev_org);
                         item.SubItems["TW"].Text = ScanSpan[i].ToString() + "m";
                         item.SubItems["alarm_th"].Text = Math.Round(ttg.Alarm_th_dis[i], 3).ToString();
                         lsItem.Add(item);
                     }
-                    glacialList1.Items.Clear();
-                    glacialList1.Items.AddRange(lsItem.ToArray());
-                    glacialList1.Invalidate();
+                    glacialList_dev_org.Items.Clear();
+                    glacialList_dev_org.Items.AddRange(lsItem.ToArray());
+                    glacialList_dev_org.Invalidate();
                 }
 
                 lsItem.Clear();
                 foreach (int id in ttg.Sensors_set())
                 {
-                    GLItem item = new GLItem(glacialList2);
+                    GLItem item = new GLItem(glacialList_sensor_org);
                     point pt = Data.inst().cd_Point[id];
                     item.SubItems["PN"].Text = pt.pn;
                     item.SubItems["ED"].Text = pt.ed;
@@ -95,9 +95,9 @@ namespace HGS
                     lsItem.Add(item);
                 }
                 comboBox_Sound.SelectedIndex = ttg.Sound;
-                glacialList2.Items.Clear();
-                glacialList2.Items.AddRange(lsItem.ToArray());
-                glacialList2.Invalidate();
+                glacialList_sensor_org.Items.Clear();
+                glacialList_sensor_org.Items.AddRange(lsItem.ToArray());
+                glacialList_sensor_org.Invalidate();
 
             }
             else
@@ -105,7 +105,7 @@ namespace HGS
         }
         private PlotModel PlotPoint(int count = 600)
         {
-            Dictionary<int, PointData> dic_pd = SisConnect.GetPointData_dic(sisconn_temp,ttg.Sensors_set(), 
+            Dictionary<int, PointData> dic_pd = SisConnect.GetPointData_dic(sisconn_temp,Functions.set_idtopoint(ttg.Sensors_set()), 
                 dateTimePicker1.Value, dateTimePicker2.Value, count);
             if (dic_pd == null || dic_pd.Count <= 0) return null;
 
@@ -185,11 +185,11 @@ namespace HGS
                     cost = 0;
                     maxpp = double.MinValue;
                     Dictionary<int, PointData> dic_pd = null;
-                    Dictionary<int, PointData> dic_pd_stat = SisConnect.GetsisStat(sisconn_temp,ttg.Sensors_set(), 
+                    Dictionary<int, PointData> dic_pd_stat = SisConnect.GetsisStat(sisconn_temp,Functions.set_idtopoint(ttg.Sensors_set()), 
                         dateTimePicker1.Value, dateTimePicker2.Value, ScanSpan[i] * 60);
                     while (begin >= dateTimePicker1.Value)
                     {
-                        dic_pd = SisConnect.GetPointData_dic(sisconn_temp,ttg.Sensors_set(),begin,end);
+                        dic_pd = SisConnect.GetPointData_dic(sisconn_temp, Functions.set_idtopoint(ttg.Sensors_set()),begin,end);
                        
                         List<PointData> lspd = new List<PointData>(dic_pd.Values.ToArray());
                         
@@ -220,7 +220,7 @@ namespace HGS
                         end = end.AddMinutes(-ScanSpan[i] / 5);
                     }
                     //                   
-                    GLItem item = new GLItem(glacialList1);
+                    GLItem item = new GLItem(glacialList_dev_new);
                     item.SubItems["TW"].Text = ScanSpan[i].ToString() + "m";
                     //item.SubItems["start_th"].Text = Math.Round(maxpp * 1.1, 3).ToString();
                     cost *= MULTI;
@@ -246,14 +246,14 @@ namespace HGS
                     }
                 }
                 //
-                glacialList1.Items.Clear();
-                glacialList1.Items.AddRange(lsItem.ToArray());
-                glacialList1.Invalidate();
+                glacialList_dev_new.Items.Clear();
+                glacialList_dev_new.Items.AddRange(lsItem.ToArray());
+                glacialList_dev_new.Invalidate();
                 //
                 lsItem.Clear();
                 foreach (KeyValuePair<int, float[]> th in dic_dtw_th)
                 {
-                    GLItem item = new GLItem(glacialList2);
+                    GLItem item = new GLItem(glacialList_sensor_new);
                     point pt = Data.inst().cd_Point[th.Key];
                     item.SubItems["PN"].Text = pt.pn;
                     item.SubItems["ED"].Text = pt.ed;
@@ -264,15 +264,17 @@ namespace HGS
                     }
                     lsItem.Add(item);
                 }
-                glacialList2.Items.Clear();
-                glacialList2.Items.AddRange(lsItem.ToArray());
-                glacialList2.Invalidate();
+                glacialList_sensor_new.Items.Clear();
+                glacialList_sensor_new.Items.AddRange(lsItem.ToArray());
+                glacialList_sensor_new.Invalidate();
                 //
                 Cursor = Cursors.Default;
                 sw.Stop();
 
                 plotView1.Model = PlotPoint();
-
+                //
+                tabControl1.SelectedIndex = 1;
+                tabControl2.SelectedIndex = 1;
                 toolStripStatusLabel1.Text = string.Format("用时：{0}ms",sw.ElapsedMilliseconds);             
             }
             catch(Exception ee)
@@ -366,13 +368,13 @@ namespace HGS
                 //设备
                 bool flag = false;
                 float[] th = new float[ScanSpan.Length];
-                if (glacialList1.Items.Count == 6)
+                if (glacialList_dev_new.Items.Count == 6)
                 {
                     
-                    for (int i = 0; i < 6; i++)
+                    for (int i = 0; i < ScanSpan.Length; i++)
                     {
                         th[i] = float.MaxValue;
-                        GLItem item = glacialList1.Items[i];
+                        GLItem item = glacialList_dev_org.Items[i];
                         string txt_th = item.SubItems["alarm_th"].Text;
                         if (txt_th.Length > 0)
                         {
@@ -415,11 +417,11 @@ namespace HGS
                 //传感器
                 if (ttg.Sensors_set().Count >= 2)
                 {
-                    foreach (GLItem item in glacialList2.Items)
+                    foreach (GLItem item in glacialList_sensor_new.Items)
                     {
                         flag = false;
                         float[] th_dtw = new float[ScanSpan.Length];
-                        for (int i = 0; i < 6; i++)
+                        for (int i = 0; i < ScanSpan.Length; i++)
                         {
                             th_dtw[i] = float.MaxValue;
                             string txt_th = item.SubItems[string.Format("m{0}", ScanSpan[i])].Text;
@@ -465,24 +467,24 @@ namespace HGS
 
         private void button_dell_Click(object sender, EventArgs e)
         {
-            glacialList1.Items.Clear();
+            glacialList_dev_org.Items.Clear();
             List<GLItem> lsItem = new List<GLItem>();
 
             for (int i = 0; i < ScanSpan.Length; i++)
             {
                 //                   
-                GLItem item = new GLItem(glacialList1);
+                GLItem item = new GLItem(glacialList_dev_org);
                 item.SubItems["TW"].Text = ScanSpan[i].ToString() + "m";
                 lsItem.Add(item);
             }
-            glacialList1.Items.AddRange(lsItem.ToArray());
-            glacialList1.Invalidate();
+            glacialList_dev_org.Items.AddRange(lsItem.ToArray());
+            glacialList_dev_org.Invalidate();
             //
             lsItem.Clear();
 
             foreach (int id in ttg.Sensors_set())
             {
-                GLItem item = new GLItem(glacialList2);
+                GLItem item = new GLItem(glacialList_sensor_org);
                 point pt = Data.inst().cd_Point[id];
                 item.SubItems["PN"].Text = pt.pn;
                 item.SubItems["ED"].Text = pt.ed;
@@ -494,11 +496,11 @@ namespace HGS
                 lsItem.Add(item);
             }
             //
-            glacialList2.Items.Clear();
-            glacialList2.Items.AddRange(lsItem.ToArray());
+            glacialList_sensor_org.Items.Clear();
+            glacialList_sensor_org.Items.AddRange(lsItem.ToArray());
 
-            glacialList1.Invalidate();
-            glacialList2.Invalidate();
+            glacialList_dev_org.Invalidate();
+            glacialList_sensor_org.Invalidate();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -508,7 +510,7 @@ namespace HGS
 
         private void button_AlarmIf_Click(object sender, EventArgs e)
         {
-            FormCalcDeviceAlarmIf fcdai = new FormCalcDeviceAlarmIf(ttg);
+            FormCalcDeviceAlarmIfSet fcdai = new FormCalcDeviceAlarmIfSet(ttg);
             fcdai.glacialLisint();
             if (fcdai.ShowDialog() == DialogResult.OK)
             {

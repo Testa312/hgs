@@ -1,6 +1,6 @@
 ﻿namespace HGS
 {
-    partial class FormCalcAlarmIf
+    partial class FormCalcDeviceAlarmIfSet
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCalcAlarmIf));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCalcDeviceAlarmIfSet));
             GlacialComponents.Controls.GLColumn glColumn1 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn2 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn3 = new GlacialComponents.Controls.GLColumn();
@@ -268,6 +268,7 @@
             // 
             // numericUpDown
             // 
+            this.numericUpDown.Enabled = false;
             this.numericUpDown.Location = new System.Drawing.Point(422, 53);
             this.numericUpDown.Maximum = new decimal(new int[] {
             3,
@@ -288,6 +289,7 @@
             this.checkBoxCalc.AutoSize = true;
             this.checkBoxCalc.Checked = true;
             this.checkBoxCalc.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxCalc.Enabled = false;
             this.checkBoxCalc.Location = new System.Drawing.Point(153, 57);
             this.checkBoxCalc.Name = "checkBoxCalc";
             this.checkBoxCalc.Size = new System.Drawing.Size(48, 16);
@@ -297,6 +299,7 @@
             // 
             // comboBox_eu
             // 
+            this.comboBox_eu.Enabled = false;
             this.comboBox_eu.FormattingEnabled = true;
             this.comboBox_eu.Items.AddRange(new object[] {
             "℃",
@@ -435,16 +438,17 @@
             this.tSSLabel_varnums.Size = new System.Drawing.Size(56, 17);
             this.tSSLabel_varnums.Text = "变量数：";
             // 
-            // FormCalcAlarmIf
+            // FormCalcDeviceAlarmIfSet
             // 
             this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.buttonCancell;
             this.ClientSize = new System.Drawing.Size(728, 523);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
-            this.Name = "FormCalcAlarmIf";
+            this.Name = "FormCalcDeviceAlarmIfSet";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "报警条件设置";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormPointSet_FormClosed);

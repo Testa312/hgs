@@ -7,24 +7,25 @@ using Queues;
 namespace HGS
 {
     //滑动窗口取极值
-    public class WaveDetection_x
+    public class DetectionSkip
     {
         DequeSafe<double> qdata = new DequeSafe<double>();
         DequeSafe<int> qmax = new DequeSafe<int>();
         DequeSafe<int> qmin = new DequeSafe<int>();
-        private int size = 128;//窗口size.
+        private int size = 30;//窗口size.
 
         //滤波器用,x(n)=a*x(n-1)+b*y(n+1)+(1-a-b)*y(n) a+b要小于1;
-        double a = 0.7f, b = 0.15f, x = 0, y1 = 0, y2 = 0;
+        double a = 0.6f, b = 0.2f, x = 0, y1 = 0, y2 = 0;
         //
         FFTWReal fft = new FFTWReal();
         int p = -1;
-        public WaveDetection_x() { }
+        public DetectionSkip() { }
+        /*
         public enum wavestatus
         {
             surge,wave,error
         }
-
+        */
         public int Size
         {
             get
@@ -46,7 +47,7 @@ namespace HGS
         public void add(double d)
         {
 
-            ///滤波，初始化时约需要120个数据
+            ///滤波，初始化时约需要加至少30个数据
             y1 = y2;
             y2 = d;
             d = x = a * x + b * y1 + (1 - a - b) * y2;
@@ -113,23 +114,13 @@ namespace HGS
         }
         //数据跳变返回true，数据波动返回false;
         //调用前要保证数据极差异常，否则结果是错的。
-        public wavestatus isWave()
+        public bool isSkip(double th)
         {
-            if (p < 144 || qdata.Count != size)//有滤波，数据量要20个左右才能稳定。
-                return wavestatus.error;
-
-            double[] Spectrum = fft.Spectrum(qdata.ToArray(), true);
-            int imax = -1;
-            double dmax = double.MinValue;
-            for (int i = 1; i < Spectrum.Length; i++)
-            {
-                if (dmax - Spectrum[i] < -1e-6)
-                {
-                    dmax = Spectrum[i];
-                    imax = i;
-                }
-            }
-            return imax <= 3 ? wavestatus.surge : wavestatus.wave;
+            if (p < size + 30)//有滤波，数据量要加30个左右才能稳定。
+                return false;
+            if (DeltaP_P() > th)
+                return true;
+            return false;
         }
         public void Clear()
         {

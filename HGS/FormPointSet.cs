@@ -248,23 +248,11 @@ namespace HGS
                             if (textBox_pp.Text.Length > 0)
                             { pt.Skip_pp = double.Parse(textBox_pp.Text); }
                             else pt.Skip_pp = null;
-                            pt.isAlarmskip = checkBox_isSkip.Checked;
-                            pt.isAlarmwave = checkBox_isWave.Checked;
+                            //pt.isAlarmskip = checkBox_isSkip.Checked;
+                            //pt.isAlarmwave = checkBox_isWave.Checked;
 
-                            if ((pt.isAlarmwave || pt.isAlarmskip) && pt.Skip_pp != null)
-                            {
-                                if (pt.WaveDetection == null)
-                                {
-                                    pt.WaveDetection = new WaveDetector_3S(1);
-                                }
-                            }
-                            else if (pt.WaveDetection != null)
-                            {
-                                pt.WaveDetection.Clear();
-                                pt.WaveDetection = null;
-                            }
-                            if ((pt.isAlarmwave || pt.isAlarmskip) && pt.Skip_pp == null && pt.Skip_pp > 0)
-                                MessageBox.Show("阈值不应为空且大于0！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            //if ((pt.isAlarmskip) && pt.Skip_pp == null && pt.Skip_pp > 0)
+                              //  MessageBox.Show("阈值不应为空且大于0！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             pt.Sound = comboBox_Sound.SelectedIndex;
                             gllistUpateItemText(item, pt);
                         }
@@ -367,8 +355,8 @@ namespace HGS
             radioButton_true.Checked = Point.boolAlarmif;
             radioButton_false.Checked = !Point.boolAlarmif;
 
-            checkBox_isSkip.Checked = Point.isAlarmskip;
-            checkBox_isWave.Checked = Point.isAlarmwave;
+            //checkBox_isSkip.Checked = Point.isAlarmskip;
+            //checkBox_isWave.Checked = Point.isAlarmwave;
             textBox_pp.Text = Point.Skip_pp.ToString();
             //
             button_HL.ForeColor = Color.Black;
@@ -630,7 +618,7 @@ namespace HGS
                 point CalcPoint = (point)itemn.Tag; ;
                 //if (Data.inst().cd_Point.TryGetValue(it.id, out CalcPoint))
                 {
-                    FormCalcAlarmIf fcaf = new FormCalcAlarmIf(CalcPoint);
+                    FormCalcAlarmIfSet fcaf = new FormCalcAlarmIfSet(CalcPoint);
                     fcaf.glacialLisint();
                     fcaf.Text = string.Format("点[{0}]报警条件设置", CalcPoint.ed);
                     //fcps.CellId = cellid.main;
@@ -745,7 +733,7 @@ namespace HGS
                 if (stn != null)
                 {
                     DeviceInfo tt = new DeviceInfo();
-                    FormThSet ftn = new FormThSet(tt);
+                    FormThDtwSet ftn = new FormThDtwSet(tt);
                     ftn.Text = "增加节点";
                     if (ftn.ShowDialog() == DialogResult.OK)
                     {
@@ -795,7 +783,7 @@ namespace HGS
                 TreeNode tn = treeView.SelectedNode;
                 if (tn != null && tn.Text !="全部")
                 {
-                    FormThSet ftn = new FormThSet((DeviceInfo)tn.Tag);
+                    FormThDtwSet ftn = new FormThDtwSet((DeviceInfo)tn.Tag);
                     if (ftn.ShowDialog() == DialogResult.OK)
                     {
                         DataDeviceTree.UpdateNodetoDB(tn);
@@ -1026,17 +1014,17 @@ namespace HGS
         private void 显示曲线ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             lsPlotItem.Clear();
-            HashSet<int> pointid = new HashSet<int>();
+            HashSet<point> hsPoint = new HashSet<point>();
             foreach (GLItem item in glacialList1.SelectedItems)
             {
                 point it = (point)item.Tag;
-                pointid.Add(it.id);
+                hsPoint.Add(it);
                 lsPlotItem.Add(item);
             }
-            if (pointid.Count > 0)
+            if (hsPoint.Count > 0)
             {
                 DateTime end = SisConnect.GetSisSystemTime(sisconn_temp);
-                FormPlotCurves fc = new FormPlotCurves(pointid,end.AddMinutes(-15),end,true);
+                FormPlotCurves fc = new FormPlotCurves(hsPoint,end.AddMinutes(-15),end,true);
                 fc.MessageEvent += DisplayMessage;
                 fc.ShowDialog(this);
             }
@@ -1069,17 +1057,30 @@ namespace HGS
 
         private void 显示波动统计曲线ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            HashSet<int> pointid = new HashSet<int>();
+            HashSet<point> hsPoint = new HashSet<point>();
             foreach (GLItem item in glacialList1.SelectedItems)
             {
                 point it = (point)item.Tag;
-                pointid.Add(it.id);
-                lsPlotItem.Add(item);
+                hsPoint.Add(it);
             }
-            if (pointid.Count > 0)
+            if (hsPoint.Count > 0)
             {
                 DateTime end = SisConnect.GetSisSystemTime(sisconn_temp);
-                FormPlotCurves_Wave fc = new FormPlotCurves_Wave(pointid, end.AddMinutes(-15), end, true);
+                FormThWaveSet fc = new FormThWaveSet(hsPoint, end.AddMinutes(-15), end, true);
+                fc.ShowDialog(this);
+            }
+        }
+
+        private void button_WaveTh_Click(object sender, EventArgs e)
+        {
+           
+            point pt = (point)tabControl.Tag;
+            if (pt != null)
+            {
+                HashSet<point> hsPoint = new HashSet<point>();
+                hsPoint.Add(pt);
+                DateTime end = SisConnect.GetSisSystemTime(sisconn_temp);
+                FormThWaveSet fc = new FormThWaveSet(hsPoint, end.AddMinutes(-15), end, true);
                 fc.ShowDialog(this);
             }
         }

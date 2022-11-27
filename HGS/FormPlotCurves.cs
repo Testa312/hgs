@@ -15,7 +15,7 @@ namespace HGS
 {
     public partial class FormPlotCurves : Form
     {
-        HashSet<int> hsPointid = null;
+        HashSet<point> hsPoint = null;
         DateTimePicker dateTimePicker1 = new DateTimePicker();
         DateTimePicker dateTimePicker2 = new DateTimePicker();
         //
@@ -24,9 +24,9 @@ namespace HGS
 
         public delegate void MyDelegate();
         public event MyDelegate MessageEvent;//也可不要event
-        public FormPlotCurves(HashSet<int> hsPointid, DateTime begin, DateTime end, bool bAdmin = false )
+        public FormPlotCurves(HashSet<point> hsPoint, DateTime begin, DateTime end, bool bAdmin = false )
         {
-            this.hsPointid = hsPointid;
+            this.hsPoint = hsPoint;
             InitializeComponent();
             if (!bAdmin)
                 glacialList1.ContextMenuStrip = null;
@@ -70,7 +70,7 @@ namespace HGS
                 toolStrip1.Items.Insert(3, host1);
                 //
 
-                if (hsPointid != null)
+                if (hsPoint != null)
                 {
                     plotView1.Model = PlotPoint();
                 }
@@ -87,12 +87,12 @@ namespace HGS
             Dictionary<int, PointData> dic_pd_stat_128s = null;
             try
             {
-                dic_pd = SisConnect.GetPointData_dic(sisconn_temp,hsPointid,
+                dic_pd = SisConnect.GetPointData_dic(sisconn_temp,hsPoint,
                     dateTimePicker1.Value, dateTimePicker2.Value, count);
 
-                dic_pd_stat = SisConnect.GetsisStat(sisconn_temp,hsPointid,
+                dic_pd_stat = SisConnect.GetsisStat(sisconn_temp,hsPoint,
                     dateTimePicker1.Value, dateTimePicker2.Value, (int)(dateTimePicker2.Value - dateTimePicker2.Value).TotalSeconds);
-                dic_pd_stat_128s = SisConnect.GetsisStat(sisconn_temp, hsPointid,
+                dic_pd_stat_128s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
                     dateTimePicker1.Value, dateTimePicker2.Value, 128);
             }
             catch (Exception ee)

@@ -17,30 +17,10 @@ namespace HGS
         private int totalsampls = 0;
 
         int p = -1;
-        public int P
-        {
-            get { return p; }
-        }
-        public int Size
-        {
-            get
-            {
-                return size;
-            }
-            set
-            {
-                if (value < 1)
-                    throw new Exception("窗口太小或为负值！");
-                qdata.Clear();
-                qmax.Clear();
-                qmin.Clear();
-                p = -1;
-                size = value;
-            }
-        }
-        public SlideWindow(int DownSample)
+        public SlideWindow(int DownSample ,int size)
         {
             downsamples = DownSample < 1 ? 1 : DownSample;
+            this.size = size;
         }
         public double add(double d, bool bDS)
         {
@@ -117,28 +97,28 @@ namespace HGS
             p = -1;
         }
     }
-    public class WaveDetector_3S
+    public class DetectorWave
     {
-        public enum wavestatus
-        {
-            surge, wave, error
-        }
+
+        int size = 0;
+        int p = -1;
         SlideWindow step1 , step2, step3;
         //滤波器用,x(n)=a*x(n-1)+b*y(n+1)+(1-a-b)*y(n) a+b要小于1;
         double a = 0.7f, b = 0.15f, x = 0, y1 = 0, y2 = 0;
-        public WaveDetector_3S(int DownSample)
+        public DetectorWave(int DownSample,int size = 30)
         {
-            step1 = new SlideWindow(DownSample);
-            step2 = new SlideWindow(DownSample);
-            step3 = new SlideWindow(DownSample);
+            this.size = size;
+            step1 = new SlideWindow(DownSample,size);
+            step2 = new SlideWindow(DownSample,size);
+            step3 = new SlideWindow(DownSample,size);
         }
         public void add(double d, bool bDS)
         {
+            p++;
             ///滤波，初始化时约需要120个数据
             y1 = y2;
             y2 = d;
             d = x = a * x + b * y1 + (1 - a - b) * y2;
-
             step3.add(step2.add(step1.add(d, bDS), bDS), bDS);
         }
         public double[] Data()
@@ -156,20 +136,18 @@ namespace HGS
             step3.Clear();
         }
         //th 为阈值
-        public wavestatus IsNormal(double th)
+        public bool IsWave(double th)
         {
-            if(step3.P < 120) 
-                return wavestatus.error;
+            if(p <  3*size + 30) 
+                return false;
 
             bool s1 = step1.DeltaP_P() > th;
             bool s2 = step2.DeltaP_P() > th;
             bool s3 = step3.DeltaP_P() > th;
 
             if (s1 && s2 && s3) 
-                return wavestatus.wave;
-            if (s1 || s2 || s3) 
-                return wavestatus.surge;
-            return wavestatus.error;
+                return true;
+            return false;
         }
 
     }

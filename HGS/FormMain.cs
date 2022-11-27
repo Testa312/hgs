@@ -25,7 +25,7 @@ namespace HGS
             tssL_error_nums.Text = "";
             try
             {
-                SisConnect.sisconj_keep = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
+                SisConnect.siscon_keep = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
             Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
                 Data.inst().LoadFromPG();
             }
@@ -94,7 +94,7 @@ namespace HGS
             string sql = string.Format("select ID,TM,DS,AV from Realtime where ID in ({0})", sbid.ToString());
             try
             {
-                OPAPI.ResultSet resultSet = SisConnect.sisconj_keep.executeQuery(sql);//执行SQL
+                OPAPI.ResultSet resultSet = SisConnect.siscon_keep.executeQuery(sql);//执行SQL
 
                 const short gb1 = -32256;
                 const short gb2 = -32768;
@@ -322,7 +322,7 @@ namespace HGS
         {
             notifyIcon1.Dispose();
             timerCalc.Enabled = false;
-            SisConnect.sisconj_keep.close();
+            SisConnect.siscon_keep.close();
         }
 
         private void 打开OToolStripMenuItem_Click(object sender, EventArgs e)

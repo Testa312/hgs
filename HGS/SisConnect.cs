@@ -32,7 +32,7 @@ namespace HGS
     static class SisConnect
     {
         //public static OPAPI.Connect sisconn = null;
-        public static OPAPI.Connect sisconj_keep = null;//主连接由FormMain使用，负责建立、保活和销毁。
+        public static OPAPI.Connect siscon_keep = null;//主连接由FormMain使用，负责建立、保活和销毁。
         private static Dictionary<int, PointData> GetsisData(OPAPI.Connect sisconn,object[] keys, DateTime begin, DateTime end,int count = 100)
         {
             Dictionary<int, PointData> dic_data = new Dictionary<int, PointData>();
@@ -96,17 +96,17 @@ namespace HGS
             }
             return dic_data;
         }
-        public static Dictionary<int, PointData> GetPointData_dic(OPAPI.Connect sisconn,HashSet<int> hspid, DateTime begin, 
+        public static Dictionary<int, PointData> GetPointData_dic(OPAPI.Connect sisconn,HashSet<point> hsPoint, DateTime begin, 
             DateTime end, int count = 100)
         {
             Dictionary<int, PointData> dic_pd = new Dictionary<int, PointData>();
-            if (hspid != null && hspid.Count > 0)
+            if (hsPoint != null && hsPoint.Count > 0)
             {
                 HashSet<object> sisid = new HashSet<object>();
                 List<point> calcpt = new List<point>();
-                foreach (int id in hspid)
+                foreach (point pt in hsPoint)
                 {
-                    point pt = Data.inst().cd_Point[id];
+                    //point pt = Data.inst().cd_Point[id];
                     if (pt.pointsrc == pointsrc.sis)
                         sisid.Add(Convert.ToInt64(pt.Id_sis));
                     else if (pt.pointsrc == pointsrc.calc)
@@ -179,23 +179,25 @@ namespace HGS
 
             return newpt;
         }
-        public static void InitSensorsQueues(Dictionary<int,point> dic_pt)
+        public static void InitPointDtwQueues(Dictionary<int,point> dic_pt)
         {
 
             if (dic_pt == null)
                 throw new ArgumentException("初始化队列的点列表不能为空！");
             int[] ScanSpan = new int[6] { 18, 36, 72, 144, 288, 576 };//分钟,秒数为120的倍数
-            HashSet<int> lsob = new HashSet<int>();
-            foreach (int id in dic_pt.Keys)
+            HashSet<point> lsob = new HashSet<point>(dic_pt.Values.ToArray());
+            /*
+            foreach (point pt in dic_pt.Values)
             {
-                lsob.Add(id);
+                lsob.Add(pt);
             }
-            DateTime end = GetSisSystemTime(sisconj_keep).AddSeconds(-5);
+            */
+            DateTime end = GetSisSystemTime(siscon_keep).AddSeconds(-5);
             for (int i = 0; i < ScanSpan.Length; i++)
             {
                 DateTime begin = end.AddMinutes(-ScanSpan[i]);
                 //
-                Dictionary<int, PointData> dic_pd = GetPointData_dic(sisconj_keep,lsob, begin, end, 130);
+                Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep,lsob, begin, end, 130);
                 foreach (PointData pd in dic_pd.Values)
                 {
                     float[] x = new float[pd.data.Count];
@@ -208,23 +210,25 @@ namespace HGS
             }
 
         }
-        public static void InitSensorsWave3sQueues(Dictionary<int, point> dic_pt)
+        public static void InitSensorsWaveQueues(Dictionary<int, point> dic_pt)
         {
 
             if (dic_pt == null)
                 throw new ArgumentException("初始化队列的点列表不能为空！");
             int[] ScanSpan = new int[6] { 30, 60, 120, 240, 480, 960 };//秒数
-            HashSet<int> lsob = new HashSet<int>();
+            HashSet<point> lsob = new HashSet<point>(dic_pt.Values.ToArray());
+            /*
             foreach (int id in dic_pt.Keys)
             {
                 lsob.Add(id);
             }
-            DateTime end = GetSisSystemTime(sisconj_keep).AddSeconds(-5);
+            */
+            DateTime end = GetSisSystemTime(siscon_keep).AddSeconds(-5);
             for (int i = 0; i < ScanSpan.Length; i++)
             {
                 DateTime begin = end.AddMinutes(-ScanSpan[i]);
                 //
-                Dictionary<int, PointData> dic_pd = GetPointData_dic(sisconj_keep, lsob, begin, end, 50);//?
+                Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep, lsob, begin, end, 50);//?
                 foreach (PointData pd in dic_pd.Values)
                 {
                     float[] x = new float[pd.data.Count];
@@ -237,17 +241,17 @@ namespace HGS
             }
 
         }
-        public static Dictionary<int, PointData> GetsisStat(OPAPI.Connect sisconn,HashSet<int> hspid, DateTime begin, DateTime end,int span)
+        public static Dictionary<int, PointData> GetsisStat(OPAPI.Connect sisconn,HashSet<point> hsPoint, DateTime begin, DateTime end,int span)
         {
             //
             Dictionary<int, PointData> dic_data_stat = new Dictionary<int, PointData>();
-            if (hspid.Count == 0 || hspid == null) return dic_data_stat;
+            if (hsPoint.Count == 0 || hsPoint == null) return dic_data_stat;
             //
 
             HashSet<object> sisid = new HashSet<object>();
-            foreach (int id in hspid)
+            foreach (point pt in hsPoint)
             {
-                point pt = Data.inst().cd_Point[id];
+                //point pt = Data.inst().cd_Point[id];
                 if (pt.pointsrc == pointsrc.sis)
                     sisid.Add(Convert.ToInt64(pt.Id_sis));
             }

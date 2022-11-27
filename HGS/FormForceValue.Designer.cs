@@ -101,6 +101,7 @@ namespace HGS
             this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.buttonCancell;
             this.ClientSize = new System.Drawing.Size(264, 206);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.buttonCancell);
