@@ -129,7 +129,7 @@ namespace HGS
                     }
                     lastTm = Tm;
                     //
-                    Data.inst().Variables[Pref.Inst().GetVarName(Point)] = Point.av = resultSet.getDouble(3);
+                    Data.inst().Variables[Pref.Inst().GetVarName(Point)] = Point.av = resultSet.getFloat(3);
                 }
                 
                 if (resultSet != null)
@@ -194,7 +194,7 @@ namespace HGS
                     if (calcpt.Expression_main != null && calcpt.ps == PointState.Good)
                     {
                         //double rsl = 
-                        calcpt.av = Convert.ToDouble(calcpt.Expression_main.Evaluate());
+                        calcpt.av = (float)Convert.ToDouble(calcpt.Expression_main.Evaluate());
                     }
                     else calcpt.av = null;
 

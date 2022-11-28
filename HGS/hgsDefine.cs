@@ -487,8 +487,8 @@ namespace HGS
             set { _isForce = value; }
             get { return _isForce; }
         }
-        private double? _Forceav = null;//强制的数值。
-        public double? Forceav
+        private float? _Forceav = null;//强制的数值。
+        public float? Forceav
         {
             set { _Forceav = value; }
             get { return _Forceav; }
@@ -564,7 +564,7 @@ namespace HGS
         }
         private int _TimeTick = -1;
 
-        private double? _av = null;//点值，实时或计算。
+        private float? _av = null;//点值，实时或计算。
         //-----------------------------
         //动态时间规整器扫描的阈值,6个数，为15m,30m,60m,120m,240m,480m时间段。
         private float[] _dtw_start_th = null;
@@ -651,7 +651,7 @@ namespace HGS
         }
         //-----------------------------
         //不能多于一次赋值，否则将不对。
-        public double? av
+        public float? av
         {
             get { return _av; }
             set
@@ -919,10 +919,6 @@ namespace HGS
         static int[] prime = { 11, 23, 43, 83, 167, 317 };
         public void AlarmCalc()
         {
-            if (id == 13060)
-            {
-                double xx = 0;
-            }
             _TimeTick++;
             uint curAlarmBit = 0;
             if (_Alarmifav && _isAvalarm)

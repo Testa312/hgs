@@ -341,7 +341,7 @@ namespace HGS
             return (float)Math.Sqrt(cost / x.Length);//均方差。
         }
         //dtaidistance.dtw
-        public static double GetDtw_dd(PointData pd1, PointData pd2,double max_dist = 0, bool use_pruning = false)
+        public static double GetDtw_dd(PointData pd1, PointData pd2,float max_dist = 0, bool use_pruning = false)
         {
             if (pd1.data.Count != pd2.data.Count)
                 throw new ArgumentException("数组长度应相等！");
@@ -359,7 +359,7 @@ namespace HGS
             //向量模归一化.与z-normalization 比精度更高
             if (x2 > y2 && y2 >= 0.5)
             {
-                double c = Math.Sqrt(x2 / y2);
+                float c = (float)Math.Sqrt(x2 / y2);
                 for (int i = 0; i < x.Length; i++)
                 {
                     y[i] *= c;
@@ -368,7 +368,7 @@ namespace HGS
             }
             else if (y2 > x2 && x2 >= 0.5)
             {
-                double c = Math.Sqrt(y2 / x2);
+                float c = (float)Math.Sqrt(y2 / x2);
                 for (int i = 0; i < x.Length; i++)
                 {
                     x[i] *= c;
@@ -417,7 +417,7 @@ namespace HGS
             return (float)Math.Sqrt(cost);
         }
         //用差分归一化
-        public static double GetDtw_dd_diff(PointData pd1, PointData pd2, double max_dist = 0, bool use_pruning = false)
+        public static double GetDtw_dd_diff(PointData pd1, PointData pd2, float max_dist = 0, bool use_pruning = false)
         {
             if (pd1.data.Count != pd2.data.Count)
                 throw new ArgumentException("数组长度应相等！");
@@ -432,7 +432,7 @@ namespace HGS
             }
             return dd_dtw.dtw_distance(x, y, max_dist, use_pruning); 
         }
-        public static double GetDtw_dd_diff(double[] x, double[] y, double max_dist = 0, bool use_pruning = false)
+        public static double GetDtw_dd_diff(float[] x, float[] y, double max_dist = 0, bool use_pruning = false)
         {
             if (x.Length != y.Length)
                 throw new ArgumentException("数组长度应相等！");

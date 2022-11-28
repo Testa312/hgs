@@ -281,7 +281,7 @@ namespace HGS
             Queue<int> q_s = new Queue<int>();
             foreach (int s in hs_Sensorsid)
                 q_s.Enqueue(s);
-            double[] maindata = pt.Dtw_Queues_Array[Step].Data();
+            float[] maindata = pt.Dtw_Queues_Array[Step].Data();
             if (maindata != null)
             {
                 int count = 0;
@@ -294,11 +294,11 @@ namespace HGS
                     {
                         if (ptx.Dtw_Queues_Array != null)
                         {
-                            double[] secdata = ptx.Dtw_Queues_Array[Step].Data();
+                            float[] secdata = ptx.Dtw_Queues_Array[Step].Data();
                             if (secdata != null)
                             {
                                 CountofDTWCalc++;
-                                double cost = SisConnect.GetDtw_dd_diff(maindata, secdata, alarm_th_dis[Step] * 1.414);
+                                double cost = SisConnect.GetDtw_dd_diff(maindata, secdata,alarm_th_dis[Step] * 1.414);
                                 if (cost > alarm_th_dis[Step])
                                 {
                                     curAlarmBit = (uint)1 << Step;

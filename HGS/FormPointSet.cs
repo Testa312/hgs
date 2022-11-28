@@ -532,7 +532,7 @@ namespace HGS
                     if (DialogResult.OK == ffv.ShowDialog())
                     {
                         Point.isForce = ffv.checkBoxForce.Checked;
-                        Point.Forceav = Convert.ToDouble(ffv.textBoxValue.Text);
+                        Point.Forceav = (float)Convert.ToDouble(ffv.textBoxValue.Text);
                         Point.ps = PointState.Force;
                     }
                 }

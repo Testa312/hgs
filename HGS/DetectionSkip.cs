@@ -9,13 +9,13 @@ namespace HGS
     //滑动窗口取极值
     public class DetectionSkip
     {
-        DequeSafe<double> qdata = new DequeSafe<double>();
+        DequeSafe<float> qdata = new DequeSafe<float>();
         DequeSafe<int> qmax = new DequeSafe<int>();
         DequeSafe<int> qmin = new DequeSafe<int>();
         private int size = 30;//窗口size.
 
         //滤波器用,x(n)=a*x(n-1)+b*y(n+1)+(1-a-b)*y(n) a+b要小于1;
-        double a = 0.6f, b = 0.2f, x = 0, y1 = 0, y2 = 0;
+        float a = 0.6f, b = 0.2f, x = 0, y1 = 0, y2 = 0;
         //
        // FFTWReal fft = new FFTWReal();
         int p = -1;
@@ -44,7 +44,7 @@ namespace HGS
             }
         }
             
-        public void add(double d)
+        public void add(float d)
         {
 
             ///滤波，初始化时约需要加至少30个数据
@@ -70,7 +70,7 @@ namespace HGS
             while (qmax.TryPeekLast(out im))
                 if (d - qdata[im - start] >= 1e-6)
                 {
-                   double x =  qmax.PopLast();
+                    float x =  qmax.PopLast();
                 }
                 else break;
             qmax.Push(p);
@@ -78,12 +78,12 @@ namespace HGS
             while (qmin.TryPeekLast(out im))
                 if (qdata[im - start] - d >= 1e-6)
                 {
-                    double x = qmin.PopLast();
+                    float x = qmin.PopLast();
                 }
                 else break;
             qmin.Push(p);
         }
-        private double Max()
+        private float Max()
         {
             if (qdata.Count <= 0) 
                 throw new Exception("没有数据！");
@@ -91,7 +91,7 @@ namespace HGS
             start = start >= 0 ? start : 0;
             return qdata[qmax.PeekFirst() - start];
         }
-        private double Min()
+        private float Min()
         {
             if (qdata.Count <= 0) throw 
                     new Exception("没有数据！");
@@ -99,14 +99,14 @@ namespace HGS
             start = start >= 0 ? start : 0;
             return qdata[qmin.PeekFirst() - start];
         }
-        private double[] Data()
+        private float[] Data()
         {
             if (qdata.Count < size) 
                 return null;
             return qdata.ToArray();
         }
         //返回极差
-        public double DeltaP_P()
+        public float DeltaP_P()
         {
             if (qdata.Count < size +20) 
                 return 0;
@@ -114,7 +114,7 @@ namespace HGS
         }
         //数据跳变返回true，数据波动返回false;
         //调用前要保证数据极差异常，否则结果是错的。
-        public bool isSkip(double th)
+        public bool isSkip(float th)
         {
             if (p <= size + 20)//有滤波，数据量要加30个左右才能稳定。
                 return false;

@@ -9,7 +9,7 @@ namespace HGS
     //滑动窗口取极值
     class SlideWindow
     {
-        DequeSafe<double> qdata = new DequeSafe<double>();
+        DequeSafe<float> qdata = new DequeSafe<float>();
         DequeSafe<int> qmax = new DequeSafe<int>();
         DequeSafe<int> qmin = new DequeSafe<int>();
         private int size = 30;//窗口size.
@@ -22,9 +22,9 @@ namespace HGS
             downsamples = DownSample < 1 ? 1 : DownSample;
             this.size = size;
         }
-        public double add(double d, bool bDS)
+        public float add(float d, bool bDS)
         {
-            double first = 0;
+            float first = 0;
             totalsampls++;
             if (!bDS || (totalsampls % downsamples == 0))
             {
@@ -61,7 +61,7 @@ namespace HGS
             }
             return first;
         }
-        private double Max()
+        private float Max()
         {
             if (qdata.Count <= 0)
                 throw new Exception("没有数据！");
@@ -69,7 +69,7 @@ namespace HGS
             start = start >= 0 ? start : 0;
             return qdata[qmax.PeekFirst() - start];
         }
-        private double Min()
+        private float Min()
         {
             if (qdata.Count <= 0) throw
                     new Exception("没有数据！");
@@ -77,13 +77,13 @@ namespace HGS
             start = start >= 0 ? start : 0;
             return qdata[qmin.PeekFirst() - start];
         }
-        public double[] Data()
+        public float[] Data()
         {
             if (qdata.Count != size) return null;
             return qdata.ToArray();
         }
         //返回极差
-        public double DeltaP_P()
+        public float DeltaP_P()
         {
             if (qdata.Count < size)
                 return 0;
@@ -104,7 +104,7 @@ namespace HGS
         int p = -1;
         SlideWindow step1 , step2, step3;
         //滤波器用,x(n)=a*x(n-1)+b*y(n+1)+(1-a-b)*y(n) a+b要小于1;
-        double a = 0.7f, b = 0.15f, x = 0, y1 = 0, y2 = 0;
+        float a = 0.7f, b = 0.15f, x = 0, y1 = 0, y2 = 0;
         public DetectorWave(int DownSample,int size = 30)
         {
             this.size = size;
@@ -112,7 +112,7 @@ namespace HGS
             step2 = new SlideWindow(DownSample,size);
             step3 = new SlideWindow(DownSample,size);
         }
-        public void add(double d, bool bDS)
+        public void add(float d, bool bDS)
         {
             p++;
             ///滤波，初始化时约需要120个数据
@@ -121,9 +121,9 @@ namespace HGS
             d = x = a * x + b * y1 + (1 - a - b) * y2;
             step3.add(step2.add(step1.add(d, bDS), bDS), bDS);
         }
-        public double[] Data()
+        public float[] Data()
         {
-            List<double> rsl = new List<double>();
+            List<float> rsl = new List<float>();
             rsl.AddRange(step3.Data());
             rsl.AddRange(step2.Data());
             rsl.AddRange(step1.Data());
@@ -136,7 +136,7 @@ namespace HGS
             step3.Clear();
         }
         //th 为阈值
-        public bool IsWave(double th)
+        public bool IsWave(float th)
         {
             if(p <=  3*size + 20) 
                 return false;
@@ -149,7 +149,7 @@ namespace HGS
                 return true;
             return false;
         }
-        public double Delta_pp()
+        public float Delta_pp()
         {
             if (p <= 3 * size + 20)
                 return 0;
