@@ -1094,7 +1094,7 @@ namespace HGS
                 //point pt;
                 //if (Data.inst().cd_Point.TryGetValue(it.id, out pt))
                 {
-                    FormPlotQueuesSkip fpq = new FormPlotQueuesSkip(it);
+                    FormPlotQueuesWave fpq = new FormPlotQueuesWave(it);
                     fpq.ShowDialog(this);
                 }
             }

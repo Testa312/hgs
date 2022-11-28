@@ -231,11 +231,11 @@
     <Compile Include="FormCountOfDeviceCalcDTW.Designer.cs">
       <DependentUpon>FormCountOfDeviceCalcDTW.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormPlotQueuesSkip.cs">
+    <Compile Include="FormPlotQueuesWave.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormPlotQueuesSkip.Designer.cs">
-      <DependentUpon>FormPlotQueuesSkip.cs</DependentUpon>
+    <Compile Include="FormPlotQueuesWave.Designer.cs">
+      <DependentUpon>FormPlotQueuesWave.cs</DependentUpon>
     </Compile>
     <Compile Include="FormThWaveSet.cs">
       <SubType>Form</SubType>
@@ -395,8 +395,8 @@
     <EmbeddedResource Include="FormCountOfDeviceCalcDTW.resx">
       <DependentUpon>FormCountOfDeviceCalcDTW.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormPlotQueuesSkip.resx">
-      <DependentUpon>FormPlotQueuesSkip.cs</DependentUpon>
+    <EmbeddedResource Include="FormPlotQueuesWave.resx">
+      <DependentUpon>FormPlotQueuesWave.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormThWaveSet.resx">
       <DependentUpon>FormThWaveSet.cs</DependentUpon>

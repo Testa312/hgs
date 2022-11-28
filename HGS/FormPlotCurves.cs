@@ -154,7 +154,7 @@ namespace HGS
                 //Minimum = 0
             };
             pm.Axes.Add(dateTimeAxis1);
-            double margindv = (maxdv) * 0.1;
+            double margindv = (maxdv) * 0.05;
 
             pm.Axes.Add(new LinearAxis()
             {

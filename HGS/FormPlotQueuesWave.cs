@@ -13,10 +13,10 @@ using OxyPlot.Series;
 using System.Globalization;
 namespace HGS
 {
-    public partial class FormPlotQueuesSkip : Form
+    public partial class FormPlotQueuesWave : Form
     {
         point Point;
-        public FormPlotQueuesSkip(point pt)
+        public FormPlotQueuesWave(point pt)
         {
             InitializeComponent();
             Point = pt;
@@ -39,19 +39,9 @@ namespace HGS
                 maxdv = Math.Max(maxdv, dv);
                 mindv = Math.Min(mindv, dv);
             }
-            /*
-            var dateTimeAxis1 = new DateTimeAxis
-            {
-                CalendarWeekRule = CalendarWeekRule.FirstFourDayWeek,
-                FirstDayOfWeek = DayOfWeek.Monday,
-                Position = AxisPosition.Bottom,
-                //Minimum = 0
-            };
-            pm.Axes.Add(dateTimeAxis1);
-            */
             pm.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
-            double margindv = (maxdv) * 0.1;
+            double margindv = (maxdv- mindv);
 
             pm.Axes.Add(new LinearAxis()
             {

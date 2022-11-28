@@ -1,7 +1,7 @@
 ﻿
 namespace HGS
 {
-    partial class FormPlotQueuesSkip
+    partial class FormPlotQueuesWave
     {
         /// <summary>
         /// Required designer variable.
