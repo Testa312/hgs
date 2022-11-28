@@ -93,7 +93,7 @@ namespace HGS
                 dic_pd_stat = SisConnect.GetsisStat(sisconn_temp,hsPoint,
                     dateTimePicker1.Value, dateTimePicker2.Value, (int)(dateTimePicker2.Value - dateTimePicker2.Value).TotalSeconds);
                 dic_pd_stat_128s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
-                    dateTimePicker1.Value, dateTimePicker2.Value, 128);
+                    dateTimePicker1.Value, dateTimePicker2.Value, 30);
             }
             catch (Exception ee)
             {
@@ -122,7 +122,7 @@ namespace HGS
                 }
                 itm.SubItems["MAX"].Text = Math.Round(pd.MaxAv * 1.1, 3).ToString();
                 itm.SubItems["MIN"].Text = Math.Round(pd.MinAv * 0.9, 3).ToString(); 
-                itm.SubItems["Skip_pp"].Text = Math.Round(pd.DifAV * 0.9, 3).ToString();
+                itm.SubItems["Skip_pp"].Text = Math.Round(pd.DifAV * 1.1, 3).ToString();
                 lsitem.Add(itm);
             }
             glacialList1.Items.AddRange(lsitem.ToArray());

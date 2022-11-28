@@ -23,6 +23,7 @@ namespace HGS
         Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
 
         readonly int[] step = new int[] { 30, 60, 120, 240, 480, 960 };
+        const double MULTI = 1.1;
         //------------
         Dictionary<int, PointData> dic_pd = null;
         Dictionary<int, PointData> dic_pd_stat_30s = null;
@@ -103,8 +104,9 @@ namespace HGS
                     {
                         for (int i = 0; i < pt.Wd3s_th.Length; i++)
                         {
-                            itm.SubItems[string.Format("pp{0}s", (int)(Math.Pow(2, i) * 30))].Text =
-                                Math.Round(pt.Wd3s_th[i], 3).ToString();
+                            if (pt.Wd3s_th[i] <= 1e30)
+                                itm.SubItems[string.Format("pp{0}s", (int)(Math.Pow(2, i) * 30))].Text =
+                                    Math.Round(pt.Wd3s_th[i], 3).ToString();
                         }
                     }
 
@@ -112,7 +114,6 @@ namespace HGS
                 }
                 gl.Items.AddRange(lsitem.ToArray());
                 gl.Invalidate();
-                //-----------
             }
         }
         private PlotModel PlotPoint(int count = 1200)
@@ -282,28 +283,6 @@ namespace HGS
 
             plotView1.Model = PlotPoint();
         }
-
-        private void 接受为报警高低限ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            foreach (GLItem item in glacialList_new.Items.SelectedItems)
-            {
-                PointData pd = (PointData)item.Tag;
-                point pt;
-                if (Data.inst().cd_Point.TryGetValue(pd.ID, out pt))
-                {                  
-                    pt.ll = Math.Round(pd.MinAv * 0.9,3);
-                    pt.hl = Math.Round(pd.MaxAv * 1.1,3);
-                    if(pd.DifAV > 0)
-                        pt.Skip_pp = Math.Round(pd.DifAV * 1.1,3);
-                }
-            }
-            if (glacialList_new.Items.SelectedItems.Count > 0)
-            {
-                Data.inst().SavetoPG();
-                //MessageEvent();
-            }
-        }
-
         private void timer1_Tick(object sender, EventArgs e)
         {
             SisConnect.GetSisSystemTime(sisconn_temp);//保持连接
@@ -381,7 +360,7 @@ namespace HGS
                 }
                 glacialList_new.Items.AddRange(lsitem.ToArray());
                 glacialList_new.Invalidate();
-                //-----------
+                tabControl.SelectedIndex = 1;
             }
         }
 
@@ -414,27 +393,27 @@ namespace HGS
                     PointData pd_stat;
                     if (dic_pd_stat_30s.TryGetValue(pd.ID, out pd_stat))
                     {
-                        itm.SubItems["pp30s"].Text = Math.Round(pd_stat.DifAV, 3).ToString();
+                        itm.SubItems["pp30s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
                     }
                     if (dic_pd_stat_60s.TryGetValue(pd.ID, out pd_stat))
                     {
-                        itm.SubItems["pp60s"].Text = Math.Round(pd_stat.DifAV, 3).ToString();
+                        itm.SubItems["pp60s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
                     }
                     if (dic_pd_stat_120s.TryGetValue(pd.ID, out pd_stat))
                     {
-                        itm.SubItems["pp120s"].Text = Math.Round(pd_stat.DifAV, 3).ToString();
+                        itm.SubItems["pp120s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
                     }
                     if (dic_pd_stat_240s.TryGetValue(pd.ID, out pd_stat))
                     {
-                        itm.SubItems["pp240s"].Text = Math.Round(pd_stat.DifAV, 3).ToString();
+                        itm.SubItems["pp240s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
                     }
                     if (dic_pd_stat_480s.TryGetValue(pd.ID, out pd_stat))
                     {
-                        itm.SubItems["pp480s"].Text = Math.Round(pd_stat.DifAV, 3).ToString();
+                        itm.SubItems["pp480s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
                     }
                     if (dic_pd_stat_960s.TryGetValue(pd.ID, out pd_stat))
                     {
-                        itm.SubItems["pp960s"].Text = Math.Round(pd_stat.DifAV, 3).ToString();
+                        itm.SubItems["pp960s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
                     }
 
                     lsitem.Add(itm);

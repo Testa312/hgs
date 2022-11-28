@@ -41,8 +41,10 @@ namespace HGS
                 for (int i = 0; i < ScanSpan.Length; i++)
                 {
                     item.SubItems[string.Format("m{0}", ScanSpan[i])].Text = Math.Round(di.alarm_th_dis_max[i], 3).ToString();
-                    item.SubItems[string.Format("m{0}s", ScanSpan[i])].Text = Math.Round(di.Alarm_th_dis[i], 3).ToString();
+                    if (di.Alarm_th_dis != null)
+                        item.SubItems[string.Format("m{0}s", ScanSpan[i])].Text = Math.Round(di.Alarm_th_dis[i], 3).ToString();
                 }
+                /*
                 foreach (int sid in di.Sensors_set())
                 {
                     point sensor = Data.inst().cd_Point[sid];
@@ -58,10 +60,11 @@ namespace HGS
                     for (int i = 0; i < ScanSpan.Length; i++)
                     {
                         item.SubItems[string.Format("m{0}", ScanSpan[i])].Text = Math.Round(sensor.dtw_start_max[i], 3).ToString();
-                        item.SubItems[string.Format("m{0}s", ScanSpan[i])].Text = Math.Round(sensor.Dtw_start_th[i], 3).ToString();
+                        if(sensor.Dtw_start_th != null)
+                            item.SubItems[string.Format("m{0}s", ScanSpan[i])].Text = Math.Round(sensor.Dtw_start_th[i], 3).ToString();
                     }
                    
-                }
+                }*/
             }
             glacialList1.Items.AddRange(lsitem.ToArray());
             glacialList1.Invalidate();

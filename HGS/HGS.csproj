@@ -231,17 +231,23 @@
     <Compile Include="FormCountOfDeviceCalcDTW.Designer.cs">
       <DependentUpon>FormCountOfDeviceCalcDTW.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormPlotQueuesSkip.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPlotQueuesSkip.Designer.cs">
+      <DependentUpon>FormPlotQueuesSkip.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormThWaveSet.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormThWaveSet.Designer.cs">
       <DependentUpon>FormThWaveSet.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormPlotQueues.cs">
+    <Compile Include="FormPlotQueuesDtw.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormPlotQueues.Designer.cs">
-      <DependentUpon>FormPlotQueues.cs</DependentUpon>
+    <Compile Include="FormPlotQueuesDtw.Designer.cs">
+      <DependentUpon>FormPlotQueuesDtw.cs</DependentUpon>
     </Compile>
     <Compile Include="FormThDtwSet.cs">
       <SubType>Form</SubType>
@@ -389,11 +395,14 @@
     <EmbeddedResource Include="FormCountOfDeviceCalcDTW.resx">
       <DependentUpon>FormCountOfDeviceCalcDTW.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormPlotQueuesSkip.resx">
+      <DependentUpon>FormPlotQueuesSkip.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormThWaveSet.resx">
       <DependentUpon>FormThWaveSet.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormPlotQueues.resx">
-      <DependentUpon>FormPlotQueues.cs</DependentUpon>
+    <EmbeddedResource Include="FormPlotQueuesDtw.resx">
+      <DependentUpon>FormPlotQueuesDtw.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormThDtwSet.resx">
       <DependentUpon>FormThDtwSet.cs</DependentUpon>

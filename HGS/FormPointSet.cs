@@ -1038,7 +1038,7 @@ namespace HGS
                 //point pt;
                 //if (Data.inst().cd_Point.TryGetValue(it.id, out pt))
                 {
-                    FormPlotQueues fpq = new FormPlotQueues(it);
+                    FormPlotQueuesDtw fpq = new FormPlotQueuesDtw(it);
                     fpq.ShowDialog(this);
                 }
             }
@@ -1082,6 +1082,21 @@ namespace HGS
                 DateTime end = SisConnect.GetSisSystemTime(sisconn_temp);
                 FormThWaveSet fc = new FormThWaveSet(hsPoint, end.AddMinutes(-15), end, true);
                 fc.ShowDialog(this);
+            }
+        }
+
+        private void wave缓冲曲线ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (glacialList1.SelectedItems.Count > 0)
+            {
+                GLItem item = (GLItem)glacialList1.SelectedItems[0];
+                point it = (point)item.Tag;
+                //point pt;
+                //if (Data.inst().cd_Point.TryGetValue(it.id, out pt))
+                {
+                    FormPlotQueuesSkip fpq = new FormPlotQueuesSkip(it);
+                    fpq.ShowDialog(this);
+                }
             }
         }
     }

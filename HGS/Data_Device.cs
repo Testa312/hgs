@@ -35,29 +35,15 @@ namespace HGS
             get { return alarm_th_dis; }
             set
             {
-                alarm_th_dis = value;
-                if (alarm_th_dis == null)
+                if (alarm_th_dis != value)
                 {
-                    Data_Device.dic_Device.Remove(id);
-                    if (hs_Sensorsid != null)
+                    alarm_th_dis = value;
+                    if (alarm_th_dis != null)
                     {
-                        foreach (int sid in hs_Sensorsid)
+                        if (!Data_Device.dic_Device.ContainsKey(id))
                         {
-                            point pt;
-                            if (Data.inst().cd_Point.TryGetValue(sid, out pt))
-                            {
-                                if (pt.Device_set().Count == 1)
-                                    pt.Dtw_start_th = null;
-                            }
+                            Data_Device.dic_Device.Add(id, this);
                         }
-                    }
-                }
-                else
-                {
-                    if (!Data_Device.dic_Device.ContainsKey(id))
-                    {
-                        Data_Device.dic_Device.Add(id, this);
-                        
                     }
                 }
             }
@@ -361,17 +347,45 @@ namespace HGS
         static int[] prime = { 181,347, 727, 1373, 2801, 5711 };
         public void AlarmCalc()
         {
-            if (_Expression_If != null && !Convert.ToBoolean(_ce.Evaluate(_Expression_If))) 
+            curAlarmBit = 0;
+            if (_Expression_If != null && !Convert.ToBoolean(_ce.Evaluate(_Expression_If)))
+            {
+                for (int i = 0; i < prime.Length; i++)
+                {
+                    uint lastBit = lastAlarmBit & ((uint)1 << i);
+                    uint curBit = curAlarmBit & ((uint)1 << i);
+                    if (lastBit > curBit)
+                    {
+                        AlarmSet.GetInst().AlarmStop(CreateAlarmSid(i));
+                    }
+                    lastAlarmBit = curAlarmBit;
+                }
+                /*
+                if (alarm_th_dis == null)
+                {
+                    Data_Device.dic_Device.Remove(id);
+                    if (hs_Sensorsid != null)
+                    {
+                        foreach (int sid in hs_Sensorsid)
+                        {
+                            point pt;
+                            if (Data.inst().cd_Point.TryGetValue(sid, out pt))
+                            {
+                                if (pt.Device_set().Count == 1)
+                                    pt.Dtw_start_th = null;
+                            }
+                        }
+                    }
+                }*/
                 return;
+            }
 
             TimeTick++;        
             for (int i = 0; i < prime.Length; i++)
             {
                 if (TimeTick % prime[i] == 0)
                 {
-                    uint temp = ~((uint)1 << i);
-                    curAlarmBit &= temp;
-
+                    curAlarmBit &= ~((uint)1 << i); ;
                     point pt = Dtw_th_h(i);
                     if (pt != null)
                         AlarmCalc_dtw(pt, i);

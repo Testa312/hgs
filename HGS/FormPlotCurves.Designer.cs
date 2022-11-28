@@ -272,7 +272,7 @@
             glColumn7.ImageIndex = -1;
             glColumn7.Name = "Skip_pp";
             glColumn7.NumericSort = true;
-            glColumn7.Text = "128s p-p * 1.1";
+            glColumn7.Text = "跳变pp * 1.1";
             glColumn7.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn7.Width = 100;
             glColumn8.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
@@ -329,7 +329,7 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.接受为报警高低限ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(238, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(238, 26);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // 接受为报警高低限ToolStripMenuItem

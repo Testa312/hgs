@@ -60,7 +60,8 @@ namespace HGS
             // "formula_point where point.id = formula_point.id";
             string strsql = "select * from formula_device order by sort";
             NpgsqlDataAdapter daPoint = new NpgsqlDataAdapter(strsql, Pref.Inst().pgConnString);
-            
+            if (dt_vartoPoint != null)
+                dt_vartoPoint.Clear();
             daPoint.Fill(dt_vartoPoint);
         }
         public static void Refresh(bool force = false)

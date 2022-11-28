@@ -124,9 +124,9 @@ namespace HGS
         public double[] Data()
         {
             List<double> rsl = new List<double>();
-            rsl.AddRange(step1.Data());
-            rsl.AddRange(step2.Data());
             rsl.AddRange(step3.Data());
+            rsl.AddRange(step2.Data());
+            rsl.AddRange(step1.Data());
             return rsl.ToArray();
         }
         public void Clear()
@@ -138,7 +138,7 @@ namespace HGS
         //th 为阈值
         public bool IsWave(double th)
         {
-            if(p <  3*size + 30) 
+            if(p <=  3*size + 20) 
                 return false;
 
             bool s1 = step1.DeltaP_P() > th;
@@ -148,6 +148,12 @@ namespace HGS
             if (s1 && s2 && s3) 
                 return true;
             return false;
+        }
+        public double Delta_pp()
+        {
+            if (p <= 3 * size + 20)
+                return 0;
+            return Math.Max(Math.Max(step1.DeltaP_P(), step2.DeltaP_P()), step3.DeltaP_P());
         }
 
     }

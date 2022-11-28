@@ -73,5 +73,21 @@ namespace HGS
             }
             return hsp;
         }
+        public static PointState GetCalcPointState(List<point> hsp)
+        {
+            PointState ps = PointState.Good;
+            if (hsp != null)
+            {
+                foreach (point pt in hsp)
+                {
+                    if (pt.ps != PointState.Good)
+                    {
+                        ps = PointState.Error;
+                        break;
+                    }
+                }
+            }
+            return ps;
+        }
     }
 }

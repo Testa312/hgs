@@ -17,7 +17,7 @@ namespace HGS
         //滤波器用,x(n)=a*x(n-1)+b*y(n+1)+(1-a-b)*y(n) a+b要小于1;
         double a = 0.6f, b = 0.2f, x = 0, y1 = 0, y2 = 0;
         //
-        FFTWReal fft = new FFTWReal();
+       // FFTWReal fft = new FFTWReal();
         int p = -1;
         public DetectionSkip() { }
         /*
@@ -108,7 +108,7 @@ namespace HGS
         //返回极差
         public double DeltaP_P()
         {
-            if (qdata.Count < size) 
+            if (qdata.Count < size +20) 
                 return 0;
             return Math.Abs(Max() - Min());
         }
@@ -116,7 +116,7 @@ namespace HGS
         //调用前要保证数据极差异常，否则结果是错的。
         public bool isSkip(double th)
         {
-            if (p < size + 30)//有滤波，数据量要加30个左右才能稳定。
+            if (p <= size + 20)//有滤波，数据量要加30个左右才能稳定。
                 return false;
             if (DeltaP_P() > th)
                 return true;

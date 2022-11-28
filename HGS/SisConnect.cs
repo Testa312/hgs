@@ -197,7 +197,7 @@ namespace HGS
             {
                 DateTime begin = end.AddMinutes(-ScanSpan[i]);
                 //
-                Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep,lsob, begin, end, 130);
+                Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep,lsob, begin, end, 150);
                 foreach (PointData pd in dic_pd.Values)
                 {
                     float[] x = new float[pd.data.Count];
@@ -228,7 +228,7 @@ namespace HGS
             {
                 DateTime begin = end.AddMinutes(-ScanSpan[i]);
                 //
-                Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep, lsob, begin, end, 50);//?
+                Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep, lsob, begin, end, 140);//?
                 foreach (PointData pd in dic_pd.Values)
                 {
                     float[] x = new float[pd.data.Count];

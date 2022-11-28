@@ -13,10 +13,10 @@ using OxyPlot.Series;
 using System.Globalization;
 namespace HGS
 {
-    public partial class FormPlotQueues : Form
+    public partial class FormPlotQueuesDtw : Form
     {
         point Point;
-        public FormPlotQueues(point pt)
+        public FormPlotQueuesDtw(point pt)
         {
             InitializeComponent();
             Point = pt;

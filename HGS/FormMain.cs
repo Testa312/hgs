@@ -144,6 +144,7 @@ namespace HGS
 #endif
             }
         }
+        /*
         private PointState GetCalcPointState(List<point> hsp)
         {
             PointState ps = PointState.Good; 
@@ -159,7 +160,7 @@ namespace HGS
                 }
             }
             return ps;
-        }
+        }*/
         private void timerCalc_Tick(object sender, EventArgs e)
         {
             sW.Restart();
@@ -167,6 +168,7 @@ namespace HGS
             GetSisValue();//到得sis值；
 
             VartoPointTable.DelayClear();//释放表；
+            VartoDeviceTable.DelayClear();
 
             foreach (point calcpt in Data.inst().hsCalcPoint)
             {
@@ -185,7 +187,7 @@ namespace HGS
                 }
                 if (Data.inst().hs_FormulaErrorPoint.Contains(calcpt)) continue;
 
-                calcpt.ps = GetCalcPointState(calcpt.listSisCalcExpPointID_main);
+                calcpt.ps = Functions.GetCalcPointState(calcpt.listSisCalcExpPointID_main);
 
                 try
                 {
@@ -208,7 +210,7 @@ namespace HGS
             {
                 if (pt.orgformula_hl.Trim().Length > 0)
                 {
-                    PointState hlps = GetCalcPointState(pt.listSisCalaExpPointID_hl);
+                    PointState hlps = Functions.GetCalcPointState(pt.listSisCalaExpPointID_hl);
 
                     try
                     {
@@ -226,7 +228,7 @@ namespace HGS
                 //
                 if (pt.Orgformula_ll.Trim().Length > 0)
                 {
-                    PointState llps = GetCalcPointState(pt.listSisCalaExpPointID_ll);
+                    PointState llps = Functions.GetCalcPointState(pt.listSisCalaExpPointID_ll);
 
                     try
                     {
@@ -245,7 +247,7 @@ namespace HGS
                 pt.Alarmifav = true;
                 if (pt.Alarmif.Trim().Length > 0)
                 {
-                    PointState alarmifps = GetCalcPointState(pt.listSisCalcExpPointID_alarmif);
+                    PointState alarmifps = Functions.GetCalcPointState(pt.listSisCalcExpPointID_alarmif);
 
                     try
                     {

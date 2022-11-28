@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormThWaveSet));
             GlacialComponents.Controls.GLColumn glColumn1 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn2 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn3 = new GlacialComponents.Controls.GLColumn();
@@ -47,12 +48,12 @@
             GlacialComponents.Controls.GLColumn glColumn16 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn17 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn18 = new GlacialComponents.Controls.GLColumn();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormThWaveSet));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripButton_stat_th = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton_Multi = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton_Divide = new System.Windows.Forms.ToolStripButton();
@@ -75,9 +76,10 @@
             this.button_del = new System.Windows.Forms.Button();
             this.button_cancell = new System.Windows.Forms.Button();
             this.button_ok = new System.Windows.Forms.Button();
-            this.toolStripButton_stat_th = new System.Windows.Forms.ToolStripButton();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -139,6 +141,15 @@
             this.toolStripLabel2.Name = "toolStripLabel2";
             this.toolStripLabel2.Size = new System.Drawing.Size(44, 22);
             this.toolStripLabel2.Text = "结束：";
+            // 
+            // toolStripButton_stat_th
+            // 
+            this.toolStripButton_stat_th.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_stat_th.Image")));
+            this.toolStripButton_stat_th.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton_stat_th.Name = "toolStripButton_stat_th";
+            this.toolStripButton_stat_th.Size = new System.Drawing.Size(76, 22);
+            this.toolStripButton_stat_th.Text = "统计阈值";
+            this.toolStripButton_stat_th.Click += new System.EventHandler(this.toolStripButton_stat_th_Click);
             // 
             // toolStripSeparator1
             // 
@@ -212,6 +223,8 @@
             // 
             // statusStrip1
             // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 521);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1040, 22);
@@ -593,14 +606,11 @@
             this.button_ok.UseVisualStyleBackColor = true;
             this.button_ok.Click += new System.EventHandler(this.button_ok_Click);
             // 
-            // toolStripButton_stat_th
+            // toolStripStatusLabel1
             // 
-            this.toolStripButton_stat_th.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_stat_th.Image")));
-            this.toolStripButton_stat_th.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton_stat_th.Name = "toolStripButton_stat_th";
-            this.toolStripButton_stat_th.Size = new System.Drawing.Size(76, 22);
-            this.toolStripButton_stat_th.Text = "统计阈值";
-            this.toolStripButton_stat_th.Click += new System.EventHandler(this.toolStripButton_stat_th_Click);
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(109, 17);
+            this.toolStripStatusLabel1.Text = "可靠性系数1.1倍。";
             // 
             // FormThWaveSet
             // 
@@ -623,6 +633,8 @@
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
@@ -670,5 +682,6 @@
         private System.Windows.Forms.Button button_ok;
         private System.Windows.Forms.Button button_del;
         private System.Windows.Forms.ToolStripButton toolStripButton_stat_th;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }
