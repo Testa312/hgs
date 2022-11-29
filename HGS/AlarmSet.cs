@@ -129,10 +129,10 @@ namespace HGS
         {
             if (!dic_alarminfo.ContainsKey(ai.sid))
             {
-                dic_alarminfo.Add(ai.sid,linkAlarming.AddLast(ai));
+                dic_alarminfo.Add(ai.sid,linkAlarming.AddFirst(ai));
                 if (linkAlarming.Count > 1000)
                 {
-                    linkAlarming.RemoveFirst();
+                    linkAlarming.RemoveLast();
                     dic_alarminfo.Remove(ai.sid);
                 }
                 //lsNewAlarmInfo.Add(ai);

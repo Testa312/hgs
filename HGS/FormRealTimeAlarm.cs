@@ -82,7 +82,10 @@ namespace HGS
                     glacialList1.Items.Remove(item);
                 }
                 deleitem.Clear();
-                glacialList1.Items.AddRange(lsItems.ToArray());
+                foreach (GLItem itm in lsItems)
+                {
+                    glacialList1.Items.Insert(0,itm);
+                }
                 glacialList1.Invalidate();
                 tSLabel_Nums.Text = string.Format("实时报警总点数：{0}个", lsrtiai.Count);
             }
@@ -133,7 +136,10 @@ namespace HGS
                     glacialList2.Items.Remove(item);
                 }
                 deleitem.Clear();
-                glacialList2.Items.AddRange(lsItems.ToArray());
+                foreach (GLItem itm in lsItems)
+                {
+                    glacialList2.Items.Insert(0, itm);
+                }
                 glacialList2.Invalidate();
                 tSLabel_Nums.Text = string.Format("报警点数：{0}个", lshsiai.Count);
             }

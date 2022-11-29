@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+
 using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 using System.Windows.Forms;
 using Npgsql;
 namespace HGS
@@ -171,6 +171,7 @@ namespace HGS
                             ttag.SensorUnionWith(new HashSet<int>((int[])ob));
                         }
                     }
+                    tn.ForeColor = ttag.Alarm_th_dis != null ? Color.Red : Color.Black;
                     tn.Tag = ttag;
                     ltn.Add(tn);
                 }

@@ -108,7 +108,7 @@ namespace HGS
         //返回极差
         public float DeltaP_P()
         {
-            if (qdata.Count < size +20) 
+            if (p <= size + 20) 
                 return 0;
             return Math.Abs(Max() - Min());
         }

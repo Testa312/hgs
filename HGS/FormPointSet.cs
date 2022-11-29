@@ -196,8 +196,6 @@ namespace HGS
                             List<double> lsav = new List<double>();
                             point pt = (point)item.Tag;
 
-                            //point pt = Data.inst().cd_Point[it.id];
-
                             if (textBoxZL.Text.Length > 0)
                             { pt.zl = double.Parse(textBoxZL.Text); lsav.Add(Convert.ToDouble(pt.zl)); }
                             else pt.zl = null;
@@ -228,18 +226,7 @@ namespace HGS
                             {
                                 if (pt.bv > pt.tv) { throw new Exception("量程上限应大于量程下限！"); }
                             }
-                            //gllistUpateItemText(item, pt);
-
                             pt.isAvalarm = checkBoxAlarm.Checked;
-                            /*
-                            if (!pt.isAvalarm)
-                            {
-                                item.SubItems["AlarmInfo"].Text= "";
-                                point ppt = Data.inst().cd_Point[it.id];
-                                //pt.Alarmininfo = "";
-                                //AlarmSet.GetInst().Remove(ppt);
-                            }
-                            */
                             pt.isboolvAlarm = checkBoxbool.Checked;
                             if (glc <= 1)
                                 pt.boolAlarminfo = tB_boolAlarmInfo.Text;
@@ -248,11 +235,6 @@ namespace HGS
                             if (textBox_pp.Text.Length > 0)
                             { pt.Skip_pp = double.Parse(textBox_pp.Text); }
                             else pt.Skip_pp = null;
-                            //pt.isAlarmskip = checkBox_isSkip.Checked;
-                            //pt.isAlarmwave = checkBox_isWave.Checked;
-
-                            //if ((pt.isAlarmskip) && pt.Skip_pp == null && pt.Skip_pp > 0)
-                              //  MessageBox.Show("阈值不应为空且大于0！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             pt.Sound = comboBox_Sound.SelectedIndex;
                             gllistUpateItemText(item, pt);
                         }
@@ -280,16 +262,6 @@ namespace HGS
             {
                 MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            finally
-            {
-                //timerUpdateValue.Enabled = true;
-            }
-            /*
-            if (treeView.SelectedNode != null)
-            {
-                TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(treeView.SelectedNode, MouseButtons.Left, 0, 0, 0);
-                treeView_NodeMouseClick(null, ee);
-            }*/
         }
 
         private void FormPointSet_FormClosed(object sender, FormClosedEventArgs e)
@@ -378,6 +350,8 @@ namespace HGS
                 buttonAlarmIf.ForeColor = Color.Red;
             }
             comboBox_Sound.SelectedIndex = Point.Sound;
+
+            button_WaveTh.ForeColor = Point.Wd3s_Queues_Array != null && Point.Wd3s_th != null ? Color.Red : Color.Black;
         }
         private void glacialList1_Click(object sender, EventArgs e)
         {
@@ -541,7 +515,15 @@ namespace HGS
 
         private void contextMenuStrip_gl_Opening(object sender, CancelEventArgs e)
         {
-            显示曲线ToolStripMenuItem.Visible = 强制点ToolStripMenuItem.Visible = glacialList1.SelectedItems.Count == 1;          
+            bool single = glacialList1.SelectedItems.Count == 1;
+            强制点ToolStripMenuItem.Visible = single;
+            从设备中移除ToolStripMenuItem.Visible = 显示曲线ToolStripMenuItem.Visible = glacialList1.SelectedItems.Count > 0;
+
+            显示Dtw队列曲线ToolStripMenuItem.Visible = single ? 
+                ((point)((GLItem)glacialList1.SelectedItems[0]).Tag).Dtw_Queues_Array != null : false;
+            wave缓冲曲线ToolStripMenuItem.Visible = single ?
+                ((point)((GLItem)glacialList1.SelectedItems[0]).Tag).Wd3s_Queues_Array != null : false;
+            设置波动阈值ToolStripMenuItem.Visible = single;
         }
 
         private void button_HL_Click(object sender, EventArgs e)
@@ -1082,6 +1064,7 @@ namespace HGS
                 DateTime end = SisConnect.GetSisSystemTime(sisconn_temp);
                 FormThWaveSet fc = new FormThWaveSet(hsPoint, end.AddMinutes(-15), end, true);
                 fc.ShowDialog(this);
+                button_WaveTh.ForeColor = pt.Wd3s_Queues_Array != null && pt.Wd3s_th != null  ? Color.Red : Color.Black;
             }
         }
 

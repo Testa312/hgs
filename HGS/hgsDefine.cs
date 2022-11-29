@@ -971,7 +971,7 @@ namespace HGS
                     SetAlarmBit_L(ref curAlarmBit, 0, _zl);
                     SetAlarmBit_L(ref curAlarmBit, 1, _ll);
                     SetAlarmBit_L(ref curAlarmBit, 5, _bv);
-
+                   
                     if ((_id + _TimeTick) % 7 == 0)
                     {
                         curAlarmBit &= ~((uint)1 << 7);
