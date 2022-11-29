@@ -134,6 +134,7 @@ namespace HGS
             step1.Clear();
             step2.Clear();
             step3.Clear();
+            p = -1;
         }
         //th 为阈值
         public bool IsWave(float th)

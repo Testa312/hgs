@@ -75,6 +75,7 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.显示曲线ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.显示队列曲线ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wave缓冲曲线ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.显示波动统计曲线ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl = new System.Windows.Forms.TabControl();
@@ -124,7 +125,7 @@
             this.增加节点ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.删除节点ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.节点属性ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.wave缓冲曲线ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -502,70 +503,77 @@
             this.toolStripMenuItem3,
             this.显示波动统计曲线ToolStripMenuItem});
             this.contextMenuStrip_gl.Name = "contextMenuStrip_gl";
-            this.contextMenuStrip_gl.Size = new System.Drawing.Size(181, 220);
+            this.contextMenuStrip_gl.Size = new System.Drawing.Size(166, 198);
             this.contextMenuStrip_gl.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip_gl_Opening);
             // 
             // 填加计算点ToolStripMenuItem
             // 
             this.填加计算点ToolStripMenuItem.Name = "填加计算点ToolStripMenuItem";
-            this.填加计算点ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.填加计算点ToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.填加计算点ToolStripMenuItem.Text = "填加计算点...";
             this.填加计算点ToolStripMenuItem.Click += new System.EventHandler(this.toolStripButtonAddNewCalc_Click);
             // 
             // 填加SIS点ToolStripMenuItem
             // 
             this.填加SIS点ToolStripMenuItem.Name = "填加SIS点ToolStripMenuItem";
-            this.填加SIS点ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.填加SIS点ToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.填加SIS点ToolStripMenuItem.Text = "填加SIS点...";
             this.填加SIS点ToolStripMenuItem.Click += new System.EventHandler(this.toolStripButtonAddSis_Click);
             // 
             // 强制点ToolStripMenuItem
             // 
             this.强制点ToolStripMenuItem.Name = "强制点ToolStripMenuItem";
-            this.强制点ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.强制点ToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.强制点ToolStripMenuItem.Text = "强制点...";
             this.强制点ToolStripMenuItem.Click += new System.EventHandler(this.强制点ToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(162, 6);
             // 
             // 从分组中移除ToolStripMenuItem
             // 
             this.从分组中移除ToolStripMenuItem.Name = "从分组中移除ToolStripMenuItem";
-            this.从分组中移除ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.从分组中移除ToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.从分组中移除ToolStripMenuItem.Text = "从设备中移除";
             this.从分组中移除ToolStripMenuItem.Click += new System.EventHandler(this.从分组中移除ToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(162, 6);
             // 
             // 显示曲线ToolStripMenuItem
             // 
             this.显示曲线ToolStripMenuItem.Name = "显示曲线ToolStripMenuItem";
-            this.显示曲线ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.显示曲线ToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.显示曲线ToolStripMenuItem.Text = "曲线...";
             this.显示曲线ToolStripMenuItem.Click += new System.EventHandler(this.显示曲线ToolStripMenuItem_Click);
             // 
             // 显示队列曲线ToolStripMenuItem
             // 
             this.显示队列曲线ToolStripMenuItem.Name = "显示队列曲线ToolStripMenuItem";
-            this.显示队列曲线ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.显示队列曲线ToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.显示队列曲线ToolStripMenuItem.Text = "Dtw缓冲曲线...";
             this.显示队列曲线ToolStripMenuItem.Click += new System.EventHandler(this.显示队列曲线ToolStripMenuItem_Click);
+            // 
+            // wave缓冲曲线ToolStripMenuItem
+            // 
+            this.wave缓冲曲线ToolStripMenuItem.Name = "wave缓冲曲线ToolStripMenuItem";
+            this.wave缓冲曲线ToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.wave缓冲曲线ToolStripMenuItem.Text = "Wave缓冲曲线...";
+            this.wave缓冲曲线ToolStripMenuItem.Click += new System.EventHandler(this.wave缓冲曲线ToolStripMenuItem_Click);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(162, 6);
             // 
             // 显示波动统计曲线ToolStripMenuItem
             // 
             this.显示波动统计曲线ToolStripMenuItem.Name = "显示波动统计曲线ToolStripMenuItem";
-            this.显示波动统计曲线ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.显示波动统计曲线ToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.显示波动统计曲线ToolStripMenuItem.Text = "设置波动阈值...";
             this.显示波动统计曲线ToolStripMenuItem.Click += new System.EventHandler(this.显示波动统计曲线ToolStripMenuItem_Click);
             // 
@@ -1050,12 +1058,11 @@
             this.节点属性ToolStripMenuItem.Text = "属性";
             this.节点属性ToolStripMenuItem.Click += new System.EventHandler(this.节点属性ToolStripMenuItem_Click);
             // 
-            // wave缓冲曲线ToolStripMenuItem
+            // timer1
             // 
-            this.wave缓冲曲线ToolStripMenuItem.Name = "wave缓冲曲线ToolStripMenuItem";
-            this.wave缓冲曲线ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.wave缓冲曲线ToolStripMenuItem.Text = "Wave缓冲曲线...";
-            this.wave缓冲曲线ToolStripMenuItem.Click += new System.EventHandler(this.wave缓冲曲线ToolStripMenuItem_Click);
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 30000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // FormPointSet
             // 
@@ -1177,5 +1184,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ToolStripMenuItem wave缓冲曲线ToolStripMenuItem;
+        private System.Windows.Forms.Timer timer1;
     }
 }

@@ -80,7 +80,7 @@ namespace HGS
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // FormPlotQueues
+            // FormPlotQueuesDtw
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -90,9 +90,9 @@ namespace HGS
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "FormPlotQueues";
+            this.Name = "FormPlotQueuesDtw";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "队列数据曲线";
+            this.Text = "Dtw缓冲数据曲线";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.ResumeLayout(false);
             this.PerformLayout();

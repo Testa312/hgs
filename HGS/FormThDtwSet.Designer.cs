@@ -119,6 +119,8 @@ namespace HGS
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.glacialList_dev_org = new GlacialComponents.Controls.GlacialList();
+            this.contextMenuStrip_dev_new = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.现阈值复制ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.glacialList_dev_new = new GlacialComponents.Controls.GlacialList();
             this.button_AlarmIf = new System.Windows.Forms.Button();
@@ -138,6 +140,8 @@ namespace HGS
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.glacialList_sensor_org = new GlacialComponents.Controls.GlacialList();
+            this.contextMenuStrip_Sensor_new = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.从现阈值复制ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.glacialList_sensor_new = new GlacialComponents.Controls.GlacialList();
             this.buttonCancel = new System.Windows.Forms.Button();
@@ -161,6 +165,7 @@ namespace HGS
             this.splitContainer3.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.contextMenuStrip_dev_new.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
@@ -168,6 +173,7 @@ namespace HGS
             this.splitContainer4.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.contextMenuStrip_Sensor_new.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -629,6 +635,20 @@ namespace HGS
             this.glacialList_dev_org.TabIndex = 0;
             this.glacialList_dev_org.Text = "glacialList1";
             // 
+            // contextMenuStrip_dev_new
+            // 
+            this.contextMenuStrip_dev_new.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.现阈值复制ToolStripMenuItem});
+            this.contextMenuStrip_dev_new.Name = "contextMenuStrip_dev_new";
+            this.contextMenuStrip_dev_new.Size = new System.Drawing.Size(149, 26);
+            // 
+            // 现阈值复制ToolStripMenuItem
+            // 
+            this.现阈值复制ToolStripMenuItem.Name = "现阈值复制ToolStripMenuItem";
+            this.现阈值复制ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.现阈值复制ToolStripMenuItem.Text = "从现阈值复制";
+            this.现阈值复制ToolStripMenuItem.Click += new System.EventHandler(this.现阈值复制ToolStripMenuItem_Click);
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.glacialList_dev_new);
@@ -668,6 +688,7 @@ namespace HGS
             this.glacialList_dev_new.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
             glColumn3,
             glColumn4});
+            this.glacialList_dev_new.ContextMenuStrip = this.contextMenuStrip_dev_new;
             this.glacialList_dev_new.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
             this.glacialList_dev_new.Dock = System.Windows.Forms.DockStyle.Fill;
             this.glacialList_dev_new.FullRowSelect = true;
@@ -1159,6 +1180,20 @@ namespace HGS
             this.glacialList_sensor_org.TabIndex = 0;
             this.glacialList_sensor_org.Text = "glacialList2";
             // 
+            // contextMenuStrip_Sensor_new
+            // 
+            this.contextMenuStrip_Sensor_new.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.从现阈值复制ToolStripMenuItem});
+            this.contextMenuStrip_Sensor_new.Name = "contextMenuStrip_dev_new";
+            this.contextMenuStrip_Sensor_new.Size = new System.Drawing.Size(149, 26);
+            // 
+            // 从现阈值复制ToolStripMenuItem
+            // 
+            this.从现阈值复制ToolStripMenuItem.Name = "从现阈值复制ToolStripMenuItem";
+            this.从现阈值复制ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.从现阈值复制ToolStripMenuItem.Text = "从现阈值复制";
+            this.从现阈值复制ToolStripMenuItem.Click += new System.EventHandler(this.从现阈值复制ToolStripMenuItem_Click);
+            // 
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.glacialList_sensor_new);
@@ -1252,6 +1287,7 @@ namespace HGS
             glColumn18,
             glColumn19,
             glColumn20});
+            this.glacialList_sensor_new.ContextMenuStrip = this.contextMenuStrip_Sensor_new;
             this.glacialList_sensor_new.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
             this.glacialList_sensor_new.Dock = System.Windows.Forms.DockStyle.Fill;
             this.glacialList_sensor_new.FullRowSelect = true;
@@ -1357,6 +1393,7 @@ namespace HGS
             this.splitContainer3.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.contextMenuStrip_dev_new.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.splitContainer4.Panel1.ResumeLayout(false);
             this.splitContainer4.Panel2.ResumeLayout(false);
@@ -1364,6 +1401,7 @@ namespace HGS
             this.splitContainer4.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
+            this.contextMenuStrip_Sensor_new.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1417,5 +1455,9 @@ namespace HGS
         private System.Windows.Forms.TabPage tabPage4;
         private GlacialComponents.Controls.GlacialList glacialList_dev_new;
         private GlacialComponents.Controls.GlacialList glacialList_sensor_new;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip_dev_new;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip_Sensor_new;
+        private System.Windows.Forms.ToolStripMenuItem 现阈值复制ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 从现阈值复制ToolStripMenuItem;
     }
 }

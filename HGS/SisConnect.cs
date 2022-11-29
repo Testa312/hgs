@@ -33,7 +33,8 @@ namespace HGS
     {
         //public static OPAPI.Connect sisconn = null;
         public static OPAPI.Connect siscon_keep = null;//主连接由FormMain使用，负责建立、保活和销毁。
-        private static Dictionary<int, PointData> GetsisData(OPAPI.Connect sisconn,object[] keys, DateTime begin, DateTime end,int count = 100)
+        private static Dictionary<int, PointData> GetsisData(OPAPI.Connect sisconn,object[] keys, 
+            DateTime begin, DateTime end,int count = 100,int span = -1)
         {
             Dictionary<int, PointData> dic_data = new Dictionary<int, PointData>();
             if (keys.Length == 0) return dic_data;
@@ -41,9 +42,12 @@ namespace HGS
             string[] colnames = new string[] { "ID", "TM", "DS", "AV","GN" };
 
             Dictionary<string, object> options = new Dictionary<string, object>();
-            int span = (int)((end - begin).TotalSeconds / count);
-            span = span == 0 ? 1 : span;
-            span = span > 0 ? span : span++;
+            if (span <= 0)
+            {
+                span = (int)((end - begin).TotalSeconds / count);
+                span = span == 0 ? 1 : span;
+                span = span > 0 ? span : span++;
+            }
             options.Add("end", end);
             options.Add("begin", begin);
             options.Add("mode", "span");
@@ -97,7 +101,7 @@ namespace HGS
             return dic_data;
         }
         public static Dictionary<int, PointData> GetPointData_dic(OPAPI.Connect sisconn,HashSet<point> hsPoint, DateTime begin, 
-            DateTime end, int count = 100)
+            DateTime end, int count = 100 ,int span = -1)
         {
             Dictionary<int, PointData> dic_pd = new Dictionary<int, PointData>();
             if (hsPoint != null && hsPoint.Count > 0)
@@ -113,7 +117,7 @@ namespace HGS
                         calcpt.Add(pt);
                 }
 
-                    Dictionary<int, PointData> dic_pd_sis = SisConnect.GetsisData(sisconn,sisid.ToArray(), begin, end, count);
+                    Dictionary<int, PointData> dic_pd_sis = SisConnect.GetsisData(sisconn,sisid.ToArray(), begin, end, count,span);
                 foreach (PointData pd in dic_pd_sis.Values)
                 {
                     point pt = Data.inst().dic_SisIdtoPoint[pd.ID_sis];
@@ -133,7 +137,7 @@ namespace HGS
             }
             return dic_pd;
         }
-        private static PointData GetCalcPointData(OPAPI.Connect sisconn,point calcpt, DateTime begin, DateTime end, int count = 100)
+        private static PointData GetCalcPointData(OPAPI.Connect sisconn,point calcpt, DateTime begin, DateTime end, int count = 100,int span = -1)
         {
             if (calcpt.pointsrc != pointsrc.calc)
                 throw new ArgumentException("必须为计算点！");
@@ -145,7 +149,7 @@ namespace HGS
                 siskeys.Add(Convert.ToInt64(sispt.Id_sis));
             }
             //
-            Dictionary<int, PointData> data = GetsisData(sisconn,siskeys.ToArray(), begin, end, count);
+            Dictionary<int, PointData> data = GetsisData(sisconn,siskeys.ToArray(), begin, end, count,span);
             int c = 0;
             if (data.Keys.Count >= 1)
             {
@@ -197,7 +201,7 @@ namespace HGS
             {
                 DateTime begin = end.AddMinutes(-ScanSpan[i]);
                 //
-                Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep,lsob, begin, end, 150);
+                Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep,lsob, begin, end, 120, ScanSpan[i] / 2);
                 foreach (PointData pd in dic_pd.Values)
                 {
                     float[] x = new float[pd.data.Count];
@@ -215,7 +219,7 @@ namespace HGS
 
             if (dic_pt == null)
                 throw new ArgumentException("初始化队列的点列表不能为空！");
-            int[] ScanSpan = new int[6] { 30, 60, 120, 240, 480, 960 };//秒数
+            int[] ScanSpan = new int[6] { 120, 240, 480, 960, 1920, 3840 };//秒数
             HashSet<point> lsob = new HashSet<point>(dic_pt.Values.ToArray());
             /*
             foreach (int id in dic_pt.Keys)
@@ -226,9 +230,9 @@ namespace HGS
             DateTime end = GetSisSystemTime(siscon_keep).AddSeconds(-5);
             for (int i = 0; i < ScanSpan.Length; i++)
             {
-                DateTime begin = end.AddMinutes(-ScanSpan[i]);
+                DateTime begin = end.AddSeconds(-ScanSpan[i]);
                 //
-                Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep, lsob, begin, end, 140);//?
+                Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep, lsob, begin, end, 120, ScanSpan[i] / 120);
                 foreach (PointData pd in dic_pd.Values)
                 {
                     float[] x = new float[pd.data.Count];
@@ -303,42 +307,6 @@ namespace HGS
                 dic_data_stat_id.Add(pd.ID, pd);
             }
             return dic_data_stat_id;
-        }
-        public static float GetFastDtw(PointData pd1, PointData pd2)
-        {
-            if (pd1.data.Count != pd2.data.Count)
-                throw new ArgumentException("数组长度应相等！");
-            double x2 = 0, y2 = 0, cost = 0; //矢量长度的平方。
-
-            float[] x = new float[pd1.data.Count];
-            float[] y = new float[pd1.data.Count];
-            for (int i = 0; i < pd1.data.Count; i++)
-            {
-                x[i] = (pd1.data[i].Value - pd1.MinAv);
-                y[i] = (pd2.data[i].Value - pd2.MinAv);
-                x2 += x[i] * x[i];
-                y2 += y[i] * y[i];
-            }
-            //向量模归一化.与z-normalization 比精度更高
-            if (x2 > y2 && y2 >= 0.5)
-            {
-                float c = (float)Math.Sqrt(x2 / y2);
-                for (int i = 0; i < x.Length; i++)
-                {
-                    y[i] *= c;
-                }
-                cost = Dtw.GetScoreF(x, y);
-            }
-            else if (y2 > x2 && x2 >= 0.5)
-            {
-                float c = (float)Math.Sqrt(y2 / x2);
-                for (int i = 0; i < x.Length; i++)
-                {
-                    x[i] *= c;
-                }
-                cost = Dtw.GetScoreF(x, y);
-            }
-            return (float)Math.Sqrt(cost / x.Length);//均方差。
         }
         //dtaidistance.dtw
         public static double GetDtw_dd(PointData pd1, PointData pd2,float max_dist = 0, bool use_pruning = false)

@@ -187,14 +187,12 @@
     <Compile Include="DataDeviceTree.cs" />
     <Compile Include="Data_Device.cs" />
     <Compile Include="dd_dtw.cs" />
-    <Compile Include="DTW\Dtw.cs" />
     <Compile Include="EasyMail.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="EasyMail.Designer.cs">
       <DependentUpon>EasyMail.cs</DependentUpon>
     </Compile>
-    <Compile Include="FFTWReal.cs" />
     <Compile Include="FormAlarmHistoryList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -339,7 +337,6 @@
     </Compile>
     <Compile Include="GlacialList\ThemeRoutines.cs" />
     <Compile Include="GlacialList\Win32.cs" />
-    <Compile Include="FFTW_Helper.cs" />
     <Compile Include="hgsDefine.cs" />
     <Compile Include="MaskedTextBox.cs">
       <SubType>Component</SubType>
@@ -351,20 +348,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queues\Deque.cs" />
     <Compile Include="Queues\DequeSafe.cs" />
-    <Compile Include="SharpFFTW\AbstractArray.cs" />
-    <Compile Include="SharpFFTW\AbstractPlan.cs" />
-    <Compile Include="SharpFFTW\Direction.cs" />
-    <Compile Include="SharpFFTW\Double\ComplexArray.cs" />
-    <Compile Include="SharpFFTW\Double\NativeMethods.cs" />
-    <Compile Include="SharpFFTW\Double\Plan.cs" />
-    <Compile Include="SharpFFTW\Double\RealArray.cs" />
-    <Compile Include="SharpFFTW\Options.cs" />
-    <Compile Include="SharpFFTW\Single\Complex32.cs" />
-    <Compile Include="SharpFFTW\Single\ComplexArray.cs" />
-    <Compile Include="SharpFFTW\Single\NativeMethods.cs" />
-    <Compile Include="SharpFFTW\Single\Plan.cs" />
-    <Compile Include="SharpFFTW\Single\RealArray.cs" />
-    <Compile Include="SharpFFTW\Transform.cs" />
     <Compile Include="SisConnect.cs" />
     <Compile Include="VartoDeviceTable.cs" />
     <Compile Include="DetectionSkip.cs" />
@@ -478,9 +461,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="GlacialList\Readme.txt" />
-    <Content Include="libfftw3-3.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="opapi4.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

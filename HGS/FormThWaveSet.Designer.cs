@@ -63,6 +63,7 @@
             this.toolStripButton_First = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton_FFirst = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -76,7 +77,8 @@
             this.button_del = new System.Windows.Forms.Button();
             this.button_cancell = new System.Windows.Forms.Button();
             this.button_ok = new System.Windows.Forms.Button();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.从现阈值复制ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -92,6 +94,7 @@
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -230,6 +233,12 @@
             this.statusStrip1.Size = new System.Drawing.Size(1040, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(109, 17);
+            this.toolStripStatusLabel1.Text = "可靠性系数1.1倍。";
             // 
             // timer1
             // 
@@ -520,6 +529,7 @@
             glColumn16,
             glColumn17,
             glColumn18});
+            this.glacialList_new.ContextMenuStrip = this.contextMenuStrip1;
             this.glacialList_new.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
             this.glacialList_new.Dock = System.Windows.Forms.DockStyle.Fill;
             this.glacialList_new.FullRowSelect = true;
@@ -606,11 +616,19 @@
             this.button_ok.UseVisualStyleBackColor = true;
             this.button_ok.Click += new System.EventHandler(this.button_ok_Click);
             // 
-            // toolStripStatusLabel1
+            // contextMenuStrip1
             // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(109, 17);
-            this.toolStripStatusLabel1.Text = "可靠性系数1.1倍。";
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.从现阈值复制ToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
+            // 
+            // 从现阈值复制ToolStripMenuItem
+            // 
+            this.从现阈值复制ToolStripMenuItem.Name = "从现阈值复制ToolStripMenuItem";
+            this.从现阈值复制ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.从现阈值复制ToolStripMenuItem.Text = "从现阈值复制";
+            this.从现阈值复制ToolStripMenuItem.Click += new System.EventHandler(this.从现阈值复制ToolStripMenuItem_Click);
             // 
             // FormThWaveSet
             // 
@@ -647,6 +665,7 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -683,5 +702,7 @@
         private System.Windows.Forms.Button button_del;
         private System.Windows.Forms.ToolStripButton toolStripButton_stat_th;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem 从现阈值复制ToolStripMenuItem;
     }
 }

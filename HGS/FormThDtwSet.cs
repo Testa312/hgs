@@ -56,6 +56,7 @@ namespace HGS
             //
             plotView1.Model = PlotPoint();
             //
+            glacialList_dev_new.Items.Clear();
             if (ttg != null)
             {
                 textBox_Name.Text = ttg.Name;
@@ -72,7 +73,7 @@ namespace HGS
                         //                   
                         GLItem item = new GLItem(glacialList_dev_org);
                         item.SubItems["TW"].Text = ScanSpan[i].ToString() + "m";
-                        if (ttg.Alarm_th_dis[i] <= 1e30)
+                        if (ttg.Alarm_th_dis != null && ttg.Alarm_th_dis[i] <= 1e30)
                             item.SubItems["alarm_th"].Text = Math.Round(ttg.Alarm_th_dis[i], 3).ToString();
                         lsItem.Add(item);
                     }
@@ -91,7 +92,7 @@ namespace HGS
                     item.Tag = pt.id;
                     for (int i = 0; i < ScanSpan.Length; i++)
                     {
-                        if (pt.Dtw_start_th[i] <= 1e30)
+                        if (pt.Dtw_start_th != null && pt.Dtw_start_th[i] <= 1e30)
                             item.SubItems[string.Format("m{0}", ScanSpan[i])].Text = pt.Dtw_start_th == null ?
                                     "" : Math.Round(pt.Dtw_start_th[i], 3).ToString();
                     }
@@ -115,10 +116,10 @@ namespace HGS
             //string title = string.Format("{0}---{1}  [{2}]", dateTimePicker1.Value, dateTimePicker2.Value,
                                         //(dateTimePicker2.Value - dateTimePicker1.Value));
 
-            string title = string.Format("[{0}h]",Math.Round((dateTimePicker2.Value - dateTimePicker1.Value).TotalHours),2);
+            //string title = string.Format("[{0}h]",Math.Round((dateTimePicker2.Value - dateTimePicker1.Value).TotalHours),2);
             var pm = new PlotModel
             {
-                Title = title,
+                Title = (dateTimePicker2.Value - dateTimePicker1.Value).ToString(@"dd\.hh\:mm\:ss"),
                 PlotType = PlotType.XY,
                 Background = OxyColors.White
             };
@@ -377,8 +378,8 @@ namespace HGS
                     for (int i = 0; i < ScanSpan.Length; i++)
                     {
                         th[i] = float.MaxValue;
-                        GLItem item = glacialList_dev_org.Items[i];
-                        string txt_th = item.SubItems["alarm_th"].Text;
+                        GLItem item = glacialList_dev_new.Items[i];
+                        string txt_th = item.SubItems["alarm_th"].Text.Trim();
                         if (txt_th.Length > 0)
                         {
                             float fv;
@@ -427,7 +428,7 @@ namespace HGS
                         for (int i = 0; i < ScanSpan.Length; i++)
                         {
                             th_dtw[i] = float.MaxValue;
-                            string txt_th = item.SubItems[string.Format("m{0}", ScanSpan[i])].Text;
+                            string txt_th = item.SubItems[string.Format("m{0}", ScanSpan[i])].Text.Trim(); ;
                             if (txt_th.Length > 0)
                             {
                                 float fv;
@@ -527,6 +528,26 @@ namespace HGS
         {
             timer1.Enabled = false;
             sisconn_temp.close();
+        }
+
+        private void 现阈值复制ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            glacialList_dev_new.Items.Clear();
+            foreach (GLItem item in glacialList_dev_org.Items)
+            {
+                glacialList_dev_new.Items.Add(item);
+            }
+            glacialList_dev_new.Invalidate();
+        }
+
+        private void 从现阈值复制ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            glacialList_sensor_new.Items.Clear();
+            foreach (GLItem item in glacialList_sensor_org.Items)
+            {
+                glacialList_sensor_new.Items.Add(item);
+            }
+            glacialList_sensor_new.Invalidate();
         }
     }
 }

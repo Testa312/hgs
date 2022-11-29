@@ -41,7 +41,7 @@ namespace HGS
             }
             pm.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
-            double margindv = (maxdv- mindv);
+            double margindv = (maxdv- mindv) * 0.2;
 
             pm.Axes.Add(new LinearAxis()
             {

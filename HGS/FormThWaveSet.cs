@@ -104,7 +104,7 @@ namespace HGS
                     {
                         for (int i = 0; i < pt.Wd3s_th.Length; i++)
                         {
-                            if (pt.Wd3s_th[i] <= 1e30)
+                            if (pt.Wd3s_th != null && pt.Wd3s_th[i] <= 1e30)
                                 itm.SubItems[string.Format("pp{0}s", (int)(Math.Pow(2, i) * 30))].Text =
                                     Math.Round(pt.Wd3s_th[i], 3).ToString();
                         }
@@ -304,7 +304,7 @@ namespace HGS
                     for (int i = 0; i < step.Length; i++)
                     {
                         th_wave[i] = float.MaxValue;
-                        string txt_th = item.SubItems[string.Format("pp{0}s", step[i])].Text;
+                        string txt_th = item.SubItems[string.Format("pp{0}s", step[i])].Text.Trim();
                         if (txt_th.Length > 0)
                         {
                             float fv;
@@ -322,8 +322,7 @@ namespace HGS
                         }
                     }
 
-                    point pt = Data.inst().cd_Point[(int)item.Tag];
-                    pt.Wd3s_th = flag ? th_wave : null;
+                    ((point)item.Tag).Wd3s_th = flag ? th_wave : null;
                 }
                 Data.inst().SavetoPG();
             }
@@ -389,33 +388,36 @@ namespace HGS
                     itm.SubItems["PN"].Text = pd.GN;
                     itm.SubItems["ED"].Text = pd.ED;
                     itm.SubItems["EU"].Text = pd.EU;
-                    itm.Tag = pd.ID;
-                    PointData pd_stat;
-                    if (dic_pd_stat_30s.TryGetValue(pd.ID, out pd_stat))
+                    point pt;
+                    if (Data.inst().cd_Point.TryGetValue(pd.ID, out pt))
                     {
-                        itm.SubItems["pp30s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
+                        itm.Tag = pt;
+                        PointData pd_stat;
+                        if (dic_pd_stat_30s.TryGetValue(pd.ID, out pd_stat))
+                        {
+                            itm.SubItems["pp30s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
+                        }
+                        if (dic_pd_stat_60s.TryGetValue(pd.ID, out pd_stat))
+                        {
+                            itm.SubItems["pp60s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
+                        }
+                        if (dic_pd_stat_120s.TryGetValue(pd.ID, out pd_stat))
+                        {
+                            itm.SubItems["pp120s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
+                        }
+                        if (dic_pd_stat_240s.TryGetValue(pd.ID, out pd_stat))
+                        {
+                            itm.SubItems["pp240s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
+                        }
+                        if (dic_pd_stat_480s.TryGetValue(pd.ID, out pd_stat))
+                        {
+                            itm.SubItems["pp480s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
+                        }
+                        if (dic_pd_stat_960s.TryGetValue(pd.ID, out pd_stat))
+                        {
+                            itm.SubItems["pp960s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
+                        }
                     }
-                    if (dic_pd_stat_60s.TryGetValue(pd.ID, out pd_stat))
-                    {
-                        itm.SubItems["pp60s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
-                    }
-                    if (dic_pd_stat_120s.TryGetValue(pd.ID, out pd_stat))
-                    {
-                        itm.SubItems["pp120s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
-                    }
-                    if (dic_pd_stat_240s.TryGetValue(pd.ID, out pd_stat))
-                    {
-                        itm.SubItems["pp240s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
-                    }
-                    if (dic_pd_stat_480s.TryGetValue(pd.ID, out pd_stat))
-                    {
-                        itm.SubItems["pp480s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
-                    }
-                    if (dic_pd_stat_960s.TryGetValue(pd.ID, out pd_stat))
-                    {
-                        itm.SubItems["pp960s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
-                    }
-
                     lsitem.Add(itm);
                 }
                 glacialList_new.Items.AddRange(lsitem.ToArray());
@@ -426,6 +428,16 @@ namespace HGS
             {
                 MessageBox.Show(ee.ToString(), "错误");
             }
+        }
+
+        private void 从现阈值复制ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            glacialList_new.Items.Clear();
+            foreach (GLItem item in glacialList_org.Items)
+            {
+                glacialList_new.Items.Add(item);
+            }
+            glacialList_new.Invalidate();
         }
     }
 }

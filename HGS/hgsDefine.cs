@@ -777,7 +777,7 @@ namespace HGS
                 _wd3s_Queues_Array = new DetectorWave[6];
                 for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
                 {
-                    _wd3s_Queues_Array[i] = new DetectorWave(i);
+                    _wd3s_Queues_Array[i] = new DetectorWave((int)Math.Pow(2,i));
                 }
             }
             for (int i = 0; i < v.Length; i++)
@@ -795,7 +795,7 @@ namespace HGS
                     _wd3s_Queues_Array = new DetectorWave[6];
                     for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
                     {
-                        _wd3s_Queues_Array[i] = new DetectorWave(i);
+                        _wd3s_Queues_Array[i] = new DetectorWave((int)Math.Pow(2, i));
                     }
                     //
                     Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();

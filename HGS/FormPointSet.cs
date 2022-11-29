@@ -1099,5 +1099,10 @@ namespace HGS
                 }
             }
         }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            SisConnect.GetSisSystemTime(sisconn_temp);//保持连接
+        }
     }
 }

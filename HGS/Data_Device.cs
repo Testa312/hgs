@@ -292,7 +292,7 @@ namespace HGS
                     point ptx;
                     if (Data.inst().cd_Point.TryGetValue(sid, out ptx))
                     {
-                        if (ptx.Dtw_Queues_Array != null)
+                        if (ptx.Dtw_Queues_Array != null && alarm_th_dis !=null)
                         {
                             float[] secdata = ptx.Dtw_Queues_Array[Step].Data();
                             if (secdata != null)
@@ -301,7 +301,7 @@ namespace HGS
                                 double cost = SisConnect.GetDtw_dd_diff(maindata, secdata,alarm_th_dis[Step] * 1.414);
                                 if (cost > alarm_th_dis[Step])
                                 {
-                                    curAlarmBit = (uint)1 << Step;
+                                    curAlarmBit |= (uint)1 << Step;
                                     if (!double.IsInfinity(cost))
                                         alarm_th_dis_max[Step] = (float)Math.Round(Math.Max(cost, alarm_th_dis_max[Step]),3);
                                     return;
@@ -349,7 +349,7 @@ namespace HGS
         {
             curAlarmBit = 0;
             if (_Expression_If != null && !Convert.ToBoolean(_ce.Evaluate(_Expression_If)))
-            {
+            {              
                 for (int i = 0; i < prime.Length; i++)
                 {
                     uint lastBit = lastAlarmBit & ((uint)1 << i);
@@ -357,26 +357,9 @@ namespace HGS
                     if (lastBit > curBit)
                     {
                         AlarmSet.GetInst().AlarmStop(CreateAlarmSid(i));
-                    }
-                    lastAlarmBit = curAlarmBit;
+                    }                   
                 }
-                /*
-                if (alarm_th_dis == null)
-                {
-                    Data_Device.dic_Device.Remove(id);
-                    if (hs_Sensorsid != null)
-                    {
-                        foreach (int sid in hs_Sensorsid)
-                        {
-                            point pt;
-                            if (Data.inst().cd_Point.TryGetValue(sid, out pt))
-                            {
-                                if (pt.Device_set().Count == 1)
-                                    pt.Dtw_start_th = null;
-                            }
-                        }
-                    }
-                }*/
+                lastAlarmBit = curAlarmBit;
                 return;
             }
 
@@ -385,7 +368,7 @@ namespace HGS
             {
                 if (TimeTick % prime[i] == 0)
                 {
-                    curAlarmBit &= ~((uint)1 << i); ;
+                    //curAlarmBit &= ~((uint)1 << i); ;
                     point pt = Dtw_th_h(i);
                     if (pt != null)
                         AlarmCalc_dtw(pt, i);
@@ -400,7 +383,8 @@ namespace HGS
                     {
                         AlarmSet.GetInst().AddAlarming(CreateAlarmInfo(i));
                     }
-                    lastAlarmBit = curAlarmBit;
+                    lastAlarmBit &= ~((uint)1 << i);
+                    lastAlarmBit |= curBit;
                 }             
             }            
         }
