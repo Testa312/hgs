@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCalcPointList));
             GlacialComponents.Controls.GLColumn glColumn1 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn2 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn3 = new GlacialComponents.Controls.GLColumn();
@@ -42,15 +43,26 @@
             this.tSTBPN = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
             this.tSTBED = new System.Windows.Forms.ToolStripTextBox();
-            this.tSBFind = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonfind = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tSSLabel_nums = new System.Windows.Forms.ToolStripStatusLabel();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOk = new System.Windows.Forms.Button();
             this.glacialList = new GlacialComponents.Controls.GlacialList();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.treeView = new System.Windows.Forms.TreeView();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -62,10 +74,10 @@
             this.tSTBPN,
             this.toolStripLabel3,
             this.tSTBED,
-            this.tSBFind});
+            this.toolStripButtonfind});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(701, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(974, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -104,21 +116,22 @@
             this.tSTBED.Name = "tSTBED";
             this.tSTBED.Size = new System.Drawing.Size(100, 25);
             // 
-            // tSBFind
+            // toolStripButtonfind
             // 
-            this.tSBFind.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tSBFind.Name = "tSBFind";
-            this.tSBFind.Size = new System.Drawing.Size(36, 22);
-            this.tSBFind.Text = "查询";
-            this.tSBFind.Click += new System.EventHandler(this.tSBFind_Click);
+            this.toolStripButtonfind.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonfind.Image")));
+            this.toolStripButtonfind.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonfind.Name = "toolStripButtonfind";
+            this.toolStripButtonfind.Size = new System.Drawing.Size(52, 22);
+            this.toolStripButtonfind.Text = "查询";
+            this.toolStripButtonfind.Click += new System.EventHandler(this.tSBFind_Click);
             // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tSSLabel_nums});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 402);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 484);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(701, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(974, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "点数：";
             // 
@@ -137,7 +150,7 @@
             // buttonCancel
             // 
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(186, 368);
+            this.buttonCancel.Location = new System.Drawing.Point(175, 17);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 3;
@@ -147,7 +160,7 @@
             // buttonOk
             // 
             this.buttonOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonOk.Location = new System.Drawing.Point(418, 368);
+            this.buttonOk.Location = new System.Drawing.Point(414, 17);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 2;
@@ -219,6 +232,7 @@
             glColumn5,
             glColumn6});
             this.glacialList.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
+            this.glacialList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.glacialList.FullRowSelect = true;
             this.glacialList.GridColor = System.Drawing.Color.LightGray;
             this.glacialList.GridLines = GlacialComponents.Controls.GLGridLines.gridBoth;
@@ -235,18 +249,65 @@
             this.glacialList.ImageList = null;
             this.glacialList.ItemHeight = 19;
             this.glacialList.ItemWordWrap = false;
-            this.glacialList.Location = new System.Drawing.Point(11, 38);
+            this.glacialList.Location = new System.Drawing.Point(0, 0);
             this.glacialList.Name = "glacialList";
             this.glacialList.Selectable = true;
             this.glacialList.SelectedTextColor = System.Drawing.Color.White;
             this.glacialList.SelectionColor = System.Drawing.Color.DarkBlue;
             this.glacialList.ShowBorder = true;
             this.glacialList.ShowFocusRect = false;
-            this.glacialList.Size = new System.Drawing.Size(678, 303);
+            this.glacialList.Size = new System.Drawing.Size(703, 388);
             this.glacialList.SortType = GlacialComponents.Controls.SortTypes.QuickSort;
             this.glacialList.SuperFlatHeaderColor = System.Drawing.Color.White;
             this.glacialList.TabIndex = 1;
             this.glacialList.Text = "glacialList";
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 25);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.treeView);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
+            this.splitContainer1.Size = new System.Drawing.Size(974, 459);
+            this.splitContainer1.SplitterDistance = 267;
+            this.splitContainer1.TabIndex = 4;
+            // 
+            // treeView
+            // 
+            this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView.Location = new System.Drawing.Point(0, 0);
+            this.treeView.Name = "treeView";
+            this.treeView.Size = new System.Drawing.Size(267, 459);
+            this.treeView.TabIndex = 0;
+            this.treeView.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView_BeforeExpand);
+            this.treeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_NodeMouseClick);
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.glacialList);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.buttonCancel);
+            this.splitContainer2.Panel2.Controls.Add(this.buttonOk);
+            this.splitContainer2.Size = new System.Drawing.Size(703, 459);
+            this.splitContainer2.SplitterDistance = 388;
+            this.splitContainer2.TabIndex = 4;
             // 
             // FormCalcPointList
             // 
@@ -254,10 +315,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(701, 424);
-            this.Controls.Add(this.buttonOk);
-            this.Controls.Add(this.buttonCancel);
-            this.Controls.Add(this.glacialList);
+            this.ClientSize = new System.Drawing.Size(974, 506);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.MaximizeBox = false;
@@ -265,13 +324,21 @@
             this.Name = "FormCalcPointList";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "计算点选择";
+            this.Text = "选择计算点";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormSisPointList_FormClosed);
             this.Shown += new System.EventHandler(this.FormCalcPointList_Shown);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -283,7 +350,6 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel2;
         private System.Windows.Forms.ToolStripTextBox tSTBPN;
         private System.Windows.Forms.ToolStripLabel toolStripLabel3;
-        private System.Windows.Forms.ToolStripButton tSBFind;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripLabel toolStripLabel4;
         private System.Windows.Forms.ToolStripStatusLabel tSSLabel_nums;
@@ -293,5 +359,9 @@
         internal GlacialComponents.Controls.GlacialList glacialList;
         public System.Windows.Forms.ToolStripComboBox tSCBNode;
         private System.Windows.Forms.ToolStripTextBox tSTBED;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.TreeView treeView;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.ToolStripButton toolStripButtonfind;
     }
 }

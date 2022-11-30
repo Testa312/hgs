@@ -102,7 +102,7 @@ namespace HGS
             const string cvn = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
             FormCalcPointList fcpl = new FormCalcPointList();
             HashSet<int> onlyid = new HashSet<int>();//不需要检查
-            fcpl.glacialLisint(onlyid);
+            fcpl.glacialLisint(onlyid,"");
             if (fcpl.ShowDialog() == DialogResult.OK)
             {
                 foreach (GLItem item in fcpl.glacialList.SelectedItems)

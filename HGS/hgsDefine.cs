@@ -339,7 +339,7 @@ namespace HGS
             }
             get { return _eu; }
         }
-        private bool _isCalc = false;//是否进行计算
+        private bool _isCalc = true;//是否进行计算
         public bool isCalc
         {
             set
@@ -574,10 +574,13 @@ namespace HGS
         public string DevicePath
         {
             get {
-                string path = "";
+                StringBuilder sb = new StringBuilder();
                 if (_hsDevicePath != null)
-                    path = _hsDevicePath.Values.ToString();
-                return path; 
+                    foreach (string sp in _hsDevicePath.Values)
+                    {
+                        sb.AppendLine(sp);
+                    }
+                return sb.ToString();
             }
         }
         private Dtw_queues[] _dtw_Queues_Array = null;
@@ -596,7 +599,8 @@ namespace HGS
             if (id >= 0)//0和负值为临时测试点
                 Data.inst().AddNew(this);
         }
-
+        //最后一次修改时间
+        public DateTime _mt = DateTime.Now;
         public point(NpgsqlDataReader pgreader)
         {
             if (pgreader == null) return;
@@ -630,7 +634,7 @@ namespace HGS
             _Orgformula_ll = pgreader["orgformula_ll"].ToString();
             _Alarmif = pgreader["alarmif"].ToString();
             _boolAlarmif = (bool)pgreader["boolalarmif"];
-
+            _mt = (DateTime)pgreader["mt"];
             //_isAlarmskip = (bool)pgreader["isalarmskip"];
             //_isAlarmwave = (bool)pgreader["isalarmwave"];
             _Sound = (int)pgreader["sound"];
@@ -847,7 +851,7 @@ namespace HGS
             return string.Format("P{0}-{1}", id, _Alarm[bitnum,0]);
         }
         //-------------
-        public AlarmInfo CreateAlarmInfo(int bitnum,double? AlarmAv)
+        public AlarmInfo CreateAlarmInfo(int bitnum,float? AlarmAv)
         {
             StringBuilder sb = new StringBuilder();
             if (_hsDevicePath != null)
@@ -856,7 +860,7 @@ namespace HGS
                     sb.AppendLine(sp);
                 }
             return new AlarmInfo(CreateAlarmSid(bitnum), _id, -1, _nd, _pn, _ed, _eu,
-                (float)Functions.NullDoubleRount(AlarmAv, _fm),
+                Functions.NullFloatRount(AlarmAv, _fm),
                 _Alarm[bitnum, 1],
                 sb.ToString(),
                 _Sound) ;
@@ -975,7 +979,7 @@ namespace HGS
                     if ((_id + _TimeTick) % 7 == 0)
                     {
                         curAlarmBit &= ~((uint)1 << 7);
-                        double pp = 0;
+                        float pp = 0;
                         if (_Skip_pp != null && _DetectionSkip != null)
                         {
                             pp = _DetectionSkip.DeltaP_P();

@@ -255,10 +255,10 @@ namespace HGS
             HashSet<object> sisid = new HashSet<object>();
             foreach (point pt in hsPoint)
             {
-                //point pt = Data.inst().cd_Point[id];
                 if (pt.pointsrc == pointsrc.sis)
                     sisid.Add(Convert.ToInt64(pt.Id_sis));
             }
+            if (sisid.Count <= 0) return dic_data_stat;
             string[] colnames = new string[] { "ID", "MAXV", "MINV" };
 
             Dictionary<string, object> options = new Dictionary<string, object>();

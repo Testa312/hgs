@@ -455,7 +455,7 @@ namespace HGS
                                                    "skip_pp = {20},dtw_start_th = {21},sound = {22},wave_th = {23} where id = {24};",
                                         Functions.dtoNULL(pt.tv), Functions.dtoNULL(pt.bv), Functions.dtoNULL(pt.ll), Functions.dtoNULL(pt.hl),
                                         Functions.dtoNULL(pt.zl), Functions.dtoNULL(pt.zh),
-                                        DateTime.Now,pt.eu, pt.pn, pt.Orgformula_main,pt.fm,
+                                        pt._mt = DateTime.Now,pt.eu, pt.pn, pt.Orgformula_main,pt.fm,
                                         pt.isCalc,pt.isAvalarm, pt.ed,pt.isboolvAlarm,pt.boolAlarminfo, pt.orgformula_hl,
                                         pt.Orgformula_ll,pt.Alarmif,pt.boolAlarmif, Functions.dtoNULL(pt.Skip_pp),
                                         ArraytoString(pt.Dtw_start_th),pt.Sound,ArraytoString(pt.Wd3s_th), pt.id));
@@ -475,7 +475,7 @@ namespace HGS
                                             "{26},{27},{28});",
                                     pt.id, pt.nd, pt.pn, pt.ed, pt.eu, Functions.dtoNULL(pt.tv), Functions.dtoNULL(pt.bv), 
                                     Functions.dtoNULL(pt.ll), Functions.dtoNULL(pt.hl), Functions.dtoNULL(pt.zl),
-                                    Functions.dtoNULL(pt.zh), pt.Id_sis,(int)pt.pointsrc, DateTime.Now, Auth.GetInst().LoginID, pt.Orgformula_main,
+                                    Functions.dtoNULL(pt.zh), pt.Id_sis,(int)pt.pointsrc, pt._mt = DateTime.Now, Auth.GetInst().LoginID, pt.Orgformula_main,
                                     pt.fm,pt.isCalc,pt.isAvalarm,pt.isboolvAlarm,pt.boolAlarminfo, pt.orgformula_hl, pt.Orgformula_ll,pt.Alarmif,
                                     pt.boolAlarmif,Functions.dtoNULL(pt.Skip_pp), 
                                     ArraytoString(pt.Dtw_start_th),pt.Sound,ArraytoString(pt.Wd3s_th)));

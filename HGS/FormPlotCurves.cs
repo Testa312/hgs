@@ -84,7 +84,7 @@ namespace HGS
         {
             Dictionary<int, PointData> dic_pd = null;
             Dictionary<int, PointData> dic_pd_stat = null;
-            Dictionary<int, PointData> dic_pd_stat_128s = null;
+            Dictionary<int, PointData> dic_pd_stat_30s = null;
             try
             {
                 dic_pd = SisConnect.GetPointData_dic(sisconn_temp,hsPoint,
@@ -92,7 +92,7 @@ namespace HGS
 
                 dic_pd_stat = SisConnect.GetsisStat(sisconn_temp,hsPoint,
                     dateTimePicker1.Value, dateTimePicker2.Value, (int)(dateTimePicker2.Value - dateTimePicker2.Value).TotalSeconds);
-                dic_pd_stat_128s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
+                dic_pd_stat_30s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
                     dateTimePicker1.Value, dateTimePicker2.Value, 30);
             }
             catch (Exception ee)
@@ -111,12 +111,12 @@ namespace HGS
                 itm.SubItems["EU"].Text = pd.EU;
                 itm.Tag = pd;
                 PointData pd_stat;
-                if (dic_pd_stat.TryGetValue(pd.ID, out pd_stat))
+                if (dic_pd_stat != null && dic_pd_stat.TryGetValue(pd.ID, out pd_stat))
                 {
                     pd.MaxAv = pd_stat.MaxAv;
                     pd.MinAv = pd_stat.MinAv;
                 }
-                if (dic_pd_stat_128s.TryGetValue(pd.ID, out pd_stat))
+                if (dic_pd_stat_30s != null && dic_pd_stat_30s.TryGetValue(pd.ID, out pd_stat))
                 {
                     pd.DifAV = pd_stat.DifAV;
                 }

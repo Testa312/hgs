@@ -26,6 +26,7 @@ namespace HGS
         {
             InitializeComponent();
             FillMyTreeView();
+            //comboBox_Sound.SelectedIndex = 3;
         }
         private void DisplayHints(int PointNums)
         {
@@ -60,13 +61,15 @@ namespace HGS
                     if (!flag) break;
                 }
 
-                if (flag && (ptx.pointsrc == pointsrc.sis || (Auth.GetInst().LoginID == 0 || ptx.OwnerId == Auth.GetInst().LoginID || 
+                if (flag && (ptx.pointsrc == pointsrc.sis || (Auth.GetInst().LoginID == 0 || ptx.OwnerId == Auth.GetInst().LoginID ||
                     ptx.OwnerId == 0)) &&
                     ptx.nd.Contains(tSCB_ND.Text.Trim()) &&
-                    ptx.pn.Contains(tSTB_PN.Text.Trim()) && ptx.Orgformula_main.Contains(tSTB_F.Text.Trim()))
+                    ptx.pn.Contains(tSTB_PN.Text.Trim()) &&
+                    ptx.Orgformula_main.Contains(tSTB_F.Text.Trim()) &&
+                    (ptx.DevicePath.Length == 0 || ptx.DevicePath == "/1"))
                 {
                     GLItem item = new GLItem(glacialList1);
-                    gllistInitItemTextFromPoint(ptx,item);
+                    gllistInitItemTextFromPoint(ptx, item);
                     lsItem.Add(item);
                 }
                 if (isFirst) hs_ND.Add(ptx.nd);              
@@ -109,6 +112,7 @@ namespace HGS
             //itemn.SubItems["AlarmInfo"].Text = ptx.Alarmininfo;
             itemn.SubItems["DS"].Text = ptx.ps.ToString(); 
             itemn.SubItems["AlarmCount"].Text = ptx.AlarmCount.ToString();
+            itemn.SubItems["MT"].Text = ptx._mt.ToString();
             /*
             it.sisid = ptx.Id_sis;
             it.fm = ptx.fm;
@@ -129,7 +133,7 @@ namespace HGS
             item.SubItems["ED"].Text = pt.ed;
             item.SubItems["EU"].Text = pt.eu;
             item.SubItems["PN"].Text = pt.pn;
-
+            item.SubItems["MT"].Text = pt._mt.ToString();
             Data.inst().hs_FormulaErrorPoint.Remove(pt);
             
             AlarmSubItemSymbol(item, pt);
@@ -156,13 +160,6 @@ namespace HGS
                         }
                         hs_ptid.Add(pt.id);
                     }
-                    /*
-                    else 
-                    {
-                        MessageBox.Show(string.Format("点:{0}-{1}已存在！",pt.nd, 
-                            pt.pn),"提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
-                     }
-                    */
                 }
                
                 TreeNode tn = treeView.SelectedNode;
@@ -369,7 +366,7 @@ namespace HGS
         private void toolStripButtonAddNewCalc_Click(object sender, EventArgs e)
         {
             point calcpt = new point(-1, pointsrc.calc);
-            FormCalcPointSet fcps = new FormCalcPointSet(calcpt);          
+            FormCalcPointSet fcps = new FormCalcPointSet(calcpt,true);          
             fcps.Text = "新加计算点";
             if (fcps.ShowDialog() == DialogResult.OK)
             {
@@ -404,13 +401,14 @@ namespace HGS
                 point calppt = (point)(itemn.Tag); ;
                 //if (Data.inst().cd_Point.TryGetValue(it.id, out calppt))
                 {
-                    FormCalcPointSet fcps = new FormCalcPointSet(calppt);
-                    fcps.glacialLisint();
+                    FormCalcPointSet fcps = new FormCalcPointSet(calppt,false);
+                    //fcps.glacialLisint();
                     fcps.Text = string.Format("点[{0}]公式", calppt.ed);
                     if (fcps.ShowDialog() == DialogResult.OK)
                     {
-                        gllistUpateItemText(itemn, calppt);
                         Save();
+                        gllistInitItemTextFromPoint(calppt, itemn);
+                       
                     }
                 }
             }

@@ -57,6 +57,16 @@ namespace HGS
             }
             return r;
         }
+        public static float? NullFloatRount(float? d, int fm)
+        {
+            float? r = null;
+            if (d != null)
+            {
+                float dAV = d ?? 0;
+                r = (float)Math.Round(dAV, fm);
+            }
+            return r;
+        }
         public static HashSet<point> set_idtopoint(HashSet<int> sid)
         {
             HashSet<point> hsp = new HashSet<point>();

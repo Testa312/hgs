@@ -265,7 +265,17 @@ namespace HGS
                 //计算完成，加报警
                 //AlarmSet.GetInst().Add(pt);
                 //
-                pt.AlarmCalc();
+                try
+                {
+                    pt.AlarmCalc();
+                }
+                
+                catch (Exception ee) {
+#if DEBUG
+                    timerCalc.Enabled = false;
+                    MessageBox.Show("报警计算出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+#endif
+                };
             }
             Data_Device.AlarmCalc_All_Device();
             tssL_error_nums.Text = Data.inst().hs_FormulaErrorPoint.Count.ToString();

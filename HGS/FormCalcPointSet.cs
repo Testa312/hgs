@@ -17,12 +17,15 @@ namespace HGS
     {
         HashSet<int> onlyid = new HashSet<int>();
         private point CalcPoint;
+        private bool isNew = false;
         int PointNums = 0;
         //--------------------------------
-        public FormCalcPointSet(point pt)
+        public FormCalcPointSet(point pt,bool isNew)
         {
             InitializeComponent();
             CalcPoint = pt;
+            this.isNew = isNew;
+            glacialLisint();
         }
         public point GetNewCalcePoint()
         {
@@ -32,7 +35,7 @@ namespace HGS
         {
             tSSLabel_varnums.Text = "变量数：" + PointNums.ToString();
         }
-        public void glacialLisint()
+        private void glacialLisint()
         {
             PointNums = 0;
             timer1.Enabled = false;
@@ -110,7 +113,7 @@ namespace HGS
         {
             const string cvn = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
             FormCalcPointList fcpl = new FormCalcPointList();
-            fcpl.glacialLisint(onlyid);
+            fcpl.glacialLisint(onlyid,"");
             if (fcpl.ShowDialog() == DialogResult.OK)
             {
                 foreach (GLItem item in fcpl.glacialList.SelectedItems)
@@ -163,7 +166,7 @@ namespace HGS
             HashSet<string> hsVar = new HashSet<string>();
             CalcEngine.CalcEngine ce = new CalcEngine.CalcEngine();
             point Point = new point(-1,pointsrc.calc);
-            Point.id = CalcPoint.id;
+            //Point.id = CalcPoint.id;
             Point.lsCalcOrgSubPoint_main = new List<varlinktopoint>();
             //-----
             //可加内部变量
@@ -217,7 +220,9 @@ namespace HGS
             try
             {
                 Dovalidity(false);
-                CalcPoint = new point(Data.inst().GetNextPointId(),pointsrc.calc);
+                if (isNew)
+                    CalcPoint = new point(Data.inst().GetNextPointId(), pointsrc.calc);
+                //CalcPoint.pointsrc = pointsrc.calc;
                 CalcPoint.ed = textBoxmDiscription.Text;
                 CalcPoint.Orgformula_main = textBoxFormula.Text.Trim().Replace("\r\n", "");//去掉回车
                 CalcPoint.eu = comboBox_eu.Text;

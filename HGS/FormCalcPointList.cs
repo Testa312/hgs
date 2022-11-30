@@ -20,12 +20,13 @@ namespace HGS
         public FormCalcPointList()
         {
             InitializeComponent();
+            FillMyTreeView();
         }
-         ~FormCalcPointList()
+        ~FormCalcPointList()
         {
-  
-        }  
-        public void glacialLisint(HashSet<int> Onlyid)
+
+        }
+        public void glacialLisint(HashSet<int> Onlyid,string path)
         {
             Cursor = Cursors.WaitCursor;
             onlyid = Onlyid;
@@ -47,7 +48,7 @@ namespace HGS
                     }
                     if (!flag) continue;
                     if (ptx.nd.Contains(tSCBNode.Text.Trim()) && flag &&
-                        ptx.pn.Contains(tSTBPN.Text.Trim()))
+                        ptx.pn.Contains(tSTBPN.Text.Trim()) && ptx.DevicePath.Contains(path))
                     {
                         if (onlyid.Contains(ptx.id)) continue;
 
@@ -83,7 +84,7 @@ namespace HGS
                     }
                 }
                 isFirst = false;
-
+                glacialList.Invalidate();
                 tSSLabel_nums.Text = string.Format("点数：{0}", count);
             }
             catch (Exception ee)
@@ -98,7 +99,7 @@ namespace HGS
         }
         public void tSBFind_Click(object sender, EventArgs e)
         {
-            glacialLisint(onlyid);
+            glacialLisint(onlyid,"");
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -133,10 +134,77 @@ namespace HGS
         {
             if (e.KeyCode == Keys.Enter)
             {
-                glacialLisint(onlyid);
+                glacialLisint(onlyid,"");
                 glacialList.Invalidate();
                 e.Handled = true;
                 e.SuppressKeyPress = true;
+            }
+        }
+        private void FillMyTreeView()
+        {
+            // Display a wait cursor while the TreeNodes are being created.
+            Cursor.Current = Cursors.WaitCursor;
+
+            // Suppress repainting the TreeView until all the objects have been created.
+            treeView.BeginUpdate();
+            treeView.Nodes.Clear();
+            treeView.Nodes.AddRange(DataDeviceTree.GetAllSubNode(@"").ToArray());
+            // Clear the TreeView each time the method is called.
+            if (treeView.Nodes.Count > 0)
+            {
+                treeView.Nodes[0].Nodes.AddRange(DataDeviceTree.GetAllSubNode(@"/1").ToArray());
+                treeView.Nodes[0].Expand();
+            }
+            //treeView.Nodes[0].Expand();
+            // Reset the cursor to the default for all controls.
+            Cursor.Current = Cursors.Default;
+
+            // Begin repainting the TreeView.
+            treeView.EndUpdate();
+        }
+        private void treeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            RefreshSubs(e.Node);
+        }
+        private void RefreshSubs(TreeNode tn)
+        {
+            if (tn == null) return;
+            // Display a wait cursor while the TreeNodes are being created.
+            Cursor.Current = Cursors.WaitCursor;
+
+            // Suppress repainting the TreeView until all the objects have been created.
+            treeView.BeginUpdate();
+            tn.Nodes.Clear();
+            tn.Nodes.AddRange(DataDeviceTree.GetAllSubNode(((DeviceInfo)tn.Tag).path).ToArray());
+            foreach (TreeNode ttn in tn.Nodes)
+            {
+                ttn.Nodes.Clear();
+                ttn.Nodes.AddRange(DataDeviceTree.GetAllSubNode(((DeviceInfo)ttn.Tag).path).ToArray());
+            }
+            // Reset the cursor to the default for all controls.
+            Cursor.Current = Cursors.Default;
+
+            // Begin repainting the TreeView.
+            treeView.EndUpdate();
+        }
+        private void treeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            //if (e.Button == MouseButtons.Right)
+            treeView.SelectedNode = e.Node;
+            if (e.Button == MouseButtons.Left)
+            {
+                glacialList.Items.Clear();
+                DeviceInfo ttg = (DeviceInfo)e.Node.Tag;
+                if (e.Node.Text == "全部" || ttg == null)
+                {
+                    glacialLisint(onlyid, "");
+                }
+                else
+                {
+                    //DisplayTreeItem(e.Node);
+                    glacialLisint(onlyid,ttg.path);
+                }
+                //tabControl.Enabled = false;
             }
         }
     }

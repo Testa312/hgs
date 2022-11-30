@@ -31,7 +31,7 @@ namespace HGS
         //初始化node列表框。
         private void findnode()
         {
-            tSCBNode.Items.Clear();
+            listBox_Node.Items.Clear();
             string sql = "select ID,PN  from Node order by PN";
             OPAPI.ResultSet resultSet = sisconn.executeQuery(sql);//执行SQL
             try
@@ -40,7 +40,8 @@ namespace HGS
                 {
                     string pn = resultSet.getString(1);
                     dicnodeid[pn] = resultSet.getInt(0);
-                    tSCBNode.Items.Add(pn.Trim());
+                    //tSCBNode.Items.Add(pn.Trim());
+                    listBox_Node.Items.Add(pn.Trim());
 
                 }
             }
@@ -62,7 +63,7 @@ namespace HGS
         }
         private void tSBFind_Click(object sender, EventArgs e)
         {
-            string wh = string.Format("ND = {0}", dicnodeid[tSCBNode.SelectedItem.ToString()]); 
+            string wh = string.Format("ND = {0}", dicnodeid[listBox_Node.SelectedItem.ToString()]); 
             if (tSpCBRT.SelectedIndex == 1)
             {
                 wh = string.Format("{0} and RT = 0", wh);
@@ -141,6 +142,7 @@ namespace HGS
                 }
                 glacialList.Items.AddRange(lsItem.ToArray());
                 toolStripStatusLabel1.Text = string.Format("点数：{0}", total.ToString());
+                glacialList.Invalidate();
             }
             catch (Exception ee)
             {
@@ -228,7 +230,7 @@ namespace HGS
         private void FormSisPointList_Shown(object sender, EventArgs e)
         {
             tSpCBRT.SelectedIndex = 1;
-            tSCBNode.SelectedIndex = 0;
+            listBox_Node.SelectedIndex = 0;
             //if (tSCBNode.Items.Count > 0) 
               //  tSCBNode.SelectedIndex = 0;
             tSBFind_Click(null, null);
@@ -243,7 +245,7 @@ namespace HGS
                 point Point = new point(ptid,pointsrc.sis);
                 lsitem.Add(Point);
 
-                Point.nd = tSCBNode.Text;
+                Point.nd = listBox_Node.Text;
                 Point.pn = item.SubItems["PN"].Text;
                 Point.ed = item.SubItems["ED"].Text;
                 Point.eu = item.SubItems["EU"].Text;
@@ -266,6 +268,11 @@ namespace HGS
                 ptid++;
 
             }
+        }
+
+        private void listBox_Node_Click(object sender, EventArgs e)
+        {
+            tSBFind_Click(null, null);
         }
     }
 }
