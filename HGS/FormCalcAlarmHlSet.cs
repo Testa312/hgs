@@ -265,5 +265,26 @@ namespace HGS
 
             }
         }
+        private void label_fx_Click(object sender, EventArgs e)
+        {
+            var menu = new MenuFunction();
+            menu.ItemClicked += (ss, ee) =>
+            {
+                var fn = ee.ClickedItem.Text;
+                textBoxFormula.SelectedText = fn;
+            };
+            menu.Show(Control.MousePosition);
+        }
+
+        private void label_op_Click(object sender, EventArgs e)
+        {
+            var menu = new MenuOperator();
+            menu.ItemClicked += (ss, ee) =>
+            {
+                var fn = ee.ClickedItem.Text;
+                textBoxFormula.SelectedText = fn;
+            };
+            menu.Show(Control.MousePosition);
+        }
     }
 }

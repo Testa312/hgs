@@ -78,8 +78,8 @@ namespace HGS
             // 文件ToolStripMenuItem
             // 
             this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
-            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
-            this.文件ToolStripMenuItem.Text = "文件";
+            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(90, 21);
+            this.文件ToolStripMenuItem.Text = "Dtw计算查询";
             // 
             // toolStrip1
             // 

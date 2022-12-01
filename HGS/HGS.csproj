@@ -193,6 +193,12 @@
     <Compile Include="EasyMail.Designer.cs">
       <DependentUpon>EasyMail.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAbout.Designer.cs">
+      <DependentUpon>FormAbout.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormAlarmHistoryList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -307,6 +313,13 @@
     <Compile Include="FormPlotCurves.Designer.cs">
       <DependentUpon>FormPlotCurves.cs</DependentUpon>
     </Compile>
+    <Compile Include="freesteam.cs" />
+    <Compile Include="MenuOperator.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MenuFunction.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="GlacialList\BorderStrip.cs">
       <SubType>Component</SubType>
@@ -357,6 +370,9 @@
     <Compile Include="XmlConst.cs" />
     <Compile Include="XmlSettings.cs" />
     <Compile Include="XmlSettingsProperty.cs" />
+    <EmbeddedResource Include="FormAbout.resx">
+      <DependentUpon>FormAbout.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormAlarmHistoryList.resx">
       <DependentUpon>FormAlarmHistoryList.cs</DependentUpon>
     </EmbeddedResource>
@@ -458,6 +474,9 @@
     </Content>
     <Content Include="CalcEngine\readme.txt" />
     <Content Include="dd_dtw.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="freesteam.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="GlacialList\Readme.txt" />

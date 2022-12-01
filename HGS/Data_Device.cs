@@ -24,7 +24,7 @@ namespace HGS
         public float[] alarm_th_dis_max = new float[6];
         public int sort = 0;
         public int CountofDTWCalc = 0;
-        public int Sound = 0;
+        public int Sound = 4;//朗读
         private HashSet<int> hs_Sensorsid = null;
         //
         private int TimeTick;

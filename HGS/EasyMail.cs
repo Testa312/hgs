@@ -11,7 +11,7 @@ using System.Threading;
 using System.IO;
 
 
-namespace SSVAT
+namespace HGS
 {
     /// <summary>
     /// Easy mail component that only needs to be droped on your form to be used.

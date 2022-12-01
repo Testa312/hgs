@@ -144,7 +144,7 @@ namespace HGS
             }
             get { return _ll; }
         }
-        private int _Sound = 0;
+        private int _Sound = 4;//朗读
         public int Sound
         {
             set

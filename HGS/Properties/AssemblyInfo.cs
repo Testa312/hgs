@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("HGS")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("用于openplan系统的设备报警系统")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Testa")]
 [assembly: AssemblyProduct("HGS")]
 [assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]

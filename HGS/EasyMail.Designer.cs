@@ -1,4 +1,4 @@
-namespace SSVAT
+namespace HGS
 {
     partial class EasyMail
     {

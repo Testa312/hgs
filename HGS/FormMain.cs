@@ -221,7 +221,7 @@ namespace HGS
                     }
                     catch (Exception)
                     {
-                        pt.ps = PointState.Error;
+                        //pt.ps = PointState.Error;
                         Data.inst().hs_FormulaErrorPoint.Add(pt);
                     }
                 }
@@ -239,7 +239,7 @@ namespace HGS
                     }
                     catch (Exception)
                     {
-                        pt.ps = PointState.Error;
+                        //pt.ps = PointState.Error;
                         Data.inst().hs_FormulaErrorPoint.Add(pt);
                     }
                 }
@@ -257,7 +257,7 @@ namespace HGS
                     }
                     catch (Exception)
                     {
-                        pt.ps = PointState.Error;
+                        //pt.ps = PointState.Error;
                         Data.inst().hs_FormulaErrorPoint.Add(pt);
                     }
                 }
@@ -369,6 +369,12 @@ namespace HGS
             {
                 静音ToolStripMenuItem.Text = "取消静音";
             }
+        }
+
+        private void 关于aToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormAbout fa = new FormAbout();
+            fa.ShowDialog();
         }
     }
 }

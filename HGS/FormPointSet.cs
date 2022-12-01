@@ -168,9 +168,10 @@ namespace HGS
                     DeviceInfo tt = (DeviceInfo)tn.Tag;
                     tt.SensorUnionWith(hs_ptid);
                     DataDeviceTree.UpdateNodetoDB(tn);
+                    if (tt.Alarm_th_dis != null && hs_ptid.Count > 0)
+                        MessageBox.Show("应重新设置设备报警参数");
                 }
-                if (tn != null && hs_ptid.Count > 0)
-                    MessageBox.Show("应重新设置设备报警参数");
+                
 
                 glacialList1.Items.AddRange(lsItem.ToArray());
                 glacialList1.Invalidate();
@@ -384,9 +385,9 @@ namespace HGS
                     hs_id.Add(calcpt.id);
                     tt.SensorUnionWith(hs_id);
                     DataDeviceTree.UpdateNodetoDB(tn);
+                    if (tt.Alarm_th_dis != null)
+                        MessageBox.Show("应重新设置设备报警参数");
                 }
-                if (tn != null)
-                    MessageBox.Show("应重新设置设备报警参数");
                 glacialList1.ScrolltoBottom();
                 glacialList1.Invalidate();                          
             }
@@ -933,7 +934,8 @@ namespace HGS
                         DataDeviceTree.UpdateNodetoDB(DropNode);
                         TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(DropNode, MouseButtons.Left, 0, 0, 0);
                         treeView_NodeMouseClick(null, ee);
-                        MessageBox.Show("应重新设置设备报警参数");
+                        if (ttg.Alarm_th_dis != null)
+                            MessageBox.Show("应重新设置设备报警参数");
                     }                  
                 }
             }
@@ -987,7 +989,8 @@ namespace HGS
                 DataDeviceTree.UpdateNodetoDB(tn);
                 TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(tn, MouseButtons.Left, 0, 0, 0);
                 treeView_NodeMouseClick(null, ee);
-                MessageBox.Show("应重新设置设备报警参数");
+                if (tt.Alarm_th_dis != null)
+                    MessageBox.Show("应重新设置设备报警参数");
             }
         }
 

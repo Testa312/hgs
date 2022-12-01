@@ -411,13 +411,6 @@ namespace HGS
                 }
                 else
                     ttg.sort = -1;
-                /*
-                foreach (int id in ttg.Sensors_set())
-                {
-                    point pt = Data.inst().cd_Point[id];
-                    //pt.Dtw_start_th =  null;
-                }
-                */
                 //传感器
                 if (ttg.Sensors_set().Count >= 2)
                 {
@@ -451,7 +444,7 @@ namespace HGS
                     }
 
                 }
-                else
+                else if(glacialList_sensor_new.Items.Count>0 && glacialList_dev_new.Items.Count >0)
                 {
                     MessageBox.Show("因传感器数不应小于2个，设备阈值无法设置!");
                 }

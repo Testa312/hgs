@@ -48,6 +48,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.打开OToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出XToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.关于aToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -56,7 +57,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
+            this.toolStripMenuItem1,
+            this.关于aToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(988, 25);
@@ -73,8 +75,8 @@
             this.静音ToolStripMenuItem,
             this.退出ToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(44, 21);
-            this.toolStripMenuItem1.Text = "文件";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(58, 21);
+            this.toolStripMenuItem1.Text = "文件(&F)";
             this.toolStripMenuItem1.DropDownOpening += new System.EventHandler(this.toolStripMenuItem1_DropDownOpening);
             // 
             // 报警信息ToolStripMenuItem
@@ -192,6 +194,13 @@
             this.退出XToolStripMenuItem.Text = "退出（&X）";
             this.退出XToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
             // 
+            // 关于aToolStripMenuItem
+            // 
+            this.关于aToolStripMenuItem.Name = "关于aToolStripMenuItem";
+            this.关于aToolStripMenuItem.Size = new System.Drawing.Size(60, 21);
+            this.关于aToolStripMenuItem.Text = "关于(&A)";
+            this.关于aToolStripMenuItem.Click += new System.EventHandler(this.关于aToolStripMenuItem_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -236,6 +245,7 @@
         private System.Windows.Forms.ToolStripMenuItem 打开OToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dTW计算次数ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 静音ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 关于aToolStripMenuItem;
     }
 }
 

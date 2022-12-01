@@ -61,6 +61,8 @@
             this.label14 = new System.Windows.Forms.Label();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.tSSLabel_varnums = new System.Windows.Forms.ToolStripStatusLabel();
+            this.label_fx = new System.Windows.Forms.Label();
+            this.label_op = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -257,6 +259,8 @@
             this.tabPageCalc.Controls.Add(this.textBoxmDiscription);
             this.tabPageCalc.Controls.Add(this.textBoxFormula);
             this.tabPageCalc.Controls.Add(this.label3);
+            this.tabPageCalc.Controls.Add(this.label_op);
+            this.tabPageCalc.Controls.Add(this.label_fx);
             this.tabPageCalc.Controls.Add(this.label15);
             this.tabPageCalc.Controls.Add(this.label14);
             this.tabPageCalc.Location = new System.Drawing.Point(4, 22);
@@ -269,7 +273,7 @@
             // numericUpDown
             // 
             this.numericUpDown.Enabled = false;
-            this.numericUpDown.Location = new System.Drawing.Point(422, 53);
+            this.numericUpDown.Location = new System.Drawing.Point(422, 56);
             this.numericUpDown.Maximum = new decimal(new int[] {
             3,
             0,
@@ -290,7 +294,7 @@
             this.checkBoxCalc.Checked = true;
             this.checkBoxCalc.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxCalc.Enabled = false;
-            this.checkBoxCalc.Location = new System.Drawing.Point(153, 57);
+            this.checkBoxCalc.Location = new System.Drawing.Point(153, 61);
             this.checkBoxCalc.Name = "checkBoxCalc";
             this.checkBoxCalc.Size = new System.Drawing.Size(48, 16);
             this.checkBoxCalc.TabIndex = 5;
@@ -316,7 +320,7 @@
             "J",
             "kJ",
             "MJ"});
-            this.comboBox_eu.Location = new System.Drawing.Point(265, 54);
+            this.comboBox_eu.Location = new System.Drawing.Point(265, 57);
             this.comboBox_eu.Name = "comboBox_eu";
             this.comboBox_eu.Size = new System.Drawing.Size(53, 20);
             this.comboBox_eu.TabIndex = 3;
@@ -324,7 +328,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(368, 57);
+            this.label2.Location = new System.Drawing.Point(368, 60);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 12);
             this.label2.TabIndex = 4;
@@ -333,7 +337,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(224, 58);
+            this.label1.Location = new System.Drawing.Point(224, 61);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(41, 12);
             this.label1.TabIndex = 4;
@@ -352,7 +356,7 @@
             // buttonOK
             // 
             this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonOK.Location = new System.Drawing.Point(618, 59);
+            this.buttonOK.Location = new System.Drawing.Point(618, 54);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 8;
@@ -362,7 +366,7 @@
             // 
             // buttonTest
             // 
-            this.buttonTest.Location = new System.Drawing.Point(509, 59);
+            this.buttonTest.Location = new System.Drawing.Point(509, 54);
             this.buttonTest.Name = "buttonTest";
             this.buttonTest.Size = new System.Drawing.Size(75, 23);
             this.buttonTest.TabIndex = 6;
@@ -438,6 +442,26 @@
             this.tSSLabel_varnums.Size = new System.Drawing.Size(56, 17);
             this.tSSLabel_varnums.Text = "变量数：";
             // 
+            // label_fx
+            // 
+            this.label_fx.AutoSize = true;
+            this.label_fx.Location = new System.Drawing.Point(61, 69);
+            this.label_fx.Name = "label_fx";
+            this.label_fx.Size = new System.Drawing.Size(17, 12);
+            this.label_fx.TabIndex = 0;
+            this.label_fx.Text = "fx";
+            this.label_fx.Click += new System.EventHandler(this.label_fx_Click);
+            // 
+            // label_op
+            // 
+            this.label_op.AutoSize = true;
+            this.label_op.Location = new System.Drawing.Point(85, 68);
+            this.label_op.Name = "label_op";
+            this.label_op.Size = new System.Drawing.Size(17, 12);
+            this.label_op.TabIndex = 0;
+            this.label_op.Text = "op";
+            this.label_op.Click += new System.EventHandler(this.label_op_Click);
+            // 
             // FormCalcAlarmHlSet
             // 
             this.AcceptButton = this.buttonOK;
@@ -494,5 +518,7 @@
         public System.Windows.Forms.TextBox textBoxPN;
         public System.Windows.Forms.TextBox textBoxmDiscription;
         private System.Windows.Forms.ToolStripButton tSB_del;
+        private System.Windows.Forms.Label label_op;
+        private System.Windows.Forms.Label label_fx;
     }
 }
