@@ -63,10 +63,40 @@ namespace HGS.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap bug_512px_1125 {
+            get {
+                object obj = ResourceManager.GetObject("bug_512px_1125", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似于 (图标) 的 System.Drawing.Icon 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Icon bug_marienkaefer_128px {
+            get {
+                object obj = ResourceManager.GetObject("bug_marienkaefer_128px", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap s_l1600 {
             get {
                 object obj = ResourceManager.GetObject("s-l1600", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似于 (图标) 的 System.Drawing.Icon 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Icon tools_report_bug_128px {
+            get {
+                object obj = ResourceManager.GetObject("tools_report_bug_128px", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
     }

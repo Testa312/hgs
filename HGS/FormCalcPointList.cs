@@ -89,7 +89,7 @@ namespace HGS
             }
             catch (Exception ee)
             {
-                MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                FormBugReport.ShowBug(ee);
             }
             finally
             {

@@ -205,6 +205,12 @@
     <Compile Include="FormAlarmHistoryList.Designer.cs">
       <DependentUpon>FormAlarmHistoryList.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormBugReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormBugReport.designer.cs">
+      <DependentUpon>FormBugReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormCalcDeviceAlarmIfSet.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -313,7 +319,7 @@
     <Compile Include="FormPlotCurves.Designer.cs">
       <DependentUpon>FormPlotCurves.cs</DependentUpon>
     </Compile>
-    <Compile Include="freesteam.cs" />
+    <Compile Include="IF97.cs" />
     <Compile Include="MenuOperator.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -375,6 +381,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormAlarmHistoryList.resx">
       <DependentUpon>FormAlarmHistoryList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormBugReport.resx">
+      <DependentUpon>FormBugReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormCalcDeviceAlarmIfSet.resx">
       <DependentUpon>FormCalcDeviceAlarmIfSet.cs</DependentUpon>
@@ -473,17 +482,19 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="CalcEngine\readme.txt" />
-    <Content Include="dd_dtw.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="freesteam.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="dd_dtw.dll" />
     <Content Include="GlacialList\Readme.txt" />
+    <Content Include="IF97.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="opapi4.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="readme.txt" />
+    <None Include="Resources\bug_512px_1125.png" />
+    <None Include="Resources\tools_report_bug_128px.ico" />
+    <None Include="Resources\bug_marienkaefer_256px_560064_easyicon.net.png" />
+    <None Include="Resources\bug_marienkaefer_128px.ico" />
     <None Include="Resources\s-l1600.jpg" />
   </ItemGroup>
   <ItemGroup>

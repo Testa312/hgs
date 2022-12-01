@@ -283,7 +283,7 @@ namespace HGS
             }
             catch(Exception ee)
             {
-                MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                FormBugReport.ShowBug(ee);
             }
 
         }
@@ -396,15 +396,15 @@ namespace HGS
                                 throw new Exception(string.Format("无法解析[{0}]！", txt_th));
                         }
                     }
+                    //非空加入设备字典，空从字典中去掉。
+                    ttg.Alarm_th_dis = flag ? th : null;
+                    DeviceInfo di;
+                    if (Data_Device.dic_Device.TryGetValue(ttg.id, out di))
+                    {
+                        di.Alarm_th_dis = ttg.Alarm_th_dis;
+                    }
                 }
-                //非空加入设备字典，空从字典中去掉。
-                ttg.Alarm_th_dis = flag ? th : null;
-                DeviceInfo di;
-                if(Data_Device.dic_Device.TryGetValue(ttg.id,out di))
-                {
-                    di.Alarm_th_dis = ttg.Alarm_th_dis;
-                }
-
+                //
                 if (maskedTextBox_Sort.Text.Length > 0)
                 {
                     ttg.sort = int.Parse(maskedTextBox_Sort.Text);
@@ -457,7 +457,7 @@ namespace HGS
             }
             catch (Exception ee)
             {
-                MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                FormBugReport.ShowBug(ee);
                 this.DialogResult = DialogResult.None;
             }
         }

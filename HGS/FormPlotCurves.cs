@@ -77,7 +77,7 @@ namespace HGS
             }
             catch (Exception ee)
             {
-                MessageBox.Show(ee.ToString(), "错误");
+                FormBugReport.ShowBug(ee);
             }
         }
         private PlotModel PlotPoint(int count = 1200)
@@ -97,7 +97,7 @@ namespace HGS
             }
             catch (Exception ee)
             {
-                MessageBox.Show(ee.ToString(), "错误");
+                FormBugReport.ShowBug(ee);
             }
 
             if (dic_pd == null || dic_pd.Count <= 0) return null;

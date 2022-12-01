@@ -31,7 +31,7 @@ namespace HGS
             }
             catch (Exception ee)
             {
-                MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                FormBugReport.ShowBug(ee);
                 this.Close();
             }
         }
@@ -140,7 +140,8 @@ namespace HGS
             catch (Exception ee)
             {
 #if DEBUG
-                MessageBox.Show("取实时出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                FormBugReport.ShowBug(ee, "取实时出错！");
+                //MessageBox.Show("取实时出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 #endif
             }
         }
@@ -273,7 +274,8 @@ namespace HGS
                 catch (Exception ee) {
 #if DEBUG
                     timerCalc.Enabled = false;
-                    MessageBox.Show("报警计算出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    FormBugReport.ShowBug(ee, "报警计算出错！");
+                    //MessageBox.Show("报警计算出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 #endif
                 };
             }
@@ -289,7 +291,8 @@ namespace HGS
             catch (Exception ee) {
 #if DEBUG
                 timerCalc.Enabled = false;
-                MessageBox.Show("保存历史出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);            
+                FormBugReport.ShowBug(ee, "保存历史出错！");
+                //MessageBox.Show("保存历史出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);            
 #endif
             };
 

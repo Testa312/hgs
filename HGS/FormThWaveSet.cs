@@ -84,7 +84,7 @@ namespace HGS
             }
             catch (Exception ee)
             {
-                MessageBox.Show(ee.ToString(), "错误");
+                FormBugReport.ShowBug(ee);
             }
         }
         private void initgl(GlacialList gl)
@@ -125,7 +125,7 @@ namespace HGS
             }
             catch (Exception ee)
             {
-                MessageBox.Show(ee.ToString(), "错误");
+                FormBugReport.ShowBug(ee);
             }
             if (dic_pd == null || dic_pd.Count <= 0) return null;
             var pm = new PlotModel
@@ -328,7 +328,7 @@ namespace HGS
             }
             catch (Exception ee)
             {
-                MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                FormBugReport.ShowBug(ee);
                 this.DialogResult = DialogResult.None;
             }
         }
@@ -426,7 +426,7 @@ namespace HGS
             }
             catch (Exception ee)
             {
-                MessageBox.Show(ee.ToString(), "错误");
+                FormBugReport.ShowBug(ee);
             }
         }
 

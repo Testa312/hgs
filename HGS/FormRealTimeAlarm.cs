@@ -326,7 +326,7 @@ namespace HGS
             }
             catch (Exception ee)
             {
-                MessageBox.Show(ee.ToString(), "错误");
+                FormBugReport.ShowBug(ee);
             }
             finally
             {
@@ -381,7 +381,7 @@ namespace HGS
             }
             catch (Exception ee)
             {
-                MessageBox.Show(ee.ToString(), "错误");
+                FormBugReport.ShowBug(ee);
             }
             finally
             {
