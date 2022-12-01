@@ -129,7 +129,7 @@ namespace HGS
                     }
                     lastTm = Tm;
                     //
-                    Data.inst().Variables[Pref.Inst().GetVarName(Point)] = Point.av = resultSet.getFloat(3);
+                    Data.inst().ce.Variables[Pref.Inst().GetVarName(Point)] = Point.av = resultSet.getFloat(3);
                 }
                 
                 if (resultSet != null)

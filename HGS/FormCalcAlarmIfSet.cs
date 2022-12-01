@@ -33,9 +33,9 @@ namespace HGS
             PointNums = 0;
             timer1.Enabled = false;
             List<GLItem> lsItmems = new List<GLItem>();
-            if (CalcPoint.lsCalcOrgSubPoint_alarmif != null)
+            if (CalcPoint.lsVartoPoint_alarmif != null)
             {
-                foreach (varlinktopoint subpt in CalcPoint.lsCalcOrgSubPoint_alarmif)
+                foreach (varlinktopoint subpt in CalcPoint.lsVartoPoint_alarmif)
                 {
                     GLItem itemn = new GLItem(glacialList1);
                     lsItmems.Add(itemn);
@@ -153,7 +153,7 @@ namespace HGS
             HashSet<string> hsVar = new HashSet<string>();
             CalcEngine.CalcEngine ce = new CalcEngine.CalcEngine();
             point Point = new point(-1,pointsrc.calc);
-            Point.lsCalcOrgSubPoint_alarmif = new List<varlinktopoint>();
+            Point.lsVartoPoint_alarmif = new List<varlinktopoint>();
             //-----
             //可加内部变量
             //hsVar.Add(???);
@@ -180,7 +180,7 @@ namespace HGS
                 varlinktopoint subpt = new varlinktopoint();
                 subpt.varname = item.SubItems["VarName"].Text;
                 subpt.sub_id = it.id;
-                Point.lsCalcOrgSubPoint_alarmif.Add(subpt);
+                Point.lsVartoPoint_alarmif.Add(subpt);
 
                 ce.Variables[subpt.varname] = Data.inst().cd_Point[it.id].av;//测试用。
             }
@@ -194,7 +194,7 @@ namespace HGS
             if (Point.Alarmif.Length > 0 )
                 orgv = Convert.ToBoolean(ce.Evaluate(Point.Alarmif)); //验证表达式的合法性
                                                                                            
-            ce.Variables = Data.inst().Variables;
+            ce = Data.inst().ce;
             bool expv = true;
             if(Point.Alarmif.Length > 0 )
                 expv = Convert.ToBoolean(ce.Evaluate(Data.inst().ExpandOrgFormula_AlarmIf(Point)));//验证表达式展开sis点的合法性。
@@ -209,7 +209,7 @@ namespace HGS
                 Dovalidity(false);
                 CalcPoint.Alarmif = textBoxFormula.Text.Trim().Replace("\r\n","");
 
-                CalcPoint.lsCalcOrgSubPoint_alarmif = new List<varlinktopoint>();
+                CalcPoint.lsVartoPoint_alarmif = new List<varlinktopoint>();
 
                 foreach (GLItem item in glacialList1.Items)
                 {
@@ -217,7 +217,7 @@ namespace HGS
                     varlinktopoint subpt = new varlinktopoint();
                     subpt.varname = item.SubItems["VarName"].Text;
                     subpt.sub_id = it.id;
-                    CalcPoint.lsCalcOrgSubPoint_alarmif.Add(subpt);
+                    CalcPoint.lsVartoPoint_alarmif.Add(subpt);
                 }
             }
             catch (Exception ee)

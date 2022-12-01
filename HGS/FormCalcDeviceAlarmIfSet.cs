@@ -191,12 +191,12 @@ namespace HGS
                 throw new Exception("计算点的的描述不能为空！");
             }
             DiPoint.Orgformula_If = textBoxFormula.Text;
-            //
+            
             bool orgv = true;
             if (DiPoint.Orgformula_If.Length > 0 )
                 orgv = Convert.ToBoolean(ce.Evaluate(DiPoint.Orgformula_If)); //验证表达式的合法性
                                                                                            
-            ce.Variables = Data.inst().Variables;
+            ce = Data.inst().ce;
             bool expv = true;
             if(DiPoint.Orgformula_If.Length > 0 )
                 expv = Convert.ToBoolean(ce.Evaluate(DiPoint.ExpandOrgFormula()));//验证表达式展开sis点的合法性。

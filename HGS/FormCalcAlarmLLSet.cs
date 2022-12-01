@@ -193,7 +193,7 @@ namespace HGS
             if(Point.Orgformula_ll.Length > 0 ) 
                 orgv = Math.Round(Convert.ToDouble(ce.Evaluate(Point.Orgformula_ll)), Point.fm); //验证表达式的合法性
                                                                                                //
-            ce.Variables = Data.inst().Variables;
+            ce = Data.inst().ce;
             double? expv = null;
             if(Point.Orgformula_ll.Length > 0)
                 expv = Math.Round(Convert.ToDouble(ce.Evaluate(Data.inst().ExpandOrgFormula_LL(Point))), Point.fm);//验证表达式展开sis点的合法性。

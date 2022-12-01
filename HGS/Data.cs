@@ -91,9 +91,9 @@ namespace HGS
             get { return hs_calcpoint; }
         }
         
-        public IDictionary<string, object> Variables
+        public CalcEngine.CalcEngine ce
         {
-            get { return _ce.Variables; }
+            get { return _ce; }
             //set { _vars = value; }
         }
         public HashSet<point> hs_FormulaErrorPoint
@@ -147,9 +147,9 @@ namespace HGS
             }
             loopvar.Add(pt.id);
             string orgf = pt.Orgformula_main;
-            if (pt.lsCalcOrgSubPoint_main != null)
+            if (pt.lsVartoPoint_main != null)
             {
-                ExpandOrgFormulaSub(ref orgf, pt.lsCalcOrgSubPoint_main);
+                ExpandOrgFormulaSub(ref orgf, pt.lsVartoPoint_main);
             }
             loopvar.Clear();
             return orgf;
@@ -179,10 +179,10 @@ namespace HGS
         {
             if (pt.orgformula_hl.Length == 0) return "";
             string orgf = pt.orgformula_hl;
-            if (pt.lsCalcOrgSubPoint_hl != null)
+            if (pt.lsVartoPoint_hl != null)
             {
 
-                ExpandOrgFormulaSub(ref orgf, pt.lsCalcOrgSubPoint_hl);
+                ExpandOrgFormulaSub(ref orgf, pt.lsVartoPoint_hl);
             }
             return orgf;
         }
@@ -202,11 +202,11 @@ namespace HGS
         {
             if (pt.Alarmif.Length == 0) return "";
             string orgf = pt.Alarmif;
-            if (pt.lsCalcOrgSubPoint_alarmif != null)
+            if (pt.lsVartoPoint_alarmif != null)
             {
-                foreach (varlinktopoint subpt in pt.lsCalcOrgSubPoint_alarmif)
+                foreach (varlinktopoint subpt in pt.lsVartoPoint_alarmif)
                 {
-                    ExpandOrgFormulaSub(ref orgf, pt.lsCalcOrgSubPoint_alarmif);
+                    ExpandOrgFormulaSub(ref orgf, pt.lsVartoPoint_alarmif);
                 }
             }
             return orgf;
@@ -216,7 +216,7 @@ namespace HGS
         //返回计算点展开成sis点的列表,同时用于检查循环引用问题。
         public List<point> ExpandOrgPointToSisPoint_Main(point pt)
         {
-            if (pt.lsCalcOrgSubPoint_main == null) return null;
+            if (pt.lsVartoPoint_main == null) return null;
             List<point> ExpandPoint = new List<point>();
             if (xloopvar.Contains(pt.id))
             {
@@ -229,7 +229,7 @@ namespace HGS
                 throw new ArgumentException(sb.Append("循环变量引用！").ToString());
             }
             xloopvar.Add(pt.id);
-            ExpandOrgPointToSisPoinSub(ExpandPoint, pt.lsCalcOrgSubPoint_main);
+            ExpandOrgPointToSisPoinSub(ExpandPoint, pt.lsVartoPoint_main);
             xloopvar.Clear();
             return ExpandPoint;
         }
@@ -254,9 +254,9 @@ namespace HGS
         //返回HL公式展开成sis点的列表。
         public List<point> ExpandOrgPointToSisPoint_HL(point pt)
         {
-            if (pt.lsCalcOrgSubPoint_hl == null) return null;
+            if (pt.lsVartoPoint_hl == null) return null;
             List<point> ExpandPoint = new List<point>();
-            ExpandOrgPointToSisPoinSub(ExpandPoint, pt.lsCalcOrgSubPoint_hl);
+            ExpandOrgPointToSisPoinSub(ExpandPoint, pt.lsVartoPoint_hl);
             return ExpandPoint;
         }
         //返回LL公式展开成sis点的列表。
@@ -270,9 +270,9 @@ namespace HGS
         //返回AlarmIf公式展开成sis点的列表。
         public List<point> ExpandOrgPointToSisPoint_AlarmIf(point pt)
         {
-            if (pt.lsCalcOrgSubPoint_alarmif == null) return null;
+            if (pt.lsVartoPoint_alarmif == null) return null;
             List<point> ExpandPoint = new List<point>();
-            ExpandOrgPointToSisPoinSub(ExpandPoint, pt.lsCalcOrgSubPoint_alarmif);
+            ExpandOrgPointToSisPoinSub(ExpandPoint, pt.lsVartoPoint_alarmif);
             return ExpandPoint;
         }
         //公式解析---------------------------------
@@ -280,11 +280,11 @@ namespace HGS
         {
             if (pt.pointsrc == pointsrc.calc)
             {
-                pt.lsCalcOrgSubPoint_main = VartoPointTable.Sub_PointtoVarList(pt, cellid.main);
+                pt.lsVartoPoint_main = VartoPointTable.Sub_PointtoVarList(pt, cellid.main);
             }
-            pt.lsCalcOrgSubPoint_hl = VartoPointTable.Sub_PointtoVarList(pt, cellid.hl);
+            pt.lsVartoPoint_hl = VartoPointTable.Sub_PointtoVarList(pt, cellid.hl);
             pt.lsVar_Point_ll = VartoPointTable.Sub_PointtoVarList(pt, cellid.ll);
-            pt.lsCalcOrgSubPoint_alarmif = VartoPointTable.Sub_PointtoVarList(pt, cellid.alarmif);
+            pt.lsVartoPoint_alarmif = VartoPointTable.Sub_PointtoVarList(pt, cellid.alarmif);
             
         }
         //原始公式中变量解析为sis点变量。
@@ -294,9 +294,9 @@ namespace HGS
             {
                 pt.listSisCalcExpPointID_main = ExpandOrgPointToSisPoint_Main(pt);
             }
-            if (pt.lsCalcOrgSubPoint_hl != null) pt.listSisCalaExpPointID_hl = ExpandOrgPointToSisPoint_HL(pt);
+            if (pt.lsVartoPoint_hl != null) pt.listSisCalaExpPointID_hl = ExpandOrgPointToSisPoint_HL(pt);
             if (pt.lsVar_Point_ll != null) pt.listSisCalaExpPointID_ll = ExpandOrgPointToSisPoint_LL(pt);
-            if (pt.lsCalcOrgSubPoint_alarmif != null) pt.listSisCalcExpPointID_alarmif = ExpandOrgPointToSisPoint_AlarmIf(pt);          
+            if (pt.lsVartoPoint_alarmif != null) pt.listSisCalcExpPointID_alarmif = ExpandOrgPointToSisPoint_AlarmIf(pt);          
         }
         public void ParseFormula(point pt)
         {
@@ -355,6 +355,7 @@ namespace HGS
                     ParseFormula(v);
                 }
                 //
+                DeviceInfo._ce = Data.inst().ce;
                 Data_Device.GetAllAlarmDevice();//从数据库中取出设备信息并关联传感器。
                 //
                 Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
@@ -430,13 +431,13 @@ namespace HGS
         private void GetinsertsubSql(StringBuilder sb, point pt)
         {
 
-            GetinsertsubSql(sb, pt.lsCalcOrgSubPoint_main, pt, cellid.main);
+            GetinsertsubSql(sb, pt.lsVartoPoint_main, pt, cellid.main);
 
-            GetinsertsubSql(sb, pt.lsCalcOrgSubPoint_hl, pt, cellid.hl);
+            GetinsertsubSql(sb, pt.lsVartoPoint_hl, pt, cellid.hl);
 
             GetinsertsubSql(sb, pt.lsVar_Point_ll, pt, cellid.ll);
 
-            GetinsertsubSql(sb, pt.lsCalcOrgSubPoint_alarmif, pt, cellid.alarmif);
+            GetinsertsubSql(sb, pt.lsVartoPoint_alarmif, pt, cellid.alarmif);
         }
         public void SavetoPG()
         {

@@ -40,9 +40,9 @@ namespace HGS
             PointNums = 0;
             timer1.Enabled = false;
             List<GLItem> lsItmems = new List<GLItem>();
-            if (CalcPoint.lsCalcOrgSubPoint_main != null)
+            if (CalcPoint.lsVartoPoint_main != null)
             {
-                foreach (varlinktopoint subpt in CalcPoint.lsCalcOrgSubPoint_main)
+                foreach (varlinktopoint subpt in CalcPoint.lsVartoPoint_main)
                 {
                     GLItem itemn = new GLItem(glacialList1);
                     lsItmems.Add(itemn);
@@ -167,7 +167,7 @@ namespace HGS
             CalcEngine.CalcEngine ce = new CalcEngine.CalcEngine();
             point Point = new point(-1,pointsrc.calc);
             //Point.id = CalcPoint.id;
-            Point.lsCalcOrgSubPoint_main = new List<varlinktopoint>();
+            Point.lsVartoPoint_main = new List<varlinktopoint>();
             //-----
             //可加内部变量
             //hsVar.Add(???);
@@ -193,7 +193,7 @@ namespace HGS
                 varlinktopoint subpt = new varlinktopoint();
                 subpt.varname = item.SubItems["VarName"].Text;
                 subpt.sub_id = it.id;
-                Point.lsCalcOrgSubPoint_main.Add(subpt);
+                Point.lsVartoPoint_main.Add(subpt);
 
                 ce.Variables[subpt.varname] = Data.inst().cd_Point[it.id].av;//测试用。
             }
@@ -207,7 +207,7 @@ namespace HGS
             if(Point.Orgformula_main.Length > 0)
                 orgv = Math.Round(Convert.ToDouble(ce.Evaluate(Point.Orgformula_main)), Point.fm); //验证表达式的合法性
                                                //
-            ce.Variables = Data.inst().Variables;
+            ce = Data.inst().ce;
             double? expv = null;
             if(Point.Orgformula_main.Length > 0)
                 expv = Math.Round(Convert.ToDouble(ce.Evaluate(Data.inst().ExpandOrgFormula_Main(Point))), Point.fm);//验证表达式展开sis点的合法性。
@@ -233,14 +233,14 @@ namespace HGS
                 CalcPoint.fm = (byte)numericUpDown.Value;
                 if (glacialList1.Items.Count > 0)
                 {
-                    CalcPoint.lsCalcOrgSubPoint_main = new List<varlinktopoint>();
+                    CalcPoint.lsVartoPoint_main = new List<varlinktopoint>();
                     foreach (GLItem item in glacialList1.Items)
                     {
                         itemtag it = (itemtag)item.Tag;
                         varlinktopoint subpt = new varlinktopoint();
                         subpt.varname = item.SubItems["VarName"].Text;
                         subpt.sub_id = it.id;
-                        CalcPoint.lsCalcOrgSubPoint_main.Add(subpt);
+                        CalcPoint.lsVartoPoint_main.Add(subpt);
                     }
                 }
             }

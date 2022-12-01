@@ -170,6 +170,7 @@ namespace HGS
                         {
                             ttag.SensorUnionWith(new HashSet<int>((int[])ob));
                         }
+                        ttag.ParseFormula();
                     }
                     tn.ForeColor = ttag.Alarm_th_dis != null ? Color.Red : Color.Black;
                     tn.Tag = ttag;
@@ -199,7 +200,9 @@ namespace HGS
                 GetinsertsubSql(sb, tag);
                 var cmd = new NpgsqlCommand(sb.ToString(), pgconn);
                 pgconn.Open();
-                cmd.ExecuteNonQuery();          
+                cmd.ExecuteNonQuery();
+                //
+                tag.ParseFormula();
             }
             catch (Exception e) { throw new Exception(string.Format("增加设备节点时发生错误！"), e); }
             finally { pgconn.Close(); }
@@ -236,6 +239,9 @@ namespace HGS
                 var cmd = new NpgsqlCommand(GetUpdateSql(tn), pgconn);
                 pgconn.Open();
                 cmd.ExecuteNonQuery();
+                //
+                DeviceInfo tag = (DeviceInfo)tn.Tag;
+                tag.ParseFormula();
             }
             catch (Exception e) { throw new Exception(string.Format("更新设备节点时发生错误！"), e); }
             finally { pgconn.Close(); }

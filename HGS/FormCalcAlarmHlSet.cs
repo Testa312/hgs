@@ -33,9 +33,9 @@ namespace HGS
             PointNums = 0;
             timer1.Enabled = false;
             List<GLItem> lsItmems = new List<GLItem>();
-            if (CalcPoint.lsCalcOrgSubPoint_hl != null)
+            if (CalcPoint.lsVartoPoint_hl != null)
             {
-                foreach (varlinktopoint subpt in CalcPoint.lsCalcOrgSubPoint_hl)
+                foreach (varlinktopoint subpt in CalcPoint.lsVartoPoint_hl)
                 {
                     GLItem itemn = new GLItem(glacialList1);
                     lsItmems.Add(itemn);
@@ -154,7 +154,7 @@ namespace HGS
             HashSet<string> hsVar = new HashSet<string>();
             CalcEngine.CalcEngine ce = new CalcEngine.CalcEngine();
             point Point = new point(-1,pointsrc.calc);
-            Point.lsCalcOrgSubPoint_hl = new List<varlinktopoint>();
+            Point.lsVartoPoint_hl = new List<varlinktopoint>();
             //-----
             //可加内部变量
             //hsVar.Add(???);
@@ -181,7 +181,7 @@ namespace HGS
                 varlinktopoint subpt = new varlinktopoint();
                 subpt.varname = item.SubItems["VarName"].Text;
                 subpt.sub_id = it.id;
-                Point.lsCalcOrgSubPoint_hl.Add(subpt);
+                Point.lsVartoPoint_hl.Add(subpt);
 
                 ce.Variables[subpt.varname] = Data.inst().cd_Point[it.id].av;//测试用。
             }
@@ -195,7 +195,7 @@ namespace HGS
             if (Point.orgformula_hl.Length > 0 )
                 orgv = Math.Round(Convert.ToDouble(ce.Evaluate(Point.orgformula_hl)), Point.fm); //验证表达式的合法性
                                                                                                //
-            ce.Variables = Data.inst().Variables;
+            ce = Data.inst().ce;
             double? expv = null;
             if(Point.orgformula_hl.Length > 0 )
                 expv = Math.Round(Convert.ToDouble(ce.Evaluate(Data.inst().ExpandOrgFormula_HL(Point))), Point.fm);//验证表达式展开sis点的合法性。
@@ -210,7 +210,7 @@ namespace HGS
                 Dovalidity(false);
                 CalcPoint.orgformula_hl = textBoxFormula.Text.Trim().Replace("\r\n","");
 
-                CalcPoint.lsCalcOrgSubPoint_hl = new List<varlinktopoint>();
+                CalcPoint.lsVartoPoint_hl = new List<varlinktopoint>();
 
                 foreach (GLItem item in glacialList1.Items)
                 {
@@ -218,7 +218,7 @@ namespace HGS
                     varlinktopoint subpt = new varlinktopoint();
                     subpt.varname = item.SubItems["VarName"].Text;
                     subpt.sub_id = it.id;
-                    CalcPoint.lsCalcOrgSubPoint_hl.Add(subpt);
+                    CalcPoint.lsVartoPoint_hl.Add(subpt);
                 }
             }
             catch (Exception ee)

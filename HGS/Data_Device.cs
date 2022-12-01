@@ -29,7 +29,7 @@ namespace HGS
         //
         private int TimeTick;
         private uint lastAlarmBit = 0, curAlarmBit = 0;
-        private static CalcEngine.CalcEngine _ce = new CalcEngine.CalcEngine();
+        public static CalcEngine.CalcEngine _ce = null;
         public float[] Alarm_th_dis
         {
             get { return alarm_th_dis; }
@@ -58,22 +58,14 @@ namespace HGS
         {
             set
             {
-                if (_Orgformula_If != value && value != null && value.Length > 0 )
+                if(value == null || value.Length == 0)
                 {
-                    _Orgformula_If = value;
-
-                    _lsVartoPoint_If = VartoDeviceTable.Point_Var_List(this);
-                    _listSisCalaExpPointID_If = ExpandOrgPointToSisPoint();
-                    _Expression_If = _ce.Parse(ExpandOrgFormula());
-                }
-                else if(value == null || value.Length == 0)
-                {
-                    _Orgformula_If = value;
+                    
                     _lsVartoPoint_If = null;
                     _listSisCalaExpPointID_If = null;
                     _Expression_If = null;
                 }
-                
+                _Orgformula_If = value;
             }
             get { return _Orgformula_If; }
         }
@@ -154,13 +146,22 @@ namespace HGS
                 hs_Sensorsid = new HashSet<int>();
             hs_Sensorsid.UnionWith(sen_set);
         }
+        public void ParseFormula()
+        {
+            if (_Orgformula_If != null && _Orgformula_If.Length > 0)
+            {
+                _lsVartoPoint_If = VartoDeviceTable.Point_Var_List(this);
+                _listSisCalaExpPointID_If = ExpandOrgPointToSisPoint();
+                _Expression_If = _ce.Parse(ExpandOrgFormula());
+            }
+        }
         //------------------------------------
         //------------------------------------------------------------
         static HashSet<int> xloopvar = new HashSet<int>();
         //返回计算点展开成sis点的列表,同时用于检查循环引用问题。
         private List<point> ExpandOrgPointToSisPoint(point pt)
         {
-            if (pt.lsCalcOrgSubPoint_main == null) return null;
+            if (pt.lsVartoPoint_main == null) return null;
             List<point> ExpandPoint = new List<point>();
             if (xloopvar.Contains(pt.id))
             {
@@ -173,7 +174,7 @@ namespace HGS
                 throw new ArgumentException(sb.Append("循环变量引用！").ToString());
             }
             xloopvar.Add(pt.id);
-            ExpandOrgPointToSisPoinSub(ExpandPoint, pt.lsCalcOrgSubPoint_main);
+            ExpandOrgPointToSisPoinSub(ExpandPoint, pt.lsVartoPoint_main);
             xloopvar.Clear();
             return ExpandPoint;
         }
@@ -220,9 +221,9 @@ namespace HGS
             }
             loopvar.Add(pt.id);
             string orgf = pt.Orgformula_main;
-            if (pt.lsCalcOrgSubPoint_main != null)
+            if (pt.lsVartoPoint_main != null)
             {
-                ExpandOrgFormulaSub(ref orgf, pt.lsCalcOrgSubPoint_main);
+                ExpandOrgFormulaSub(ref orgf, pt.lsVartoPoint_main);
             }
             loopvar.Clear();
             return orgf;
@@ -426,6 +427,7 @@ namespace HGS
                         di.SensorUnionWith(new HashSet<int>((int[])ob));
 
                     }
+                    di.ParseFormula();
                     //if (di.Alarm_th_dis != null)//去除大量不报警的设备.
                     //dic_Device.Add(di.id, di);                           
                 }
@@ -465,6 +467,7 @@ namespace HGS
                     {
                         di.SensorUnionWith(new HashSet<int>((int[])ob));
                     }
+                    di.ParseFormula();
 
                 }
                 pgconn.Close();

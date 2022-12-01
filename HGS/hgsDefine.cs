@@ -166,6 +166,12 @@ namespace HGS
                     Data.inst().Update(this);
                     _Orgformula_ll = value;
                 }
+                if (_Orgformula_ll == null || _Orgformula_ll.Length == 0)
+                {
+                    _Expression_ll = null;
+                    _lsVar_Point_ll = null;
+                    _listSisCalaExpPointID_ll = null;
+                }
             }
             get { return _Orgformula_ll; }
         }
@@ -222,6 +228,12 @@ namespace HGS
                     Data.inst().Update(this);
                     _Orgformula_hl = value;
                 }
+                if (_Orgformula_hl == null || _Orgformula_hl.Length == 0)
+                {
+                    _Expression_hl = null;
+                    _lsVartoPoint_hl = null;
+                    _listSisCalcExpPointID_hl = null;
+                }
             }
             get { return _Orgformula_hl; }
         }
@@ -233,7 +245,7 @@ namespace HGS
         }
         //计算子点id
         private List<varlinktopoint> _lsVartoPoint_hl = null;//变量与点Id的对应列表
-        public List<varlinktopoint> lsCalcOrgSubPoint_hl
+        public List<varlinktopoint> lsVartoPoint_hl
         {
             set { _lsVartoPoint_hl = value; }
             get { return _lsVartoPoint_hl; }
@@ -435,6 +447,13 @@ namespace HGS
                     Data.inst().Update(this);
                     _Orgformula_main = value;
                 }
+                if (_Orgformula_main == null || _Orgformula_main.Length == 0)
+                {
+                    _Sisformula_main = null;
+                    _Expression_main = null;
+                    _lsVartoPoint_main = null;
+                    _listSisCalcExpPointID_main = null; 
+                }
             }
             get { return _Orgformula_main; }
         }
@@ -452,7 +471,7 @@ namespace HGS
         }
         //计算子点id
         private List<varlinktopoint> _lsVartoPoint_main = null;//变量与点Id的对应列表
-        public List<varlinktopoint> lsCalcOrgSubPoint_main
+        public List<varlinktopoint> lsVartoPoint_main
         {
             set { _lsVartoPoint_main = value; }
             get { return _lsVartoPoint_main; }
@@ -511,6 +530,12 @@ namespace HGS
                     Data.inst().Update(this);
                     _Alarmif = value;
                 }
+                if (_Alarmif == null || _Alarmif.Length == 0)
+                {
+                    _Expression_alarmif = null;
+                    _lsVartoPoint_alarmif = null;
+                    _listSisCalcExpPointID_alarmif = null;
+                }
             }
             get { return _Alarmif; }
         }
@@ -522,7 +547,7 @@ namespace HGS
         }
         //计算子点id
         private List<varlinktopoint> _lsVartoPoint_alarmif = null; //变量与点Id的对应列表
-        public List<varlinktopoint> lsCalcOrgSubPoint_alarmif
+        public List<varlinktopoint> lsVartoPoint_alarmif
         {
             set { _lsVartoPoint_alarmif = value; }
             get { return _lsVartoPoint_alarmif; }
