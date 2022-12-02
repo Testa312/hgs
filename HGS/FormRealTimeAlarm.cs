@@ -30,9 +30,9 @@ namespace HGS
             item.SubItems["AlarmingAV"].Text = ai._av.ToString();
             item.SubItems["EU"].Text = ai._eu;
             item.SubItems["AlarmInfo"].Text = ai._Info;
-            item.SubItems["Time"].Text = ai._starttime.ToString();
+            item.SubItems["Time"].Text = ai._starttime.ToString("yyyy-MM-dd HH:mm:ss");
             if (ai.stoptime.Year >= 2000 && !isRealtime)
-                item.SubItems["StopTime"].Text = ai.stoptime.ToString();
+                item.SubItems["StopTime"].Text = ai.stoptime.ToString("yyyy-MM-dd HH:mm:ss");
             item.Tag = ai;
         }
         private void DisplayFilterItem(string path)

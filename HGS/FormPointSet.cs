@@ -112,7 +112,9 @@ namespace HGS
             //itemn.SubItems["AlarmInfo"].Text = ptx.Alarmininfo;
             itemn.SubItems["DS"].Text = ptx.ps.ToString(); 
             itemn.SubItems["AlarmCount"].Text = ptx.AlarmCount.ToString();
-            itemn.SubItems["MT"].Text = ptx._mt.ToString();
+            itemn.SubItems["MT"].Text = ptx._mt.ToString("yyyy-MM-dd HH:mm:ss");
+            itemn.SubItems["MAX"].Text = Math.Round(ptx.maxav,ptx.fm).ToString();
+            itemn.SubItems["MIN"].Text = Math.Round(ptx.minav, ptx.fm).ToString();
             /*
             it.sisid = ptx.Id_sis;
             it.fm = ptx.fm;
@@ -134,6 +136,8 @@ namespace HGS
             item.SubItems["EU"].Text = pt.eu;
             item.SubItems["PN"].Text = pt.pn;
             item.SubItems["MT"].Text = pt._mt.ToString();
+            item.SubItems["MAX"].Text = Math.Round(pt.maxav, pt.fm).ToString();
+            item.SubItems["MIN"].Text = Math.Round(pt.minav, pt.fm).ToString();
             Data.inst().hs_FormulaErrorPoint.Remove(pt);
             
             AlarmSubItemSymbol(item, pt);

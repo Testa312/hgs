@@ -18,11 +18,14 @@ namespace HGS
         FormAlarmHistoryList formAlarmList = null;
         FormCountOfDeviceCalcDTW formcodcd = null;
         int lastTm = -1;//sis点的更新时间，用于处理断线引起的缓冲数据不连续问题。
+
+        DateTime startdate = DateTime.Now;
         Stopwatch sW = new Stopwatch();
         public FormMain()
         {
             InitializeComponent();
             tssL_error_nums.Text = "";
+            toolStripStatusLabel_startdate.Text = startdate.ToString();
             try
             {
                 SisConnect.siscon_keep = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
@@ -164,6 +167,8 @@ namespace HGS
         }*/
         private void timerCalc_Tick(object sender, EventArgs e)
         {
+            //
+            toolStripStatusLabel_span.Text = (DateTime.Now - startdate).ToString(@"dd\.hh\:mm\:ss");
             sW.Restart();
 
             GetSisValue();//到得sis值；
@@ -280,7 +285,7 @@ namespace HGS
                 };
             }
             Data_Device.AlarmCalc_All_Device();
-            tssL_error_nums.Text = Data.inst().hs_FormulaErrorPoint.Count.ToString();
+            tssL_error_nums.Text = Data.inst().hs_FormulaErrorPoint.Count.ToString("d3");
 
             try
             {
@@ -297,7 +302,7 @@ namespace HGS
             };
 
             sW.Stop();
-            usetime.Text = sW.ElapsedMilliseconds.ToString();
+            usetime.Text = sW.ElapsedMilliseconds.ToString("d4");
         }
 
         private void 报警记录ToolStripMenuItem_Click(object sender, EventArgs e)

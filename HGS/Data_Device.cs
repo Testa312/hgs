@@ -324,9 +324,12 @@ namespace HGS
                 {
                     if (pt.Dtw_Queues_Array != null)
                     {
-                        double p_p = pt.Dtw_Queues_Array[step].DeltaP_P();
+                        float p_p = pt.Dtw_Queues_Array[step].DeltaP_P();
                         if (p_p > pt.Dtw_start_th[step])
+                        {
+                            pt.dtw_start_max[step] = p_p;
                             return pt;
+                        }
                     }
                 }
             }

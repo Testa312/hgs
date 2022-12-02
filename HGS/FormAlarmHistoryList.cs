@@ -55,11 +55,11 @@ namespace HGS
 
                     itemn.SubItems["AlarmInfo"].Text = pgreader["alarminfo"].ToString();
                     DateTime start =  (DateTime)pgreader["alarmtime"];
-                    itemn.SubItems["AlarmTime"].Text = start.ToString();// pgreader["alarmtime"].ToString();
+                    itemn.SubItems["AlarmTime"].Text = start.ToString("yyyy-MM-dd HH:mm:ss"); // pgreader["alarmtime"].ToString();
                     DateTime stop = (DateTime)pgreader["stoptime"];
                     //itemn.SubItems["StopTime"].Text = pgreader["stoptime"].ToString();
                    if (stop.Year > 2000)
-                        itemn.SubItems["StopTime"].Text = stop.ToString();
+                        itemn.SubItems["StopTime"].Text = stop.ToString("yyyy-MM-dd HH:mm:ss");
                     //
                     AlarmInfo ai = new AlarmInfo(pgreader["sid"].ToString(), -1, -1, "", "", "", "", 0, "", "", 0);
                     
@@ -122,10 +122,10 @@ namespace HGS
                         GLItem itemn = new GLItem(glacialList_Down);
                         lsItems.Add(itemn);
                         DateTime start = (DateTime)pgreader["alarmtime"];
-                        itemn.SubItems["Time"].Text =start.ToString();
+                        itemn.SubItems["Time"].Text =start.ToString("yyyy-MM-dd HH:mm:ss");
                         DateTime stop = (DateTime)pgreader["stoptime"];
                         if (stop.Year > 2000)
-                            itemn.SubItems["StopTime"].Text = pgreader["stoptime"].ToString();
+                            itemn.SubItems["StopTime"].Text = stop.ToString("yyyy-MM-dd HH:mm:ss");
                         itemn.SubItems["AlarmInfo"].Text = pgreader["alarminfo"].ToString();
                         itemn.SubItems["eu"].Text = pgreader["eu"].ToString();
                         itemn.SubItems["AlarmAv"].Text = pgreader["alarmav"].ToString();

@@ -484,6 +484,9 @@ namespace HGS
             set { _listSisCalcExpPointID_main = value; }
             get { return _listSisCalcExpPointID_main; }
         }
+        //极值保持
+        public float maxav = float.MinValue;
+        public float minav = float.MaxValue;
         //-------------
         //bit0:ZL
         //bit1:LL
@@ -706,6 +709,8 @@ namespace HGS
                         _wd3s_Queues_Array[i].add(_av ?? 0, true);
                     }
                 }
+                maxav = Math.Max(maxav, av??float.MinValue);
+                minav = Math.Min(minav, av ?? float.MaxValue);
             }
         }
         public float[] Dtw_start_th

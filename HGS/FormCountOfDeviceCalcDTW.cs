@@ -17,9 +17,9 @@ namespace HGS
         public FormCountOfDeviceCalcDTW()
         {
             InitializeComponent();
-            refresh();
+            refresh_dev();
         }
-        private void refresh()
+        private void refresh_dev()
         {
             //glacialList1.Items.Clear();
             List<GLItem> lsitem = new List<GLItem>();
@@ -29,12 +29,13 @@ namespace HGS
                 GLItem item;
                 if (!dic_device.TryGetValue(di.id, out item))
                 {                    
-                    item = new GLItem(glacialList1);
+                    item = new GLItem(glacialList_dev);
                     item.SubItems["ID"].Text = di.id.ToString();
                     item.SubItems["PN"].Text = "设备";
                     item.SubItems["ED"].Text = di.Name;
                     lsitem.Add(item);
                     dic_device.Add(di.id, item);
+                    item.Tag = di;
                 }
                 item.SubItems["DTW"].Text = di.CountofDTWCalc.ToString();
                              
@@ -44,13 +45,42 @@ namespace HGS
                     if (di.Alarm_th_dis != null)
                         item.SubItems[string.Format("m{0}s", ScanSpan[i])].Text = Math.Round(di.Alarm_th_dis[i], 3).ToString();
                 }
-                /*
+                
+            }
+            glacialList_dev.Items.AddRange(lsitem.ToArray());
+            glacialList_dev.Invalidate();
+        }
+
+        private void toolStripButton_refresh_Click(object sender, EventArgs e)
+        {
+            glacialList_sensor.Items.Clear();
+            glacialList_dev.Items.Clear();
+            dic_device.Clear();
+            dic_sensor.Clear();
+            refresh_dev();
+            refresh_sensors();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            refresh_dev();
+            refresh_sensors();
+        }
+        private void refresh_sensors()
+        {
+            if (glacialList_dev.SelectedItems.Count == 1)
+            {
+                List<GLItem> lsitem = new List<GLItem>();
+                int[] ScanSpan = Pref.Inst().ScanSpan;//分钟
+                DeviceInfo di = (DeviceInfo)((GLItem)(glacialList_dev.SelectedItems[0])).Tag;
                 foreach (int sid in di.Sensors_set())
                 {
+
+                    GLItem item = new GLItem(glacialList_sensor);
                     point sensor = Data.inst().cd_Point[sid];
                     if (!dic_sensor.TryGetValue(sid, out item))
                     {
-                        item = new GLItem(glacialList1);                       
+                        item = new GLItem(glacialList_sensor);
                         item.SubItems["ID"].Text = sensor.id.ToString();
                         item.SubItems["PN"].Text = sensor.pn;
                         item.SubItems["ED"].Text = sensor.ed;
@@ -60,27 +90,19 @@ namespace HGS
                     for (int i = 0; i < ScanSpan.Length; i++)
                     {
                         item.SubItems[string.Format("m{0}", ScanSpan[i])].Text = Math.Round(sensor.dtw_start_max[i], 3).ToString();
-                        if(sensor.Dtw_start_th != null)
+                        if (sensor.Dtw_start_th != null)
                             item.SubItems[string.Format("m{0}s", ScanSpan[i])].Text = Math.Round(sensor.Dtw_start_th[i], 3).ToString();
                     }
-                   
-                }*/
+                }
+                glacialList_sensor.Items.AddRange(lsitem.ToArray());
+                glacialList_sensor.Invalidate();
             }
-            glacialList1.Items.AddRange(lsitem.ToArray());
-            glacialList1.Invalidate();
         }
-
-        private void toolStripButton_refresh_Click(object sender, EventArgs e)
+        private void glacialList_dev_Click(object sender, EventArgs e)
         {
-            glacialList1.Items.Clear();
-            dic_device.Clear();
             dic_sensor.Clear();
-            refresh();
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            refresh();
+            glacialList_sensor.Items.Clear();
+            refresh_sensors();
         }
     }
 }
