@@ -113,8 +113,10 @@ namespace HGS
             itemn.SubItems["DS"].Text = ptx.ps.ToString(); 
             itemn.SubItems["AlarmCount"].Text = ptx.AlarmCount.ToString();
             itemn.SubItems["MT"].Text = ptx._mt.ToString("yyyy-MM-dd HH:mm:ss");
-            itemn.SubItems["MAX"].Text = Math.Round(ptx.maxav,ptx.fm).ToString();
-            itemn.SubItems["MIN"].Text = Math.Round(ptx.minav, ptx.fm).ToString();
+            if(ptx.maxav > -1e-35)
+                itemn.SubItems["MAX"].Text = Math.Round(ptx.maxav,ptx.fm).ToString();
+            if (ptx.minav < 1e35)
+                itemn.SubItems["MIN"].Text = Math.Round(ptx.minav, ptx.fm).ToString();
             /*
             it.sisid = ptx.Id_sis;
             it.fm = ptx.fm;

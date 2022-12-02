@@ -453,6 +453,7 @@ namespace HGS
                 while (pgreader.Read())
                 {
                     di = new DeviceInfo();
+                    di.id = (int)pgreader["id"];
                     di.Name = pgreader["nodename"].ToString();
                     di.path = pgreader["path"].ToString();
                     di.nd = pgreader["nd"].ToString();

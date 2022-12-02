@@ -118,16 +118,12 @@ namespace HGS
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.glacialList_dev_org = new GlacialComponents.Controls.GlacialList();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.glacialList_dev_new = new GlacialComponents.Controls.GlacialList();
             this.contextMenuStrip_dev_new = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.现阈值复制ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.glacialList_sensor_org = new GlacialComponents.Controls.GlacialList();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.glacialList_sensor_new = new GlacialComponents.Controls.GlacialList();
             this.contextMenuStrip_Sensor_new = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.从现阈值复制ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -142,12 +138,17 @@ namespace HGS
             this.textBox_Name = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.comboBox_Sound = new System.Windows.Forms.ComboBox();
-            this.maskedTextBox_Sort = new MaskedTextBox.MaskedTextBox();
             this.plotView1 = new OxyPlot.WindowsForms.PlotView();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.button_dell = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.toolStripStatusLabel_dtw = new System.Windows.Forms.ToolStripStatusLabel();
+            this.glacialList_dev_org = new GlacialComponents.Controls.GlacialList();
+            this.glacialList_dev_new = new GlacialComponents.Controls.GlacialList();
+            this.glacialList_sensor_org = new GlacialComponents.Controls.GlacialList();
+            this.glacialList_sensor_new = new GlacialComponents.Controls.GlacialList();
+            this.maskedTextBox_Sort = new MaskedTextBox.MaskedTextBox();
             this.statusStrip1.SuspendLayout();
             this.menuStrip2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -181,7 +182,8 @@ namespace HGS
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
-            this.toolStripStatusLabel2});
+            this.toolStripStatusLabel2,
+            this.toolStripStatusLabel_dtw});
             this.statusStrip1.Location = new System.Drawing.Point(0, 683);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1147, 22);
@@ -378,6 +380,262 @@ namespace HGS
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "现阈值";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.glacialList_dev_new);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(224, 165);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "新阈值";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // contextMenuStrip_dev_new
+            // 
+            this.contextMenuStrip_dev_new.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.现阈值复制ToolStripMenuItem});
+            this.contextMenuStrip_dev_new.Name = "contextMenuStrip_dev_new";
+            this.contextMenuStrip_dev_new.Size = new System.Drawing.Size(149, 26);
+            // 
+            // 现阈值复制ToolStripMenuItem
+            // 
+            this.现阈值复制ToolStripMenuItem.Name = "现阈值复制ToolStripMenuItem";
+            this.现阈值复制ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.现阈值复制ToolStripMenuItem.Text = "从现阈值复制";
+            this.现阈值复制ToolStripMenuItem.Click += new System.EventHandler(this.现阈值复制ToolStripMenuItem_Click);
+            // 
+            // tabControl2
+            // 
+            this.tabControl2.Controls.Add(this.tabPage3);
+            this.tabControl2.Controls.Add(this.tabPage4);
+            this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl2.Location = new System.Drawing.Point(0, 0);
+            this.tabControl2.Name = "tabControl2";
+            this.tabControl2.SelectedIndex = 0;
+            this.tabControl2.Size = new System.Drawing.Size(911, 191);
+            this.tabControl2.TabIndex = 1;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.glacialList_sensor_org);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(903, 165);
+            this.tabPage3.TabIndex = 0;
+            this.tabPage3.Text = "原阈值";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.glacialList_sensor_new);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(903, 165);
+            this.tabPage4.TabIndex = 1;
+            this.tabPage4.Text = "新阈值";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // contextMenuStrip_Sensor_new
+            // 
+            this.contextMenuStrip_Sensor_new.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.从现阈值复制ToolStripMenuItem});
+            this.contextMenuStrip_Sensor_new.Name = "contextMenuStrip_dev_new";
+            this.contextMenuStrip_Sensor_new.Size = new System.Drawing.Size(149, 26);
+            // 
+            // 从现阈值复制ToolStripMenuItem
+            // 
+            this.从现阈值复制ToolStripMenuItem.Name = "从现阈值复制ToolStripMenuItem";
+            this.从现阈值复制ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.从现阈值复制ToolStripMenuItem.Text = "从现阈值复制";
+            this.从现阈值复制ToolStripMenuItem.Click += new System.EventHandler(this.从现阈值复制ToolStripMenuItem_Click);
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.button_AlarmIf);
+            this.splitContainer2.Panel1.Controls.Add(this.textBox_PN);
+            this.splitContainer2.Panel1.Controls.Add(this.label1);
+            this.splitContainer2.Panel1.Controls.Add(this.label4);
+            this.splitContainer2.Panel1.Controls.Add(this.label6);
+            this.splitContainer2.Panel1.Controls.Add(this.label3);
+            this.splitContainer2.Panel1.Controls.Add(this.label2);
+            this.splitContainer2.Panel1.Controls.Add(this.textBox_ND);
+            this.splitContainer2.Panel1.Controls.Add(this.textBox_Name);
+            this.splitContainer2.Panel1.Controls.Add(this.label5);
+            this.splitContainer2.Panel1.Controls.Add(this.comboBox_Sound);
+            this.splitContainer2.Panel1.Controls.Add(this.maskedTextBox_Sort);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.plotView1);
+            this.splitContainer2.Size = new System.Drawing.Size(1147, 364);
+            this.splitContainer2.SplitterDistance = 236;
+            this.splitContainer2.TabIndex = 0;
+            // 
+            // button_AlarmIf
+            // 
+            this.button_AlarmIf.Location = new System.Drawing.Point(76, 340);
+            this.button_AlarmIf.Name = "button_AlarmIf";
+            this.button_AlarmIf.Size = new System.Drawing.Size(89, 23);
+            this.button_AlarmIf.TabIndex = 4;
+            this.button_AlarmIf.Text = "公式...";
+            this.button_AlarmIf.UseVisualStyleBackColor = true;
+            this.button_AlarmIf.Click += new System.EventHandler(this.button_AlarmIf_Click);
+            // 
+            // textBox_PN
+            // 
+            this.textBox_PN.Location = new System.Drawing.Point(25, 118);
+            this.textBox_PN.Name = "textBox_PN";
+            this.textBox_PN.Size = new System.Drawing.Size(190, 21);
+            this.textBox_PN.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(23, 149);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(41, 12);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "描述：";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(23, 50);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(41, 12);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "节点：";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(35, 316);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(65, 12);
+            this.label6.TabIndex = 0;
+            this.label6.Text = "报警条件：";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(23, 243);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(41, 12);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "声音：";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(23, 199);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(41, 12);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "排序：";
+            // 
+            // textBox_ND
+            // 
+            this.textBox_ND.Location = new System.Drawing.Point(25, 67);
+            this.textBox_ND.Name = "textBox_ND";
+            this.textBox_ND.Size = new System.Drawing.Size(123, 21);
+            this.textBox_ND.TabIndex = 2;
+            // 
+            // textBox_Name
+            // 
+            this.textBox_Name.Location = new System.Drawing.Point(25, 167);
+            this.textBox_Name.Name = "textBox_Name";
+            this.textBox_Name.Size = new System.Drawing.Size(190, 21);
+            this.textBox_Name.TabIndex = 2;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(23, 101);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 12);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "点名：";
+            // 
+            // comboBox_Sound
+            // 
+            this.comboBox_Sound.FormattingEnabled = true;
+            this.comboBox_Sound.Items.AddRange(new object[] {
+            "无",
+            "超限",
+            "异常",
+            "故障",
+            "朗读"});
+            this.comboBox_Sound.Location = new System.Drawing.Point(25, 264);
+            this.comboBox_Sound.Name = "comboBox_Sound";
+            this.comboBox_Sound.Size = new System.Drawing.Size(123, 20);
+            this.comboBox_Sound.TabIndex = 3;
+            // 
+            // plotView1
+            // 
+            this.plotView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.plotView1.Location = new System.Drawing.Point(0, 0);
+            this.plotView1.Name = "plotView1";
+            this.plotView1.PanCursor = System.Windows.Forms.Cursors.Hand;
+            this.plotView1.Size = new System.Drawing.Size(907, 364);
+            this.plotView1.TabIndex = 0;
+            this.plotView1.Text = "plotView1";
+            this.plotView1.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
+            this.plotView1.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
+            this.plotView1.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
+            // 
+            // buttonCancel
+            // 
+            this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonCancel.Location = new System.Drawing.Point(640, 21);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.TabIndex = 0;
+            this.buttonCancel.Text = "取消";
+            this.buttonCancel.UseVisualStyleBackColor = true;
+            // 
+            // button_dell
+            // 
+            this.button_dell.Location = new System.Drawing.Point(388, 21);
+            this.button_dell.Name = "button_dell";
+            this.button_dell.Size = new System.Drawing.Size(75, 23);
+            this.button_dell.TabIndex = 0;
+            this.button_dell.Text = "删除阈值";
+            this.button_dell.UseVisualStyleBackColor = true;
+            this.button_dell.Click += new System.EventHandler(this.button_dell_Click);
+            // 
+            // buttonOK
+            // 
+            this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.buttonOK.Location = new System.Drawing.Point(905, 21);
+            this.buttonOK.Name = "buttonOK";
+            this.buttonOK.Size = new System.Drawing.Size(75, 23);
+            this.buttonOK.TabIndex = 0;
+            this.buttonOK.Text = "确认";
+            this.buttonOK.UseVisualStyleBackColor = true;
+            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
+            // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 30000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // toolStripStatusLabel_dtw
+            // 
+            this.toolStripStatusLabel_dtw.Name = "toolStripStatusLabel_dtw";
+            this.toolStripStatusLabel_dtw.Size = new System.Drawing.Size(65, 17);
+            this.toolStripStatusLabel_dtw.Text = "dtw次数：";
             // 
             // glacialList_dev_org
             // 
@@ -624,17 +882,6 @@ namespace HGS
             this.glacialList_dev_org.SuperFlatHeaderColor = System.Drawing.Color.White;
             this.glacialList_dev_org.TabIndex = 0;
             this.glacialList_dev_org.Text = "glacialList1";
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.glacialList_dev_new);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(224, 165);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "新阈值";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // glacialList_dev_new
             // 
@@ -883,42 +1130,6 @@ namespace HGS
             this.glacialList_dev_new.TabIndex = 1;
             this.glacialList_dev_new.Text = "glacialList3";
             // 
-            // contextMenuStrip_dev_new
-            // 
-            this.contextMenuStrip_dev_new.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.现阈值复制ToolStripMenuItem});
-            this.contextMenuStrip_dev_new.Name = "contextMenuStrip_dev_new";
-            this.contextMenuStrip_dev_new.Size = new System.Drawing.Size(149, 26);
-            // 
-            // 现阈值复制ToolStripMenuItem
-            // 
-            this.现阈值复制ToolStripMenuItem.Name = "现阈值复制ToolStripMenuItem";
-            this.现阈值复制ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.现阈值复制ToolStripMenuItem.Text = "从现阈值复制";
-            this.现阈值复制ToolStripMenuItem.Click += new System.EventHandler(this.现阈值复制ToolStripMenuItem_Click);
-            // 
-            // tabControl2
-            // 
-            this.tabControl2.Controls.Add(this.tabPage3);
-            this.tabControl2.Controls.Add(this.tabPage4);
-            this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl2.Location = new System.Drawing.Point(0, 0);
-            this.tabControl2.Name = "tabControl2";
-            this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(911, 191);
-            this.tabControl2.TabIndex = 1;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.glacialList_sensor_org);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(903, 165);
-            this.tabPage3.TabIndex = 0;
-            this.tabPage3.Text = "原阈值";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
             // glacialList_sensor_org
             // 
             this.glacialList_sensor_org.AllowColumnResize = true;
@@ -1031,17 +1242,6 @@ namespace HGS
             this.glacialList_sensor_org.SuperFlatHeaderColor = System.Drawing.Color.White;
             this.glacialList_sensor_org.TabIndex = 0;
             this.glacialList_sensor_org.Text = "glacialList2";
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.Controls.Add(this.glacialList_sensor_new);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(903, 165);
-            this.tabPage4.TabIndex = 1;
-            this.tabPage4.Text = "新阈值";
-            this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // glacialList_sensor_new
             // 
@@ -1157,148 +1357,6 @@ namespace HGS
             this.glacialList_sensor_new.TabIndex = 1;
             this.glacialList_sensor_new.Text = "glacialList4";
             // 
-            // contextMenuStrip_Sensor_new
-            // 
-            this.contextMenuStrip_Sensor_new.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.从现阈值复制ToolStripMenuItem});
-            this.contextMenuStrip_Sensor_new.Name = "contextMenuStrip_dev_new";
-            this.contextMenuStrip_Sensor_new.Size = new System.Drawing.Size(149, 26);
-            // 
-            // 从现阈值复制ToolStripMenuItem
-            // 
-            this.从现阈值复制ToolStripMenuItem.Name = "从现阈值复制ToolStripMenuItem";
-            this.从现阈值复制ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.从现阈值复制ToolStripMenuItem.Text = "从现阈值复制";
-            this.从现阈值复制ToolStripMenuItem.Click += new System.EventHandler(this.从现阈值复制ToolStripMenuItem_Click);
-            // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Name = "splitContainer2";
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.button_AlarmIf);
-            this.splitContainer2.Panel1.Controls.Add(this.textBox_PN);
-            this.splitContainer2.Panel1.Controls.Add(this.label1);
-            this.splitContainer2.Panel1.Controls.Add(this.label4);
-            this.splitContainer2.Panel1.Controls.Add(this.label6);
-            this.splitContainer2.Panel1.Controls.Add(this.label3);
-            this.splitContainer2.Panel1.Controls.Add(this.label2);
-            this.splitContainer2.Panel1.Controls.Add(this.textBox_ND);
-            this.splitContainer2.Panel1.Controls.Add(this.textBox_Name);
-            this.splitContainer2.Panel1.Controls.Add(this.label5);
-            this.splitContainer2.Panel1.Controls.Add(this.comboBox_Sound);
-            this.splitContainer2.Panel1.Controls.Add(this.maskedTextBox_Sort);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.plotView1);
-            this.splitContainer2.Size = new System.Drawing.Size(1147, 364);
-            this.splitContainer2.SplitterDistance = 236;
-            this.splitContainer2.TabIndex = 0;
-            // 
-            // button_AlarmIf
-            // 
-            this.button_AlarmIf.Location = new System.Drawing.Point(76, 340);
-            this.button_AlarmIf.Name = "button_AlarmIf";
-            this.button_AlarmIf.Size = new System.Drawing.Size(89, 23);
-            this.button_AlarmIf.TabIndex = 4;
-            this.button_AlarmIf.Text = "公式...";
-            this.button_AlarmIf.UseVisualStyleBackColor = true;
-            this.button_AlarmIf.Click += new System.EventHandler(this.button_AlarmIf_Click);
-            // 
-            // textBox_PN
-            // 
-            this.textBox_PN.Location = new System.Drawing.Point(25, 118);
-            this.textBox_PN.Name = "textBox_PN";
-            this.textBox_PN.Size = new System.Drawing.Size(190, 21);
-            this.textBox_PN.TabIndex = 2;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(23, 149);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 12);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "描述：";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(23, 50);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(41, 12);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "节点：";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(35, 316);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(65, 12);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "报警条件：";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(23, 243);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 12);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "声音：";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(23, 199);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(41, 12);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "排序：";
-            // 
-            // textBox_ND
-            // 
-            this.textBox_ND.Location = new System.Drawing.Point(25, 67);
-            this.textBox_ND.Name = "textBox_ND";
-            this.textBox_ND.Size = new System.Drawing.Size(123, 21);
-            this.textBox_ND.TabIndex = 2;
-            // 
-            // textBox_Name
-            // 
-            this.textBox_Name.Location = new System.Drawing.Point(25, 167);
-            this.textBox_Name.Name = "textBox_Name";
-            this.textBox_Name.Size = new System.Drawing.Size(190, 21);
-            this.textBox_Name.TabIndex = 2;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(23, 101);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(41, 12);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "点名：";
-            // 
-            // comboBox_Sound
-            // 
-            this.comboBox_Sound.FormattingEnabled = true;
-            this.comboBox_Sound.Items.AddRange(new object[] {
-            "无",
-            "超限",
-            "异常",
-            "故障",
-            "朗读"});
-            this.comboBox_Sound.Location = new System.Drawing.Point(25, 264);
-            this.comboBox_Sound.Name = "comboBox_Sound";
-            this.comboBox_Sound.Size = new System.Drawing.Size(123, 20);
-            this.comboBox_Sound.TabIndex = 3;
-            // 
             // maskedTextBox_Sort
             // 
             this.maskedTextBox_Sort.Location = new System.Drawing.Point(25, 216);
@@ -1306,56 +1364,6 @@ namespace HGS
             this.maskedTextBox_Sort.Name = "maskedTextBox_Sort";
             this.maskedTextBox_Sort.Size = new System.Drawing.Size(123, 21);
             this.maskedTextBox_Sort.TabIndex = 1;
-            // 
-            // plotView1
-            // 
-            this.plotView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.plotView1.Location = new System.Drawing.Point(0, 0);
-            this.plotView1.Name = "plotView1";
-            this.plotView1.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotView1.Size = new System.Drawing.Size(907, 364);
-            this.plotView1.TabIndex = 0;
-            this.plotView1.Text = "plotView1";
-            this.plotView1.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
-            this.plotView1.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
-            this.plotView1.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
-            // 
-            // buttonCancel
-            // 
-            this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(640, 21);
-            this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
-            this.buttonCancel.TabIndex = 0;
-            this.buttonCancel.Text = "取消";
-            this.buttonCancel.UseVisualStyleBackColor = true;
-            // 
-            // button_dell
-            // 
-            this.button_dell.Location = new System.Drawing.Point(388, 21);
-            this.button_dell.Name = "button_dell";
-            this.button_dell.Size = new System.Drawing.Size(75, 23);
-            this.button_dell.TabIndex = 0;
-            this.button_dell.Text = "删除阈值";
-            this.button_dell.UseVisualStyleBackColor = true;
-            this.button_dell.Click += new System.EventHandler(this.button_dell_Click);
-            // 
-            // buttonOK
-            // 
-            this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonOK.Location = new System.Drawing.Point(905, 21);
-            this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(75, 23);
-            this.buttonOK.TabIndex = 0;
-            this.buttonOK.Text = "确认";
-            this.buttonOK.UseVisualStyleBackColor = true;
-            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
-            // 
-            // timer1
-            // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 30000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // FormThDtwSet
             // 
@@ -1460,5 +1468,6 @@ namespace HGS
         private System.Windows.Forms.ToolStripMenuItem 从现阈值复制ToolStripMenuItem;
         private System.Windows.Forms.SplitContainer splitContainer5;
         private System.Windows.Forms.SplitContainer splitContainer4;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel_dtw;
     }
 }

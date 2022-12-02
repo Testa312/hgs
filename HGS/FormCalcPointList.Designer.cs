@@ -114,7 +114,7 @@
             // tSTBED
             // 
             this.tSTBED.Name = "tSTBED";
-            this.tSTBED.Size = new System.Drawing.Size(100, 25);
+            this.tSTBED.Size = new System.Drawing.Size(150, 25);
             // 
             // toolStripButtonfind
             // 

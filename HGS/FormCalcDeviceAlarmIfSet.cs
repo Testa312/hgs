@@ -186,10 +186,11 @@ namespace HGS
 
                 ce.Variables[subpt.varname] = Data.inst().cd_Point[it.id].av;//测试用。
             }
+            /*
             if (textBoxmDiscription.Text.Length < 1)
             {
                 throw new Exception("计算点的的描述不能为空！");
-            }
+            }*/
             DiPoint.Orgformula_If = textBoxFormula.Text;
             
             bool orgv = true;
@@ -224,7 +225,7 @@ namespace HGS
             }
             catch (Exception ee)
             {
-                FormBugReport.ShowBug(ee);
+                MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.DialogResult = System.Windows.Forms.DialogResult.None;
             }
         }
@@ -246,7 +247,7 @@ namespace HGS
             }
             catch (Exception ee)
             {
-                FormBugReport.ShowBug(ee);
+                MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

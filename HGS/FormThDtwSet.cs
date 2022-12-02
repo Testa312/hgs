@@ -177,6 +177,7 @@ namespace HGS
                 //int[] span = new int[] {15,30,60,120,240,480 };//分钟
                 List<GLItem> lsItem = new List<GLItem>();
                 double cost = 0;
+                int dtw = 0;
                 double maxpp = double.MinValue;
                 Dictionary<int, float[]> dic_dtw_th = new Dictionary<int, float[]>();
                 for (int i = 0; i < ScanSpan.Length; i++)
@@ -202,12 +203,13 @@ namespace HGS
                             //第1、2条曲线为主进行比较，全部比较会产生组合爆炸。
                             PointData pt_main = lspd[0];
                             lspd.RemoveAt(0);
-                            int count = 1;
+                            int count = 0;
                             while (lspd.Count > 0)
                             {
                                 for (int m = 0; m < lspd.Count; m++)
                                 {
                                     cost = Math.Max(cost, SisConnect.GetDtw_dd_diff(pt_main, lspd[m], 0, false));
+                                    dtw++;
                                 }
                                 pt_main = lspd[0];
                                 lspd.RemoveAt(0);
@@ -279,7 +281,8 @@ namespace HGS
                 //
                 tabControl1.SelectedIndex = 1;
                 tabControl2.SelectedIndex = 1;
-                toolStripStatusLabel1.Text = string.Format("用时：{0}ms",sw.ElapsedMilliseconds);             
+                toolStripStatusLabel1.Text = string.Format("用时：{0}ms",sw.ElapsedMilliseconds);
+                toolStripStatusLabel_dtw.Text = string.Format("dtw次数：{0}",dtw);
             }
             catch(Exception ee)
             {

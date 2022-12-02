@@ -53,25 +53,25 @@
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.listBox_Node = new System.Windows.Forms.ListBox();
-            this.glacialList = new GlacialComponents.Controls.GlacialList();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.label1 = new System.Windows.Forms.Label();
+            this.listBox_Node = new System.Windows.Forms.ListBox();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.glacialList = new GlacialComponents.Controls.GlacialList();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -125,7 +125,7 @@
             // tSTBED
             // 
             this.tSTBED.Name = "tSTBED";
-            this.tSTBED.Size = new System.Drawing.Size(100, 25);
+            this.tSTBED.Size = new System.Drawing.Size(150, 25);
             // 
             // tSBFind
             // 
@@ -197,6 +197,48 @@
             this.splitContainer1.SplitterDistance = 146;
             this.splitContainer1.TabIndex = 4;
             // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Name = "splitContainer3";
+            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.label1);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.listBox_Node);
+            this.splitContainer3.Size = new System.Drawing.Size(146, 499);
+            this.splitContainer3.SplitterDistance = 32;
+            this.splitContainer3.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(11, 10);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 12);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "节点列表：";
+            // 
+            // listBox_Node
+            // 
+            this.listBox_Node.ColumnWidth = 60;
+            this.listBox_Node.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBox_Node.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.listBox_Node.FormattingEnabled = true;
+            this.listBox_Node.ItemHeight = 14;
+            this.listBox_Node.Location = new System.Drawing.Point(0, 0);
+            this.listBox_Node.MultiColumn = true;
+            this.listBox_Node.Name = "listBox_Node";
+            this.listBox_Node.Size = new System.Drawing.Size(146, 463);
+            this.listBox_Node.TabIndex = 0;
+            this.listBox_Node.Click += new System.EventHandler(this.listBox_Node_Click);
+            // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -216,20 +258,6 @@
             this.splitContainer2.Size = new System.Drawing.Size(899, 499);
             this.splitContainer2.SplitterDistance = 424;
             this.splitContainer2.TabIndex = 4;
-            // 
-            // listBox_Node
-            // 
-            this.listBox_Node.ColumnWidth = 60;
-            this.listBox_Node.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBox_Node.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.listBox_Node.FormattingEnabled = true;
-            this.listBox_Node.ItemHeight = 14;
-            this.listBox_Node.Location = new System.Drawing.Point(0, 0);
-            this.listBox_Node.MultiColumn = true;
-            this.listBox_Node.Name = "listBox_Node";
-            this.listBox_Node.Size = new System.Drawing.Size(146, 463);
-            this.listBox_Node.TabIndex = 0;
-            this.listBox_Node.Click += new System.EventHandler(this.listBox_Node_Click);
             // 
             // glacialList
             // 
@@ -353,34 +381,6 @@
             this.glacialList.TabIndex = 1;
             this.glacialList.Text = "glacialList";
             // 
-            // splitContainer3
-            // 
-            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer3.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer3.Name = "splitContainer3";
-            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer3.Panel1
-            // 
-            this.splitContainer3.Panel1.Controls.Add(this.label1);
-            // 
-            // splitContainer3.Panel2
-            // 
-            this.splitContainer3.Panel2.Controls.Add(this.listBox_Node);
-            this.splitContainer3.Size = new System.Drawing.Size(146, 499);
-            this.splitContainer3.SplitterDistance = 32;
-            this.splitContainer3.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 10);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 12);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "节点列表：";
-            // 
             // FormSisPointList
             // 
             this.AcceptButton = this.buttonOK;
@@ -407,15 +407,15 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel1.PerformLayout();
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

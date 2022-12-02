@@ -44,13 +44,15 @@
             this.tssL_error_nums = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.usetime = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel_startdate = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel_span = new System.Windows.Forms.ToolStripStatusLabel();
             this.timerCalc = new System.Windows.Forms.Timer(this.components);
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.打开OToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出XToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripStatusLabel_startdate = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel_span = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -137,7 +139,9 @@
             this.tssL_error_nums,
             this.toolStripStatusLabel3,
             this.usetime,
+            this.toolStripStatusLabel2,
             this.toolStripStatusLabel_startdate,
+            this.toolStripStatusLabel4,
             this.toolStripStatusLabel_span});
             this.statusStrip1.Location = new System.Drawing.Point(0, 410);
             this.statusStrip1.Name = "statusStrip1";
@@ -168,6 +172,18 @@
             this.usetime.Name = "usetime";
             this.usetime.Size = new System.Drawing.Size(25, 17);
             this.usetime.Text = "ms";
+            // 
+            // toolStripStatusLabel_startdate
+            // 
+            this.toolStripStatusLabel_startdate.Name = "toolStripStatusLabel_startdate";
+            this.toolStripStatusLabel_startdate.Size = new System.Drawing.Size(68, 17);
+            this.toolStripStatusLabel_startdate.Text = "启动日期：";
+            // 
+            // toolStripStatusLabel_span
+            // 
+            this.toolStripStatusLabel_span.Name = "toolStripStatusLabel_span";
+            this.toolStripStatusLabel_span.Size = new System.Drawing.Size(68, 17);
+            this.toolStripStatusLabel_span.Text = "运行时间：";
             // 
             // timerCalc
             // 
@@ -205,17 +221,17 @@
             this.退出XToolStripMenuItem.Text = "退出（&X）";
             this.退出XToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
             // 
-            // toolStripStatusLabel_startdate
+            // toolStripStatusLabel2
             // 
-            this.toolStripStatusLabel_startdate.Name = "toolStripStatusLabel_startdate";
-            this.toolStripStatusLabel_startdate.Size = new System.Drawing.Size(68, 17);
-            this.toolStripStatusLabel_startdate.Text = "启动日期：";
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(68, 17);
+            this.toolStripStatusLabel2.Text = "启动日期：";
             // 
-            // toolStripStatusLabel_span
+            // toolStripStatusLabel4
             // 
-            this.toolStripStatusLabel_span.Name = "toolStripStatusLabel_span";
-            this.toolStripStatusLabel_span.Size = new System.Drawing.Size(68, 17);
-            this.toolStripStatusLabel_span.Text = "运行时间：";
+            this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
+            this.toolStripStatusLabel4.Size = new System.Drawing.Size(68, 17);
+            this.toolStripStatusLabel4.Text = "运行时间：";
             // 
             // FormMain
             // 
@@ -264,6 +280,8 @@
         private System.Windows.Forms.ToolStripMenuItem 关于aToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel_startdate;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel_span;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel4;
     }
 }
 

@@ -246,7 +246,7 @@ namespace HGS
             }
             catch (Exception ee)
             {
-                FormBugReport.ShowBug(ee);
+                MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.DialogResult = System.Windows.Forms.DialogResult.None;
             }
         }
@@ -268,7 +268,7 @@ namespace HGS
             }
             catch (Exception ee)
             {
-                FormBugReport.ShowBug(ee);
+                MessageBox.Show(ee.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
