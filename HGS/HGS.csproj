@@ -482,7 +482,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="CalcEngine\readme.txt" />
-    <Content Include="dd_dtw.dll" />
     <Content Include="GlacialList\Readme.txt" />
     <Content Include="IF97.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

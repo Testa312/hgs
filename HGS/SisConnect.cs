@@ -332,7 +332,7 @@ namespace HGS
                 {
                     y[i] *= c;
                 }
-                cost = dd_dtw.dtw_distance(x, y,max_dist,use_pruning);
+                cost = dd_dtw.dtw_distance_cs(x, y,max_dist,use_pruning);
             }
             else if (y2 > x2 && x2 >= 0.5)
             {
@@ -341,7 +341,7 @@ namespace HGS
                 {
                     x[i] *= c;
                 }
-                cost = dd_dtw.dtw_distance(x, y,max_dist, use_pruning);
+                cost = dd_dtw.dtw_distance_cs(x, y,max_dist, use_pruning);
             }
             return cost;
         }
@@ -398,7 +398,7 @@ namespace HGS
                 x[i] = pd1.data[i].Value - pd1.data[i - 1].Value;
                 y[i] = pd2.data[i].Value - pd2.data[i - 1].Value;
             }
-            return dd_dtw.dtw_distance(x, y, max_dist, use_pruning); 
+            return dd_dtw.dtw_distance_cs(x, y, max_dist, use_pruning); 
         }
         public static double GetDtw_dd_diff(float[] x, float[] y, double max_dist = 0, bool use_pruning = false)
         {
@@ -413,7 +413,7 @@ namespace HGS
                 xx[i] = x[i] - x[i - 1];
                 yy[i] = y[i] - y[i - 1];
             }
-            return dd_dtw.dtw_distance(xx, yy, max_dist, use_pruning); 
+            return dd_dtw.dtw_distance_cs(xx, yy, max_dist, use_pruning); 
         }
         public static DateTime GetSisSystemTime(OPAPI.Connect sisconn)
         {

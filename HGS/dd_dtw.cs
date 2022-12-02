@@ -45,11 +45,17 @@ namespace HGS
             Dtws.max_dist = max_dist;
             return dtw_distance_ndim(s1, s1.LongLength, s2, s2.LongLength, ndim,Dtws);
         }
-        //CS版,比C要慢20%------------------------------
-        public static double  dtw_distance_new(double[] s1, long l1,
-                      double[] s2, long l2,
-                      DTWSettings settings)
+        //CS版,release版比c dll要快3倍------------------------------
+        public static double dtw_distance_cs(double[] s1,double[] s2,double max_dist_ = 0, bool use_pruning_ = false)
         {
+            //
+            DTWSettings settings = new DTWSettings();
+            settings.max_dist = max_dist_;
+            settings.use_pruning = use_pruning_;
+            long l1 = s1.Length;
+            long l2 = s2.Length;
+            //
+
             Debug.Assert(settings.psi_1b < l1 && settings.psi_1e < l1 &&
                    settings.psi_2b < l2 && settings.psi_2e < l2);
             long ldiff;
@@ -276,7 +282,6 @@ namespace HGS
             double ub = 0;
             for (long i = 0; i < n; i++)
             {
-                //ub += EDIST(s1[i], s2[i]);
                 ub += (s1[i] - s2[i]) * (s1[i] - s2[i]);
             }
             // If the two series differ in length, compare the last element of the shortest series
@@ -286,7 +291,7 @@ namespace HGS
                 for (long i = n; i < l1; i++)
                 {
                     //ub += EDIST(s1[i], s2[n - 1]);
-                    ub += (s1[i] - s2[n-1]) * (s1[i] - s2[n-1]);
+                    ub += (s1[i] - s2[n - 1]) * (s1[i] - s2[n - 1]);
                 }
             }
             else if (l1 < l2)
@@ -294,7 +299,7 @@ namespace HGS
                 for (long i = n; i < l2; i++)
                 {
                     //ub += EDIST(s1[n - 1], s2[i]);
-                    ub += (s1[n-1] - s2[i]) * (s1[n-1] - s2[i]);
+                    ub += (s1[n - 1] - s2[2]) * (s1[n - 1] - s2[i]);
                 }
             }
             return Math.Sqrt(ub);

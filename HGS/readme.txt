@@ -45,3 +45,17 @@ UPDATE owner SET password = crypt('123456', gen_salt('bf',10));
 dtaidistance DTW 配置max_dist,use_pruning参数后速度很快。
 2022-11-22
 char:报警声音：0不发声，1超限，2异常，3故障，4朗读。
+2022-12-2-------------------
+基准测试:
+----dtw----
+数据长度120(float)
+10000次循环
+distance	c dll	:3685ms
+distance	cs		:1205ms
+FastDtw		cs		:1962ms
+NDtw		cs		:9141ms
+
+----IF97---
+10万次循环
+c++ dll				:326ms
+---------
