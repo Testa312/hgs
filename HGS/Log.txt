@@ -53,15 +53,17 @@ dtaidistance DTW 配置max_dist,use_pruning参数后速度很快。
 Pentium(R) Dual-Core CPU E5800 @3.2GH  4GB Windows7
 ----dtw----
 数据长度120(float)
-10000次循环
+1万次循环
 distance	c dll	:3685ms
 distance	cs		:1205ms
 FastDtw		cs		:1962ms
 NDtw		cs		:9141ms
-
 ----IF97---
 10万次循环
 c++ dll				:326ms
+---WaveQueue:三队列，带滤波-------
+10万次循环,			120ms
+---------------
 2022.12.3---------
 关键点：
 1、表达式计算及循环计算问题。

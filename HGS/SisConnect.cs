@@ -199,9 +199,9 @@ namespace HGS
             DateTime end = GetSisSystemTime(siscon_keep).AddSeconds(-5);
             for (int i = 0; i < ScanSpan.Length; i++)
             {
-                DateTime begin = end.AddMinutes(-ScanSpan[i]);
+                DateTime begin = end.AddMinutes(-ScanSpan[i] - 35);
                 //
-                Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep,lsob, begin, end, 120, ScanSpan[i] / 2);
+                Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep,lsob,begin, end, 350, ScanSpan[i] / 2);
                 foreach (PointData pd in dic_pd.Values)
                 {
                     float[] x = new float[pd.data.Count];
@@ -216,10 +216,9 @@ namespace HGS
         }
         public static void InitSensorsWaveQueues(Dictionary<int, point> dic_pt)
         {
-
             if (dic_pt == null)
                 throw new ArgumentException("初始化队列的点列表不能为空！");
-            int[] ScanSpan = new int[6] { 120, 240, 480, 960, 1920, 3840 };//秒数
+            int[] ScanSpan = new int[6] { 240, 480, 960, 1920, 3840,7680 };//秒数
             HashSet<point> lsob = new HashSet<point>(dic_pt.Values.ToArray());
             /*
             foreach (int id in dic_pt.Keys)
@@ -230,9 +229,9 @@ namespace HGS
             DateTime end = GetSisSystemTime(siscon_keep).AddSeconds(-5);
             for (int i = 0; i < ScanSpan.Length; i++)
             {
-                DateTime begin = end.AddSeconds(-ScanSpan[i]);
+                DateTime begin = end.AddSeconds(-ScanSpan[i]-64);
                 //
-                Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep, lsob, begin, end, 120, ScanSpan[i] / 120);
+                Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep, lsob, begin, end, 130, ScanSpan[i] / 120);
                 foreach (PointData pd in dic_pd.Values)
                 {
                     float[] x = new float[pd.data.Count];

@@ -250,15 +250,15 @@ namespace HGS
                     }
                 }
                 //
-                pt.Alarmifav = true;
-                if (pt.Alarmif.Trim().Length > 0)
+                pt.AlarmSwitchOn = true;
+                if (pt.AlarmSwitchIf.Trim().Length > 0)
                 {
                     PointState alarmifps = Functions.GetCalcPointState(pt.listSisCalcExpPointID_alarmif);
 
                     try
                     {
                         if (pt.Expression_alarmif != null && alarmifps == PointState.Good)
-                            pt.Alarmifav = Convert.ToBoolean(pt.Expression_alarmif.Evaluate());
+                            pt.AlarmSwitchOn = Convert.ToBoolean(pt.Expression_alarmif.Evaluate());
 
                     }
                     catch (Exception)

@@ -200,8 +200,8 @@ namespace HGS
         //展开alarmif公式为Sis点-------------------------------------------------
         public string ExpandOrgFormula_AlarmIf(point pt)
         {
-            if (pt.Alarmif.Length == 0) return "";
-            string orgf = pt.Alarmif;
+            if (pt.AlarmSwitchIf.Length == 0) return "";
+            string orgf = pt.AlarmSwitchIf;
             if (pt.lsVartoPoint_alarmif != null)
             {
                 foreach (varlinktopoint subpt in pt.lsVartoPoint_alarmif)
@@ -320,7 +320,7 @@ namespace HGS
             {
                 pt.Expression_ll = _ce.Parse(ExpandOrgFormula_LL(pt));
             }
-            if (pt.Alarmif.Length > 0)
+            if (pt.AlarmSwitchIf.Length > 0)
             {
                 pt.Expression_alarmif = _ce.Parse(ExpandOrgFormula_AlarmIf(pt));
             }
@@ -458,7 +458,7 @@ namespace HGS
                                         Functions.dtoNULL(pt.zl), Functions.dtoNULL(pt.zh),
                                         pt._mt = DateTime.Now,pt.eu, pt.pn, pt.Orgformula_main,pt.fm,
                                         pt.isCalc,pt.isAvalarm, pt.ed,pt.isboolvAlarm,pt.boolAlarminfo, pt.orgformula_hl,
-                                        pt.Orgformula_ll,pt.Alarmif,pt.boolAlarmif, Functions.dtoNULL(pt.Skip_pp),
+                                        pt.Orgformula_ll,pt.AlarmSwitchIf,pt.boolAlarmif, Functions.dtoNULL(pt.Skip_pp),
                                         ArraytoString(pt.Dtw_start_th),pt.Sound,ArraytoString(pt.Wd3s_th), pt.id));
                 sb.AppendLine(string.Format("delete  from formula_point where id = {0};", pt.id));
                 GetinsertsubSql(sb, pt);
@@ -477,7 +477,7 @@ namespace HGS
                                     pt.id, pt.nd, pt.pn, pt.ed, pt.eu, Functions.dtoNULL(pt.tv), Functions.dtoNULL(pt.bv), 
                                     Functions.dtoNULL(pt.ll), Functions.dtoNULL(pt.hl), Functions.dtoNULL(pt.zl),
                                     Functions.dtoNULL(pt.zh), pt.Id_sis,(int)pt.pointsrc, pt._mt = DateTime.Now, Auth.GetInst().LoginID, pt.Orgformula_main,
-                                    pt.fm,pt.isCalc,pt.isAvalarm,pt.isboolvAlarm,pt.boolAlarminfo, pt.orgformula_hl, pt.Orgformula_ll,pt.Alarmif,
+                                    pt.fm,pt.isCalc,pt.isAvalarm,pt.isboolvAlarm,pt.boolAlarminfo, pt.orgformula_hl, pt.Orgformula_ll,pt.AlarmSwitchIf,
                                     pt.boolAlarmif,Functions.dtoNULL(pt.Skip_pp), 
                                     ArraytoString(pt.Dtw_start_th),pt.Sound,ArraytoString(pt.Wd3s_th)));
                 GetinsertsubSql(sb, pt);

@@ -7,6 +7,7 @@ using Queues;
 namespace HGS
 {
     //滑动窗口取极值,可降采样
+    //设备起动时延时30min投入，防止误报，折中的方案。
     public class Dtw_queues
     {
         Deque<float> qdata = new Deque<float>();
@@ -18,11 +19,15 @@ namespace HGS
         //DequeSafe<int> qmin = new DequeSafe<int>();
         private int size = 100;//窗口size.
         private int downsamples = 1;
-        private int totalsampls = 1; 
+        private int totalsampls = 0;
+        private const int delay = 1800;//s
         int p = -1;
         //滤波器用,x(n)=a*x(n-1)+b*y(n+1)+(1-a-b)*y(n) a+b要小于1;
         float a = 0.8f, b = 0.1f, x = 0, y1 = 0, y2 = 0;
-        public Dtw_queues() { }
+        public Dtw_queues(int DownSamples) 
+        {
+            downsamples = DownSamples >= 1 ? DownSamples : 1;
+        }
         public int Size
         {
             get
@@ -40,14 +45,14 @@ namespace HGS
                 size = value;
             }
         }
-        public int DownSamples
+        private int DownSamples
         {
             get { return downsamples; }
             set { downsamples = value; }
         }
         public void add(float d,bool bDS)
         {
-            totalsampls++;
+            totalsampls = bDS ? totalsampls++ : totalsampls + downsamples;
             if (!bDS || (totalsampls % downsamples == 0))
             {
                 ///滤波，初始化时约需要120个数据
@@ -103,13 +108,13 @@ namespace HGS
         }
         public float[] Data()
         {
-            if (qdata.Count != size) return null;
+            if (totalsampls <= size * downsamples + delay) return null;
             return qdata.ToArray();
         }
         //返回极差
         public float DeltaP_P()
         {
-            if (qdata.Count != size) return 0;
+            if (totalsampls <= size * downsamples + delay) return 0;
             return Max() - Min();
         }
         public void Clear()

@@ -412,18 +412,18 @@ namespace HGS
             }
             get { return _boolAlarmif; }
         }
-        private bool _isboolvAlarm = false;
+        private bool _isboolAlarm = false;
         public bool isboolvAlarm
         {
             set
             {
-                if (_isboolvAlarm != value)
+                if (_isboolAlarm != value)
                 {
                     Data.inst().Update(this);
-                    _isboolvAlarm = value;
+                    _isboolAlarm = value;
                 }
             }
-            get { return _isboolvAlarm; }
+            get { return _isboolAlarm; }
         }
         private string _boolAlarminfo = "";//isbool 为真时的报警信息。
         public string boolAlarminfo
@@ -517,30 +517,30 @@ namespace HGS
         }
         ////---------------------报警公式，值为真时才允许报警。
         
-        private bool _Alarmifav = true;
-        public bool Alarmifav
+        private bool _AlarmSwitchOn = true;
+        public bool AlarmSwitchOn
         {
-            set { _Alarmifav = value; }
-            get { return _Alarmifav; }
+            set { _AlarmSwitchOn = value; }
+            get { return _AlarmSwitchOn; }
         }
         
-        private string _Alarmif = "";
-        public string Alarmif
+        private string _AlarmSwitchIf = "";
+        public string AlarmSwitchIf
         {
             set {
-                if (_Alarmif != value)
+                if (_AlarmSwitchIf != value)
                 {
                     Data.inst().Update(this);
-                    _Alarmif = value;
+                    _AlarmSwitchIf = value;
                 }
-                if (_Alarmif == null || _Alarmif.Length == 0)
+                if (_AlarmSwitchIf == null || _AlarmSwitchIf.Length == 0)
                 {
                     _Expression_alarmif = null;
                     _lsVartoPoint_alarmif = null;
                     _listSisCalcExpPointID_alarmif = null;
                 }
             }
-            get { return _Alarmif; }
+            get { return _AlarmSwitchIf; }
         }
         private Expression _Expression_alarmif = null;//已解析为表达式树,优化计算速度。
         public Expression Expression_alarmif
@@ -656,11 +656,11 @@ namespace HGS
             _isAvalarm = (bool)pgreader["isavalarm"];
             _isCalc = (bool)pgreader["iscalc"];
             _fm = (short)pgreader["fm"];
-            _isboolvAlarm = (bool)pgreader["isboolv"];
+            _isboolAlarm = (bool)pgreader["isboolv"];
             _boolAlarminfo = pgreader["boolalarminfo"].ToString();
             _Orgformula_hl = pgreader["orgformula_hl"].ToString();
             _Orgformula_ll = pgreader["orgformula_ll"].ToString();
-            _Alarmif = pgreader["alarmif"].ToString();
+            _AlarmSwitchIf = pgreader["alarmif"].ToString();
             _boolAlarmif = (bool)pgreader["boolalarmif"];
             _mt = (DateTime)pgreader["mt"];
             //_isAlarmskip = (bool)pgreader["isalarmskip"];
@@ -746,8 +746,7 @@ namespace HGS
                 _dtw_Queues_Array = new Dtw_queues[6];
                 for (int i = 0; i < _dtw_Queues_Array.Length; i++)
                 {
-                    _dtw_Queues_Array[i] = new Dtw_queues();
-                    _dtw_Queues_Array[i].DownSamples = (int)(9 * Math.Pow(2, i));
+                    _dtw_Queues_Array[i] = new Dtw_queues((int)(9 * Math.Pow(2, i)));
                 }
             }
             for (int i = 0; i < v.Length; i++)
@@ -765,13 +764,16 @@ namespace HGS
                     _dtw_Queues_Array = new Dtw_queues[6];
                     for (int i = 0; i < _dtw_Queues_Array.Length; i++)
                     {
-                        _dtw_Queues_Array[i] = new Dtw_queues();
-                        _dtw_Queues_Array[i].DownSamples = (int)(9 * Math.Pow(2, i));
+                        _dtw_Queues_Array[i] = new Dtw_queues((int)(9 * Math.Pow(2, i)));
                     }
                     //
                     Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
-                    dic_intQueues.Add(id, Data.inst().cd_Point[id]);
-                    SisConnect.InitPointDtwQueues(dic_intQueues);
+                    point pt;
+                    if (Data.inst().cd_Point.TryGetValue(id, out pt))
+                    {
+                        dic_intQueues.Add(id, Data.inst().cd_Point[id]);
+                        SisConnect.InitPointDtwQueues(dic_intQueues);
+                    }
                 }
             }
             else
@@ -811,7 +813,7 @@ namespace HGS
                 _wd3s_Queues_Array = new DetectorWave[6];
                 for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
                 {
-                    _wd3s_Queues_Array[i] = new DetectorWave((int)Math.Pow(2,i));
+                    _wd3s_Queues_Array[i] = new DetectorWave(2 * (int)Math.Pow(2,i));
                 }
             }
             for (int i = 0; i < v.Length; i++)
@@ -829,7 +831,7 @@ namespace HGS
                     _wd3s_Queues_Array = new DetectorWave[6];
                     for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
                     {
-                        _wd3s_Queues_Array[i] = new DetectorWave((int)Math.Pow(2, i));
+                        _wd3s_Queues_Array[i] = new DetectorWave(2 * (int)Math.Pow(2, i));
                     }
                     //
                     Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
@@ -955,7 +957,7 @@ namespace HGS
         {
             _TimeTick++;
             uint curAlarmBit = 0;
-            if (_Alarmifav && _isAvalarm)
+            if (_AlarmSwitchOn && _isAvalarm)
             {
                 curAlarmBit = (uint)1 << 7;
                 curAlarmBit |= (uint)63 << 10;
@@ -984,9 +986,9 @@ namespace HGS
                     }
                 }
             }
-            else if (_Alarmifav)
+            else if (_AlarmSwitchOn)
             {
-                if (_isboolvAlarm)
+                if (_isboolAlarm)
                 {
                     bool blv = Convert.ToBoolean(_av);
 
@@ -1041,7 +1043,7 @@ namespace HGS
                             if ((_id + _TimeTick) % prime[i] == 0)
                             {
                                 curAlarmBit &= ~((uint)1 << (i + 10)); ;
-                                if (Wd3s_Queues_Array[i].IsWave(Wd3s_th[i]))
+                                if (Wd3s_Queues_Array[i].IsWave(Wd3s_th[i]) && Wd3s_Queues_Array[i].harmonic_2rd_ok())
                                     curAlarmBit |= ((uint)1 << (i + 10));
                                 //
                                 uint lastBit = _lastAlarmBitInfo & ((uint)1 << i + 10);

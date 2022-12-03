@@ -62,7 +62,7 @@ namespace HGS
             }
             glacialList1.Items.AddRange(lsItmems.ToArray());
             onlyid.Add(CalcPoint.id);//排除自已。
-            textBoxFormula.Text = CalcPoint.Alarmif;
+            textBoxFormula.Text = CalcPoint.AlarmSwitchIf;
             textBoxmDiscription.Text = CalcPoint.ed;
             textBoxPN.Text = CalcPoint.pn;
             comboBox_eu.Text = CalcPoint.eu;
@@ -189,15 +189,15 @@ namespace HGS
             {
                 throw new Exception("计算点的的描述不能为空！");
             }*/
-            Point.Alarmif = textBoxFormula.Text;
+            Point.AlarmSwitchIf = textBoxFormula.Text;
             //
             bool orgv = true;
-            if (Point.Alarmif.Length > 0 )
-                orgv = Convert.ToBoolean(ce.Evaluate(Point.Alarmif)); //验证表达式的合法性
+            if (Point.AlarmSwitchIf.Length > 0 )
+                orgv = Convert.ToBoolean(ce.Evaluate(Point.AlarmSwitchIf)); //验证表达式的合法性
                                                                                            
             ce = Data.inst().ce;
             bool expv = true;
-            if(Point.Alarmif.Length > 0 )
+            if(Point.AlarmSwitchIf.Length > 0 )
                 expv = Convert.ToBoolean(ce.Evaluate(Data.inst().ExpandOrgFormula_AlarmIf(Point)));//验证表达式展开sis点的合法性。
             if (rsl)
                 MessageBox.Show(string.Format("原公式计算值＝{0}\n展开公式计算值＝{1}",orgv,expv), 
@@ -208,7 +208,7 @@ namespace HGS
             try
             {
                 Dovalidity(false);
-                CalcPoint.Alarmif = textBoxFormula.Text.Trim().Replace("\r\n","");
+                CalcPoint.AlarmSwitchIf = textBoxFormula.Text.Trim().Replace("\r\n","");
 
                 CalcPoint.lsVartoPoint_alarmif = new List<varlinktopoint>();
 

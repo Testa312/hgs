@@ -36,12 +36,12 @@ namespace HGS
         {
             if (pt.pointsrc == pointsrc.sis)
             {
-                item.SubItems["IsAlarm"].Text = pt.Alarmifav && (pt.isAvalarm || pt.isboolvAlarm) ? Pref.Inst().strOk : Pref.Inst().strNo;
+                item.SubItems["IsAlarm"].Text = pt.AlarmSwitchOn && (pt.isAvalarm || pt.isboolvAlarm) ? Pref.Inst().strOk : Pref.Inst().strNo;
                 if (Data.inst().hs_FormulaErrorPoint.Contains(pt)) item.SubItems["FError"].Text = Pref.Inst().strNo; 
             }
             else
             {
-                item.SubItems["IsAlarm"].Text = pt.Alarmifav && (pt.isAvalarm || pt.isboolvAlarm) ? Pref.Inst().strOk : Pref.Inst().strNo;
+                item.SubItems["IsAlarm"].Text = pt.AlarmSwitchOn && (pt.isAvalarm || pt.isboolvAlarm) ? Pref.Inst().strOk : Pref.Inst().strNo;
                 item.SubItems["IsCalc"].Text = pt.isCalc ? Pref.Inst().strOk : Pref.Inst().strNo;
             }
         }
@@ -349,7 +349,7 @@ namespace HGS
             textBoxLL.Enabled = Point.Orgformula_ll.Length == 0;
 
             buttonAlarmIf.ForeColor = Color.Black;
-            if (Point.Alarmif.Length > 0)
+            if (Point.AlarmSwitchIf.Length > 0)
             {
                 buttonAlarmIf.ForeColor = Color.Red;
             }
@@ -621,7 +621,7 @@ namespace HGS
 
                         Data.inst().hs_FormulaErrorPoint.Remove(CalcPoint);
 
-                        buttonAlarmIf.ForeColor = CalcPoint.Alarmif.Length > 0 ? Color.Red : Color.Black;
+                        buttonAlarmIf.ForeColor = CalcPoint.AlarmSwitchIf.Length > 0 ? Color.Red : Color.Black;
       
                         Save();
                     }
