@@ -184,7 +184,7 @@ namespace HGS
             glColumn6.ImageIndex = -1;
             glColumn6.Name = "m15s";
             glColumn6.NumericSort = true;
-            glColumn6.Text = "15m-ht";
+            glColumn6.Text = "15m-th";
             glColumn6.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn6.Width = 60;
             glColumn7.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;

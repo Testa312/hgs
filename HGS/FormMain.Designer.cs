@@ -38,21 +38,23 @@
             this.dTW计算次数ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.静音ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.帮助HToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.简要说明IToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.关于aToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tssL_error_nums = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.usetime = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel_startdate = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel_span = new System.Windows.Forms.ToolStripStatusLabel();
             this.timerCalc = new System.Windows.Forms.Timer(this.components);
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.打开OToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出XToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -62,7 +64,7 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
-            this.关于aToolStripMenuItem});
+            this.帮助HToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(988, 25);
@@ -86,49 +88,65 @@
             // 报警信息ToolStripMenuItem
             // 
             this.报警信息ToolStripMenuItem.Name = "报警信息ToolStripMenuItem";
-            this.报警信息ToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.报警信息ToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.报警信息ToolStripMenuItem.Text = "实时报警(&A)...";
             this.报警信息ToolStripMenuItem.Click += new System.EventHandler(this.报警信息ToolStripMenuItem_Click);
             // 
             // 报警记录ToolStripMenuItem
             // 
             this.报警记录ToolStripMenuItem.Name = "报警记录ToolStripMenuItem";
-            this.报警记录ToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.报警记录ToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.报警记录ToolStripMenuItem.Text = "报警历史(&H)...";
             this.报警记录ToolStripMenuItem.Click += new System.EventHandler(this.报警记录ToolStripMenuItem_Click);
             // 
             // form1ToolStripMenuItem
             // 
             this.form1ToolStripMenuItem.Name = "form1ToolStripMenuItem";
-            this.form1ToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.form1ToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.form1ToolStripMenuItem.Text = "点配置(&P)...";
             this.form1ToolStripMenuItem.Click += new System.EventHandler(this.点设置ToolStripMenuItem_Click);
             // 
             // dTW计算次数ToolStripMenuItem
             // 
             this.dTW计算次数ToolStripMenuItem.Name = "dTW计算次数ToolStripMenuItem";
-            this.dTW计算次数ToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            this.dTW计算次数ToolStripMenuItem.Text = "DTW计算浏览...";
+            this.dTW计算次数ToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.dTW计算次数ToolStripMenuItem.Text = "DTW计算浏览(&D)...";
             this.dTW计算次数ToolStripMenuItem.Click += new System.EventHandler(this.dTW计算次数ToolStripMenuItem_Click);
             // 
             // 静音ToolStripMenuItem
             // 
             this.静音ToolStripMenuItem.Name = "静音ToolStripMenuItem";
-            this.静音ToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            this.静音ToolStripMenuItem.Text = "静音";
+            this.静音ToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.静音ToolStripMenuItem.Text = "静音(&S)";
             this.静音ToolStripMenuItem.Click += new System.EventHandler(this.消音ToolStripMenuItem_Click);
             // 
             // 退出ToolStripMenuItem
             // 
             this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.退出ToolStripMenuItem.Text = "退出(&X)";
             this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
+            // 
+            // 帮助HToolStripMenuItem
+            // 
+            this.帮助HToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.简要说明IToolStripMenuItem,
+            this.关于aToolStripMenuItem});
+            this.帮助HToolStripMenuItem.Name = "帮助HToolStripMenuItem";
+            this.帮助HToolStripMenuItem.Size = new System.Drawing.Size(61, 21);
+            this.帮助HToolStripMenuItem.Text = "帮助(&H)";
+            // 
+            // 简要说明IToolStripMenuItem
+            // 
+            this.简要说明IToolStripMenuItem.Name = "简要说明IToolStripMenuItem";
+            this.简要说明IToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.简要说明IToolStripMenuItem.Text = "简要说明(&I)...";
+            this.简要说明IToolStripMenuItem.Click += new System.EventHandler(this.简要说明IToolStripMenuItem_Click);
             // 
             // 关于aToolStripMenuItem
             // 
             this.关于aToolStripMenuItem.Name = "关于aToolStripMenuItem";
-            this.关于aToolStripMenuItem.Size = new System.Drawing.Size(60, 21);
+            this.关于aToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.关于aToolStripMenuItem.Text = "关于(&A)";
             this.关于aToolStripMenuItem.Click += new System.EventHandler(this.关于aToolStripMenuItem_Click);
             // 
@@ -173,11 +191,23 @@
             this.usetime.Size = new System.Drawing.Size(25, 17);
             this.usetime.Text = "ms";
             // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(68, 17);
+            this.toolStripStatusLabel2.Text = "启动日期：";
+            // 
             // toolStripStatusLabel_startdate
             // 
             this.toolStripStatusLabel_startdate.Name = "toolStripStatusLabel_startdate";
             this.toolStripStatusLabel_startdate.Size = new System.Drawing.Size(68, 17);
             this.toolStripStatusLabel_startdate.Text = "启动日期：";
+            // 
+            // toolStripStatusLabel4
+            // 
+            this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
+            this.toolStripStatusLabel4.Size = new System.Drawing.Size(68, 17);
+            this.toolStripStatusLabel4.Text = "运行时间：";
             // 
             // toolStripStatusLabel_span
             // 
@@ -220,18 +250,6 @@
             this.退出XToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.退出XToolStripMenuItem.Text = "退出（&X）";
             this.退出XToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
-            // 
-            // toolStripStatusLabel2
-            // 
-            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(68, 17);
-            this.toolStripStatusLabel2.Text = "启动日期：";
-            // 
-            // toolStripStatusLabel4
-            // 
-            this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
-            this.toolStripStatusLabel4.Size = new System.Drawing.Size(68, 17);
-            this.toolStripStatusLabel4.Text = "运行时间：";
             // 
             // FormMain
             // 
@@ -277,11 +295,13 @@
         private System.Windows.Forms.ToolStripMenuItem 打开OToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dTW计算次数ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 静音ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 关于aToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel_startdate;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel_span;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel4;
+        private System.Windows.Forms.ToolStripMenuItem 帮助HToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 关于aToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 简要说明IToolStripMenuItem;
     }
 }
 

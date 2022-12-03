@@ -77,7 +77,7 @@ namespace HGS
             {
                 string sise = string.Format("Sis连接出错！:\rsisconn:isAlive{0}\r{1}", sisconn.isAlive(),
                     sisconn.ToString());
-                throw new Exception(sise, e);
+                FormBugReport.ShowBug(e,sise);
             }
             finally
             {
@@ -288,7 +288,7 @@ namespace HGS
             {
                 string sise = string.Format("Sis连接出错！:\rsisconn:isAlive{0}\r{1}", sisconn.isAlive(),
                     sisconn.ToString());
-                throw new Exception(sise, e);
+                FormBugReport.ShowBug(e,sise);
             }
             finally
             {
@@ -435,7 +435,7 @@ namespace HGS
             {
                 string sise = string.Format("Sis连接出错！:\rsisconn:isAlive{0}\r{1}", sisconn.isAlive(), 
                     sisconn.ToString());
-                throw new Exception(sise,ee);
+                FormBugReport.ShowBug(ee,sise);
 
             }
             finally

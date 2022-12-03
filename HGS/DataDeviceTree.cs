@@ -177,7 +177,7 @@ namespace HGS
                     ltn.Add(tn);
                 }
             }
-            catch (Exception e) { throw new Exception(string.Format("读入设备子节点时发生错误！"), e); }
+            catch (Exception e) { FormBugReport.ShowBug(e,"读入设备子节点时发生错误！"); }
             finally { pgconn.Close(); }
             return ltn;
         }
@@ -204,7 +204,7 @@ namespace HGS
                 //
                 tag.ParseFormula();
             }
-            catch (Exception e) { throw new Exception(string.Format("增加设备节点时发生错误！"), e); }
+            catch (Exception e) { FormBugReport.ShowBug(e,"增加设备节点时发生错误！"); }
             finally { pgconn.Close(); }
         }
         private static void GetinsertsubSql(StringBuilder sb, DeviceInfo di)
@@ -243,7 +243,10 @@ namespace HGS
                 DeviceInfo tag = (DeviceInfo)tn.Tag;
                 tag.ParseFormula();
             }
-            catch (Exception e) { throw new Exception(string.Format("更新设备节点时发生错误！"), e); }
+            catch (Exception e) 
+            { 
+                FormBugReport.ShowBug(e,"更新设备节点时发生错误！"); 
+            }
             finally { pgconn.Close(); }
         }
         public static void UpdateAllSubNodes(TreeNode tn)
@@ -266,7 +269,7 @@ namespace HGS
                 pgconn.Open();
                 cmd.ExecuteNonQuery();
             }
-            catch (Exception e) { throw new Exception(string.Format("更新所有子节点时发生错误！"), e); }
+            catch (Exception e) { FormBugReport.ShowBug(e, "更新设备节点时发生错误！"); }
             finally { pgconn.Close(); }
         }
        
@@ -279,7 +282,7 @@ namespace HGS
                 pgconn.Open();
                 cmd.ExecuteNonQuery();
             }
-            catch (Exception e) { throw new Exception(string.Format("更新设备节点时发生错误！"), e); }
+            catch (Exception e) { FormBugReport.ShowBug(e, "更新设备节点时发生错误！"); }
             finally { pgconn.Close(); }
         }
         public static void RemoveNode(TreeNode tn)
@@ -292,7 +295,7 @@ namespace HGS
                 pgconn.Open();
                 cmd.ExecuteNonQuery();
             }
-            catch (Exception e) { throw new Exception(string.Format("删除设备节点时发生错误！"), e); }
+            catch (Exception e) { FormBugReport.ShowBug(e, "删除设备节点时发生错误！"); }
             finally { pgconn.Close(); }
         }
     }

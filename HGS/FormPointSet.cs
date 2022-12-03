@@ -427,52 +427,59 @@ namespace HGS
         }
         private void toolStripButtonDelete_Click(object sender, EventArgs e)
         {
-            bool bfirst = false;
-            foreach(GLItem itemn in  glacialList1.SelectedItems)
+            try
             {
-                //itemtag it = (itemtag)itemn.Tag;
-                point pt = (point)itemn.Tag;
-                List<int> lspid = VartoPointTable.GetDeletePointIdList(pt.id);
-                if (lspid.Count > 0)
+                bool bfirst = false;
+                foreach (GLItem itemn in glacialList1.SelectedItems)
                 {
-                    StringBuilder sb = new StringBuilder();
-                    sb.AppendLine("被下列点引用，不能删除！");
-                    foreach (int pid in lspid)
+                    //itemtag it = (itemtag)itemn.Tag;
+                    point pt = (point)itemn.Tag;
+                    List<int> lspid = VartoPointTable.GetDeletePointIdList(pt.id);
+                    if (lspid.Count > 0)
                     {
-                        point ptx = Data.inst().cd_Point[pid];
-                        sb.AppendLine(string.Format("[id:{0}]-{1}", ptx.id, ptx.ed));
-                    }
-                    MessageBox.Show(sb.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    continue;
-                }
-                //
-                List<int> lsDeiveid = VartoDeviceTable.GetDeletePointIdList(pt.id);
-                if (lsDeiveid.Count > 0)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    sb.AppendLine("被下列点引用，不能删除！");
-                    foreach (int did in lsDeiveid)
-                    {
-                        DeviceInfo di;
-                        if (!Data_Device.dic_Device.TryGetValue(did, out di))
-                        {        
-                            di = Data_Device.GetDevice(did);;
+                        StringBuilder sb = new StringBuilder();
+                        sb.AppendLine("被下列点引用，不能删除！");
+                        foreach (int pid in lspid)
+                        {
+                            point ptx = Data.inst().cd_Point[pid];
+                            sb.AppendLine(string.Format("[id:{0}]-{1}", ptx.id, ptx.ed));
                         }
-                        sb.AppendLine(string.Format("[id:{0}]-{1}", di.id, di.Name));
+                        MessageBox.Show(sb.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        continue;
                     }
-                    MessageBox.Show(sb.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    continue;
+                    //
+                    List<int> lsDeiveid = VartoDeviceTable.GetDeletePointIdList(pt.id);
+                    if (lsDeiveid.Count > 0)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        sb.AppendLine("被下列点引用，不能删除！");
+                        foreach (int did in lsDeiveid)
+                        {
+                            DeviceInfo di;
+                            if (!Data_Device.dic_Device.TryGetValue(did, out di))
+                            {
+                                di = Data_Device.GetDevice(did); ;
+                            }
+                            sb.AppendLine(string.Format("[id:{0}]-{1}", di.id, di.Name));
+                        }
+                        MessageBox.Show(sb.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        continue;
+                    }
+                    if (bfirst || DialogResult.OK == MessageBox.Show(string.Format("是否删除点[{0}]-{1}？",
+                        itemn.SubItems["PN"].Text, itemn.SubItems["ED"].Text), "提示",
+                            MessageBoxButtons.OKCancel, MessageBoxIcon.Question))
+                    {
+                        Data.inst().Delete(Data.inst().cd_Point[pt.id]);
+                        glacialList1.Items.Remove(itemn);
+                        bfirst = true;
+                    }
                 }
-                if (bfirst || DialogResult.OK == MessageBox.Show(string.Format("是否删除点[{0}]-{1}？",
-                    itemn.SubItems["PN"].Text,itemn.SubItems["ED"].Text), "提示",
-                        MessageBoxButtons.OKCancel, MessageBoxIcon.Question))
-                {
-                    Data.inst().Delete(Data.inst().cd_Point[pt.id]);
-                    glacialList1.Items.Remove(itemn);
-                    bfirst = true;
-                }
+                Save();
             }
-            Save();
+            catch (Exception ee)
+            {
+                FormBugReport.ShowBug(ee);
+            }
         }
         private void checkBoxbool_Click(object sender, EventArgs e)
         {
@@ -721,7 +728,7 @@ namespace HGS
                 {
                     DeviceInfo tt = new DeviceInfo();
                     FormThDtwSet ftn = new FormThDtwSet(tt);
-                    ftn.Text = "增加节点";
+                    ftn.Text = "增加新节点";
                     if (ftn.ShowDialog() == DialogResult.OK)
                     {
                         TreeNode ntn = stn.Nodes.Add(tt.Name);
@@ -771,6 +778,7 @@ namespace HGS
                 if (tn != null && tn.Text !="全部")
                 {
                     FormThDtwSet ftn = new FormThDtwSet((DeviceInfo)tn.Tag);
+                    ftn.Text += string.Format("-{0}",tn.Text);
                     if (ftn.ShowDialog() == DialogResult.OK)
                     {
                         DataDeviceTree.UpdateNodetoDB(tn);

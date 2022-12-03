@@ -315,8 +315,15 @@ namespace HGS
                     }
                     else
                     {
-                        di = Data_Device.GetDevice(did);
-                        hsPoint = Functions.set_idtopoint(di.Sensors_set());                       
+                        try
+                        {
+                            di = Data_Device.GetDevice(did);
+                            hsPoint = Functions.set_idtopoint(di.Sensors_set());
+                        }
+                        catch (Exception e)
+                        {
+                            FormBugReport.ShowBug(e);
+                        }
                     }
                 }
             }

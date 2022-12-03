@@ -317,18 +317,21 @@ namespace HGS
         }
         private point Dtw_th_h(int step)
         {
-            foreach (int sid in hs_Sensorsid)
+            if (hs_Sensorsid != null && alarm_th_dis != null)
             {
-                point pt;
-                if (Data.inst().cd_Point.TryGetValue(sid, out pt))
+                foreach (int sid in hs_Sensorsid)
                 {
-                    if (pt.Dtw_Queues_Array != null)
+                    point pt;
+                    if (Data.inst().cd_Point.TryGetValue(sid, out pt))
                     {
-                        float p_p = pt.Dtw_Queues_Array[step].DeltaP_P();
-                        if (p_p > pt.Dtw_start_th[step])
+                        if (pt.Dtw_Queues_Array != null)
                         {
-                            pt.dtw_start_max[step] = p_p;
-                            return pt;
+                            float p_p = pt.Dtw_Queues_Array[step].DeltaP_P();
+                            if (p_p > pt.Dtw_start_th[step])
+                            {
+                                pt.dtw_start_max[step] = p_p;
+                                return pt;
+                            }
                         }
                     }
                 }
@@ -435,7 +438,7 @@ namespace HGS
                     //dic_Device.Add(di.id, di);                           
                 }
             }
-            catch (Exception e) { throw new Exception(string.Format("读入设备子节点时发生错误！"), e); }
+            catch (Exception e) { throw new Exception(string.Format("读入设备节点时发生错误！"), e); }
             finally { pgconn.Close(); }
         }
         public static DeviceInfo GetDevice(int DeviceId)

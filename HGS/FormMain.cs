@@ -384,5 +384,14 @@ namespace HGS
             FormAbout fa = new FormAbout();
             fa.ShowDialog();
         }
+
+        private void 简要说明IToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process myprocess = new Process();
+            ProcessStartInfo startInfo = new ProcessStartInfo("Readme.txt");
+            myprocess.StartInfo = startInfo;
+            myprocess.StartInfo.UseShellExecute = true;
+            myprocess.Start();
+        }
     }
 }
