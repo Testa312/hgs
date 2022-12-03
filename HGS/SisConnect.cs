@@ -183,6 +183,7 @@ namespace HGS
 
             return newpt;
         }
+        /*
         public static void InitPointDtwQueues(Dictionary<int,point> dic_pt)
         {
 
@@ -190,12 +191,7 @@ namespace HGS
                 throw new ArgumentException("初始化队列的点列表不能为空！");
             int[] ScanSpan = new int[6] { 18, 36, 72, 144, 288, 576 };//分钟,秒数为120的倍数
             HashSet<point> lsob = new HashSet<point>(dic_pt.Values.ToArray());
-            /*
-            foreach (point pt in dic_pt.Values)
-            {
-                lsob.Add(pt);
-            }
-            */
+
             DateTime end = GetSisSystemTime(siscon_keep).AddSeconds(-5);
             for (int i = 0; i < ScanSpan.Length; i++)
             {
@@ -214,24 +210,20 @@ namespace HGS
             }
 
         }
+        */
         public static void InitSensorsWaveQueues(Dictionary<int, point> dic_pt)
         {
             if (dic_pt == null)
                 throw new ArgumentException("初始化队列的点列表不能为空！");
-            int[] ScanSpan = new int[6] { 240, 480, 960, 1920, 3840,7680 };//秒数
+            const int num_q = 9;
             HashSet<point> lsob = new HashSet<point>(dic_pt.Values.ToArray());
-            /*
-            foreach (int id in dic_pt.Keys)
-            {
-                lsob.Add(id);
-            }
-            */
             DateTime end = GetSisSystemTime(siscon_keep).AddSeconds(-5);
-            for (int i = 0; i < ScanSpan.Length; i++)
+            for (int i = 0; i < num_q; i++)
             {
-                DateTime begin = end.AddSeconds(-ScanSpan[i]-64);
+                int span = 1 << i;
+                DateTime begin = end.AddSeconds(-span * 120);
                 //
-                Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep, lsob, begin, end, 130, ScanSpan[i] / 120);
+                Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep, lsob, begin, end, 130, span);
                 foreach (PointData pd in dic_pd.Values)
                 {
                     float[] x = new float[pd.data.Count];

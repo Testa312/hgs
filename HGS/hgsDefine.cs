@@ -49,6 +49,7 @@ namespace HGS
     }
     public class point
     {
+        const int _NUM_Q = 9;
         private int _id_sis = 0;//sis点id
         public int Id_sis
         {
@@ -594,8 +595,11 @@ namespace HGS
 
         private float? _av = null;//点值，实时或计算。
         //-----------------------------
-        //动态时间规整器扫描的阈值,6个数，为15m,30m,60m,120m,240m,480m时间段。
-        private float[] _dtw_start_th = null;
+        //起动跳变、波动和dtw检测阈值9个。
+        //对应的下采样间隔值(s)：  1,   2,    4,    8,    16,   32,   64,   128,   256。
+        //对应的跳变检测时间段为： 32s, 64s,  128s, 256s, 512s, 1024s,2048s,4096s, 8192s。
+        //对应的dtw检查时间段为：  96s, 192s  384s  768s  1536s 3072s 6144s 12288s 24576s      
+        private float[] _dtw_skip_th = null;
         //传感器的设备归属-不存数据库，运行时生成。
         private HashSet<int> _hs_Device = null;
         private Dictionary<int,string> _hsDevicePath = null;
@@ -611,15 +615,16 @@ namespace HGS
                 return sb.ToString();
             }
         }
-        private Dtw_queues[] _dtw_Queues_Array = null;
-        private float[] _dtw_start_max = new float[6];
-        public float[] dtw_start_max
+        /*private Dtw_queues[] _dtw_Queues_Array = null;
+        private float[] _dtw_skip_max = new float[_NUM_Q];
+        public float[] dtw_skip_max
         {
-            set { _dtw_start_max = value; }
-            get { return _dtw_start_max; }
+            set { _dtw_skip_max = value; }
+            get { return _dtw_skip_max; }
         }
+        */
         private DetectorWave[] _wd3s_Queues_Array = null;
-        private float[] _wd3s_th = null;//30s,60s,120s,240s,480s,960s 阈值。
+        private float[] _wd3s_th = null;//阈值。
         public point(int id, pointsrc ps)
         {
             _id = id;
@@ -672,7 +677,7 @@ namespace HGS
             object ob = pgreader["dtw_start_th"];
             if (ob != DBNull.Value)
             {
-                _dtw_start_th = (float[])ob;
+                _dtw_skip_th = (float[])ob;
             }
             ob = pgreader["wave_th"];
             if (ob != DBNull.Value)
@@ -694,6 +699,7 @@ namespace HGS
                 {
                     _DetectionSkip.add(_av ?? 0);
                 }
+                /*
                 if (_dtw_Queues_Array != null)
                 {
                     for (int i = 0; i < _dtw_Queues_Array.Length; i++)
@@ -701,7 +707,7 @@ namespace HGS
                         _dtw_Queues_Array[i].add(_av ?? 0, true);
                     }
                 }
-                //
+                */
                 if (_wd3s_Queues_Array != null)
                 {
                     for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
@@ -713,40 +719,42 @@ namespace HGS
                 minav = Math.Min(minav, av ?? float.MaxValue);
             }
         }
-        public float[] Dtw_start_th
+        /*
+        public float[] Dtw_skip_th
         {
-            get { return _dtw_start_th; }
+            get { return _dtw_skip_th; }
             set
             {
-                if (_dtw_start_th != value)
+                if (_dtw_skip_th != value)
                 {
                     Data.inst().Update(this);
-                    _dtw_start_th = value;
-                    if (_dtw_start_th != null)
+                    _dtw_skip_th = value;
+                    if (_dtw_skip_th != null)
                     {
-                        if (_dtw_start_th.Length != 6)
-                            throw new Exception("dtw阈值数必须为6个!");
+                        if (_dtw_skip_th.Length != 9)//??????????????????
+                            throw new Exception("dtw阈值数必须为9个!");
                     }
                     initDeviceQ();
                 }
             }
         }      
+        
         public Dtw_queues[] Dtw_Queues_Array
         {
             get { return _dtw_Queues_Array; }
         }
         public void initDeviceQ(int step, float[] v)
         {
-            if (step < 0 || step >= 6)
+            if (step < 0 || step >= _NUM_Q)
                 throw new Exception("设备没有采集这些数据！");
             if (v == null)
                 throw new Exception("数据不能为空！");
             if (_dtw_Queues_Array == null)
             {
-                _dtw_Queues_Array = new Dtw_queues[6];
+                _dtw_Queues_Array = new Dtw_queues[_NUM_Q];
                 for (int i = 0; i < _dtw_Queues_Array.Length; i++)
                 {
-                    _dtw_Queues_Array[i] = new Dtw_queues((int)(9 * Math.Pow(2, i)));
+                    _dtw_Queues_Array[i] = new Dtw_queues((int)(Math.Pow(2, i)));
                 }
             }
             for (int i = 0; i < v.Length; i++)
@@ -757,14 +765,14 @@ namespace HGS
         //初始化dtw队列数组
         private void initDeviceQ()
         {
-            if (_hs_Device != null && _dtw_start_th != null)
+            if (_hs_Device != null && _dtw_skip_th != null)
             {
                 if (_dtw_Queues_Array == null)
                 {
-                    _dtw_Queues_Array = new Dtw_queues[6];
+                    _dtw_Queues_Array = new Dtw_queues[_NUM_Q];
                     for (int i = 0; i < _dtw_Queues_Array.Length; i++)
                     {
-                        _dtw_Queues_Array[i] = new Dtw_queues((int)(9 * Math.Pow(2, i)));
+                        _dtw_Queues_Array[i] = new Dtw_queues((int)(Math.Pow(2, i)));
                     }
                     //
                     Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
@@ -779,6 +787,7 @@ namespace HGS
             else
                 _dtw_Queues_Array = null;
         }
+        */
         //--------------------
         public DetectorWave[] Wd3s_Queues_Array
         {
@@ -795,8 +804,8 @@ namespace HGS
                     _wd3s_th = value;
                     if (_wd3s_th != null)
                     {
-                        if (_wd3s_th.Length != 6)
-                            throw new Exception("dtw阈值数必须为6个!");
+                        if (_wd3s_th.Length != _NUM_Q)
+                            throw new Exception("阈值数量不对!");
                     }
                     initWave3sQ();
                 }
@@ -804,16 +813,16 @@ namespace HGS
         }
         public void initWave3sQ(int step, float[] v)
         {
-            if (step < 0 || step >= 6)
+            if (step < 0 || step >= _NUM_Q)
                 throw new Exception("设备没有采集这些数据！");
             if (v == null)
                 throw new Exception("数据不能为空！");
             if (_wd3s_Queues_Array == null)
             {
-                _wd3s_Queues_Array = new DetectorWave[6];
+                _wd3s_Queues_Array = new DetectorWave[_NUM_Q];
                 for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
                 {
-                    _wd3s_Queues_Array[i] = new DetectorWave(2 * (int)Math.Pow(2,i));
+                    _wd3s_Queues_Array[i] = new DetectorWave((int)Math.Pow(2,i));
                 }
             }
             for (int i = 0; i < v.Length; i++)
@@ -828,10 +837,10 @@ namespace HGS
             {
                 if (_wd3s_Queues_Array == null)
                 {
-                    _wd3s_Queues_Array = new DetectorWave[6];
+                    _wd3s_Queues_Array = new DetectorWave[_NUM_Q];
                     for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
                     {
-                        _wd3s_Queues_Array[i] = new DetectorWave(2 * (int)Math.Pow(2, i));
+                        _wd3s_Queues_Array[i] = new DetectorWave((int)Math.Pow(2, i));
                     }
                     //
                     Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
@@ -866,8 +875,8 @@ namespace HGS
             {
                 _hs_Device = null;
                 _hsDevicePath = null;
-                _dtw_Queues_Array = null;
-                Dtw_start_th = null;
+               // _dtw_Queues_Array = null;
+                //Dtw_skip_th = null;
                 Data.inst().SavetoPG();
             }
         }
@@ -970,13 +979,14 @@ namespace HGS
 
                 if (_DetectionSkip != null)
                     _DetectionSkip.Clear();
+                /*
                 if (_dtw_Queues_Array != null)
                 {
                     for (int i = 0; i < _dtw_Queues_Array.Length; i++)
                     {
                         _dtw_Queues_Array[i].Clear();
                     }
-                }
+                }*/
                 //
                 if (_wd3s_Queues_Array != null)
                 {

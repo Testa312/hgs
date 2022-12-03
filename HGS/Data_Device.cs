@@ -30,7 +30,7 @@ namespace HGS
         private int TimeTick;
         private uint lastAlarmBit = 0, curAlarmBit = 0;
         public static CalcEngine.CalcEngine _ce = null;
-        private bool AlarmSwitchOff = false;
+        //private bool AlarmSwitchOff = false;
         public float[] Alarm_th_dis
         {
             get { return alarm_th_dis; }
@@ -59,25 +59,6 @@ namespace HGS
         {
             set
             {
-                /*
-                if ((Orgformula_If == null || Orgformula_If.Length == 0) &&
-                    (value != null && value.Length > 0))
-                {
-                    if (hs_Sensorsid != null)
-                    {
-                        Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
-                        foreach (int id in hs_Sensorsid)
-                        {                        
-                            point pt;
-                            if (Data.inst().cd_Point.TryGetValue(id, out pt))
-                            {
-                                dic_intQueues.Add(id, Data.inst().cd_Point[id]);                               
-                            }
-                        }
-                        SisConnect.InitPointDtwQueues(dic_intQueues);
-                    }
-                }
-                */
                 if (value == null || value.Length == 0)
                 {
                     
@@ -347,9 +328,9 @@ namespace HGS
                         if (pt.Dtw_Queues_Array != null)
                         {
                             float p_p = pt.Dtw_Queues_Array[step].DeltaP_P();
-                            if (p_p > pt.Dtw_start_th[step])
+                            if (p_p > pt.Dtw_skip_th[step])
                             {
-                                pt.dtw_start_max[step] = p_p;
+                                pt.dtw_skip_max[step] = p_p;
                                 return pt;
                             }
                         }
@@ -375,8 +356,8 @@ namespace HGS
         public void AlarmCalc()
         {
             curAlarmBit = 0;
-            AlarmSwitchOff = _Expression_If != null && !Convert.ToBoolean(_ce.Evaluate(_Expression_If));
-            if (AlarmSwitchOff)
+            //AlarmSwitchOff
+            if (_Expression_If != null && !Convert.ToBoolean(_ce.Evaluate(_Expression_If)))
             {              
                 for (int i = 0; i < prime.Length; i++)
                 {

@@ -92,9 +92,9 @@ namespace HGS
                     item.Tag = pt.id;
                     for (int i = 0; i < ScanSpan.Length; i++)
                     {
-                        if (pt.Dtw_start_th != null && pt.Dtw_start_th[i] <= 1e30)
-                            item.SubItems[string.Format("m{0}", ScanSpan[i])].Text = pt.Dtw_start_th == null ?
-                                    "" : Math.Round(pt.Dtw_start_th[i], 3).ToString();
+                        if (pt.Dtw_skip_th != null && pt.Dtw_skip_th[i] <= 1e30)
+                            item.SubItems[string.Format("m{0}", ScanSpan[i])].Text = pt.Dtw_skip_th == null ?
+                                    "" : Math.Round(pt.Dtw_skip_th[i], 3).ToString();
                     }
                     lsItem.Add(item);
                 }
@@ -443,7 +443,7 @@ namespace HGS
                         }
 
                         point pt = Data.inst().cd_Point[(int)item.Tag];
-                        pt.Dtw_start_th = flag ? th_dtw : null;
+                        pt.Dtw_skip_th = flag ? th_dtw : null;
                     }
 
                 }

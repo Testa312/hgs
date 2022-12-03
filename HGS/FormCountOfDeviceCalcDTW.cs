@@ -89,9 +89,9 @@ namespace HGS
                     }
                     for (int i = 0; i < ScanSpan.Length; i++)
                     {
-                        item.SubItems[string.Format("m{0}", ScanSpan[i])].Text = Math.Round(sensor.dtw_start_max[i], 3).ToString();
-                        if (sensor.Dtw_start_th != null)
-                            item.SubItems[string.Format("m{0}s", ScanSpan[i])].Text = Math.Round(sensor.Dtw_start_th[i], 3).ToString();
+                        item.SubItems[string.Format("m{0}", ScanSpan[i])].Text = Math.Round(sensor.dtw_skip_max[i], 3).ToString();
+                        if (sensor.Dtw_skip_th != null)
+                            item.SubItems[string.Format("m{0}s", ScanSpan[i])].Text = Math.Round(sensor.Dtw_skip_th[i], 3).ToString();
                     }
                 }
                 glacialList_sensor.Items.AddRange(lsitem.ToArray());

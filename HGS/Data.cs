@@ -361,7 +361,7 @@ namespace HGS
                 Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
                 foreach (point v in hsAllPoint)
                 {
-                    if (v.Dtw_start_th != null)
+                    if (v.Dtw_skip_th != null)
                     {
                         if (v.Device_set().Count > 0)
                             dic_intQueues.Add(v.id, v);
@@ -459,7 +459,7 @@ namespace HGS
                                         pt._mt = DateTime.Now,pt.eu, pt.pn, pt.Orgformula_main,pt.fm,
                                         pt.isCalc,pt.isAvalarm, pt.ed,pt.isboolvAlarm,pt.boolAlarminfo, pt.orgformula_hl,
                                         pt.Orgformula_ll,pt.AlarmSwitchIf,pt.boolAlarmif, Functions.dtoNULL(pt.Skip_pp),
-                                        ArraytoString(pt.Dtw_start_th),pt.Sound,ArraytoString(pt.Wd3s_th), pt.id));
+                                        ArraytoString(pt.Dtw_skip_th),pt.Sound,ArraytoString(pt.Wd3s_th), pt.id));
                 sb.AppendLine(string.Format("delete  from formula_point where id = {0};", pt.id));
                 GetinsertsubSql(sb, pt);
             }
@@ -479,7 +479,7 @@ namespace HGS
                                     Functions.dtoNULL(pt.zh), pt.Id_sis,(int)pt.pointsrc, pt._mt = DateTime.Now, Auth.GetInst().LoginID, pt.Orgformula_main,
                                     pt.fm,pt.isCalc,pt.isAvalarm,pt.isboolvAlarm,pt.boolAlarminfo, pt.orgformula_hl, pt.Orgformula_ll,pt.AlarmSwitchIf,
                                     pt.boolAlarmif,Functions.dtoNULL(pt.Skip_pp), 
-                                    ArraytoString(pt.Dtw_start_th),pt.Sound,ArraytoString(pt.Wd3s_th)));
+                                    ArraytoString(pt.Dtw_skip_th),pt.Sound,ArraytoString(pt.Wd3s_th)));
                 GetinsertsubSql(sb, pt);
                // pt.id = ptid;
                // ptid++;
