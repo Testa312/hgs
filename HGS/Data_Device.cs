@@ -30,6 +30,8 @@ namespace HGS
         private int TimeTick;
         private uint lastAlarmBit = 0, curAlarmBit = 0;
         public static CalcEngine.CalcEngine _ce = null;
+
+        bool lastAlarmIf = true;
         public float[] Alarm_th_dis
         {
             get { return alarm_th_dis; }
@@ -355,7 +357,8 @@ namespace HGS
         public void AlarmCalc()
         {
             curAlarmBit = 0;
-            if (_Expression_If != null && !Convert.ToBoolean(_ce.Evaluate(_Expression_If)))
+            bool curAlarmIf = _Expression_If != null && Convert.ToBoolean(_ce.Evaluate(_Expression_If));
+            if (lastAlarmIf && !curAlarmIf)
             {              
                 for (int i = 0; i < prime.Length; i++)
                 {
@@ -367,33 +370,59 @@ namespace HGS
                     }                   
                 }
                 lastAlarmBit = curAlarmBit;
+                //清理缓存并延时报警。
+                if (hs_Sensorsid != null && alarm_th_dis != null)
+                {
+                    foreach (int sid in hs_Sensorsid)
+                    {
+                        point pt;
+                        if (Data.inst().cd_Point.TryGetValue(sid, out pt))
+                        {
+                            if (pt.Dtw_Queues_Array != null)
+                            {
+                                for (int i = 0; i < 6; i++)
+                                {
+                                    pt.Dtw_Queues_Array[i].Clear();
+                                }
+                            }
+                        }
+                    }
+                }
+                lastAlarmIf = curAlarmIf;
                 return;
             }
-
-            TimeTick++;        
-            for (int i = 0; i < prime.Length; i++)
+            if (!lastAlarmIf && curAlarmIf)
             {
-                if (TimeTick % prime[i] == 0)
+                //初始化
+            }
+            if (curAlarmIf)
+            {
+                TimeTick++;
+                for (int i = 0; i < prime.Length; i++)
                 {
-                    //curAlarmBit &= ~((uint)1 << i); ;
-                    point pt = Dtw_th_h(i);
-                    if (pt != null)
-                        AlarmCalc_dtw(pt, i);
+                    if (TimeTick % prime[i] == 0)
+                    {
+                        //curAlarmBit &= ~((uint)1 << i); ;
+                        point pt = Dtw_th_h(i);
+                        if (pt != null)
+                            AlarmCalc_dtw(pt, i);
 
-                    uint lastBit = lastAlarmBit & ((uint)1 << i);
-                    uint curBit = curAlarmBit & ((uint)1 << i);
-                    if (lastBit > curBit)
-                    {
-                        AlarmSet.GetInst().AlarmStop(CreateAlarmSid(i));
+                        uint lastBit = lastAlarmBit & ((uint)1 << i);
+                        uint curBit = curAlarmBit & ((uint)1 << i);
+                        if (lastBit > curBit)
+                        {
+                            AlarmSet.GetInst().AlarmStop(CreateAlarmSid(i));
+                        }
+                        else if (lastBit < curBit)
+                        {
+                            AlarmSet.GetInst().AddAlarming(CreateAlarmInfo(i));
+                        }
+                        lastAlarmBit &= ~((uint)1 << i);
+                        lastAlarmBit |= curBit;
                     }
-                    else if (lastBit < curBit)
-                    {
-                        AlarmSet.GetInst().AddAlarming(CreateAlarmInfo(i));
-                    }
-                    lastAlarmBit &= ~((uint)1 << i);
-                    lastAlarmBit |= curBit;
-                }             
-            }            
+                }
+            }
+            lastAlarmBit = curAlarmBit;
         }
     }
     static class Data_Device

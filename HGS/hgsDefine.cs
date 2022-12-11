@@ -746,8 +746,8 @@ namespace HGS
                 _dtw_Queues_Array = new Dtw_queues[6];
                 for (int i = 0; i < _dtw_Queues_Array.Length; i++)
                 {
-                    _dtw_Queues_Array[i] = new Dtw_queues();
-                    _dtw_Queues_Array[i].DownSamples = (int)(9 * Math.Pow(2, i));
+                    _dtw_Queues_Array[i] = new Dtw_queues(9*(1<<i));
+                    //_dtw_Queues_Array[i].DownSamples = (int)(9 * Math.Pow(2, i));
                 }
             }
             for (int i = 0; i < v.Length; i++)
@@ -765,8 +765,8 @@ namespace HGS
                     _dtw_Queues_Array = new Dtw_queues[6];
                     for (int i = 0; i < _dtw_Queues_Array.Length; i++)
                     {
-                        _dtw_Queues_Array[i] = new Dtw_queues();
-                        _dtw_Queues_Array[i].DownSamples = (int)(9 * Math.Pow(2, i));
+                        _dtw_Queues_Array[i] = new Dtw_queues(9*(1 << i));
+                        //_dtw_Queues_Array[i].DownSamples = (int)(9 * Math.Pow(2, i));
                     }
                     //
                     Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
@@ -811,7 +811,7 @@ namespace HGS
                 _wd3s_Queues_Array = new DetectorWave[6];
                 for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
                 {
-                    _wd3s_Queues_Array[i] = new DetectorWave((int)Math.Pow(2,i));
+                    _wd3s_Queues_Array[i] = new DetectorWave((1 << i));
                 }
             }
             for (int i = 0; i < v.Length; i++)
@@ -829,7 +829,7 @@ namespace HGS
                     _wd3s_Queues_Array = new DetectorWave[6];
                     for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
                     {
-                        _wd3s_Queues_Array[i] = new DetectorWave((int)Math.Pow(2, i));
+                        _wd3s_Queues_Array[i] = new DetectorWave((1 << i));
                     }
                     //
                     Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
@@ -913,7 +913,8 @@ namespace HGS
             {"Wave360s", "6分钟内波动报警"     },//12
             {"Wave720s", "12分钟内波动报警"    },//13
             {"Wave1440s", "24分钟内波动报警"   },//14
-            {"Wave2880s", "48分钟内波动报警"   }};//15
+            {"Wave2880s", "48分钟内波动报警"   },
+            {"Wave5760s", "90分钟内波动报警"   }};//15
         //---------------------
         private void SetAlarmBit_H(ref uint alarmbit,int bitnum,double? th)
         {
@@ -1041,7 +1042,7 @@ namespace HGS
                             if ((_id + _TimeTick) % prime[i] == 0)
                             {
                                 curAlarmBit &= ~((uint)1 << (i + 10)); ;
-                                if (Wd3s_Queues_Array[i].IsWave(Wd3s_th[i]))
+                                if (Wd3s_Queues_Array[i].IsWaved(Wd3s_th[i]) && Wd3s_Queues_Array[i].harmonic_2rd_ok())
                                     curAlarmBit |= ((uint)1 << (i + 10));
                                 //
                                 uint lastBit = _lastAlarmBitInfo & ((uint)1 << i + 10);

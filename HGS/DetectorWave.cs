@@ -13,20 +13,20 @@ namespace HGS
         DequeSafe<int> qmax = new DequeSafe<int>();
         DequeSafe<int> qmin = new DequeSafe<int>();
         private int size = 32;//窗口size.
-        private int downsamples = 1;
-        private int totalsampls = 0;
+        //private int downsamples = 1;
+        //private int totalsampls = 0;
 
         int p = -1;
-        public SlideWindow(int DownSample ,int size)
+        public SlideWindow(int size)
         {
-            downsamples = DownSample < 1 ? 1 : DownSample;
+            //downsamples = DownSample < 1 ? 1 : DownSample;
             this.size = size;
         }
-        public float add(float d, bool bDS)
+        public float add(float d)
         {
             float first = 0;
-            totalsampls++;
-            if (!bDS || (totalsampls % downsamples == 0))
+            //totalsampls++;
+            //if (!bDS || (totalsampls % downsamples == 0))
             {
                 p++;               
                 int im;
@@ -100,29 +100,37 @@ namespace HGS
     public class DetectorWave
     {
 
-        int size = 0;
-        int p = -1;
+        int size = 32;
+        int p = 0;
         SlideWindow step1 , step2, step3;
         private FFTWReal fft = new FFTWReal();
         int downsample = 1;
+        int totalsampls = 0;
         //滤波器用,x(n)=a*x(n-1)+b*y(n+1)+(1-a-b)*y(n) a+b要小于1;
         float a = 0.7f, b = 0.15f, x = 0, y1 = 0, y2 = 0;
-        public DetectorWave(int DownSample,int size = 30)
+        public DetectorWave(int DownSample,int size = 32)
         {
             this.size = size;
-            downsample = DownSample;
-            step1 = new SlideWindow(DownSample,size);
-            step2 = new SlideWindow(DownSample,size);
-            step3 = new SlideWindow(DownSample,size);
+            downsample = DownSample < 1 ? 1 : DownSample; 
+            step1 = new SlideWindow(size);
+            step2 = new SlideWindow(size);
+            step3 = new SlideWindow(size);
+            //
+            Random rnd = new Random();
+            totalsampls = rnd.Next(0, downsample);//平均分配CPU负荷。
         }
         public void add(float d, bool bDS)
         {
-            p++;
-            ///滤波，初始化时约需要120个数据
-            y1 = y2;
-            y2 = d;
-            d = x = a * x + b * y1 + (1 - a - b) * y2;
-            step3.add(step2.add(step1.add(d, bDS), bDS), bDS);
+            totalsampls++;
+            if (!bDS || (totalsampls % downsample == 0))
+            {
+                p++;
+                ///滤波，初始化时约需要增加20个数据
+                y1 = y2;
+                y2 = d;
+                d = x = a * x + b * y1 + (1 - a - b) * y2;
+                step3.add(step2.add(step1.add(d)));
+            }
         }
         public float[] Data()
         {
@@ -140,7 +148,7 @@ namespace HGS
             p = -1;
         }
         //th 为阈值
-        public bool IsWave(float th)
+        public bool IsWaved(float th)
         {
             if(p <=  3*size + 20) 
                 return false;
@@ -163,7 +171,7 @@ namespace HGS
         public bool harmonic_2rd_ok()
         {
             int imax = -1;
-            if (p > 3 * size * downsample)// + delay)
+            if (p > 3 * size +20)// + delay)
             {
                 float[] step1data = step1.Data();
                 if (step1data != null)

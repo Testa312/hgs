@@ -17,12 +17,21 @@ namespace HGS
         //DequeSafe<int> qmax = new DequeSafe<int>();
         //DequeSafe<int> qmin = new DequeSafe<int>();
         private int size = 100;//窗口size.
-        private int downsamples = 1;
-        private int totalsampls = 1; 
+        private int downsample = 1;
+        private int totalsampls = 1;
+        const int delay = 3600;//s
         int p = -1;
         //滤波器用,x(n)=a*x(n-1)+b*y(n+1)+(1-a-b)*y(n) a+b要小于1;
         float a = 0.8f, b = 0.1f, x = 0, y1 = 0, y2 = 0;
-        public Dtw_queues() { }
+        public Dtw_queues(int DownSample) 
+        {
+            //this.size = size;
+            downsample = DownSample < 1 ? 1 : DownSample;
+            //
+            Random rnd = new Random();
+            totalsampls = rnd.Next(0, downsample);//平均分配CPU负荷。
+        }
+        /*
         public int Size
         {
             get
@@ -40,15 +49,17 @@ namespace HGS
                 size = value;
             }
         }
+        
         public int DownSamples
         {
             get { return downsamples; }
             set { downsamples = value; }
         }
+        */
         public void add(float d,bool bDS)
         {
             totalsampls++;
-            if (!bDS || (totalsampls % downsamples == 0))
+            if (!bDS || (totalsampls % downsample == 0))
             {
                 ///滤波，初始化时约需要120个数据
                 y1 = y2;
@@ -56,7 +67,7 @@ namespace HGS
                 d = x = a * x + b * y1 + (1 - a - b) * y2;
                 
                 p++;
-                int im = 0;
+                int im;
                 qdata.Push(d);
                 if (qdata.Count > size)
                 {
@@ -107,9 +118,12 @@ namespace HGS
             return qdata.ToArray();
         }
         //返回极差
+        //设备启动后，延迟一定时间
         public float DeltaP_P()
         {
-            if (qdata.Count != size) return 0;
+            //if (qdata.Count != size) 
+            if (p >= size + delay / downsample + 20)
+                return 0;
             return Max() - Min();
         }
         public void Clear()
