@@ -22,7 +22,7 @@ namespace HGS
             return instance;
         }
         //PostgresSQL-----------
-        static string pghost = "192.168.1.109";
+        static string pghost = "192.168.1.102";
         string pgconnString = string.Format("Host={0};Username=postgres;Password=hcm1997;Database=hgs", pghost);
         //SIS------------------
         string sishost = "10.122.18.31";

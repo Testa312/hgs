@@ -12,7 +12,7 @@ namespace HGS
         DequeSafe<float> qdata = new DequeSafe<float>();
         DequeSafe<int> qmax = new DequeSafe<int>();
         DequeSafe<int> qmin = new DequeSafe<int>();
-        private int size = 30;//窗口size.
+        private int size = 32;//窗口size.
         private int downsamples = 1;
         private int totalsampls = 0;
 
@@ -103,11 +103,14 @@ namespace HGS
         int size = 0;
         int p = -1;
         SlideWindow step1 , step2, step3;
+        private FFTWReal fft = new FFTWReal();
+        int downsample = 1;
         //滤波器用,x(n)=a*x(n-1)+b*y(n+1)+(1-a-b)*y(n) a+b要小于1;
         float a = 0.7f, b = 0.15f, x = 0, y1 = 0, y2 = 0;
         public DetectorWave(int DownSample,int size = 30)
         {
             this.size = size;
+            downsample = DownSample;
             step1 = new SlideWindow(DownSample,size);
             step2 = new SlideWindow(DownSample,size);
             step3 = new SlideWindow(DownSample,size);
@@ -155,6 +158,35 @@ namespace HGS
             if (p <= 3 * size + 20)
                 return 0;
             return Math.Max(Math.Max(step1.DeltaP_P(), step2.DeltaP_P()), step3.DeltaP_P());
+        }
+        //有2次谐波的的最大值
+        public bool harmonic_2rd_ok()
+        {
+            int imax = -1;
+            if (p > 3 * size * downsample)// + delay)
+            {
+                float[] step1data = step1.Data();
+                if (step1data != null)
+                {
+#if DEBUG
+                    if (step1data.Length != 32) throw new Exception("FFT数据量不对！");
+#endif
+                    double[] data = new double[step1data.Length];
+                    step1data.CopyTo(data, 0);
+                    double[] Spectrum = fft.Spectrum(data, true);
+                    double dmax = double.MinValue;
+                    for (int i = 1; i < Spectrum.Length; i++)
+                    {
+                        if (dmax - Spectrum[i] < -1e-6)
+                        {
+                            dmax = Spectrum[i];
+                            imax = i;
+                        }
+                        if (imax >= 2) break;
+                    }
+                }
+            }
+            return imax >= 2;
         }
 
     }
