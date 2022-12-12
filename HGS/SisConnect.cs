@@ -183,25 +183,77 @@ namespace HGS
 
             return newpt;
         }
+        //返回值，设备ID，对应时段内一直满足报警备件
+        private static HashSet<int>  GetDeiveAlarmStat(OPAPI.Connect sisconn, DateTime begin,DateTime end,int count,int span)
+        {
+            List<object> siskeys = new List<object>();
+            CalcEngine.CalcEngine ce = new CalcEngine.CalcEngine();
+            HashSet<int> hash_rsl = new HashSet<int>();
+            foreach (DeviceInfo di in Data_Device.dic_Device.Values)
+            {
+                siskeys.Clear();
+
+                if (di._listSisCalaExpPointID_If != null)
+                {
+                    foreach (point sispt in di._listSisCalaExpPointID_If)
+                    {
+                        siskeys.Add(Convert.ToInt64(sispt.Id_sis));
+                    }
+                    //
+                    Dictionary<int, PointData> data = GetsisData(sisconn, siskeys.ToArray(), begin, end, count, span);
+                    int c = 0;
+                    if (data.Keys.Count >= 1)
+                    {
+                        PointData pt = data[Convert.ToInt32(siskeys[0])];
+                        c = pt.data.Count;
+                    }
+                    //
+                    bool rsl = true;
+                    for (int i = 0; i < c; i++)
+                    {
+                        foreach (KeyValuePair<int, PointData> kvp in data)
+                        {
+                            ce.Variables["S" + Data.inst().dic_SisIdtoPoint[kvp.Key].id.ToString()] = kvp.Value.data[i].Value;
+                        }
+                        if (di.SisPointFormula_if.Length > 0 &&
+                            !Convert.ToBoolean(ce.Evaluate(di.SisPointFormula_if)))
+                        {
+                            rsl = false;
+                            break;
+                        }
+                    }
+                    if (rsl) hash_rsl.Add(di.id);
+                }
+
+            }
+            return hash_rsl;
+        }
         public static void InitPointDtwQueues(Dictionary<int,point> dic_pt)
         {
 
             if (dic_pt == null)
                 throw new ArgumentException("初始化队列的点列表不能为空！");
-            int[] ScanSpan = new int[6] { 18, 36, 72, 144, 288, 576 };//分钟,秒数为120的倍数
+            int[] ScanSpan = new int[6] { 18, 36, 72, 144, 288, 576 };
             HashSet<point> lsob = new HashSet<point>(dic_pt.Values.ToArray());
-            /*
-            foreach (point pt in dic_pt.Values)
-            {
-                lsob.Add(pt);
-            }
-            */
+            HashSet<point> lsrunob = new HashSet<point>(); 
             DateTime end = GetSisSystemTime(siscon_keep).AddSeconds(-5);
             for (int i = 0; i < ScanSpan.Length; i++)
             {
                 DateTime begin = end.AddMinutes(-ScanSpan[i]);
                 //
-                Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep,lsob, begin, end, 120, ScanSpan[i] / 2);
+                HashSet<int> rsl = GetDeiveAlarmStat(siscon_keep, begin, end, 120, ScanSpan[i] / 2);
+                //
+                lsrunob.Clear();
+                foreach (point pt in lsob)
+                {
+                    foreach (int did in pt.Device_set())
+                    {
+                        if (rsl.Contains(did))
+                            lsrunob.Add(pt);
+                    }
+                }
+               //
+               Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep, lsrunob, begin, end, 120, ScanSpan[i] / 2);
                 foreach (PointData pd in dic_pd.Values)
                 {
                     float[] x = new float[pd.data.Count];
@@ -219,7 +271,7 @@ namespace HGS
 
             if (dic_pt == null)
                 throw new ArgumentException("初始化队列的点列表不能为空！");
-            int[] ScanSpan = new int[6] { 120, 240, 480, 960, 1920, 3840 };//秒数
+            int[] ScanSpan = new int[7] { 120, 240, 480, 960, 1920, 3840,6960 };//秒数
             HashSet<point> lsob = new HashSet<point>(dic_pt.Values.ToArray());
             /*
             foreach (int id in dic_pt.Keys)

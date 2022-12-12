@@ -22,7 +22,7 @@ namespace HGS
         OPAPI.Connect sisconn_temp = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
         Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
 
-        readonly int[] step = new int[] { 30, 60, 120, 240, 480, 960 };
+        readonly int[] step = new int[] { 30, 60, 120, 240, 480, 960, 1920 };
         const double MULTI = 1.1;
         //------------
         Dictionary<int, PointData> dic_pd = null;
@@ -32,6 +32,7 @@ namespace HGS
         Dictionary<int, PointData> dic_pd_stat_240s = null;
         Dictionary<int, PointData> dic_pd_stat_480s = null;
         Dictionary<int, PointData> dic_pd_stat_960s = null;
+        Dictionary<int, PointData> dic_pd_stat_1920s = null;
         //---------------
         public FormThWaveSet(HashSet<point> hsPoint, DateTime begin, DateTime end, bool bAdmin = false )
         {
@@ -379,6 +380,8 @@ namespace HGS
                     dateTimePicker1.Value, dateTimePicker2.Value, 480);
                 dic_pd_stat_960s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
                     dateTimePicker1.Value, dateTimePicker2.Value, 960);
+                dic_pd_stat_1920s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
+                   dateTimePicker1.Value, dateTimePicker2.Value, 1920);
 
                 List<GLItem> lsitem = new List<GLItem>();
                 glacialList_new.Items.Clear();
@@ -416,6 +419,10 @@ namespace HGS
                         if (dic_pd_stat_960s.TryGetValue(pd.ID, out pd_stat))
                         {
                             itm.SubItems["pp960s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
+                        }
+                        if (dic_pd_stat_1920s.TryGetValue(pd.ID, out pd_stat))
+                        {
+                            itm.SubItems["pp1920s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
                         }
                     }
                     lsitem.Add(itm);

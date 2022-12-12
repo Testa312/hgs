@@ -48,6 +48,7 @@
             GlacialComponents.Controls.GLColumn glColumn16 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn17 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn18 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn19 = new GlacialComponents.Controls.GLColumn();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -72,13 +73,13 @@
             this.glacialList_org = new GlacialComponents.Controls.GlacialList();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.glacialList_new = new GlacialComponents.Controls.GlacialList();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.从现阈值复制ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.plotView1 = new OxyPlot.WindowsForms.PlotView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button_del = new System.Windows.Forms.Button();
             this.button_cancell = new System.Windows.Forms.Button();
             this.button_ok = new System.Windows.Forms.Button();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.从现阈值复制ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -93,8 +94,8 @@
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -381,11 +382,19 @@
             glColumn9.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn9.CheckBoxes = false;
             glColumn9.ImageIndex = -1;
-            glColumn9.Name = "EU";
+            glColumn9.Name = "pp1920s";
             glColumn9.NumericSort = false;
-            glColumn9.Text = "单位";
+            glColumn9.Text = "1920s";
             glColumn9.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             glColumn9.Width = 80;
+            glColumn10.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn10.CheckBoxes = false;
+            glColumn10.ImageIndex = -1;
+            glColumn10.Name = "EU";
+            glColumn10.NumericSort = false;
+            glColumn10.Text = "单位";
+            glColumn10.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn10.Width = 80;
             this.glacialList_org.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
             glColumn1,
             glColumn2,
@@ -395,7 +404,8 @@
             glColumn6,
             glColumn7,
             glColumn8,
-            glColumn9});
+            glColumn9,
+            glColumn10});
             this.glacialList_org.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
             this.glacialList_org.Dock = System.Windows.Forms.DockStyle.Fill;
             this.glacialList_org.FullRowSelect = true;
@@ -447,80 +457,79 @@
             this.glacialList_new.AutoHeight = true;
             this.glacialList_new.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.glacialList_new.BackgroundStretchToFit = true;
-            glColumn10.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
-            glColumn10.CheckBoxes = false;
-            glColumn10.ImageIndex = -1;
-            glColumn10.Name = "PN";
-            glColumn10.NumericSort = false;
-            glColumn10.Text = "点名";
-            glColumn10.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn10.Width = 200;
             glColumn11.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn11.CheckBoxes = false;
             glColumn11.ImageIndex = -1;
-            glColumn11.Name = "ED";
+            glColumn11.Name = "PN";
             glColumn11.NumericSort = false;
-            glColumn11.Text = "描述";
+            glColumn11.Text = "点名";
             glColumn11.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn11.Width = 300;
-            glColumn12.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn11.Width = 200;
+            glColumn12.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn12.CheckBoxes = false;
             glColumn12.ImageIndex = -1;
-            glColumn12.Name = "pp30s";
-            glColumn12.NumericSort = true;
-            glColumn12.Text = "30spp";
-            glColumn12.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
-            glColumn12.Width = 80;
+            glColumn12.Name = "ED";
+            glColumn12.NumericSort = false;
+            glColumn12.Text = "描述";
+            glColumn12.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn12.Width = 300;
             glColumn13.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
             glColumn13.CheckBoxes = false;
             glColumn13.ImageIndex = -1;
-            glColumn13.Name = "pp60s";
+            glColumn13.Name = "pp30s";
             glColumn13.NumericSort = true;
-            glColumn13.Text = "60spp";
+            glColumn13.Text = "30spp";
             glColumn13.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn13.Width = 80;
             glColumn14.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
             glColumn14.CheckBoxes = false;
             glColumn14.ImageIndex = -1;
-            glColumn14.Name = "pp120s";
+            glColumn14.Name = "pp60s";
             glColumn14.NumericSort = true;
-            glColumn14.Text = "120spp";
+            glColumn14.Text = "60spp";
             glColumn14.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn14.Width = 80;
             glColumn15.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
             glColumn15.CheckBoxes = false;
             glColumn15.ImageIndex = -1;
-            glColumn15.Name = "pp240s";
+            glColumn15.Name = "pp120s";
             glColumn15.NumericSort = true;
-            glColumn15.Text = "240spp";
+            glColumn15.Text = "120spp";
             glColumn15.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn15.Width = 80;
             glColumn16.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
             glColumn16.CheckBoxes = false;
             glColumn16.ImageIndex = -1;
-            glColumn16.Name = "pp480s";
+            glColumn16.Name = "pp240s";
             glColumn16.NumericSort = true;
-            glColumn16.Text = "480spp";
+            glColumn16.Text = "240spp";
             glColumn16.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn16.Width = 80;
             glColumn17.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
             glColumn17.CheckBoxes = false;
             glColumn17.ImageIndex = -1;
-            glColumn17.Name = "pp960s";
+            glColumn17.Name = "pp480s";
             glColumn17.NumericSort = true;
-            glColumn17.Text = "960spp";
+            glColumn17.Text = "480spp";
             glColumn17.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn17.Width = 80;
-            glColumn18.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn18.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
             glColumn18.CheckBoxes = false;
             glColumn18.ImageIndex = -1;
-            glColumn18.Name = "EU";
-            glColumn18.NumericSort = false;
-            glColumn18.Text = "单位";
-            glColumn18.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn18.Name = "pp960s";
+            glColumn18.NumericSort = true;
+            glColumn18.Text = "960spp";
+            glColumn18.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn18.Width = 80;
+            glColumn19.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn19.CheckBoxes = false;
+            glColumn19.ImageIndex = -1;
+            glColumn19.Name = "EU";
+            glColumn19.NumericSort = false;
+            glColumn19.Text = "单位";
+            glColumn19.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn19.Width = 80;
             this.glacialList_new.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
-            glColumn10,
             glColumn11,
             glColumn12,
             glColumn13,
@@ -528,7 +537,8 @@
             glColumn15,
             glColumn16,
             glColumn17,
-            glColumn18});
+            glColumn18,
+            glColumn19});
             this.glacialList_new.ContextMenuStrip = this.contextMenuStrip1;
             this.glacialList_new.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
             this.glacialList_new.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -560,6 +570,20 @@
             this.glacialList_new.SuperFlatHeaderColor = System.Drawing.Color.White;
             this.glacialList_new.TabIndex = 0;
             this.glacialList_new.Text = "glacialList1";
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.从现阈值复制ToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(149, 26);
+            // 
+            // 从现阈值复制ToolStripMenuItem
+            // 
+            this.从现阈值复制ToolStripMenuItem.Name = "从现阈值复制ToolStripMenuItem";
+            this.从现阈值复制ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.从现阈值复制ToolStripMenuItem.Text = "从现阈值复制";
+            this.从现阈值复制ToolStripMenuItem.Click += new System.EventHandler(this.从现阈值复制ToolStripMenuItem_Click);
             // 
             // plotView1
             // 
@@ -616,20 +640,6 @@
             this.button_ok.UseVisualStyleBackColor = true;
             this.button_ok.Click += new System.EventHandler(this.button_ok_Click);
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.从现阈值复制ToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
-            // 
-            // 从现阈值复制ToolStripMenuItem
-            // 
-            this.从现阈值复制ToolStripMenuItem.Name = "从现阈值复制ToolStripMenuItem";
-            this.从现阈值复制ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.从现阈值复制ToolStripMenuItem.Text = "从现阈值复制";
-            this.从现阈值复制ToolStripMenuItem.Click += new System.EventHandler(this.从现阈值复制ToolStripMenuItem_Click);
-            // 
             // FormThWaveSet
             // 
             this.AcceptButton = this.button_ok;
@@ -664,8 +674,8 @@
             this.tabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

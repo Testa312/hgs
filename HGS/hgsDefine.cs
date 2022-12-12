@@ -619,7 +619,7 @@ namespace HGS
             get { return _dtw_start_max; }
         }
         private DetectorWave[] _wd3s_Queues_Array = null;
-        private float[] _wd3s_th = null;//30s,60s,120s,240s,480s,960s 阈值。
+        private float[] _wd3s_th = null;//32s,64s,128s,256s,512s,1024s,2048s 阈值。
         public point(int id, pointsrc ps)
         {
             _id = id;
@@ -793,8 +793,8 @@ namespace HGS
                     _wd3s_th = value;
                     if (_wd3s_th != null)
                     {
-                        if (_wd3s_th.Length != 6)
-                            throw new Exception("dtw阈值数必须为6个!");
+                        if (_wd3s_th.Length != 7)
+                            throw new Exception("波动阈值数必须为7个!");
                     }
                     initWave3sQ();
                 }
@@ -802,13 +802,13 @@ namespace HGS
         }
         public void initWave3sQ(int step, float[] v)
         {
-            if (step < 0 || step >= 6)
+            if (step < 0 || step >= 7)
                 throw new Exception("设备没有采集这些数据！");
             if (v == null)
                 throw new Exception("数据不能为空！");
             if (_wd3s_Queues_Array == null)
             {
-                _wd3s_Queues_Array = new DetectorWave[6];
+                _wd3s_Queues_Array = new DetectorWave[7];
                 for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
                 {
                     _wd3s_Queues_Array[i] = new DetectorWave((1 << i));
@@ -826,7 +826,7 @@ namespace HGS
             {
                 if (_wd3s_Queues_Array == null)
                 {
-                    _wd3s_Queues_Array = new DetectorWave[6];
+                    _wd3s_Queues_Array = new DetectorWave[7];
                     for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
                     {
                         _wd3s_Queues_Array[i] = new DetectorWave((1 << i));
@@ -913,8 +913,8 @@ namespace HGS
             {"Wave360s", "6分钟内波动报警"     },//12
             {"Wave720s", "12分钟内波动报警"    },//13
             {"Wave1440s", "24分钟内波动报警"   },//14
-            {"Wave2880s", "48分钟内波动报警"   },
-            {"Wave5760s", "90分钟内波动报警"   }};//15
+            {"Wave2880s", "48分钟内波动报警"   },//15
+            {"Wave5760s", "90分钟内波动报警"   }};//16
         //---------------------
         private void SetAlarmBit_H(ref uint alarmbit,int bitnum,double? th)
         {
@@ -951,7 +951,7 @@ namespace HGS
                 alarmbit &= ~(uint)1 << bitnum;
         }
         //素数11, 23, 43, 83, 167, 317
-        static int[] prime = { 11, 23, 43, 83, 167, 317 };
+        static int[] prime = { 11, 23, 43, 83, 167, 317, 641 };
         public void AlarmCalc()
         {
             _TimeTick++;
@@ -1066,7 +1066,7 @@ namespace HGS
                     //--------------
             }
             //
-            for (int a = 0; a <= 15; a++)
+            for (int a = 0; a <= 16; a++)
             {
                 uint lastBit = _lastAlarmBitInfo & ((uint)1 << a);
                 uint curBit = curAlarmBit & ((uint)1 << a);

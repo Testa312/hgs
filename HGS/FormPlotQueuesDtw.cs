@@ -59,7 +59,7 @@ namespace HGS
             {
                 var lineSeries = new LineSeries
                 {
-                    Title = string.Format("{0}m", (int)Math.Pow(2,i++) * 15),
+                    Title = string.Format("{0}m", (1<<i) * 15),
                     //DataFieldX = "Date",
                     //DataFieldY = "Value",
                     //ItemsSource = dq.Data(),

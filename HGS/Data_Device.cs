@@ -50,6 +50,7 @@ namespace HGS
                 }
             }
         }
+        public string SisPointFormula_if = "";
         //解析次序：
         //1、从数据库中取得变量－点对应表。
         //2、得到sis点的列表，用于坏点检查。
@@ -82,7 +83,7 @@ namespace HGS
         }
         //
         //计算子点id用于进行计算点状态计算。
-        private List<point> _listSisCalaExpPointID_If = null;//参与公式计算的sis点列表。;
+        public List<point> _listSisCalaExpPointID_If = null;//参与公式计算的sis点列表。;
         //
         public HashSet<int> Sensors_set()
         {
@@ -154,7 +155,8 @@ namespace HGS
             {
                 _lsVartoPoint_If = VartoDeviceTable.Point_Var_List(this);
                 _listSisCalaExpPointID_If = ExpandOrgPointToSisPoint();
-                _Expression_If = _ce.Parse(ExpandOrgFormula());
+                SisPointFormula_if = ExpandOrgFormula();
+                _Expression_If = _ce.Parse(SisPointFormula_if);
             }
         }
         //------------------------------------
@@ -391,10 +393,11 @@ namespace HGS
                 lastAlarmIf = curAlarmIf;
                 return;
             }
+            /*
             if (!lastAlarmIf && curAlarmIf)
             {
                 //初始化
-            }
+            }*/
             if (curAlarmIf)
             {
                 TimeTick++;

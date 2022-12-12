@@ -55,18 +55,18 @@ namespace HGS
                 Key = "yaxis_dv",
             });
             int i = 0;
-            foreach (DetectorWave dw in Point.Wd3s_Queues_Array)
+            foreach (DetectorWave wd in Point.Wd3s_Queues_Array)
             {
                 var lineSeries = new LineSeries
                 {
-                    Title = string.Format("{0}s", (int)Math.Pow(2,i++) * 90),
+                    Title = string.Format("{0}s", (1<<i) * 96),
                     //DataFieldX = "Date",
                     //DataFieldY = "Value",
                     //ItemsSource = dq.Data(),
                     TrackerFormatString = "{0}\r{2}\r{4:0.00}",
                 };
                 
-                var data = dw.Data();
+                var data = wd.Data();
                 for (int m = 0; m < data.Length; m++)
                 {
                     lineSeries.Points.Add(new DataPoint(m,data[m]));
