@@ -768,10 +768,6 @@ namespace HGS
                         _dtw_Queues_Array[i] = new Dtw_queues(9*(1 << i));
                         //_dtw_Queues_Array[i].DownSamples = (int)(9 * Math.Pow(2, i));
                     }
-                    //
-                    Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
-                    dic_intQueues.Add(id, Data.inst().cd_Point[id]);
-                    SisConnect.InitPointDtwQueues(dic_intQueues);
                 }
             }
             else

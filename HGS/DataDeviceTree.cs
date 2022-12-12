@@ -203,6 +203,7 @@ namespace HGS
                 cmd.ExecuteNonQuery();
                 //
                 tag.ParseFormula();
+                tag.initSensorsQ();
             }
             catch (Exception e) { FormBugReport.ShowBug(e,"增加设备节点时发生错误！"); }
             finally { pgconn.Close(); }
@@ -242,6 +243,7 @@ namespace HGS
                 //
                 DeviceInfo tag = (DeviceInfo)tn.Tag;
                 tag.ParseFormula();
+                tag.initSensorsQ();
             }
             catch (Exception e) 
             { 

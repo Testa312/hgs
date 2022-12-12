@@ -159,6 +159,25 @@ namespace HGS
                 _Expression_If = _ce.Parse(SisPointFormula_if);
             }
         }
+        public bool FormulaEva()
+        {
+            bool rsl = true;
+            if (_Expression_If != null)
+                rsl = Convert.ToBoolean(_Expression_If.Evaluate());
+            return rsl;
+        }
+        public void initSensorsQ()
+        {
+            if (Orgformula_If != null && Orgformula_If.Length >0 && alarm_th_dis != null)
+            {
+                foreach (int did in Sensors_set())
+                {
+                    Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
+                    dic_intQueues.Add(did, Data.inst().cd_Point[id]);
+                    SisConnect.InitPointDtwQueues(dic_intQueues);
+                }
+            }
+        }
         //------------------------------------
         //------------------------------------------------------------
         static HashSet<int> xloopvar = new HashSet<int>();
