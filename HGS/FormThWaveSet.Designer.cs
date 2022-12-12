@@ -49,6 +49,7 @@
             GlacialComponents.Controls.GLColumn glColumn17 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn18 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn19 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn20 = new GlacialComponents.Controls.GLColumn();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -104,7 +105,7 @@
             this.文件ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1040, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(1172, 25);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -130,7 +131,7 @@
             this.toolStripButton_FFirst});
             this.toolStrip1.Location = new System.Drawing.Point(0, 25);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1040, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1172, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -231,7 +232,7 @@
             this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 521);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1040, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1172, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -262,7 +263,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.panel1);
-            this.splitContainer2.Size = new System.Drawing.Size(1040, 471);
+            this.splitContainer2.Size = new System.Drawing.Size(1172, 471);
             this.splitContainer2.SplitterDistance = 397;
             this.splitContainer2.TabIndex = 4;
             // 
@@ -280,7 +281,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.plotView1);
-            this.splitContainer1.Size = new System.Drawing.Size(1040, 397);
+            this.splitContainer1.Size = new System.Drawing.Size(1172, 397);
             this.splitContainer1.SplitterDistance = 100;
             this.splitContainer1.TabIndex = 3;
             // 
@@ -292,7 +293,7 @@
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1040, 100);
+            this.tabControl.Size = new System.Drawing.Size(1172, 100);
             this.tabControl.TabIndex = 1;
             // 
             // tabPage1
@@ -301,7 +302,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1032, 74);
+            this.tabPage1.Size = new System.Drawing.Size(1164, 74);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "现阈值";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -385,7 +386,7 @@
             glColumn9.Name = "pp1920s";
             glColumn9.NumericSort = false;
             glColumn9.Text = "1920s";
-            glColumn9.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn9.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn9.Width = 80;
             glColumn10.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn10.CheckBoxes = false;
@@ -431,7 +432,7 @@
             this.glacialList_org.SelectionColor = System.Drawing.Color.DarkBlue;
             this.glacialList_org.ShowBorder = true;
             this.glacialList_org.ShowFocusRect = false;
-            this.glacialList_org.Size = new System.Drawing.Size(1026, 68);
+            this.glacialList_org.Size = new System.Drawing.Size(1158, 68);
             this.glacialList_org.SortType = GlacialComponents.Controls.SortTypes.InsertionSort;
             this.glacialList_org.SuperFlatHeaderColor = System.Drawing.Color.White;
             this.glacialList_org.TabIndex = 0;
@@ -443,7 +444,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1032, 74);
+            this.tabPage2.Size = new System.Drawing.Size(1164, 74);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "新阈值";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -521,14 +522,22 @@
             glColumn18.Text = "960spp";
             glColumn18.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn18.Width = 80;
-            glColumn19.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn19.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
             glColumn19.CheckBoxes = false;
             glColumn19.ImageIndex = -1;
-            glColumn19.Name = "EU";
-            glColumn19.NumericSort = false;
-            glColumn19.Text = "单位";
-            glColumn19.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn19.Name = "pp1920s";
+            glColumn19.NumericSort = true;
+            glColumn19.Text = "1920spp";
+            glColumn19.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn19.Width = 80;
+            glColumn20.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn20.CheckBoxes = false;
+            glColumn20.ImageIndex = -1;
+            glColumn20.Name = "EU";
+            glColumn20.NumericSort = false;
+            glColumn20.Text = "单位";
+            glColumn20.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn20.Width = 80;
             this.glacialList_new.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
             glColumn11,
             glColumn12,
@@ -538,7 +547,8 @@
             glColumn16,
             glColumn17,
             glColumn18,
-            glColumn19});
+            glColumn19,
+            glColumn20});
             this.glacialList_new.ContextMenuStrip = this.contextMenuStrip1;
             this.glacialList_new.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
             this.glacialList_new.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -565,7 +575,7 @@
             this.glacialList_new.SelectionColor = System.Drawing.Color.DarkBlue;
             this.glacialList_new.ShowBorder = true;
             this.glacialList_new.ShowFocusRect = false;
-            this.glacialList_new.Size = new System.Drawing.Size(1026, 68);
+            this.glacialList_new.Size = new System.Drawing.Size(1158, 68);
             this.glacialList_new.SortType = GlacialComponents.Controls.SortTypes.InsertionSort;
             this.glacialList_new.SuperFlatHeaderColor = System.Drawing.Color.White;
             this.glacialList_new.TabIndex = 0;
@@ -591,7 +601,7 @@
             this.plotView1.Location = new System.Drawing.Point(0, 0);
             this.plotView1.Name = "plotView1";
             this.plotView1.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotView1.Size = new System.Drawing.Size(1040, 293);
+            this.plotView1.Size = new System.Drawing.Size(1172, 293);
             this.plotView1.TabIndex = 0;
             this.plotView1.Text = "plotView1";
             this.plotView1.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
@@ -606,7 +616,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1040, 70);
+            this.panel1.Size = new System.Drawing.Size(1172, 70);
             this.panel1.TabIndex = 0;
             // 
             // button_del
@@ -646,7 +656,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button_cancell;
-            this.ClientSize = new System.Drawing.Size(1040, 543);
+            this.ClientSize = new System.Drawing.Size(1172, 543);
             this.Controls.Add(this.splitContainer2);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);

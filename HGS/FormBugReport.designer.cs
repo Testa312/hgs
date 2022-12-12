@@ -128,7 +128,7 @@
             this.easyMail1.MailSubject = "HGS";
             this.easyMail1.MailTo = "fdhaorp@xbppower.com";
             this.easyMail1.SendAsync = true;
-            this.easyMail1.SMTPPassword = "";
+            this.easyMail1.SMTPPassword = "hcm1997";
             this.easyMail1.SMTPPort = 25;
             this.easyMail1.SMTPServer = "10.122.18.3";
             this.easyMail1.SMTPSSL = false;

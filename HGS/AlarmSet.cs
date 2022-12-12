@@ -121,7 +121,10 @@ namespace HGS
                 }
 
             }
-            catch (Exception e) { throw new Exception(string.Format("保存报警信息时发生错误！"), e); }
+            catch (Exception e)
+            {
+                throw new Exception(string.Format("保存报警信息时发生错误！"), e); 
+            }
         }
         //有线程安全问题
         //如果信号只发报警，不发报警消失，将溢出，数据库中将没有消失时间的记录.

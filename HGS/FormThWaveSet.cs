@@ -106,7 +106,7 @@ namespace HGS
                         for (int i = 0; i < pt.Wd3s_th.Length; i++)
                         {
                             if (pt.Wd3s_th != null && pt.Wd3s_th[i] <= 1e30)
-                                itm.SubItems[string.Format("pp{0}s", (int)(Math.Pow(2, i) * 30))].Text =
+                                itm.SubItems[string.Format("pp{0}s", (1<<i) * 30)].Text =
                                     Math.Round(pt.Wd3s_th[i], 3).ToString();
                         }
                     }
@@ -351,7 +351,7 @@ namespace HGS
                     {
                         for (int i = 0; i < pt.Wd3s_th.Length; i++)
                         {
-                            itm.SubItems[string.Format("pp{0}s", (int)(Math.Pow(2, i) * 30))].Text =
+                            itm.SubItems[string.Format("pp{0}s", (1<<i) * 30)].Text =
                                 Math.Round(pt.Wd3s_th[i], 3).ToString();
                         }
                     }
@@ -369,19 +369,19 @@ namespace HGS
             try
             {
                 dic_pd_stat_30s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
-                    dateTimePicker1.Value, dateTimePicker2.Value, 30);
+                    dateTimePicker1.Value, dateTimePicker2.Value, 32);
                 dic_pd_stat_60s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
-                    dateTimePicker1.Value, dateTimePicker2.Value, 60);
+                    dateTimePicker1.Value, dateTimePicker2.Value, 64);
                 dic_pd_stat_120s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
-                    dateTimePicker1.Value, dateTimePicker2.Value, 120);
+                    dateTimePicker1.Value, dateTimePicker2.Value, 128);
                 dic_pd_stat_240s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
-                    dateTimePicker1.Value, dateTimePicker2.Value, 240);
+                    dateTimePicker1.Value, dateTimePicker2.Value, 256);
                 dic_pd_stat_480s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
-                    dateTimePicker1.Value, dateTimePicker2.Value, 480);
+                    dateTimePicker1.Value, dateTimePicker2.Value, 512);
                 dic_pd_stat_960s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
-                    dateTimePicker1.Value, dateTimePicker2.Value, 960);
+                    dateTimePicker1.Value, dateTimePicker2.Value, 1024);
                 dic_pd_stat_1920s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
-                   dateTimePicker1.Value, dateTimePicker2.Value, 1920);
+                    dateTimePicker1.Value, dateTimePicker2.Value, 2048);
 
                 List<GLItem> lsitem = new List<GLItem>();
                 glacialList_new.Items.Clear();

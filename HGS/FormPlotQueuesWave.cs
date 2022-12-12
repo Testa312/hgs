@@ -34,7 +34,7 @@ namespace HGS
             double maxdv = double.MinValue;
             double mindv = double.MaxValue;
 
-            foreach (double dv in Point.Wd3s_Queues_Array[5].Data())
+            foreach (double dv in Point.Wd3s_Queues_Array[6].Data())
             {
                 maxdv = Math.Max(maxdv, dv);
                 mindv = Math.Min(mindv, dv);
@@ -59,7 +59,7 @@ namespace HGS
             {
                 var lineSeries = new LineSeries
                 {
-                    Title = string.Format("{0}s", (1<<i) * 96),
+                    Title = string.Format("{0}s", (1<<i++) * 96),
                     //DataFieldX = "Date",
                     //DataFieldY = "Value",
                     //ItemsSource = dq.Data(),

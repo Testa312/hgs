@@ -65,7 +65,8 @@ namespace HGS
 
         private void btnDetailsInfo_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("异常详细信息：" + _bugInfo.Message + "\r\n跟踪：" + _bugInfo.StackTrace);
+            //MessageBox.Show("异常详细信息：" + _bugInfo.Message + "\r\n跟踪：" + _bugInfo.StackTrace);
+            MessageBox.Show("异常详细信息：" + _bugInfo + "\r\n跟踪：" + _bugInfo.StackTrace);
         }
         private string GetHostinfo()
         {

@@ -170,12 +170,14 @@ namespace HGS
         {
             if (Orgformula_If != null && Orgformula_If.Length >0 && alarm_th_dis != null)
             {
+                Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
                 foreach (int did in Sensors_set())
                 {
-                    Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
-                    dic_intQueues.Add(did, Data.inst().cd_Point[id]);
-                    SisConnect.InitPointDtwQueues(dic_intQueues);
+                    point pt;
+                    if (Data.inst().cd_Point.TryGetValue(did, out pt))
+                        dic_intQueues.Add(did, pt);                   
                 }
+                SisConnect.InitPointDtwQueues(dic_intQueues);
             }
         }
         //------------------------------------
@@ -326,7 +328,7 @@ namespace HGS
                                 if (cost > alarm_th_dis[Step])
                                 {
                                     curAlarmBit |= (uint)1 << Step;
-                                    if (!double.IsInfinity(cost))
+                                    if (cost < float.MaxValue)
                                         alarm_th_dis_max[Step] = (float)Math.Round(Math.Max(cost, alarm_th_dis_max[Step]),3);
                                     return;
                                 }

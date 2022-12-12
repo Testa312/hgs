@@ -250,6 +250,10 @@ namespace HGS
                     {
                         if (rsl.Contains(did))
                             lsrunob.Add(pt);
+                        else
+                        {
+                            pt.initDeviceQ();
+                        }
                     }
                 }
                //
@@ -271,7 +275,7 @@ namespace HGS
 
             if (dic_pt == null)
                 throw new ArgumentException("初始化队列的点列表不能为空！");
-            int[] ScanSpan = new int[7] { 120, 240, 480, 960, 1920, 3840,6960 };//秒数
+            int[] ScanSpan = new int[7] { 120, 240, 480, 960, 1920, 3840,7680 };//秒数
             HashSet<point> lsob = new HashSet<point>(dic_pt.Values.ToArray());
             /*
             foreach (int id in dic_pt.Keys)

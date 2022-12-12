@@ -756,7 +756,7 @@ namespace HGS
             }
         }
         //初始化dtw队列数组
-        private void initDeviceQ()
+        public void initDeviceQ()
         {
             if (_hs_Device != null && _dtw_start_th != null)
             {
