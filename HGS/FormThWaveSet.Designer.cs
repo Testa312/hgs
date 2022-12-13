@@ -355,7 +355,7 @@
             glColumn5.NumericSort = true;
             glColumn5.Text = "120spp";
             glColumn5.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
-            glColumn5.Width = 60;
+            glColumn5.Width = 80;
             glColumn6.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn6.CheckBoxes = false;
             glColumn6.ImageIndex = -1;

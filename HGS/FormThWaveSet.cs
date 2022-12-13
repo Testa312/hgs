@@ -346,13 +346,13 @@ namespace HGS
                     itm.SubItems["PN"].Text = pt.pn;
                     itm.SubItems["ED"].Text = pt.ed;
                     itm.SubItems["EU"].Text = pt.eu;
-                    itm.Tag = pt.id;
+                    itm.Tag = pt;
                     if (pt.Wd3s_th != null)
                     {
                         for (int i = 0; i < pt.Wd3s_th.Length; i++)
                         {
-                            itm.SubItems[string.Format("pp{0}s", (1<<i) * 30)].Text =
-                                Math.Round(pt.Wd3s_th[i], 3).ToString();
+                            itm.SubItems[string.Format("pp{0}s", (1 << i) * 30)].Text = "";
+                                //Math.Round(pt.Wd3s_th[i], 3).ToString();
                         }
                     }
 

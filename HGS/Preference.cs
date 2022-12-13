@@ -29,7 +29,8 @@ namespace HGS
         int sisport = 8200;
         string sisuser = "sis";
         string sispassword = "openplant";
-
+        //多线程用
+        public object root = new object();
         //计算点节点名--------------------
         string calcpointnodeName = "CeCalc";
         //--------------------

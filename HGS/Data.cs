@@ -492,54 +492,57 @@ namespace HGS
             point flagpt = null;
             try
             {
-                if (sb.Length < 10) return;
-                var cmd = new NpgsqlCommand(sb.ToString(), pgconn);
-                pgconn.Open();
-                cmd.ExecuteNonQuery();
-                VartoPointTable.Refresh(true);
-                foreach (point pt in hs_NewPoint)
+                lock (Pref.Inst().root)
                 {
-                    flagpt = pt;
-                    cd_Point[pt.id] = pt;
-                    hs_allpoint.Add(pt);
-                    GetCalcSubPoint(pt);
-                    ParsetoSisPoint(pt);
-                    ParseFormula(pt);
-                    if (pt.pointsrc == pointsrc.sis)
+                    if (sb.Length < 10) return;
+                    var cmd = new NpgsqlCommand(sb.ToString(), pgconn);
+                    pgconn.Open();
+                    cmd.ExecuteNonQuery();
+                    VartoPointTable.Refresh(true);
+                    foreach (point pt in hs_NewPoint)
                     {
-                        hs_sispoint.Add(pt);
-                        dic_sisIdtoPointId.Add(pt.Id_sis, pt);
+                        flagpt = pt;
+                        cd_Point[pt.id] = pt;
+                        hs_allpoint.Add(pt);
+                        GetCalcSubPoint(pt);
+                        ParsetoSisPoint(pt);
+                        ParseFormula(pt);
+                        if (pt.pointsrc == pointsrc.sis)
+                        {
+                            hs_sispoint.Add(pt);
+                            dic_sisIdtoPointId.Add(pt.Id_sis, pt);
+                        }
+                        else
+                        {
+                            hs_calcpoint.Add(pt);
+                        }
                     }
-                    else
+                    foreach (point pt in hs_DeletePoint)
                     {
-                        hs_calcpoint.Add(pt);
+                        flagpt = pt;
+                        cd_Point.Remove(pt.id);
+                        hs_allpoint.Remove(pt);
+                        hs_calcpoint.Remove(pt);
+                        if (pt.pointsrc == pointsrc.sis)
+                        {
+                            hs_sispoint.Remove(pt);
+                            dic_sisIdtoPointId.Remove(pt.Id_sis);
+                        }
+                        //AlarmSet.GetInst().ssAlarmPoint.Remove(pt);
                     }
-                }
-                foreach (point pt in hs_DeletePoint)
-                {
-                    flagpt = pt;
-                    cd_Point.Remove(pt.id);
-                    hs_allpoint.Remove(pt);
-                    hs_calcpoint.Remove(pt);
-                    if (pt.pointsrc == pointsrc.sis)
+                    foreach (point pt in hs_ModifyPoint)
                     {
-                        hs_sispoint.Remove(pt);
-                        dic_sisIdtoPointId.Remove(pt.Id_sis);
+                        flagpt = pt;
+                        GetCalcSubPoint(pt);
+                        ParsetoSisPoint(pt);
+                        ParseFormula(pt);
                     }
-                    //AlarmSet.GetInst().ssAlarmPoint.Remove(pt);
+                    hs_NewPoint.Clear();
+                    hs_ModifyPoint.Clear();
+                    hs_DeletePoint.Clear();
+                    //重装子点表
+                    VartoPointTable.Refresh(true);
                 }
-                foreach (point pt in hs_ModifyPoint)
-                {
-                    flagpt = pt;
-                    GetCalcSubPoint(pt);
-                    ParsetoSisPoint(pt);
-                    ParseFormula(pt);
-                }
-                hs_NewPoint.Clear();
-                hs_ModifyPoint.Clear();
-                hs_DeletePoint.Clear();
-                //重装子点表
-                VartoPointTable.Refresh(true);
             }
             catch (Exception e)
             {

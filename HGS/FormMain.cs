@@ -5,7 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 using GlacialComponents.Controls;
 using System.Diagnostics;
@@ -30,7 +30,11 @@ namespace HGS
             {
                 SisConnect.siscon_keep = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
             Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
+                //装入数据
                 Data.inst().LoadFromPG();
+                //启动定时线程1s
+                //Threading.Timer timer = new Timer();
+
             }
             catch (Exception ee)
             {
@@ -148,161 +152,152 @@ namespace HGS
 #endif
             }
         }
-        /*
-        private PointState GetCalcPointState(List<point> hsp)
+        private void Calc(object state)
         {
-            PointState ps = PointState.Good; 
-            if (hsp != null)
-            {             
-                foreach (point pt in hsp)
-                {
-                    if (pt.ps != PointState.Good)
-                    {
-                        ps = PointState.Error;
-                        break;
-                    }
-                }
-            }
-            return ps;
-        }*/
+
+        }
         private void timerCalc_Tick(object sender, EventArgs e)
         {
-            //
-            toolStripStatusLabel_span.Text = (DateTime.Now - startdate).ToString(@"dd\.hh\:mm\:ss");
-            sW.Restart();
-
-            GetSisValue();//到得sis值；
-
-            VartoPointTable.DelayClear();//释放表；
-            VartoDeviceTable.DelayClear();
-
-            foreach (point calcpt in Data.inst().hsCalcPoint)
+            lock (Pref.Inst().root)
             {
-                if(!calcpt.isCalc)
-                {
-                    calcpt.ps = PointState.Bad;
-                    calcpt.av = null;
-                    continue;
-                }
-                //
-                if (calcpt.isForce)
-                {
-                    calcpt.av = calcpt.Forceav;
-                    calcpt.ps = PointState.Good;
-                    continue;
-                }
-                if (Data.inst().hs_FormulaErrorPoint.Contains(calcpt)) continue;
+                toolStripStatusLabel_span.Text = (DateTime.Now - startdate).ToString(@"dd\.hh\:mm\:ss");
+                sW.Restart();
 
-                calcpt.ps = Functions.GetCalcPointState(calcpt.listSisCalcExpPointID_main);
+                GetSisValue();//到得sis值；
+
+                VartoPointTable.DelayClear();//释放表；
+                VartoDeviceTable.DelayClear();
+
+                foreach (point calcpt in Data.inst().hsCalcPoint)
+                {
+                    if (!calcpt.isCalc)
+                    {
+                        calcpt.ps = PointState.Bad;
+                        calcpt.av = null;
+                        continue;
+                    }
+                    //
+                    if (calcpt.isForce)
+                    {
+                        calcpt.av = calcpt.Forceav;
+                        calcpt.ps = PointState.Good;
+                        continue;
+                    }
+                    if (Data.inst().hs_FormulaErrorPoint.Contains(calcpt)) continue;
+
+                    calcpt.ps = Functions.GetCalcPointState(calcpt.listSisCalcExpPointID_main);
+
+                    try
+                    {
+                        if (calcpt.Expression_main != null && calcpt.ps == PointState.Good)
+                        {
+                            //double rsl = 
+                            calcpt.av = (float)Convert.ToDouble(calcpt.Expression_main.Evaluate());
+                        }
+                        else calcpt.av = null;
+
+                    }
+                    catch (Exception)
+                    {
+                        calcpt.ps = PointState.Error;
+                        Data.inst().hs_FormulaErrorPoint.Add(calcpt);
+                    }
+                }
+                //计算报警限值
+                foreach (point pt in Data.inst().hsAllPoint)
+                {
+                    if (pt.orgformula_hl.Trim().Length > 0)
+                    {
+                        PointState hlps = Functions.GetCalcPointState(pt.listSisCalaExpPointID_hl);
+
+                        try
+                        {
+                            if (pt.Expression_hl != null && hlps == PointState.Good)
+                                pt._HL = Math.Round(Convert.ToDouble(pt.Expression_hl.Evaluate()), 2);
+                            else pt._HL = null;
+
+                        }
+                        catch (Exception)
+                        {
+                            //pt.ps = PointState.Error;
+                            Data.inst().hs_FormulaErrorPoint.Add(pt);
+                        }
+                    }
+                    //
+                    if (pt.Orgformula_ll.Trim().Length > 0)
+                    {
+                        PointState llps = Functions.GetCalcPointState(pt.listSisCalaExpPointID_ll);
+
+                        try
+                        {
+                            if (pt.Expression_ll != null && llps == PointState.Good)
+                                pt._LL = Math.Round(Convert.ToDouble(pt.Expression_ll.Evaluate()), 2);
+                            else pt._LL = null;
+
+                        }
+                        catch (Exception)
+                        {
+                            //pt.ps = PointState.Error;
+                            Data.inst().hs_FormulaErrorPoint.Add(pt);
+                        }
+                    }
+                    //
+                    pt.Alarmifav = true;
+                    if (pt.Alarmif.Trim().Length > 0)
+                    {
+                        PointState alarmifps = Functions.GetCalcPointState(pt.listSisCalcExpPointID_alarmif);
+
+                        try
+                        {
+                            if (pt.Expression_alarmif != null && alarmifps == PointState.Good)
+                                pt.Alarmifav = Convert.ToBoolean(pt.Expression_alarmif.Evaluate());
+
+                        }
+                        catch (Exception)
+                        {
+                            //pt.ps = PointState.Error;
+                            Data.inst().hs_FormulaErrorPoint.Add(pt);
+                        }
+                    }
+                    //}
+                    //计算完成，加报警
+                    //AlarmSet.GetInst().Add(pt);
+                    //
+                    try
+                    {
+                        pt.AlarmCalc();
+                    }
+
+                    catch (Exception ee)
+                    {
+#if DEBUG
+                        timerCalc.Enabled = false;
+                        FormBugReport.ShowBug(ee, "报警计算出错！");
+                        //MessageBox.Show("报警计算出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+#endif
+                    };
+                }
+                Data_Device.AlarmCalc_All_Device();
+                tssL_error_nums.Text = Data.inst().hs_FormulaErrorPoint.Count.ToString("d3");
 
                 try
                 {
-                    if (calcpt.Expression_main != null && calcpt.ps == PointState.Good)
-                    {
-                        //double rsl = 
-                        calcpt.av = (float)Convert.ToDouble(calcpt.Expression_main.Evaluate());
-                    }
-                    else calcpt.av = null;
-
+                    //#if SERVER
+                    AlarmSet.GetInst().SaveAlarmInfoToPG();
+                    //#endif
                 }
-                catch (Exception)
+                catch (Exception ee)
                 {
-                    calcpt.ps = PointState.Error;
-                    Data.inst().hs_FormulaErrorPoint.Add(calcpt);
-                }
-            }
-            //计算报警限值
-            foreach (point pt in Data.inst().hsAllPoint)
-            {
-                if (pt.orgformula_hl.Trim().Length > 0)
-                {
-                    PointState hlps = Functions.GetCalcPointState(pt.listSisCalaExpPointID_hl);
-
-                    try
-                    {
-                        if (pt.Expression_hl != null && hlps == PointState.Good)
-                            pt._HL = Math.Round(Convert.ToDouble(pt.Expression_hl.Evaluate()),2);
-                        else pt._HL = null;
-
-                    }
-                    catch (Exception)
-                    {
-                        //pt.ps = PointState.Error;
-                        Data.inst().hs_FormulaErrorPoint.Add(pt);
-                    }
-                }
-                //
-                if (pt.Orgformula_ll.Trim().Length > 0)
-                {
-                    PointState llps = Functions.GetCalcPointState(pt.listSisCalaExpPointID_ll);
-
-                    try
-                    {
-                        if (pt.Expression_ll != null && llps == PointState.Good)
-                            pt._LL = Math.Round(Convert.ToDouble(pt.Expression_ll.Evaluate()),2);
-                        else pt._LL = null;
-
-                    }
-                    catch (Exception)
-                    {
-                        //pt.ps = PointState.Error;
-                        Data.inst().hs_FormulaErrorPoint.Add(pt);
-                    }
-                }
-                //
-                pt.Alarmifav = true;
-                if (pt.Alarmif.Trim().Length > 0)
-                {
-                    PointState alarmifps = Functions.GetCalcPointState(pt.listSisCalcExpPointID_alarmif);
-
-                    try
-                    {
-                        if (pt.Expression_alarmif != null && alarmifps == PointState.Good)
-                            pt.Alarmifav = Convert.ToBoolean(pt.Expression_alarmif.Evaluate());
-
-                    }
-                    catch (Exception)
-                    {
-                        //pt.ps = PointState.Error;
-                        Data.inst().hs_FormulaErrorPoint.Add(pt);
-                    }
-                }
-                //}
-                //计算完成，加报警
-                //AlarmSet.GetInst().Add(pt);
-                //
-                try
-                {
-                    pt.AlarmCalc();
-                }
-                
-                catch (Exception ee) {
 #if DEBUG
                     timerCalc.Enabled = false;
-                    FormBugReport.ShowBug(ee, "报警计算出错！");
-                    //MessageBox.Show("报警计算出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    FormBugReport.ShowBug(ee, "保存历史出错！");
+                    //MessageBox.Show("保存历史出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);            
 #endif
                 };
-            }
-            Data_Device.AlarmCalc_All_Device();
-            tssL_error_nums.Text = Data.inst().hs_FormulaErrorPoint.Count.ToString("d3");
 
-            try
-            {
-//#if SERVER
-               AlarmSet.GetInst().SaveAlarmInfoToPG();
-//#endif
+                sW.Stop();
+                usetime.Text = sW.ElapsedMilliseconds.ToString("d4");
             }
-            catch (Exception ee) {
-#if DEBUG
-                timerCalc.Enabled = false;
-                FormBugReport.ShowBug(ee, "保存历史出错！");
-                //MessageBox.Show("保存历史出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);            
-#endif
-            };
-
-            sW.Stop();
-            usetime.Text = sW.ElapsedMilliseconds.ToString("d4");
         }
 
         private void 报警记录ToolStripMenuItem_Click(object sender, EventArgs e)
