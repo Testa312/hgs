@@ -114,8 +114,11 @@ namespace HGS
         }
         public float[] Data()
         {
-            if (qdata.Count != size) return null;
-            return qdata.ToArray();
+            lock (Pref.Inst().root)
+            {
+                if (qdata.Count != size) return null;
+                return qdata.ToArray();
+            }
         }
         //返回极差
         //设备启动后，延迟一定时间

@@ -321,10 +321,6 @@ namespace HGS
 #endif
             }
         }
-        private void timerCalc_Tick(object sender, EventArgs e)
-        {
-            
-        }
 
         private void 报警记录ToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -362,7 +358,7 @@ namespace HGS
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
         {
             notifyIcon1.Dispose();
-            timerCalc.Enabled = false;
+            //timerCalc.Enabled = false;
             SisConnect.siscon_keep.close();
             ts.siscon_keep.close();
         }

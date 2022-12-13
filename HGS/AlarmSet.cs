@@ -162,11 +162,17 @@ namespace HGS
         }
         public List<AlarmInfo> GetAlarmRealTimeInfo()
         {
-            return linkAlarming.ToList();
+            lock (Pref.Inst().root)
+            {
+                return linkAlarming.ToList();
+            }
         }
         public List<AlarmInfo> GetAlarmHistoryInfo()
         {
-            return q_alarm_history.ToList();
+            lock (Pref.Inst().root)
+            {
+                return q_alarm_history.ToList();
+            }
         }
         private void SounfPlay(AlarmInfo ai)
         {

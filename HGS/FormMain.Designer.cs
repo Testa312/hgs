@@ -50,7 +50,6 @@
             this.toolStripStatusLabel_startdate = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel_span = new System.Windows.Forms.ToolStripStatusLabel();
-            this.timerCalc = new System.Windows.Forms.Timer(this.components);
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.打开OToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -139,14 +138,14 @@
             // 简要说明IToolStripMenuItem
             // 
             this.简要说明IToolStripMenuItem.Name = "简要说明IToolStripMenuItem";
-            this.简要说明IToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.简要说明IToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.简要说明IToolStripMenuItem.Text = "简要说明(&I)...";
             this.简要说明IToolStripMenuItem.Click += new System.EventHandler(this.简要说明IToolStripMenuItem_Click);
             // 
             // 关于aToolStripMenuItem
             // 
             this.关于aToolStripMenuItem.Name = "关于aToolStripMenuItem";
-            this.关于aToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.关于aToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.关于aToolStripMenuItem.Text = "关于(&A)";
             this.关于aToolStripMenuItem.Click += new System.EventHandler(this.关于aToolStripMenuItem_Click);
             // 
@@ -215,12 +214,6 @@
             this.toolStripStatusLabel_span.Size = new System.Drawing.Size(68, 17);
             this.toolStripStatusLabel_span.Text = "运行时间：";
             // 
-            // timerCalc
-            // 
-            this.timerCalc.Enabled = true;
-            this.timerCalc.Interval = 1000;
-            this.timerCalc.Tick += new System.EventHandler(this.timerCalc_Tick);
-            // 
             // notifyIcon1
             // 
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
@@ -282,7 +275,6 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem form1ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 报警信息ToolStripMenuItem;
-        private System.Windows.Forms.Timer timerCalc;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel tssL_error_nums;
         private System.Windows.Forms.ToolStripMenuItem 报警记录ToolStripMenuItem;

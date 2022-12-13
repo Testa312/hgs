@@ -134,11 +134,14 @@ namespace HGS
         }
         public float[] Data()
         {
-            List<float> rsl = new List<float>();
-            rsl.AddRange(step3.Data());
-            rsl.AddRange(step2.Data());
-            rsl.AddRange(step1.Data());
-            return rsl.ToArray();
+            lock (Pref.Inst().root)
+            {
+                List<float> rsl = new List<float>();
+                rsl.AddRange(step3.Data());
+                rsl.AddRange(step2.Data());
+                rsl.AddRange(step1.Data());
+                return rsl.ToArray();
+            }
         }
         public void Clear()
         {
