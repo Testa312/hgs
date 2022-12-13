@@ -117,7 +117,7 @@ namespace HGS
             step3 = new SlideWindow(size);
             //
             Random rnd = new Random();
-            totalsampls = rnd.Next(0, downsample);//平均分配CPU负荷。
+            totalsampls = rnd.Next(0, downsample + 1);//平均分配CPU负荷。
         }
         public void add(float d, bool bDS)
         {

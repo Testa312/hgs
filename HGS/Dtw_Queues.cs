@@ -29,7 +29,7 @@ namespace HGS
             downsample = DownSample < 1 ? 1 : DownSample;
             //
             Random rnd = new Random();
-            totalsampls = rnd.Next(0, downsample);//平均分配CPU负荷。
+            totalsampls = rnd.Next(0, downsample+1);//平均分配CPU负荷。
         }
         /*
         public int Size
@@ -122,7 +122,7 @@ namespace HGS
         public float DeltaP_P()
         {
             //if (qdata.Count != size) 
-            if (p >= size + delay / downsample + 20)
+            if (p <= size + delay / downsample + 20)
                 return 0;
             return Max() - Min();
         }
