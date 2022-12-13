@@ -37,14 +37,17 @@ namespace HGS
             get { return alarm_th_dis; }
             set
             {
-                if (alarm_th_dis != value)
+                lock (Pref.Inst().root)
                 {
-                    alarm_th_dis = value;
-                    if (alarm_th_dis != null)
+                    if (alarm_th_dis != value)
                     {
-                        if (!Data_Device.dic_Device.ContainsKey(id))
+                        alarm_th_dis = value;
+                        if (alarm_th_dis != null)
                         {
-                            Data_Device.dic_Device.Add(id, this);
+                            if (!Data_Device.dic_Device.ContainsKey(id))
+                            {
+                                Data_Device.dic_Device.Add(id, this);
+                            }
                         }
                     }
                 }

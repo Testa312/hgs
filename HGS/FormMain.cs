@@ -20,7 +20,10 @@ namespace HGS
         int lastTm = -1;//sis点的更新时间，用于处理断线引起的缓冲数据不连续问题。
 
         DateTime startdate = DateTime.Now;
-        Stopwatch sW = new Stopwatch();
+        //Stopwatch sW = new Stopwatch();
+
+        TimerState ts = new TimerState();
+        //
         public FormMain()
         {
             InitializeComponent();
@@ -32,8 +35,11 @@ namespace HGS
             Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
                 //装入数据
                 Data.inst().LoadFromPG();
-                //启动定时线程1s
-                //Threading.Timer timer = new Timer();
+                //
+                ts.siscon_keep = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
+            Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
+                ts.setControlValue = new TimerState.SetControlValue(SetTextBoxValue);
+                ts.threadTimer = new System.Threading.Timer(new TimerCallback(TimerUp), ts, 1000, 1000);
 
             }
             catch (Exception ee)
@@ -42,128 +48,19 @@ namespace HGS
                 this.Close();
             }
         }
-        private void 点设置ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (formPointSet == null || formPointSet.IsDisposed) formPointSet = new FormPointSet();
 
-            formPointSet.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
-            formPointSet.WindowState = FormWindowState.Maximized;
-            formPointSet.Show();
+         //定时到点执行的事件
+ 
+        private void TimerUp(object state)
+        {
+            TimerState ts = (TimerState)state;
             
-
-        }
-        //登录窗口
-        private void FormMain_Shown(object sender, EventArgs e)
-        {
-            /*
-            FormLogin fl = new FormLogin();
-            if (DialogResult.OK == fl.ShowDialog()) 
-            {
-                
-                formAlarmSet = new FormAlarmSetList();
-                
-                //formPointSet = new FormPointSet();
-
-                this.Text = string.Format("HGS-{0}", Auth.GetInst().UserName);
-                if (formAlarmSet != null || !formAlarmSet.IsDisposed)
-                {
-                    formAlarmSet.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
-                    formAlarmSet.WindowState = FormWindowState.Maximized;
-                    formAlarmSet.Show();
-                }
-                
-
-            }
-            else this.Close();
-            */
-        }
-        private void 报警信息ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (formAlarmSet == null || formAlarmSet.IsDisposed) formAlarmSet = new FormRealTimeAlarm();
-
-            formAlarmSet.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
-            formAlarmSet.WindowState = FormWindowState.Maximized;
-            formAlarmSet.Show();
-
-        }
-        private void GetSisValue()
-        {
-            StringBuilder sbid = new StringBuilder();
-            foreach (point pt in Data.inst().hsSisPoint)
-            {
-                sbid.Append(pt.Id_sis);
-                sbid.Append(",");
-            }
-            if (sbid.Length > 0)
-                sbid.Remove(sbid.Length - 1, 1);
-            else return;
-            //
-            string sql = string.Format("select ID,TM,DS,AV from Realtime where ID in ({0})", sbid.ToString());
-            try
-            {
-                OPAPI.ResultSet resultSet = SisConnect.siscon_keep.executeQuery(sql);//执行SQL
-
-                const short gb1 = -32256;
-                const short gb2 = -32768;
-  
-                while (resultSet.next())//next()执行一次，游标下移一行
-                {
-                    point Point = Data.inst().dic_SisIdtoPoint[resultSet.getInt(0)];
-                    if (Point.isForce)
-                    {
-                        Point.av = Point.Forceav;
-                        Point.ps = PointState.Good;
-                        continue;
-                    }
-                                    
-                    short ds = resultSet.getShort(2);
-                    if ((ds & gb1) == 0)
-                    {
-                        Point.ps = PointState.Good;
-                    }
-                    else if ((ds & gb2) == gb2)
-                    {
-                        Point.ps = PointState.Timeout;
-                    }
-                    else
-                        Point.ps = PointState.Bad;
-
-                    int Tm = resultSet.getInt(1);
-                    if (Tm - lastTm >= 5)//超时为5s
-                    {
-                       // Point.Av = -1;不能这样。
-                        Point.ps = PointState.Bad;
-                    }
-                    lastTm = Tm;
-                    //
-                    Data.inst().ce.Variables[Pref.Inst().GetVarName(Point)] = Point.av = resultSet.getFloat(3);
-                }
-                
-                if (resultSet != null)
-                {
-                    resultSet.close(); //释放内存
-                }
-            }
-            catch (Exception ee)
-            {
-#if DEBUG
-                FormBugReport.ShowBug(ee, "取实时出错！");
-                //MessageBox.Show("取实时出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-#endif
-            }
-        }
-        private void Calc(object state)
-        {
-
-        }
-        private void timerCalc_Tick(object sender, EventArgs e)
-        {
             lock (Pref.Inst().root)
             {
-                toolStripStatusLabel_span.Text = (DateTime.Now - startdate).ToString(@"dd\.hh\:mm\:ss");
-                sW.Restart();
+                
+                ts.sW.Restart();
 
-                GetSisValue();//到得sis值；
+                GetSisValue(ts.siscon_keep);//到得sis值；
 
                 VartoPointTable.DelayClear();//释放表；
                 VartoDeviceTable.DelayClear();
@@ -278,7 +175,7 @@ namespace HGS
                     };
                 }
                 Data_Device.AlarmCalc_All_Device();
-                tssL_error_nums.Text = Data.inst().hs_FormulaErrorPoint.Count.ToString("d3");
+                ts.Formula_error_nums = Data.inst().hs_FormulaErrorPoint.Count;
 
                 try
                 {
@@ -295,9 +192,138 @@ namespace HGS
 #endif
                 };
 
-                sW.Stop();
-                usetime.Text = sW.ElapsedMilliseconds.ToString("d4");
+                ts.sW.Stop();
+                ts.timeconsum = ts.sW.ElapsedMilliseconds;
+
+                this.Invoke(ts.setControlValue,ts);
+               
             }
+        }
+
+        /// <summary>
+        /// 给文本框赋值
+        /// </summary>
+        /// <param name="value"></param>
+        private void SetTextBoxValue(object value)
+        {
+            TimerState ts = (TimerState)value;
+            toolStripStatusLabel_span.Text = (DateTime.Now - startdate).ToString(@"dd\.hh\:mm\:ss");
+            usetime.Text = ts.timeconsum.ToString("d4");
+            tssL_error_nums.Text = ts.Formula_error_nums.ToString("d3");
+        }
+    private void 点设置ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (formPointSet == null || formPointSet.IsDisposed) formPointSet = new FormPointSet();
+
+            formPointSet.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
+            formPointSet.WindowState = FormWindowState.Maximized;
+            formPointSet.Show();
+            
+
+        }
+        //登录窗口
+        private void FormMain_Shown(object sender, EventArgs e)
+        {
+            /*
+            FormLogin fl = new FormLogin();
+            if (DialogResult.OK == fl.ShowDialog()) 
+            {
+                
+                formAlarmSet = new FormAlarmSetList();
+                
+                //formPointSet = new FormPointSet();
+
+                this.Text = string.Format("HGS-{0}", Auth.GetInst().UserName);
+                if (formAlarmSet != null || !formAlarmSet.IsDisposed)
+                {
+                    formAlarmSet.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
+                    formAlarmSet.WindowState = FormWindowState.Maximized;
+                    formAlarmSet.Show();
+                }
+                
+
+            }
+            else this.Close();
+            */
+        }
+        private void 报警信息ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (formAlarmSet == null || formAlarmSet.IsDisposed) formAlarmSet = new FormRealTimeAlarm();
+
+            formAlarmSet.MdiParent = this;       //设置mdiparent属性，将当前窗体作为父窗体
+            formAlarmSet.WindowState = FormWindowState.Maximized;
+            formAlarmSet.Show();
+
+        }
+        private void GetSisValue(OPAPI.Connect siscon_keep)
+        {
+            StringBuilder sbid = new StringBuilder();
+            foreach (point pt in Data.inst().hsSisPoint)
+            {
+                sbid.Append(pt.Id_sis);
+                sbid.Append(",");
+            }
+            if (sbid.Length > 0)
+                sbid.Remove(sbid.Length - 1, 1);
+            else return;
+            //
+            string sql = string.Format("select ID,TM,DS,AV from Realtime where ID in ({0})", sbid.ToString());
+            try
+            {
+                OPAPI.ResultSet resultSet = siscon_keep.executeQuery(sql);//执行SQL
+
+                const short gb1 = -32256;
+                const short gb2 = -32768;
+  
+                while (resultSet.next())//next()执行一次，游标下移一行
+                {
+                    point Point = Data.inst().dic_SisIdtoPoint[resultSet.getInt(0)];
+                    if (Point.isForce)
+                    {
+                        Point.av = Point.Forceav;
+                        Point.ps = PointState.Good;
+                        continue;
+                    }
+                                    
+                    short ds = resultSet.getShort(2);
+                    if ((ds & gb1) == 0)
+                    {
+                        Point.ps = PointState.Good;
+                    }
+                    else if ((ds & gb2) == gb2)
+                    {
+                        Point.ps = PointState.Timeout;
+                    }
+                    else
+                        Point.ps = PointState.Bad;
+
+                    int Tm = resultSet.getInt(1);
+                    if (Tm - lastTm >= 5)//超时为5s
+                    {
+                       // Point.Av = -1;不能这样。
+                        Point.ps = PointState.Bad;
+                    }
+                    lastTm = Tm;
+                    //
+                    Data.inst().ce.Variables[Pref.Inst().GetVarName(Point)] = Point.av = resultSet.getFloat(3);
+                }
+                
+                if (resultSet != null)
+                {
+                    resultSet.close(); //释放内存
+                }
+            }
+            catch (Exception ee)
+            {
+#if DEBUG
+                FormBugReport.ShowBug(ee, "取实时出错！");
+                //MessageBox.Show("取实时出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+#endif
+            }
+        }
+        private void timerCalc_Tick(object sender, EventArgs e)
+        {
+            
         }
 
         private void 报警记录ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -338,6 +364,7 @@ namespace HGS
             notifyIcon1.Dispose();
             timerCalc.Enabled = false;
             SisConnect.siscon_keep.close();
+            ts.siscon_keep.close();
         }
 
         private void 打开OToolStripMenuItem_Click(object sender, EventArgs e)
