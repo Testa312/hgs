@@ -38,7 +38,7 @@ namespace HGS
                 //
                 ts.siscon_keep = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
             Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
-                ts.setControlValue = new TimerState.SetControlValue(SetTextBoxValue);
+                //ts.setControlValue = new TimerState.SetControlValue(SetTextBoxValue);
                 ts.threadTimer = new System.Threading.Timer(new TimerCallback(TimerUp), ts, 1000, 1000);
 
             }
@@ -168,7 +168,7 @@ namespace HGS
                     catch (Exception ee)
                     {
 #if DEBUG
-                        timerCalc.Enabled = false;
+                        //timerCalc.Enabled = false;
                         FormBugReport.ShowBug(ee, "报警计算出错！");
                         //MessageBox.Show("报警计算出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 #endif
@@ -186,7 +186,7 @@ namespace HGS
                 catch (Exception ee)
                 {
 #if DEBUG
-                    timerCalc.Enabled = false;
+                    //timerCalc.Enabled = false;
                     FormBugReport.ShowBug(ee, "保存历史出错！");
                     //MessageBox.Show("保存历史出错！" + ee.ToString(), "错误!", MessageBoxButtons.OK, MessageBoxIcon.Error);            
 #endif
@@ -195,15 +195,14 @@ namespace HGS
                 ts.sW.Stop();
                 ts.timeconsum = ts.sW.ElapsedMilliseconds;
 
-                this.Invoke(ts.setControlValue,ts);
-               
+                //this.Invoke(ts.setControlValue,ts);
+                toolStripStatusLabel_span.Text = (DateTime.Now - startdate).ToString(@"dd\.hh\:mm\:ss");
+                usetime.Text = ts.timeconsum.ToString("d4");
+                tssL_error_nums.Text = ts.Formula_error_nums.ToString("d3");
             }
         }
 
-        /// <summary>
-        /// 给文本框赋值
-        /// </summary>
-        /// <param name="value"></param>
+        /*
         private void SetTextBoxValue(object value)
         {
             TimerState ts = (TimerState)value;
@@ -211,6 +210,7 @@ namespace HGS
             usetime.Text = ts.timeconsum.ToString("d4");
             tssL_error_nums.Text = ts.Formula_error_nums.ToString("d3");
         }
+        */
     private void 点设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (formPointSet == null || formPointSet.IsDisposed) formPointSet = new FormPointSet();
