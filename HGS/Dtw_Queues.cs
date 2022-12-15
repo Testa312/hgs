@@ -125,7 +125,7 @@ namespace HGS
         public float DeltaP_P()
         {
             //if (qdata.Count != size) 
-            if (p <= size + delay / downsample + 20)
+            if (p <= size + delay / downsample + 10)
                 return 0;
             return Max() - Min();
         }

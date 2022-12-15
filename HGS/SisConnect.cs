@@ -270,23 +270,67 @@ namespace HGS
             }
 
         }
+        private static bool GetSensorAlarmStat(OPAPI.Connect sisconn, point Point,DateTime begin, DateTime end, int count, int span)
+        {
+            List<object> siskeys = new List<object>();
+            CalcEngine.CalcEngine ce = new CalcEngine.CalcEngine();
+            //HashSet<int> hash_rsl = new HashSet<int>();
+            //foreach (DeviceInfo di in Data_Device.dic_Device.Values)
+            {
+               // siskeys.Clear();
+
+                if (Point.listSisCalcExpPointID_alarmif != null)
+                {
+                    foreach (point sispt in Point.listSisCalcExpPointID_alarmif)
+                    {
+                        siskeys.Add(Convert.ToInt64(sispt.Id_sis));
+                    }
+                    //
+                    Dictionary<int, PointData> data = GetsisData(sisconn, siskeys.ToArray(), begin, end, count, span);
+                    int c = 0;
+                    if (data.Keys.Count >= 1)
+                    {
+                        PointData pt = data[Convert.ToInt32(siskeys[0])];
+                        c = pt.data.Count;
+                    }
+                    for (int i = 0; i < c; i++)
+                    {
+                        foreach (KeyValuePair<int, PointData> kvp in data)
+                        {
+                            ce.Variables["S" + Data.inst().dic_SisIdtoPoint[kvp.Key].id.ToString()] = kvp.Value.data[i].Value;
+                        }
+                        if (Point.Sisformula_Alarmif.Length > 0 &&
+                            !Convert.ToBoolean(ce.Evaluate(Point.Sisformula_Alarmif)))
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+            }
+            return true;
+        }
         public static void InitSensorsWaveQueues(Dictionary<int, point> dic_pt)
         {
 
             if (dic_pt == null)
                 throw new ArgumentException("初始化队列的点列表不能为空！");
             int[] ScanSpan = new int[7] { 120, 240, 480, 960, 1920, 3840,7680 };//秒数
-            HashSet<point> lsob = new HashSet<point>(dic_pt.Values.ToArray());
-            /*
-            foreach (int id in dic_pt.Keys)
-            {
-                lsob.Add(id);
-            }
-            */
+            HashSet<point> lsob = new HashSet<point>();
+
             DateTime end = GetSisSystemTime(siscon_keep).AddSeconds(-5);
             for (int i = 0; i < ScanSpan.Length; i++)
             {
                 DateTime begin = end.AddSeconds(-ScanSpan[i]);
+                //
+                lsob.Clear();
+                foreach (point pt in dic_pt.Values)
+                {
+                    if (!pt.Wave_Delay_Checked || GetSensorAlarmStat(siscon_keep, pt, begin, end, 120, ScanSpan[i] / 120))
+                    {
+                        lsob.Add(pt);
+                    }
+                }
                 //
                 Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep, lsob, begin, end, 120, ScanSpan[i] / 120);
                 foreach (PointData pd in dic_pd.Values)

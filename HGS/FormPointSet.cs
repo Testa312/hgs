@@ -236,9 +236,8 @@ namespace HGS
                                 pt.boolAlarminfo = tB_boolAlarmInfo.Text;
                             pt.boolAlarmif = radioButton_true.Checked;
 
-                            if (textBox_pp.Text.Length > 0)
-                            { pt.Skip_pp = double.Parse(textBox_pp.Text); }
-                            else pt.Skip_pp = null;
+                            pt.Wave_Periodic_Checked = checkBox_wave_periodic.Checked;
+                            pt.Wave_Delay_Checked = checkBox_wave_delay.Checked;
                             pt.Sound = comboBox_Sound.SelectedIndex;
                             gllistUpateItemText(item, pt);
                         }
@@ -331,9 +330,9 @@ namespace HGS
             radioButton_true.Checked = Point.boolAlarmif;
             radioButton_false.Checked = !Point.boolAlarmif;
 
-            //checkBox_isSkip.Checked = Point.isAlarmskip;
-            //checkBox_isWave.Checked = Point.isAlarmwave;
-            textBox_pp.Text = Point.Skip_pp.ToString();
+            checkBox_wave_periodic.Checked = Point.Wave_Periodic_Checked;
+            checkBox_wave_delay.Checked = Point.Wave_Delay_Checked;
+            //textBox_pp.Text = Point.Skip_pp.ToString();
             //
             button_HL.ForeColor = Color.Black;
             button_LL.ForeColor = Color.Black;

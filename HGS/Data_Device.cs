@@ -384,7 +384,7 @@ namespace HGS
         {
             curAlarmBit = 0;
             bool curAlarmIf = _Expression_If != null && Convert.ToBoolean(_ce.Evaluate(_Expression_If));
-            if (lastAlarmIf && !curAlarmIf)
+            if (lastAlarmIf && !curAlarmIf)//复位报警
             {              
                 for (int i = 0; i < prime.Length; i++)
                 {
@@ -395,8 +395,13 @@ namespace HGS
                         AlarmSet.GetInst().AlarmStop(CreateAlarmSid(i));
                     }                   
                 }
-                lastAlarmBit = curAlarmBit;
-                //清理缓存并延时报警。
+                lastAlarmBit = curAlarmBit;               
+                lastAlarmIf = curAlarmIf;
+                return;
+            }           
+            else if (!lastAlarmIf && curAlarmIf)
+            {
+                //清理缓存,延时报警。
                 if (hs_Sensorsid != null && alarm_th_dis != null)
                 {
                     foreach (int sid in hs_Sensorsid)
@@ -417,11 +422,6 @@ namespace HGS
                 lastAlarmIf = curAlarmIf;
                 return;
             }
-            /*
-            if (!lastAlarmIf && curAlarmIf)
-            {
-                //初始化
-            }*/
             if (curAlarmIf)
             {
                 TimeTick++;
@@ -450,6 +450,7 @@ namespace HGS
                 }
             }
             lastAlarmBit = curAlarmBit;
+            //lastAlarmIf = curAlarmIf;
         }
     }
     static class Data_Device

@@ -85,7 +85,7 @@ namespace HGS
         //返回极差
         public float DeltaP_P()
         {
-            if (p <= size + 20)
+            if (p <= size + 10)
                 return 0;
             return Math.Abs(Max() - Min());
         }
@@ -106,6 +106,7 @@ namespace HGS
         private FFTWReal fft = new FFTWReal();
         int downsample = 1;
         int totalsampls = 0;
+        const int delay = 3600;//s
         //滤波器用,x(n)=a*x(n-1)+b*y(n+1)+(1-a-b)*y(n) a+b要小于1;
         float a = 0.7f, b = 0.15f, x = 0, y1 = 0, y2 = 0;
         public DetectorWave(int DownSample,int size = 32)
@@ -153,7 +154,7 @@ namespace HGS
         //th 为阈值
         public bool IsWaved(float th)
         {
-            if(p <=  3*size + 20) 
+            if(p <=  3* size + delay / downsample + 10)
                 return false;
 
             bool s1 = step1.DeltaP_P() > th;
@@ -164,9 +165,9 @@ namespace HGS
                 return true;
             return false;
         }
-        public float Delta_pp()
+        public float Delta_pp_Wave()
         {
-            if (p <= 3 * size + 20)
+            if (p <= 3 * size + delay / downsample + 10)
                 return 0;
             return Math.Max(Math.Max(step1.DeltaP_P(), step2.DeltaP_P()), step3.DeltaP_P());
         }
@@ -174,7 +175,7 @@ namespace HGS
         public bool harmonic_2rd_ok()
         {
             int imax = -1;
-            if (p > 3 * size +20)// + delay)
+            if (p > 3 * size + delay / downsample + 10)// + delay)
             {
                 float[] step1data = step1.Data();
                 if (step1data != null)

@@ -515,9 +515,10 @@ namespace HGS
             set { _Forceav = value; }
             get { return _Forceav; }
         }
-        ////---------------------报警公式，值为真时才允许报警。
+        //单传感器总报警开关，值为真时才允许报警。
         
         private bool _Alarmifav = true;
+        private bool lastAlarmifav = true;
         public bool Alarmifav
         {
             set { _Alarmifav = value; }
@@ -532,6 +533,18 @@ namespace HGS
                 {
                     Data.inst().Update(this);
                     _Alarmif = value;
+                    //
+                    if (Wave_Delay_Checked && _Alarmif != null && _Alarmif.Length > 0 && _wd3s_th != null)
+                    {
+                        if (_wd3s_Queues_Array == null)
+                            initWave3sQ();
+                        else
+                        {
+                            Dictionary<int, point> dic = new Dictionary<int, point>();
+                            dic.Add(id, this);
+                            SisConnect.InitSensorsWaveQueues(dic);
+                        }
+                    }
                 }
                 if (_Alarmif == null || _Alarmif.Length == 0)
                 {
@@ -541,6 +554,12 @@ namespace HGS
                 }
             }
             get { return _Alarmif; }
+        }
+        private string _Sisformula_Alarmif = "";//已展开成SIS点的计算公式，不保存
+        public string Sisformula_Alarmif
+        {
+            set { _Sisformula_Alarmif = value; }
+            get { return _Sisformula_Alarmif; }
         }
         private Expression _Expression_alarmif = null;//已解析为表达式树,优化计算速度。
         public Expression Expression_alarmif
@@ -563,33 +582,40 @@ namespace HGS
             set { _listSisCalcExpPointID_alarmif = value; }
             get { return _listSisCalcExpPointID_alarmif; }
         }
-        private double? _Skip_pp = null;
-        public double? Skip_pp
+        private bool _Wave_Periodic_Checked = false;
+        public bool Wave_Periodic_Checked
         {
             set
             {
-                if (_Skip_pp != value)
+                if (_Wave_Periodic_Checked != value)
                 {
                     Data.inst().Update(this);
-                    _Skip_pp = value;
-                    if (_Skip_pp != null && DetectionSkip == null)
-                    {
-                        DetectionSkip = new DetectionSkip();
-                    }
-                    else if (_Skip_pp == null)
-                    {
-                        DetectionSkip = null;
-                    }
+                    _Wave_Periodic_Checked = value;
                 }
             }
-            get { return _Skip_pp; }
+            get { return _Wave_Periodic_Checked; }
         }
+        private bool _Wave_Delay_Checked = false;
+        public bool Wave_Delay_Checked
+        {
+            set
+            {
+                if (_Wave_Delay_Checked != value)
+                {
+                    Data.inst().Update(this);
+                    _Wave_Delay_Checked = value;
+                }
+            }
+            get { return _Wave_Delay_Checked; }
+        }
+        /*
         private DetectionSkip _DetectionSkip = null;
         public DetectionSkip DetectionSkip
         {
             set { _DetectionSkip = value; }
             get { return _DetectionSkip; }
         }
+        */
         private int _TimeTick = -1;
 
         private float? _av = null;//点值，实时或计算。
@@ -645,7 +671,9 @@ namespace HGS
             _hl = Functions.CasttoDouble(pgreader["hl"]);
             _zl = Functions.CasttoDouble(pgreader["zl"]);
             _zh = Functions.CasttoDouble(pgreader["zh"]);
-            _Skip_pp = Functions.CasttoDouble(pgreader["skip_pp"]);
+
+            _Wave_Periodic_Checked = (bool)(pgreader["wave_periodic_checked"]);
+            _Wave_Delay_Checked = (bool)(pgreader["wave_delay_checked"]);
 
             _id_sis = (int)pgreader["id_sis"];
 
@@ -666,8 +694,8 @@ namespace HGS
             //_isAlarmskip = (bool)pgreader["isalarmskip"];
             //_isAlarmwave = (bool)pgreader["isalarmwave"];
             _Sound = (int)pgreader["sound"];
-            if (Skip_pp != null)
-                _DetectionSkip = new DetectionSkip();
+            //if (Skip_pp != null)
+                //_DetectionSkip = new DetectionSkip();
             //
             object ob = pgreader["dtw_start_th"];
             if (ob != DBNull.Value)
@@ -690,10 +718,12 @@ namespace HGS
             {
                 _av = value;
                 //_datanums++;
+                /*
                 if (_DetectionSkip != null)
                 {
                     _DetectionSkip.add(_av ?? 0);
                 }
+                */
                 if (_dtw_Queues_Array != null)
                 {
                     for (int i = 0; i < _dtw_Queues_Array.Length; i++)
@@ -900,7 +930,7 @@ namespace HGS
             {"TV",  "越量程上限报警！"  },//4
             {"BV",  "越量程下限报警！"  },//5
             {"Bool" ,""                 },//6
-            {"Skip", "跳变报警！"       },//7
+            {"NULL", "NULL"             },//7
             {"NULL", "NULL"             },//8
             {"Bad",  "坏点"             },//9
 
@@ -954,17 +984,18 @@ namespace HGS
             uint curAlarmBit = 0;
             if (_Alarmifav && _isAvalarm)
             {
-                curAlarmBit = (uint)1 << 7;
+                //curAlarmBit = (uint)1 << 7;
                 curAlarmBit |= (uint)63 << 10;
-                curAlarmBit &= _lastAlarmBitInfo;//保留波动和跳变检查
+                curAlarmBit &= _lastAlarmBitInfo;//保留波动
             }           
             if (ps != PointState.Good && ps != PointState.Force)
             {
                 //_Alarmingav = -1;
                 curAlarmBit |= (uint)1 << 9;
 
-                if (_DetectionSkip != null)
-                    _DetectionSkip.Clear();
+                //if (_DetectionSkip != null)
+                    //_DetectionSkip.Clear();
+                    
                 if (_dtw_Queues_Array != null)
                 {
                     for (int i = 0; i < _dtw_Queues_Array.Length; i++)
@@ -1002,7 +1033,7 @@ namespace HGS
                     SetAlarmBit_L(ref curAlarmBit, 0, _zl);
                     SetAlarmBit_L(ref curAlarmBit, 1, _ll);
                     SetAlarmBit_L(ref curAlarmBit, 5, _bv);
-                   
+                    /*
                     if ((_id + _TimeTick) % 7 == 0)
                     {
                         curAlarmBit &= ~((uint)1 << 7);
@@ -1030,15 +1061,24 @@ namespace HGS
                         }
                         _lastAlarmBitInfo &= ~((uint)1 << 7);
                         _lastAlarmBitInfo |= curBit;
-                    }
+                    }*/
                     if (Wd3s_Queues_Array != null && Wd3s_th != null)
                     {
+                        //延时报警
+                        if (Wave_Delay_Checked && !lastAlarmifav && _Alarmifav)
+                        {
+                            for (int i = 0; i < prime.Length; i++)
+                            {
+                                Wd3s_Queues_Array[i].Clear();
+                            }
+                        }
                         for (int i = 0; i < prime.Length; i++)
                         {
                             if ((_id + _TimeTick) % prime[i] == 0)
                             {
-                                curAlarmBit &= ~((uint)1 << (i + 10)); ;
-                                if (Wd3s_Queues_Array[i].IsWaved(Wd3s_th[i]) && Wd3s_Queues_Array[i].harmonic_2rd_ok())
+                                curAlarmBit &= ~((uint)1 << (i + 10)); 
+                                if (!Wave_Periodic_Checked && Wd3s_Queues_Array[i].IsWaved(Wd3s_th[i])
+                                    || Wd3s_Queues_Array[i].IsWaved(Wd3s_th[i]) && Wd3s_Queues_Array[i].harmonic_2rd_ok())
                                     curAlarmBit |= ((uint)1 << (i + 10));
                                 //
                                 uint lastBit = _lastAlarmBitInfo & ((uint)1 << i + 10);
@@ -1049,7 +1089,7 @@ namespace HGS
                                 }
                                 else if (lastBit < curBit)
                                 {
-                                    AlarmInfo ai = CreateAlarmInfo(i + 10, Wd3s_Queues_Array[i].Delta_pp());
+                                    AlarmInfo ai = CreateAlarmInfo(i + 10, Wd3s_Queues_Array[i].Delta_pp_Wave());
                                     AlarmSet.GetInst().AddAlarming(ai);
                                     AlarmCount++;
                                 }
@@ -1079,6 +1119,7 @@ namespace HGS
                     AlarmCount++;
                 }
             }
+            lastAlarmifav = _Alarmifav;
             _lastAlarmBitInfo = curAlarmBit;
         }
     }
