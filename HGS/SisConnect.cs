@@ -45,8 +45,8 @@ namespace HGS
             if (span <= 0)
             {
                 span = (int)((end - begin).TotalSeconds / count);
-                span = span == 0 ? 1 : span;
-                span = span > 0 ? span : span++;
+                span = span <= 0 ? 1 : span;
+                //span = span > 0 ? span : span++;
             }
             options.Add("end", end);
             options.Add("begin", begin);
@@ -69,7 +69,7 @@ namespace HGS
                         PtData.ID_sis = id;
                         dic_data.Add(id, PtData);
                     }
-                    if (PtData.data.Count < count)
+                    if (count<=0 || PtData.data.Count < count)
                         PtData.data.Add(new DateValue(resultSet.getDateTime(1), resultSet.getFloat(3)));
                 }
             }
@@ -230,7 +230,6 @@ namespace HGS
         }
         public static void InitPointDtwQueues(Dictionary<int,point> dic_pt)
         {
-
             if (dic_pt == null)
                 throw new ArgumentException("初始化队列的点列表不能为空！");
             int[] ScanSpan = new int[6] { 18, 36, 72, 144, 288, 576 };
@@ -239,9 +238,9 @@ namespace HGS
             DateTime end = GetSisSystemTime(siscon_keep).AddSeconds(-5);
             for (int i = 0; i < ScanSpan.Length; i++)
             {
-                DateTime begin = end.AddMinutes(-ScanSpan[i]);
+                DateTime begin = end.AddMinutes(-ScanSpan[i] - 60);
                 //
-                HashSet<int> rsl = GetDeiveAlarmStat(siscon_keep, begin, end, 120, ScanSpan[i] / 2);
+                HashSet<int> rsl = GetDeiveAlarmStat(siscon_keep, begin, end, 0, ScanSpan[i] / 2);
                 //
                 lsrunob.Clear();
                 foreach (point pt in lsob)
@@ -257,7 +256,7 @@ namespace HGS
                     }
                 }
                //
-               Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep, lsrunob, begin, end, 120, ScanSpan[i] / 2);
+               Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep, lsrunob, begin, end, 0, ScanSpan[i] / 2);
                 foreach (PointData pd in dic_pd.Values)
                 {
                     float[] x = new float[pd.data.Count];
@@ -321,18 +320,18 @@ namespace HGS
             DateTime end = GetSisSystemTime(siscon_keep).AddSeconds(-5);
             for (int i = 0; i < ScanSpan.Length; i++)
             {
-                DateTime begin = end.AddSeconds(-ScanSpan[i]);
+                DateTime begin = end.AddSeconds(-ScanSpan[i] - 3600);
                 //
                 lsob.Clear();
                 foreach (point pt in dic_pt.Values)
                 {
-                    if (!pt.Wave_Delay_Checked || GetSensorAlarmStat(siscon_keep, pt, begin, end, 120, ScanSpan[i] / 120))
+                    if (!pt.Wave_Delay_Checked || GetSensorAlarmStat(siscon_keep, pt, begin, end, 0, ScanSpan[i] / 120))
                     {
                         lsob.Add(pt);
                     }
                 }
                 //
-                Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep, lsob, begin, end, 120, ScanSpan[i] / 120);
+                Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep, lsob, begin, end, 0, ScanSpan[i] / 120);
                 foreach (PointData pd in dic_pd.Values)
                 {
                     float[] x = new float[pd.data.Count];

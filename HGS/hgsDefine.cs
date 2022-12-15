@@ -534,7 +534,7 @@ namespace HGS
                     Data.inst().Update(this);
                     _Alarmif = value;
                     //
-                    if (Wave_Delay_Checked && _Alarmif != null && _Alarmif.Length > 0 && _wd3s_th != null)
+                    if (Wave_Delay_Checked && value != null && value.Length > 0 && _wd3s_th != null)
                     {
                         if (_wd3s_Queues_Array == null)
                             initWave3sQ();
@@ -603,6 +603,19 @@ namespace HGS
                 if (_Wave_Delay_Checked != value)
                 {
                     Data.inst().Update(this);
+                    //
+                    if (value && _Alarmif != null && _Alarmif.Length > 0 && _wd3s_th != null)
+                    {
+                        if (_wd3s_Queues_Array == null)
+                            initWave3sQ();
+                        else
+                        {
+                            Dictionary<int, point> dic = new Dictionary<int, point>();
+                            dic.Add(id, this);
+                            SisConnect.InitSensorsWaveQueues(dic);
+                        }
+                    }
+                    //
                     _Wave_Delay_Checked = value;
                 }
             }
@@ -1062,6 +1075,7 @@ namespace HGS
                         _lastAlarmBitInfo &= ~((uint)1 << 7);
                         _lastAlarmBitInfo |= curBit;
                     }*/
+                   
                     if (Wd3s_Queues_Array != null && Wd3s_th != null)
                     {
                         //延时报警
