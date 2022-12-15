@@ -63,6 +63,7 @@ namespace HGS
                 textBox_ND.Text = ttg.nd;
                 textBox_PN.Text = ttg.pn;
                 maskedTextBox_Sort.Text = ttg.sort.ToString();
+                maskedTextBox_delaytime.Text= ttg.DelayAlarmTime.ToString();
                 button_AlarmIf.ForeColor = ttg.Orgformula_If.Length > 0 ? Color.Red : Color.Black;
                 List<GLItem> lsItem = new List<GLItem>();
                 if (ttg.Alarm_th_dis != null)
@@ -414,6 +415,12 @@ namespace HGS
                 }
                 else
                     ttg.sort = -1;
+                if (maskedTextBox_delaytime.Text.Length > 0)
+                {
+                    ttg.DelayAlarmTime = int.Parse(maskedTextBox_delaytime.Text);
+                }
+                else
+                    ttg.DelayAlarmTime = 0;
                 //传感器
                 if (ttg.Sensors_set().Count >= 2)
                 {
@@ -443,6 +450,13 @@ namespace HGS
                         }
 
                         point pt = Data.inst().cd_Point[(int)item.Tag];
+                        if(pt.Dtw_Queues_Array != null)
+                        {
+                            foreach (Dtw_queues dq in pt.Dtw_Queues_Array)
+                            {
+                                dq.Delay = ttg.DelayAlarmTime;
+                            }
+                        }
                         pt.Dtw_start_th = flag ? th_dtw : null;
                     }
 

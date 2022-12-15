@@ -25,6 +25,17 @@ namespace HGS
         private PlotModel PlotPoint()
         {
             if (Point == null || Point.Wd3s_Queues_Array == null) return null;
+            //
+            int j = 0;
+            for (; j < Point.Wd3s_Queues_Array.Length; j++)
+            {
+                if (Point.Wd3s_Queues_Array[j].Data() == null)
+                {
+                    j--;
+                    break;
+                }
+            }
+            if (j < 0) return null;
             var pm = new PlotModel
             {
                 Title = string.Format("{0}-{1}",Point.pn ,Point.ed),
@@ -33,11 +44,13 @@ namespace HGS
             };
             double maxdv = double.MinValue;
             double mindv = double.MaxValue;
-
-            foreach (double dv in Point.Wd3s_Queues_Array[6].Data())
+            for (int m = 0; m <= j; m++)
             {
-                maxdv = Math.Max(maxdv, dv);
-                mindv = Math.Min(mindv, dv);
+                foreach (double dv in Point.Wd3s_Queues_Array[j].Data())
+                {
+                    maxdv = Math.Max(maxdv, dv);
+                    mindv = Math.Min(mindv, dv);
+                }
             }
             pm.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
 
@@ -67,6 +80,7 @@ namespace HGS
                 };
                 
                 var data = wd.Data();
+                if (data == null) continue;
                 for (int m = 0; m < data.Length; m++)
                 {
                     lineSeries.Points.Add(new DataPoint(m,data[m]));

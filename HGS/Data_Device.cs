@@ -25,6 +25,7 @@ namespace HGS
         public int sort = 0;
         public int CountofDTWCalc = 0;
         public int Sound = 4;//朗读
+        public int DelayAlarmTime = 0;
         private HashSet<int> hs_Sensorsid = null;
         //
         private int TimeTick;
@@ -479,6 +480,7 @@ namespace HGS
                     di.pn = pgreader["pn"].ToString();
                     di.Orgformula_If = pgreader["alarmif"].ToString();
                     di.Sound = (int)pgreader["sound"];
+                    di.DelayAlarmTime = (int)pgreader["delayalarmtime"];
                     object ob = pgreader["alarm_th_dis"];
                     if (ob != DBNull.Value)
                     {
@@ -520,6 +522,7 @@ namespace HGS
                     di.pn = pgreader["pn"].ToString();
                     di.Orgformula_If = pgreader["alarmif"].ToString();
                     di.Sound = (int)pgreader["sound"];
+                    di.DelayAlarmTime = (int)pgreader["delayalarmtime"];
                     di.sort = (int)pgreader["sort"];
                     object ob = pgreader["alarm_th_dis"];
                     if (ob != DBNull.Value)

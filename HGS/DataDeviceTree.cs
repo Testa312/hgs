@@ -160,7 +160,9 @@ namespace HGS
                         ttag.pn = pgreader["pn"].ToString();
                         ttag.Orgformula_If = pgreader["alarmif"].ToString();
                         ttag.Sound = (int)pgreader["sound"];
+                        ttag.DelayAlarmTime = (int)pgreader["delayalarmtime"];
                         object ob = pgreader["alarm_th_dis"];
+                        
                         if (ob != DBNull.Value)
                         {
                             ttag.Alarm_th_dis = (float[])ob;
@@ -193,10 +195,10 @@ namespace HGS
                 tag.path = GetNodeFullPath(tn);
                 StringBuilder sb = new StringBuilder();
 
-                sb.AppendLine(string.Format(@"insert into devicetree (id,nodename,path,alarm_th_dis,sort,pointid_array,sound,nd,pn,alarmif)" +
-                                    " values ({0},'{1}','{2}',{3},{4},{5},{6},'{7}','{8}','{9}');",
+                sb.AppendLine(string.Format(@"insert into devicetree (id,nodename,path,alarm_th_dis,sort,pointid_array,sound,nd,pn,alarmif,delayalarmtime)" +
+                                    " values ({0},'{1}','{2}',{3},{4},{5},{6},'{7}','{8}','{9}',{10});",
                                     tag.id, tag.Name, tag.path,ArraytoString(tag.Alarm_th_dis), tag.sort, GetNodeArray(tn),
-                                    tag.Sound,tag.nd,tag.pn,tag.Orgformula_If));
+                                    tag.Sound,tag.nd,tag.pn,tag.Orgformula_If,tag.DelayAlarmTime));
                 GetinsertsubSql(sb, tag);
                 var cmd = new NpgsqlCommand(sb.ToString(), pgconn);
                 pgconn.Open();
@@ -224,9 +226,9 @@ namespace HGS
             tag.path = GetNodeFullPath(tn);
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(string.Format(@"update devicetree set nodename='{0}',path='{1}',alarm_th_dis={2},sort={3},pointid_array={4},"+
-                                    "sound={5},nd='{6}',pn='{7}',alarmif = '{8}' where id = {9};",
+                                    "sound={5},nd='{6}',pn='{7}',alarmif = '{8}',delayalarmtime = {9} where id = {10};",
                                     tag.Name, tag.path, ArraytoString(tag.Alarm_th_dis), tag.sort, GetNodeArray(tn),tag.Sound,
-                                    tag.nd,tag.pn,tag.Orgformula_If, tag.id));
+                                    tag.nd,tag.pn,tag.Orgformula_If,tag.DelayAlarmTime, tag.id));
             sb.AppendLine(string.Format("delete  from formula_device where id = {0};", tag.id));
             
             GetinsertsubSql(sb, tag);

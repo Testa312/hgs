@@ -411,5 +411,10 @@ namespace HGS
             myprocess.StartInfo.UseShellExecute = true;
             myprocess.Start();
         }
+
+        private void timerkeeplive_Tick(object sender, EventArgs e)
+        {
+            SisConnect.GetSisSystemTime(SisConnect.siscon_keep);
+        }
     }
 }

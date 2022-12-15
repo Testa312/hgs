@@ -54,6 +54,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.打开OToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出XToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timerkeeplive = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -244,6 +245,12 @@
             this.退出XToolStripMenuItem.Text = "退出（&X）";
             this.退出XToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
             // 
+            // timerkeeplive
+            // 
+            this.timerkeeplive.Enabled = true;
+            this.timerkeeplive.Interval = 30000;
+            this.timerkeeplive.Tick += new System.EventHandler(this.timerkeeplive_Tick);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -294,6 +301,7 @@
         private System.Windows.Forms.ToolStripMenuItem 帮助HToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 关于aToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 简要说明IToolStripMenuItem;
+        private System.Windows.Forms.Timer timerkeeplive;
     }
 }
 

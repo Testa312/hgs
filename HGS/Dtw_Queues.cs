@@ -19,7 +19,12 @@ namespace HGS
         private int size = 100;//窗口size.
         private int downsample = 1;
         private int totalsampls = 1;
-        const int delay = 3600;//s
+        int delay = 3600;//s
+        public int Delay
+        {
+            set { delay = value >= 0 ? value : 0; }
+            get { return delay; }
+        }
         int p = -1;
         //滤波器用,x(n)=a*x(n-1)+b*y(n+1)+(1-a-b)*y(n) a+b要小于1;
         float a = 0.8f, b = 0.1f, x = 0, y1 = 0, y2 = 0;
