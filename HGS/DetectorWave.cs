@@ -106,12 +106,18 @@ namespace HGS
         private FFTWReal fft = new FFTWReal();
         int downsample = 1;
         int totalsampls = 0;
-        const int delay = 3600;//s
+        int delay = 3600;//s
+        public int Delay
+        {
+            set { delay = value >= 0 ? value : 0; }
+            get { return delay; }
+        }
         //滤波器用,x(n)=a*x(n-1)+b*y(n+1)+(1-a-b)*y(n) a+b要小于1;
         float a = 0.7f, b = 0.15f, x = 0, y1 = 0, y2 = 0;
-        public DetectorWave(int DownSample,int size = 32)
+        public DetectorWave(int DownSample,int Delay,int size = 32)
         {
             this.size = size;
+            delay = Delay >= 0 ? Delay : 0;
             downsample = DownSample < 1 ? 1 : DownSample; 
             step1 = new SlideWindow(size);
             step2 = new SlideWindow(size);
@@ -170,6 +176,12 @@ namespace HGS
             if (p <= 3 * size + delay / downsample + 10)
                 return 0;
             return Math.Max(Math.Max(step1.DeltaP_P(), step2.DeltaP_P()), step3.DeltaP_P());
+        }
+        public float skip_pp()
+        {
+            if (p <= size + delay / downsample + 10)
+                return 0;
+            return step1.DeltaP_P();
         }
         //有2次谐波的的最大值
         public bool harmonic_2rd_ok()

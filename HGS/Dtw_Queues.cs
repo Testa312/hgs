@@ -20,17 +20,12 @@ namespace HGS
         private int downsample = 1;
         private int totalsampls = 1;
         int delay = 3600;//s
-        public int Delay
-        {
-            set { delay = value >= 0 ? value : 0; }
-            get { return delay; }
-        }
         int p = -1;
         //滤波器用,x(n)=a*x(n-1)+b*y(n+1)+(1-a-b)*y(n) a+b要小于1;
         float a = 0.8f, b = 0.1f, x = 0, y1 = 0, y2 = 0;
-        public Dtw_queues(int DownSample) 
+        public Dtw_queues(int DownSample,int Delay) 
         {
-            //this.size = size;
+            delay = Delay >= 0 ? Delay : 0;
             downsample = DownSample < 1 ? 1 : DownSample;
             //
             Random rnd = new Random();

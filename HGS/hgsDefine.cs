@@ -533,7 +533,7 @@ namespace HGS
                 {
                     Data.inst().Update(this);
                     _Alarmif = value;
-                    //
+                    /*
                     if (Wave_Delay_Checked && value != null && value.Length > 0 && _wd3s_th != null)
                     {
                         if (_wd3s_Queues_Array == null)
@@ -544,7 +544,7 @@ namespace HGS
                             dic.Add(id, this);
                             SisConnect.InitSensorsWaveQueues(dic);
                         }
-                    }
+                    }*/
                 }
                 if (_Alarmif == null || _Alarmif.Length == 0)
                 {
@@ -582,53 +582,32 @@ namespace HGS
             set { _listSisCalcExpPointID_alarmif = value; }
             get { return _listSisCalcExpPointID_alarmif; }
         }
-        private bool _Wave_Periodic_Checked = false;
-        public bool Wave_Periodic_Checked
+        private bool _Skip_Checked = false;
+        public bool Skip_Checked
         {
             set
             {
-                if (_Wave_Periodic_Checked != value)
+                if (_Skip_Checked != value)
                 {
                     Data.inst().Update(this);
-                    _Wave_Periodic_Checked = value;
+                    _Skip_Checked = value;
                 }
             }
-            get { return _Wave_Periodic_Checked; }
+            get { return _Skip_Checked; }
         }
-        private bool _Wave_Delay_Checked = false;
-        public bool Wave_Delay_Checked
+        private int _DelayAlarmTime = 0;
+        public int DelayAlarmTime
         {
             set
             {
-                if (_Wave_Delay_Checked != value)
+                if (_DelayAlarmTime != value)
                 {
                     Data.inst().Update(this);
-                    //
-                    if (value && _Alarmif != null && _Alarmif.Length > 0 && _wd3s_th != null)
-                    {
-                        if (_wd3s_Queues_Array == null)
-                            initWave3sQ();
-                        else
-                        {
-                            Dictionary<int, point> dic = new Dictionary<int, point>();
-                            dic.Add(id, this);
-                            SisConnect.InitSensorsWaveQueues(dic);
-                        }
-                    }
-                    //
-                    _Wave_Delay_Checked = value;
+                    _DelayAlarmTime = value;
                 }
             }
-            get { return _Wave_Delay_Checked; }
+            get { return _DelayAlarmTime; }
         }
-        /*
-        private DetectionSkip _DetectionSkip = null;
-        public DetectionSkip DetectionSkip
-        {
-            set { _DetectionSkip = value; }
-            get { return _DetectionSkip; }
-        }
-        */
         private int _TimeTick = -1;
 
         private float? _av = null;//点值，实时或计算。
@@ -636,18 +615,21 @@ namespace HGS
         //动态时间规整器扫描的阈值,6个数，为15m,30m,60m,120m,240m,480m时间段。
         private float[] _dtw_start_th = null;
         //传感器的设备归属-不存数据库，运行时生成。
-        private HashSet<int> _hs_Device = null;
-        private Dictionary<int,string> _hsDevicePath = null;
+        //private HashSet<int> _hs_Device = null;
+        private int _DeviceId = -1;//所属设备的id。
+        public int DeviceId
+        {
+            get
+            {
+                return _DeviceId;
+            }
+        }
+        //private Dictionary<int,string> _hsDevicePath = null;
+        private string _DevicePath = "";
         public string DevicePath
         {
             get {
-                StringBuilder sb = new StringBuilder();
-                if (_hsDevicePath != null)
-                    foreach (string sp in _hsDevicePath.Values)
-                    {
-                        sb.AppendLine(sp);
-                    }
-                return sb.ToString();
+                return _DevicePath;
             }
         }
         private Dtw_queues[] _dtw_Queues_Array = null;
@@ -685,8 +667,8 @@ namespace HGS
             _zl = Functions.CasttoDouble(pgreader["zl"]);
             _zh = Functions.CasttoDouble(pgreader["zh"]);
 
-            _Wave_Periodic_Checked = (bool)(pgreader["wave_periodic_checked"]);
-            _Wave_Delay_Checked = (bool)(pgreader["wave_delay_checked"]);
+            _Skip_Checked = (bool)(pgreader["skip_checked"]);
+            _DelayAlarmTime = (int)(pgreader["delayalarmtime"]);
 
             _id_sis = (int)pgreader["id_sis"];
 
@@ -770,7 +752,7 @@ namespace HGS
                         if (_dtw_start_th.Length != 6)
                             throw new Exception("dtw阈值数必须为6个!");
                     }
-                    initDeviceQ();
+                    //initDeviceQ();
                 }
             }
         }      
@@ -778,38 +760,46 @@ namespace HGS
         {
             get { return _dtw_Queues_Array; }
         }
-        public void initDeviceQ(int step, float[] v)
+        public void initDeviceQ(int step, float[] v)//时间s
         {
-            if (step < 0 || step >= 6)
+            if (step < 0 || step >= 6 || _DeviceId <=0)
                 throw new Exception("设备没有采集这些数据！");
             if (v == null)
                 throw new Exception("数据不能为空！");
-            if (_dtw_Queues_Array == null)
-            {
-                _dtw_Queues_Array = new Dtw_queues[6];
-                for (int i = 0; i < _dtw_Queues_Array.Length; i++)
-                {
-                    _dtw_Queues_Array[i] = new Dtw_queues(9*(1<<i));
-                    //_dtw_Queues_Array[i].DownSamples = (int)(9 * Math.Pow(2, i));
-                }
-            }
-            for (int i = 0; i < v.Length; i++)
-            {
-                _dtw_Queues_Array[step].add(v[i], false);
-            }
-        }
-        //初始化dtw队列数组
-        public void initDeviceQ()
-        {
-            if (_hs_Device != null && _dtw_start_th != null)
+            DeviceInfo di;
+            if (Data_Device.dic_Device.TryGetValue(_DeviceId, out di))
             {
                 if (_dtw_Queues_Array == null)
                 {
                     _dtw_Queues_Array = new Dtw_queues[6];
                     for (int i = 0; i < _dtw_Queues_Array.Length; i++)
                     {
-                        _dtw_Queues_Array[i] = new Dtw_queues(9*(1 << i));
+                        _dtw_Queues_Array[i] = new Dtw_queues(9 * (1 << i), di.DelayAlarmTime);
                         //_dtw_Queues_Array[i].DownSamples = (int)(9 * Math.Pow(2, i));
+                    }
+                }
+                for (int i = 0; i < v.Length; i++)
+                {
+                    _dtw_Queues_Array[step].add(v[i], false);
+                }
+            }
+        }
+        //初始化dtw队列数组
+        public void initDeviceQ()
+        {
+            if (_DeviceId > 0  && _dtw_start_th != null)
+            {
+                DeviceInfo di;
+                if (Data_Device.dic_Device.TryGetValue(_DeviceId, out di))
+                {
+                    if (_dtw_Queues_Array == null)
+                    {
+                        _dtw_Queues_Array = new Dtw_queues[6];
+                        for (int i = 0; i < _dtw_Queues_Array.Length; i++)
+                        {
+                            _dtw_Queues_Array[i] = new Dtw_queues(9 * (1 << i), di.DelayAlarmTime);
+                            //_dtw_Queues_Array[i].DownSamples = (int)(9 * Math.Pow(2, i));
+                        }
                     }
                 }
             }
@@ -850,7 +840,7 @@ namespace HGS
                 _wd3s_Queues_Array = new DetectorWave[7];
                 for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
                 {
-                    _wd3s_Queues_Array[i] = new DetectorWave((1 << i));
+                    _wd3s_Queues_Array[i] = new DetectorWave((1 << i),_DelayAlarmTime);
                 }
             }
             for (int i = 0; i < v.Length; i++)
@@ -868,13 +858,12 @@ namespace HGS
                     _wd3s_Queues_Array = new DetectorWave[7];
                     for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
                     {
-                        _wd3s_Queues_Array[i] = new DetectorWave((1 << i));
-                    }
-                    //
-                    Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
-                    dic_intQueues.Add(id, Data.inst().cd_Point[id]);
-                    SisConnect.InitSensorsWaveQueues(dic_intQueues);
+                        _wd3s_Queues_Array[i] = new DetectorWave((1 << i),_DelayAlarmTime);
+                    }                                      
                 }
+                Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
+                dic_intQueues.Add(id, this);
+                SisConnect.InitSensorsWaveQueues(dic_intQueues);
             }
             else
                 _wd3s_Queues_Array = null;
@@ -882,38 +871,20 @@ namespace HGS
         //----------------
         public void addtodevice(int di,string path)
         {
-            if (_hs_Device == null)
-                _hs_Device = new HashSet<int>();
-            _hs_Device.Add(di);
-            if (_hsDevicePath == null)
-                _hsDevicePath = new Dictionary<int, string>();
-            _hsDevicePath[di] = path;
+            if (di <= 0) throw new Exception("设备ID无效！");
+            _DeviceId = di;
+            _DevicePath = path;
         }
-        public void removefromdevice(int di)
+        public void removefromdevice()
         {
-            if (_hs_Device != null)
+            if (_DeviceId > 0)
             {
-                _hs_Device.Remove(di);
-            }
-            if (_hsDevicePath != null)
-            {
-                _hsDevicePath.Remove(di);
-            }
-            if (_hs_Device.Count == 0)
-            {
-                _hs_Device = null;
-                _hsDevicePath = null;
+                _DevicePath = "";
+                _DeviceId = -1;
                 _dtw_Queues_Array = null;
                 Dtw_start_th = null;
                 Data.inst().SavetoPG();
             }
-        }
-        public HashSet<int> Device_set()
-        {
-            HashSet<int> hs = new HashSet<int>();
-            if (_hs_Device != null)
-                hs.UnionWith(_hs_Device);
-            return hs;
         }
         private string CreateAlarmSid(int bitnum)
         {
@@ -922,16 +893,10 @@ namespace HGS
         //-------------
         public AlarmInfo CreateAlarmInfo(int bitnum,float? AlarmAv)
         {
-            StringBuilder sb = new StringBuilder();
-            if (_hsDevicePath != null)
-                foreach (string sp in _hsDevicePath.Values)
-                {
-                    sb.AppendLine(sp);
-                }
             return new AlarmInfo(CreateAlarmSid(bitnum), _id, -1, _nd, _pn, _ed, _eu,
                 Functions.NullFloatRount(AlarmAv, _fm),
                 _Alarm[bitnum, 1],
-                sb.ToString(),
+                _DevicePath,
                 _Sound) ;
         }
         //--------------------
@@ -1046,19 +1011,16 @@ namespace HGS
                     SetAlarmBit_L(ref curAlarmBit, 0, _zl);
                     SetAlarmBit_L(ref curAlarmBit, 1, _ll);
                     SetAlarmBit_L(ref curAlarmBit, 5, _bv);
-                    /*
-                    if ((_id + _TimeTick) % 7 == 0)
+                    
+                    if ((_id + _TimeTick) % 7 == 0 && _wd3s_Queues_Array != null && _wd3s_th != null)
                     {
                         curAlarmBit &= ~((uint)1 << 7);
-                        float pp = 0;
-                        if (_Skip_pp != null && _DetectionSkip != null)
+                        float pp = _wd3s_Queues_Array[0].skip_pp();
+
+                        if (pp > Wd3s_th[0])
                         {
-                            pp = _DetectionSkip.DeltaP_P();
-                            if (pp > _Skip_pp)
-                            {
-                                curAlarmBit |= (uint)1 << 7;
-                            }
-                        }
+                            curAlarmBit |= (uint)1 << 7;
+                        }                       
                         //
                         uint lastBit = _lastAlarmBitInfo & ((uint)1 << 7);
                         uint curBit = curAlarmBit & ((uint)1 << 7);
@@ -1074,16 +1036,16 @@ namespace HGS
                         }
                         _lastAlarmBitInfo &= ~((uint)1 << 7);
                         _lastAlarmBitInfo |= curBit;
-                    }*/
+                    }
                    
-                    if (Wd3s_Queues_Array != null && Wd3s_th != null)
+                    if (_wd3s_Queues_Array != null && _wd3s_th != null)
                     {
                         //延时报警
-                        if (Wave_Delay_Checked && !lastAlarmifav && _Alarmifav)
+                        if (!lastAlarmifav && _Alarmifav)
                         {
                             for (int i = 0; i < prime.Length; i++)
                             {
-                                Wd3s_Queues_Array[i].Clear();
+                                _wd3s_Queues_Array[i].Clear();
                             }
                         }
                         for (int i = 0; i < prime.Length; i++)
@@ -1091,8 +1053,7 @@ namespace HGS
                             if ((_id + _TimeTick) % prime[i] == 0)
                             {
                                 curAlarmBit &= ~((uint)1 << (i + 10)); 
-                                if (!Wave_Periodic_Checked && Wd3s_Queues_Array[i].IsWaved(Wd3s_th[i])
-                                    || Wd3s_Queues_Array[i].IsWaved(Wd3s_th[i]) && Wd3s_Queues_Array[i].harmonic_2rd_ok())
+                                if (_wd3s_Queues_Array[i].IsWaved(_wd3s_th[i]))
                                     curAlarmBit |= ((uint)1 << (i + 10));
                                 //
                                 uint lastBit = _lastAlarmBitInfo & ((uint)1 << i + 10);
@@ -1103,7 +1064,7 @@ namespace HGS
                                 }
                                 else if (lastBit < curBit)
                                 {
-                                    AlarmInfo ai = CreateAlarmInfo(i + 10, Wd3s_Queues_Array[i].Delta_pp_Wave());
+                                    AlarmInfo ai = CreateAlarmInfo(i + 10, _wd3s_Queues_Array[i].Delta_pp_Wave());
                                     AlarmSet.GetInst().AddAlarming(ai);
                                     AlarmCount++;
                                 }

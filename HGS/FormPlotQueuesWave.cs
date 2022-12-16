@@ -44,9 +44,9 @@ namespace HGS
             };
             double maxdv = double.MinValue;
             double mindv = double.MaxValue;
-            for (int m = 0; m <= j; m++)
+            for (int m = 0; m < j; m++)
             {
-                foreach (double dv in Point.Wd3s_Queues_Array[j].Data())
+                foreach (double dv in Point.Wd3s_Queues_Array[m].Data())
                 {
                     maxdv = Math.Max(maxdv, dv);
                     mindv = Math.Min(mindv, dv);

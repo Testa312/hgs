@@ -93,8 +93,7 @@
             this.textBoxBV = new System.Windows.Forms.TextBox();
             this.button_WaveTh = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
-            this.checkBox_wave_delay = new System.Windows.Forms.CheckBox();
-            this.checkBox_wave_periodic = new System.Windows.Forms.CheckBox();
+            this.checkBox_skip = new System.Windows.Forms.CheckBox();
             this.textBoxTV = new System.Windows.Forms.TextBox();
             this.button_LL = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -102,7 +101,6 @@
             this.button_HL = new System.Windows.Forms.Button();
             this.textBoxZH = new System.Windows.Forms.TextBox();
             this.textBoxZL = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.textBoxHL = new System.Windows.Forms.TextBox();
@@ -127,6 +125,8 @@
             this.删除节点ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.节点属性ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.maskedTextBox_delay = new MaskedTextBox.MaskedTextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -700,11 +700,11 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.maskedTextBox_delay);
             this.groupBox3.Controls.Add(this.textBoxBV);
             this.groupBox3.Controls.Add(this.button_WaveTh);
             this.groupBox3.Controls.Add(this.label7);
-            this.groupBox3.Controls.Add(this.checkBox_wave_delay);
-            this.groupBox3.Controls.Add(this.checkBox_wave_periodic);
+            this.groupBox3.Controls.Add(this.checkBox_skip);
             this.groupBox3.Controls.Add(this.textBoxTV);
             this.groupBox3.Controls.Add(this.button_LL);
             this.groupBox3.Controls.Add(this.label5);
@@ -712,7 +712,7 @@
             this.groupBox3.Controls.Add(this.button_HL);
             this.groupBox3.Controls.Add(this.textBoxZH);
             this.groupBox3.Controls.Add(this.textBoxZL);
-            this.groupBox3.Controls.Add(this.label9);
+            this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.label13);
             this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Controls.Add(this.textBoxHL);
@@ -737,7 +737,7 @@
             // 
             this.button_WaveTh.Location = new System.Drawing.Point(598, 25);
             this.button_WaveTh.Name = "button_WaveTh";
-            this.button_WaveTh.Size = new System.Drawing.Size(109, 21);
+            this.button_WaveTh.Size = new System.Drawing.Size(86, 21);
             this.button_WaveTh.TabIndex = 11;
             this.button_WaveTh.Text = "波动阈值...";
             this.button_WaveTh.UseVisualStyleBackColor = true;
@@ -752,27 +752,16 @@
             this.label7.TabIndex = 0;
             this.label7.Text = "量程下限：";
             // 
-            // checkBox_wave_delay
+            // checkBox_skip
             // 
-            this.checkBox_wave_delay.AutoSize = true;
-            this.checkBox_wave_delay.Location = new System.Drawing.Point(661, 62);
-            this.checkBox_wave_delay.Name = "checkBox_wave_delay";
-            this.checkBox_wave_delay.Size = new System.Drawing.Size(48, 16);
-            this.checkBox_wave_delay.TabIndex = 10;
-            this.checkBox_wave_delay.Text = "延时";
-            this.checkBox_wave_delay.UseVisualStyleBackColor = true;
-            this.checkBox_wave_delay.Click += new System.EventHandler(this.checkBoxbool_Click);
-            // 
-            // checkBox_wave_periodic
-            // 
-            this.checkBox_wave_periodic.AutoSize = true;
-            this.checkBox_wave_periodic.Location = new System.Drawing.Point(607, 61);
-            this.checkBox_wave_periodic.Name = "checkBox_wave_periodic";
-            this.checkBox_wave_periodic.Size = new System.Drawing.Size(48, 16);
-            this.checkBox_wave_periodic.TabIndex = 10;
-            this.checkBox_wave_periodic.Text = "周期";
-            this.checkBox_wave_periodic.UseVisualStyleBackColor = true;
-            this.checkBox_wave_periodic.Click += new System.EventHandler(this.checkBoxbool_Click);
+            this.checkBox_skip.AutoSize = true;
+            this.checkBox_skip.Location = new System.Drawing.Point(700, 27);
+            this.checkBox_skip.Name = "checkBox_skip";
+            this.checkBox_skip.Size = new System.Drawing.Size(48, 16);
+            this.checkBox_skip.TabIndex = 10;
+            this.checkBox_skip.Text = "跳变";
+            this.checkBox_skip.UseVisualStyleBackColor = true;
+            this.checkBox_skip.Click += new System.EventHandler(this.checkBoxbool_Click);
             // 
             // textBoxTV
             // 
@@ -834,15 +823,6 @@
             this.textBoxZL.Name = "textBoxZL";
             this.textBoxZL.Size = new System.Drawing.Size(74, 21);
             this.textBoxZL.TabIndex = 7;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(713, 28);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(17, 12);
-            this.label9.TabIndex = 0;
-            this.label9.Text = "pp";
             // 
             // label13
             // 
@@ -1078,6 +1058,24 @@
             this.timer1.Interval = 30000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // maskedTextBox_delay
+            // 
+            this.maskedTextBox_delay.Location = new System.Drawing.Point(658, 56);
+            this.maskedTextBox_delay.Masked = MaskedTextBox.Mask.Digit;
+            this.maskedTextBox_delay.Name = "maskedTextBox_delay";
+            this.maskedTextBox_delay.Size = new System.Drawing.Size(80, 21);
+            this.maskedTextBox_delay.TabIndex = 12;
+            this.maskedTextBox_delay.Text = "0";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(598, 62);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 12);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "延时(s):";
+            // 
             // FormPointSet
             // 
             this.AcceptButton = this.buttonSet;
@@ -1192,10 +1190,10 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem 设置波动阈值ToolStripMenuItem;
         private System.Windows.Forms.Button button_WaveTh;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ToolStripMenuItem wave缓冲曲线ToolStripMenuItem;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.CheckBox checkBox_wave_delay;
-        private System.Windows.Forms.CheckBox checkBox_wave_periodic;
+        private System.Windows.Forms.CheckBox checkBox_skip;
+        private MaskedTextBox.MaskedTextBox maskedTextBox_delay;
+        private System.Windows.Forms.Label label3;
     }
 }

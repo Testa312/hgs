@@ -236,8 +236,20 @@ namespace HGS
                                 pt.boolAlarminfo = tB_boolAlarmInfo.Text;
                             pt.boolAlarmif = radioButton_true.Checked;
 
-                            pt.Wave_Periodic_Checked = checkBox_wave_periodic.Checked;
-                            pt.Wave_Delay_Checked = checkBox_wave_delay.Checked;
+                            pt.Skip_Checked = checkBox_skip.Checked;
+
+                            if (maskedTextBox_delay.Text.Length > 0)
+                            {
+                                pt.DelayAlarmTime = int.Parse(maskedTextBox_delay.Text);
+                            }
+                            else
+                                pt.DelayAlarmTime = 0;
+
+                            pt.DelayAlarmTime = pt.DelayAlarmTime >= 0 ? pt.DelayAlarmTime : 0;
+                            pt.DelayAlarmTime = pt.DelayAlarmTime <= 3600 ? pt.DelayAlarmTime : 3600;
+                            maskedTextBox_delay.Text = pt.DelayAlarmTime.ToString();
+
+
                             pt.Sound = comboBox_Sound.SelectedIndex;
                             gllistUpateItemText(item, pt);
                         }
@@ -330,8 +342,8 @@ namespace HGS
             radioButton_true.Checked = Point.boolAlarmif;
             radioButton_false.Checked = !Point.boolAlarmif;
 
-            checkBox_wave_periodic.Checked = Point.Wave_Periodic_Checked;
-            checkBox_wave_delay.Checked = Point.Wave_Delay_Checked;
+            checkBox_skip.Checked = Point.Skip_Checked;
+            maskedTextBox_delay.Text = Point.DelayAlarmTime.ToString();
             //textBox_pp.Text = Point.Skip_pp.ToString();
             //
             button_HL.ForeColor = Color.Black;
@@ -823,6 +835,7 @@ namespace HGS
             
             else if (e.Data.GetDataPresent(typeof(TreeDragData)))
             {
+                /*
                 if ((e.KeyState & 8) == 8 &&
                     (e.AllowedEffect & DragDropEffects.Copy) == DragDropEffects.Copy)
                 {
@@ -830,7 +843,8 @@ namespace HGS
                     e.Effect = DragDropEffects.Copy;
                 }
                 else 
-                    e.Effect = DragDropEffects.Move;
+                    */
+                e.Effect = DragDropEffects.Move;
             }
             else
                 e.Effect = DragDropEffects.None;
@@ -861,13 +875,16 @@ namespace HGS
             }
             else if (e.Data.GetDataPresent(typeof(TreeDragData)))
             {
+                /*
                 if ((e.KeyState & 8) == 8 &&
                     (e.AllowedEffect & DragDropEffects.Copy) == DragDropEffects.Copy)
                 {
                     // CTRL KeyState for copy.
                     e.Effect = DragDropEffects.Copy;
                 }
-                else if((e.AllowedEffect & DragDropEffects.Move) == DragDropEffects.Move)
+                else */
+
+                if((e.AllowedEffect & DragDropEffects.Move) == DragDropEffects.Move)
                     e.Effect = DragDropEffects.Move;
                 treeView.Focus();
                 treeView.SelectedNode = DropNode;
@@ -936,7 +953,18 @@ namespace HGS
                             tt.SensorExceptWith(myData.pointid_set);
                             DataDeviceTree.UpdateNodetoDB(myData.DragSourceNode);
                         }
+                        //
+                        DeviceInfo ttg = (DeviceInfo)DropNode.Tag;
+
+                        ttg.SensorUnionWith(myData.pointid_set);
+
+                        DataDeviceTree.UpdateNodetoDB(DropNode);
+                        TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(DropNode, MouseButtons.Left, 0, 0, 0);
+                        treeView_NodeMouseClick(null, ee);
+                        if (ttg.Alarm_th_dis != null)
+                            MessageBox.Show("应重新设置设备报警参数");
                     }
+                    /*
                     if (e.Effect == DragDropEffects.Move || e.Effect == DragDropEffects.Copy)
                     {
 
@@ -949,7 +977,7 @@ namespace HGS
                         treeView_NodeMouseClick(null, ee);
                         if (ttg.Alarm_th_dis != null)
                             MessageBox.Show("应重新设置设备报警参数");
-                    }                  
+                    } */                 
                 }
             }
         }
@@ -967,7 +995,7 @@ namespace HGS
 
         private void glacialList1_MouseDown(object sender, MouseEventArgs e)
         {
-            if ((ModifierKeys & Keys.Shift) == Keys.Shift || (ModifierKeys & Keys.Control) == Keys.Control)
+            if ((ModifierKeys & Keys.Shift) == Keys.Shift)// || (ModifierKeys & Keys.Control) == Keys.Control)
             {
                 if (e.Button == MouseButtons.Left && glacialList1.SelectedItems.Count > 0)
                 {
@@ -979,7 +1007,7 @@ namespace HGS
                         td.pointid_set.Add(tag.id);
                         td.DragSourceNode = treeView.SelectedNode;
                     }
-                    glacialList1.DoDragDrop(td, DragDropEffects.Copy | DragDropEffects.Move);
+                    glacialList1.DoDragDrop(td,DragDropEffects.Move);
                 }
             }
         }

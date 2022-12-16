@@ -513,6 +513,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Log.txt" />
+    <Content Include="测试数据.txt" />
     <None Include="Resources\bug_512px_1125.png" />
     <None Include="Resources\tools_report_bug_128px.ico" />
     <None Include="Resources\bug_marienkaefer_256px_560064_easyicon.net.png" />

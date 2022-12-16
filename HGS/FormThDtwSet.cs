@@ -421,6 +421,10 @@ namespace HGS
                 }
                 else
                     ttg.DelayAlarmTime = 0;
+
+                ttg.DelayAlarmTime = ttg.DelayAlarmTime >= 0 ? ttg.DelayAlarmTime : 0;
+                ttg.DelayAlarmTime = ttg.DelayAlarmTime <= 3600 ? ttg.DelayAlarmTime : 3600;
+
                 //传感器
                 if (ttg.Sensors_set().Count >= 2)
                 {
@@ -450,13 +454,6 @@ namespace HGS
                         }
 
                         point pt = Data.inst().cd_Point[(int)item.Tag];
-                        if(pt.Dtw_Queues_Array != null)
-                        {
-                            foreach (Dtw_queues dq in pt.Dtw_Queues_Array)
-                            {
-                                dq.Delay = ttg.DelayAlarmTime;
-                            }
-                        }
                         pt.Dtw_start_th = flag ? th_dtw : null;
                     }
 

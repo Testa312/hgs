@@ -228,16 +228,28 @@ namespace HGS
             }
             return hash_rsl;
         }
-        public static void InitPointDtwQueues(Dictionary<int,point> dic_pt)
+        public static void InitPointDtwQueues(Dictionary<int, DeviceInfo> dic_dev)
         {
-            if (dic_pt == null)
+            if (dic_dev == null)
                 throw new ArgumentException("初始化队列的点列表不能为空！");
             int[] ScanSpan = new int[6] { 18, 36, 72, 144, 288, 576 };
-            HashSet<point> lsob = new HashSet<point>(dic_pt.Values.ToArray());
-            HashSet<point> lsrunob = new HashSet<point>(); 
+            HashSet<point> lsob = new HashSet<point>();
+            foreach (DeviceInfo di in dic_dev.Values)
+            {
+                foreach (int ptid in di.Sensors_set())
+                {
+                    point pt;
+                    if (Data.inst().cd_Point.TryGetValue(ptid, out pt))
+                    {
+                        lsob.Add(pt);
+                    }
+                }
+            }
+            HashSet<point> lsrunob = new HashSet<point>();
             DateTime end = GetSisSystemTime(siscon_keep).AddSeconds(-5);
             for (int i = 0; i < ScanSpan.Length; i++)
             {
+                //为了系统快速启动，统一为最长延时1小时，可能对近期启动设备投入时间延长。
                 DateTime begin = end.AddMinutes(-ScanSpan[i] - 60);
                 //
                 HashSet<int> rsl = GetDeiveAlarmStat(siscon_keep, begin, end, 0, ScanSpan[i] / 2);
@@ -245,9 +257,9 @@ namespace HGS
                 lsrunob.Clear();
                 foreach (point pt in lsob)
                 {
-                    foreach (int did in pt.Device_set())
+                    //foreach (int did in pt.Device_set())
                     {
-                        if (rsl.Contains(did))
+                        if (rsl.Contains(pt.DeviceId))
                             lsrunob.Add(pt);
                         else
                         {
@@ -256,7 +268,7 @@ namespace HGS
                     }
                 }
                //
-               Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep, lsrunob, begin, end, 0, ScanSpan[i] / 2);
+                Dictionary<int, PointData> dic_pd = GetPointData_dic(siscon_keep, lsrunob, begin, end, 0, ScanSpan[i] / 2);
                 foreach (PointData pd in dic_pd.Values)
                 {
                     float[] x = new float[pd.data.Count];
@@ -264,7 +276,11 @@ namespace HGS
                     {
                         x[m] = pd.data[pd.data.Count - 1 - m].Value;
                     }
-                    dic_pt[pd.ID].initDeviceQ(i, x);
+                    point pt;
+                    if (Data.inst().cd_Point.TryGetValue(pd.ID, out pt))
+                    {
+                        pt.initDeviceQ(i, x);
+                    }
                 }
             }
 
@@ -320,12 +336,13 @@ namespace HGS
             DateTime end = GetSisSystemTime(siscon_keep).AddSeconds(-5);
             for (int i = 0; i < ScanSpan.Length; i++)
             {
+                //为了系统快速启动，统一为最长延时1小时，可能对近期启动设备投入时间延长。
                 DateTime begin = end.AddSeconds(-ScanSpan[i] - 3600);
                 //
                 lsob.Clear();
                 foreach (point pt in dic_pt.Values)
                 {
-                    if (!pt.Wave_Delay_Checked || GetSensorAlarmStat(siscon_keep, pt, begin, end, 0, ScanSpan[i] / 120))
+                    if (GetSensorAlarmStat(siscon_keep, pt, begin, end, 0, ScanSpan[i] / 120))
                     {
                         lsob.Add(pt);
                     }

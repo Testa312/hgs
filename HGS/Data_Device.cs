@@ -25,7 +25,7 @@ namespace HGS
         public int sort = 0;
         public int CountofDTWCalc = 0;
         public int Sound = 4;//朗读
-        public int DelayAlarmTime = 0;
+        public int DelayAlarmTime = 0;//单位s
         private HashSet<int> hs_Sensorsid = null;
         //
         private int TimeTick;
@@ -109,7 +109,7 @@ namespace HGS
             hs_Sensorsid.Remove(sid);
             point pt;
             if (Data.inst().cd_Point.TryGetValue(sid, out pt))
-                pt.removefromdevice(id);
+                pt.removefromdevice();
             if (hs_Sensorsid.Count <= 1)
             {
                 Alarm_th_dis = null;
@@ -125,7 +125,7 @@ namespace HGS
             {
                 point pt;
                 if (Data.inst().cd_Point.TryGetValue(sid, out pt))
-                    pt.removefromdevice(id);
+                    pt.removefromdevice();
             }
             hs_Sensorsid.ExceptWith(sen_set);
             if (hs_Sensorsid.Count <= 1)
@@ -174,13 +174,8 @@ namespace HGS
         {
             if (Orgformula_If != null && Orgformula_If.Length >0 && alarm_th_dis != null)
             {
-                Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
-                foreach (int did in Sensors_set())
-                {
-                    point pt;
-                    if (Data.inst().cd_Point.TryGetValue(did, out pt))
-                        dic_intQueues.Add(did, pt);                   
-                }
+                Dictionary<int, DeviceInfo> dic_intQueues = new Dictionary<int, DeviceInfo>();
+                dic_intQueues.Add(id, this);
                 SisConnect.InitPointDtwQueues(dic_intQueues);
             }
         }

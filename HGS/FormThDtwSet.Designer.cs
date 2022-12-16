@@ -138,10 +138,12 @@ namespace HGS
             this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.textBox_ND = new System.Windows.Forms.TextBox();
             this.textBox_Name = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.maskedTextBox_delaytime = new MaskedTextBox.MaskedTextBox();
             this.comboBox_Sound = new System.Windows.Forms.ComboBox();
             this.maskedTextBox_Sort = new MaskedTextBox.MaskedTextBox();
             this.plotView1 = new OxyPlot.WindowsForms.PlotView();
@@ -149,8 +151,6 @@ namespace HGS
             this.button_dell = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.maskedTextBox_delaytime = new MaskedTextBox.MaskedTextBox();
-            this.label7 = new System.Windows.Forms.Label();
             this.statusStrip1.SuspendLayout();
             this.menuStrip2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -1265,6 +1265,15 @@ namespace HGS
             this.label3.TabIndex = 0;
             this.label3.Text = "声音：";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(25, 307);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(83, 12);
+            this.label7.TabIndex = 0;
+            this.label7.Text = "报警延迟(s)：";
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -1296,6 +1305,14 @@ namespace HGS
             this.label5.Size = new System.Drawing.Size(41, 12);
             this.label5.TabIndex = 0;
             this.label5.Text = "点名：";
+            // 
+            // maskedTextBox_delaytime
+            // 
+            this.maskedTextBox_delaytime.Location = new System.Drawing.Point(25, 327);
+            this.maskedTextBox_delaytime.Masked = MaskedTextBox.Mask.Digit;
+            this.maskedTextBox_delaytime.Name = "maskedTextBox_delaytime";
+            this.maskedTextBox_delaytime.Size = new System.Drawing.Size(123, 21);
+            this.maskedTextBox_delaytime.TabIndex = 1;
             // 
             // comboBox_Sound
             // 
@@ -1368,23 +1385,6 @@ namespace HGS
             this.timer1.Enabled = true;
             this.timer1.Interval = 30000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // maskedTextBox_delaytime
-            // 
-            this.maskedTextBox_delaytime.Location = new System.Drawing.Point(25, 327);
-            this.maskedTextBox_delaytime.Masked = MaskedTextBox.Mask.Digit;
-            this.maskedTextBox_delaytime.Name = "maskedTextBox_delaytime";
-            this.maskedTextBox_delaytime.Size = new System.Drawing.Size(123, 21);
-            this.maskedTextBox_delaytime.TabIndex = 1;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(25, 307);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(101, 12);
-            this.label7.TabIndex = 0;
-            this.label7.Text = "报警延迟(分钟)：";
             // 
             // FormThDtwSet
             // 

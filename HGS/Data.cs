@@ -359,7 +359,9 @@ namespace HGS
                 DeviceInfo._ce = Data.inst().ce;
                 Data_Device.GetAllAlarmDevice();//从数据库中取出设备信息并关联传感器。
                 //
+                
                 Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
+                /*
                 foreach (point v in hsAllPoint)
                 {
                     if (v.Dtw_start_th != null)
@@ -371,6 +373,8 @@ namespace HGS
                     }
                 }
                 SisConnect.InitPointDtwQueues(dic_intQueues);
+                */
+                SisConnect.InitPointDtwQueues(Data_Device.dic_Device);
                 //
                 dic_intQueues.Clear();
                 foreach (point v in hsAllPoint)
@@ -454,14 +458,14 @@ namespace HGS
                                          "pn='{8}',orgformula_main='{9}',fm={10},iscalc = {11}," +
                                         "isavalarm = {12},ed = '{13}',isboolv = {14},boolalarminfo = '{15}'," +
                                                    " orgformula_hl = '{16}',orgformula_ll = '{17}',alarmif = '{18}' ,boolalarmif = {19} ," +
-                                                   "wave_periodic_checked = {20},dtw_start_th = {21},sound = {22},wave_th = {23}, " +
-                                                   "wave_delay_checked  = {24} where id = {25};",
+                                                   "skip_checked = {20},dtw_start_th = {21},sound = {22},wave_th = {23}, " +
+                                                   "delayalarmtime  = {24} where id = {25};",
                                         Functions.dtoNULL(pt.tv), Functions.dtoNULL(pt.bv), Functions.dtoNULL(pt.ll), Functions.dtoNULL(pt.hl),
                                         Functions.dtoNULL(pt.zl), Functions.dtoNULL(pt.zh),
                                         pt._mt = DateTime.Now,pt.eu, pt.pn, pt.Orgformula_main,pt.fm,
                                         pt.isCalc,pt.isAvalarm, pt.ed,pt.isboolvAlarm,pt.boolAlarminfo, pt.orgformula_hl,
-                                        pt.Orgformula_ll,pt.Alarmif,pt.boolAlarmif, pt.Wave_Periodic_Checked,
-                                        ArraytoString(pt.Dtw_start_th),pt.Sound,ArraytoString(pt.Wd3s_th),pt.Wave_Delay_Checked, pt.id));
+                                        pt.Orgformula_ll,pt.Alarmif,pt.boolAlarmif, pt.Skip_Checked,
+                                        ArraytoString(pt.Dtw_start_th),pt.Sound,ArraytoString(pt.Wd3s_th),pt.DelayAlarmTime, pt.id));
                 sb.AppendLine(string.Format("delete  from formula_point where id = {0};", pt.id));
                 GetinsertsubSql(sb, pt);
             }
@@ -472,7 +476,7 @@ namespace HGS
 
                 sb.AppendLine(string.Format(@"insert into point (id,nd,pn,ed,eu,tv,bv,ll,hl,zl,"+
                                             "zh,id_sis,pointsrc,mt,ownerid,orgformula_main,fm,iscalc,isavalarm,isboolv,boolalarminfo," +
-                                            "orgformula_hl,orgformula_ll,alarmif,boolalarmif,wave_periodic_checked,dtw_start_th,sound,wave_th,wave_delay_checked) " + 
+                                            "orgformula_hl,orgformula_ll,alarmif,boolalarmif,skip_checked,dtw_start_th,sound,wave_th,delayalarmtime) " + 
                                     "values ({0},'{1}','{2}','{3}','{4}',{5},{6},{7},{8},{9},"+
                                             "{10},{11},{12},'{13}',{14},'{15}',{16},{17},{18},{19},'{20}','{21}','{22}','{23}',{24},{25}," +
                                             "{26},{27},{28},{29});",
@@ -480,8 +484,8 @@ namespace HGS
                                     Functions.dtoNULL(pt.ll), Functions.dtoNULL(pt.hl), Functions.dtoNULL(pt.zl),
                                     Functions.dtoNULL(pt.zh), pt.Id_sis,(int)pt.pointsrc, pt._mt = DateTime.Now, Auth.GetInst().LoginID, pt.Orgformula_main,
                                     pt.fm,pt.isCalc,pt.isAvalarm,pt.isboolvAlarm,pt.boolAlarminfo, pt.orgformula_hl, pt.Orgformula_ll,pt.Alarmif,
-                                    pt.boolAlarmif,pt.Wave_Periodic_Checked, 
-                                    ArraytoString(pt.Dtw_start_th),pt.Sound,ArraytoString(pt.Wd3s_th),pt.Wave_Delay_Checked));
+                                    pt.boolAlarmif,pt.Skip_Checked, 
+                                    ArraytoString(pt.Dtw_start_th),pt.Sound,ArraytoString(pt.Wd3s_th),pt.DelayAlarmTime));
                 GetinsertsubSql(sb, pt);
                // pt.id = ptid;
                // ptid++;
