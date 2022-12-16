@@ -379,7 +379,8 @@ namespace HGS
         public void AlarmCalc()
         {
             curAlarmBit = 0;
-            bool curAlarmIf = _Expression_If != null && Convert.ToBoolean(_ce.Evaluate(_Expression_If));
+            bool curAlarmIf = _Expression_If != null && Convert.ToBoolean(_ce.Evaluate(_Expression_If)) ||
+                    _Orgformula_If == null || _Orgformula_If.Length == 0;               ;
             if (lastAlarmIf && !curAlarmIf)//复位报警
             {              
                 for (int i = 0; i < prime.Length; i++)
