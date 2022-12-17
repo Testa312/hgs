@@ -123,12 +123,16 @@ namespace HGS
             return bTemp;
         }
 
-        
+
         public void SendCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            //??????
-            MailMessage mail = (MailMessage)e.UserState;
-            string subject = mail.Subject;
+            MailMessage mail;
+            string subject = "";
+            if (e.UserState != null)
+            {
+                mail = (MailMessage)e.UserState;
+                subject = mail.Subject;
+            }
 
             if (e.Cancelled)
             {
