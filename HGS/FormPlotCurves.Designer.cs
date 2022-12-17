@@ -37,7 +37,6 @@
             GlacialComponents.Controls.GLColumn glColumn5 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn6 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn7 = new GlacialComponents.Controls.GLColumn();
-            GlacialComponents.Controls.GLColumn glColumn8 = new GlacialComponents.Controls.GLColumn();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -267,19 +266,11 @@
             glColumn7.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn7.CheckBoxes = false;
             glColumn7.ImageIndex = -1;
-            glColumn7.Name = "Skip_pp";
-            glColumn7.NumericSort = true;
-            glColumn7.Text = "跳变pp * 1.1";
-            glColumn7.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
-            glColumn7.Width = 100;
-            glColumn8.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
-            glColumn8.CheckBoxes = false;
-            glColumn8.ImageIndex = -1;
-            glColumn8.Name = "EU";
-            glColumn8.NumericSort = false;
-            glColumn8.Text = "单位";
-            glColumn8.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn8.Width = 80;
+            glColumn7.Name = "EU";
+            glColumn7.NumericSort = false;
+            glColumn7.Text = "单位";
+            glColumn7.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn7.Width = 80;
             this.glacialList1.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
             glColumn1,
             glColumn2,
@@ -287,8 +278,7 @@
             glColumn4,
             glColumn5,
             glColumn6,
-            glColumn7,
-            glColumn8});
+            glColumn7});
             this.glacialList1.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
             this.glacialList1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.glacialList1.FullRowSelect = true;

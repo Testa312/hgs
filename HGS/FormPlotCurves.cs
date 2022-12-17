@@ -116,13 +116,15 @@ namespace HGS
                     pd.MaxAv = pd_stat.MaxAv;
                     pd.MinAv = pd_stat.MinAv;
                 }
+                /*
                 if (dic_pd_stat_30s != null && dic_pd_stat_30s.TryGetValue(pd.ID, out pd_stat))
                 {
                     pd.DifAV = pd_stat.DifAV;
                 }
+                */
                 itm.SubItems["MAX"].Text = Math.Round(pd.MaxAv * 1.1, 3).ToString();
                 itm.SubItems["MIN"].Text = Math.Round(pd.MinAv * 0.9, 3).ToString(); 
-                itm.SubItems["Skip_pp"].Text = Math.Round(pd.DifAV * 1.1, 3).ToString();
+                //itm.SubItems["Skip_pp"].Text = Math.Round(pd.DifAV * 1.1, 3).ToString();
                 lsitem.Add(itm);
             }
             glacialList1.Items.AddRange(lsitem.ToArray());

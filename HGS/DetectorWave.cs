@@ -152,36 +152,48 @@ namespace HGS
         }
         public void Clear()
         {
-            step1.Clear();
-            step2.Clear();
-            step3.Clear();
-            p = -1;
+            lock (Pref.Inst().root)
+            {
+                step1.Clear();
+                step2.Clear();
+                step3.Clear();
+                p = -1;
+            }
         }
         //th 为阈值
         public bool IsWaved(float th)
         {
-            if(p <=  3* size + delay / downsample + 10)
+            lock (Pref.Inst().root)
+            {
+                if (p <= 3 * size + delay / downsample + 10)
+                    return false;
+
+                bool s1 = step1.DeltaP_P() > th;
+                bool s2 = step2.DeltaP_P() > th;
+                bool s3 = step3.DeltaP_P() > th;
+
+                if (s1 && s2 && s3)
+                    return true;
                 return false;
-
-            bool s1 = step1.DeltaP_P() > th;
-            bool s2 = step2.DeltaP_P() > th;
-            bool s3 = step3.DeltaP_P() > th;
-
-            if (s1 && s2 && s3) 
-                return true;
-            return false;
+            }
         }
         public float Delta_pp_Wave()
         {
-            if (p <= 3 * size + delay / downsample + 10)
-                return 0;
-            return Math.Max(Math.Max(step1.DeltaP_P(), step2.DeltaP_P()), step3.DeltaP_P());
+            lock (Pref.Inst().root)
+            {
+                if (p <= 3 * size + delay / downsample + 10)
+                    return 0;
+                return Math.Max(Math.Max(step1.DeltaP_P(), step2.DeltaP_P()), step3.DeltaP_P());
+            }
         }
         public float skip_pp()
         {
-            if (p <= size + delay / downsample + 10)
-                return 0;
-            return step1.DeltaP_P();
+            lock (Pref.Inst().root)
+            {
+                if (p <= size + delay / downsample + 10)
+                    return 0;
+                return step1.DeltaP_P();
+            }
         }
         //有2次谐波的的最大值
         public bool harmonic_2rd_ok()

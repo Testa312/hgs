@@ -124,17 +124,22 @@ namespace HGS
         //设备启动后，延迟一定时间
         public float DeltaP_P()
         {
-            //if (qdata.Count != size) 
-            if (p <= size + delay / downsample + 10)
-                return 0;
-            return Max() - Min();
+            lock (Pref.Inst().root)
+            {
+                if (p <= size + delay / downsample + 10)
+                    return 0;
+                return Max() - Min();
+            }
         }
         public void Clear()
         {
-            qdata.Clear();
-            qmax.Clear();
-            qmin.Clear();
-            p = -1;
+            lock (Pref.Inst().root)
+            {
+                qdata.Clear();
+                qmax.Clear();
+                qmin.Clear();
+                p = -1;
+            }
         }
     }
 }
