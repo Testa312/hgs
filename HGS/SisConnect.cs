@@ -117,7 +117,7 @@ namespace HGS
                         calcpt.Add(pt);
                 }
 
-                    Dictionary<int, PointData> dic_pd_sis = SisConnect.GetsisData(sisconn,sisid.ToArray(), begin, end, count,span);
+                Dictionary<int, PointData> dic_pd_sis = SisConnect.GetsisData(sisconn, sisid.ToArray(), begin, end, count, span);
                 foreach (PointData pd in dic_pd_sis.Values)
                 {
                     point pt = Data.inst().dic_SisIdtoPoint[pd.ID_sis];
@@ -224,6 +224,8 @@ namespace HGS
                     }
                     if (rsl) hash_rsl.Add(di.id);
                 }
+                else
+                    hash_rsl.Add(di.id);
 
             }
             return hash_rsl;
@@ -289,39 +291,33 @@ namespace HGS
         {
             List<object> siskeys = new List<object>();
             CalcEngine.CalcEngine ce = new CalcEngine.CalcEngine();
-            //HashSet<int> hash_rsl = new HashSet<int>();
-            //foreach (DeviceInfo di in Data_Device.dic_Device.Values)
+            // siskeys.Clear();
+            if (Point.listSisCalcExpPointID_alarmif != null)
             {
-               // siskeys.Clear();
-
-                if (Point.listSisCalcExpPointID_alarmif != null)
+                foreach (point sispt in Point.listSisCalcExpPointID_alarmif)
                 {
-                    foreach (point sispt in Point.listSisCalcExpPointID_alarmif)
+                    siskeys.Add(Convert.ToInt64(sispt.Id_sis));
+                }
+                //
+                Dictionary<int, PointData> data = GetsisData(sisconn, siskeys.ToArray(), begin, end, count, span);
+                int c = 0;
+                if (data.Keys.Count >= 1)
+                {
+                    PointData pt = data[Convert.ToInt32(siskeys[0])];
+                    c = pt.data.Count;
+                }
+                for (int i = 0; i < c; i++)
+                {
+                    foreach (KeyValuePair<int, PointData> kvp in data)
                     {
-                        siskeys.Add(Convert.ToInt64(sispt.Id_sis));
+                        ce.Variables["S" + Data.inst().dic_SisIdtoPoint[kvp.Key].id.ToString()] = kvp.Value.data[i].Value;
                     }
-                    //
-                    Dictionary<int, PointData> data = GetsisData(sisconn, siskeys.ToArray(), begin, end, count, span);
-                    int c = 0;
-                    if (data.Keys.Count >= 1)
+                    if (Point.Sisformula_Alarmif.Length > 0 &&
+                        !Convert.ToBoolean(ce.Evaluate(Point.Sisformula_Alarmif)))
                     {
-                        PointData pt = data[Convert.ToInt32(siskeys[0])];
-                        c = pt.data.Count;
-                    }
-                    for (int i = 0; i < c; i++)
-                    {
-                        foreach (KeyValuePair<int, PointData> kvp in data)
-                        {
-                            ce.Variables["S" + Data.inst().dic_SisIdtoPoint[kvp.Key].id.ToString()] = kvp.Value.data[i].Value;
-                        }
-                        if (Point.Sisformula_Alarmif.Length > 0 &&
-                            !Convert.ToBoolean(ce.Evaluate(Point.Sisformula_Alarmif)))
-                        {
-                            return false;
-                        }
+                        return false;
                     }
                 }
-
             }
             return true;
         }

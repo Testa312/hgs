@@ -52,7 +52,7 @@ namespace HGS
                     itemn.SubItems["ED"].Text = Point.ed;
                     //itemn.SubItems[1].Text = Pref.GetInst().GetVarName(Point);
                     it.sisid = Point.Id_sis;
-                    if (onlyid.Contains(CalcPoint.id)) throw new Exception("不能引用自身！");
+                    //if (onlyid.Contains(CalcPoint.id)) throw new Exception("不能引用自身！");
                     onlyid.Add(it.id);//唯一性
                                       //
                     itemn.SubItems["VarName"].Text = subpt.varname;
@@ -61,7 +61,7 @@ namespace HGS
                 }
             }
             glacialList1.Items.AddRange(lsItmems.ToArray());
-            onlyid.Add(CalcPoint.id);//排除自已。
+            //onlyid.Add(CalcPoint.id);//排除自已。
             textBoxFormula.Text = CalcPoint.Alarmif;
             textBoxmDiscription.Text = CalcPoint.ed;
             textBoxPN.Text = CalcPoint.pn;

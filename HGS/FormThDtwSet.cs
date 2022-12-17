@@ -172,14 +172,14 @@ namespace HGS
             {
                 double dspan = (dateTimePicker2.Value - dateTimePicker1.Value).TotalHours;
                 if (dspan < 8)
-                    dateTimePicker1.Value.AddHours(dspan-8);
+                    dateTimePicker1.Value = dateTimePicker1.Value.AddHours(dspan-8);
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 //int[] span = new int[] {15,30,60,120,240,480 };//分钟
                 List<GLItem> lsItem = new List<GLItem>();
                 double cost = 0;
                 int dtw = 0;
-                double maxpp = double.MinValue;
+                //double maxpp = double.MinValue;
                 Dictionary<int, float[]> dic_dtw_th = new Dictionary<int, float[]>();
                 for (int i = 0; i < ScanSpan.Length; i++)
                 {
@@ -189,7 +189,7 @@ namespace HGS
                     Cursor = Cursors.WaitCursor;
 
                     cost = 0;
-                    maxpp = double.MinValue;
+                    //maxpp = double.MinValue;
                     Dictionary<int, PointData> dic_pd = null;
                     Dictionary<int, PointData> dic_pd_stat = SisConnect.GetsisStat(sisconn_temp,Functions.set_idtopoint(ttg.Sensors_set()), 
                         dateTimePicker1.Value, dateTimePicker2.Value, ScanSpan[i] * 60);
@@ -220,9 +220,32 @@ namespace HGS
                         }
                         foreach (PointData pd in dic_pd.Values)
                         {
-                            maxpp = Math.Max(maxpp, pd.MaxAv - pd.MinAv);
+                            float[] v;
+                            if (!dic_dtw_th.TryGetValue(pd.ID, out v))
+                            {
+                                v = new float[ScanSpan.Length];
+                                for (int m = 0; m < v.Length; m++)
+                                {
+                                    v[m] = float.MinValue;
+                                }
+                                dic_dtw_th.Add(pd.ID, v);
+                            }
+                            v[i] = Math.Max((float)((pd.MaxAv - pd.MinAv) * MULTI), v[i]);                            
                         }
-                        
+                        foreach (PointData pd in dic_pd_stat.Values)
+                        {
+                            float[] v;
+                            if (!dic_dtw_th.TryGetValue(pd.ID, out v))
+                            {
+                                v = new float[ScanSpan.Length];
+                                for (int m = 0; m < v.Length; m++)
+                                {
+                                    v[m] = float.MinValue;
+                                }
+                                dic_dtw_th.Add(pd.ID, v);
+                            }
+                            v[i] = Math.Max((float)((pd.DifAV) * MULTI), v[i]);
+                        }
                         begin = begin.AddMinutes(-ScanSpan[i] / 5);
                         end = end.AddMinutes(-ScanSpan[i] / 5);
                     }
@@ -233,24 +256,7 @@ namespace HGS
                     cost *= MULTI;
                     item.SubItems["alarm_th"].Text = Math.Round(cost, 3).ToString();
                     lsItem.Add(item);
-                    foreach (PointData pd in dic_pd.Values)
-                    {
-                        float[] v;
-                        if (!dic_dtw_th.TryGetValue(pd.ID, out v))
-                        {
-                            v = new float[ScanSpan.Length];
-                            dic_dtw_th.Add(pd.ID, v);
-                        }
-                        PointData pdstat;//sis点才有统计量
-                        if (dic_pd_stat.TryGetValue(pd.ID, out pdstat))
-                        {
-                            v[i] = (float) ((pdstat.DifAV) * MULTI);
-                        }
-                        else
-                        {
-                            v[i] = (float)((pd.MaxAv - pd.MinAv) * MULTI);
-                        }
-                    }
+                    
                 }
                 //
                 glacialList_dev_new.Items.Clear();

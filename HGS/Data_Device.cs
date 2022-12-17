@@ -348,7 +348,7 @@ namespace HGS
                     point pt;
                     if (Data.inst().cd_Point.TryGetValue(sid, out pt))
                     {
-                        if (pt.Dtw_Queues_Array != null)
+                        if (pt.Dtw_Queues_Array != null && pt.Dtw_start_th != null)
                         {
                             float p_p = pt.Dtw_Queues_Array[step].DeltaP_P();
                             if (p_p > pt.Dtw_start_th[step])

@@ -962,7 +962,7 @@ namespace HGS
             uint curAlarmBit = 0;
             if (_Alarmifav && _isAvalarm)
             {
-                //curAlarmBit = (uint)1 << 7;
+                curAlarmBit = (uint)1 << 7;
                 curAlarmBit |= (uint)63 << 10;
                 curAlarmBit &= _lastAlarmBitInfo;//保留波动
             }           

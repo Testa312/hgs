@@ -1090,7 +1090,7 @@ namespace HGS
             if (hsPoint.Count > 0)
             {
                 DateTime end = SisConnect.GetSisSystemTime(sisconn_temp);
-                FormThWaveSet fc = new FormThWaveSet(hsPoint, end.AddMinutes(-15), end, true);
+                FormThWaveSet fc = new FormThWaveSet(hsPoint, end.AddMinutes(-480), end, true);
                 fc.ShowDialog(this);
             }
         }
@@ -1104,7 +1104,7 @@ namespace HGS
                 HashSet<point> hsPoint = new HashSet<point>();
                 hsPoint.Add(pt);
                 DateTime end = SisConnect.GetSisSystemTime(sisconn_temp);
-                FormThWaveSet fc = new FormThWaveSet(hsPoint, end.AddMinutes(-15), end, true);
+                FormThWaveSet fc = new FormThWaveSet(hsPoint, end.AddMinutes(-480), end, true);
                 fc.ShowDialog(this);
                 button_WaveTh.ForeColor = pt.Wd3s_Queues_Array != null && pt.Wd3s_th != null  ? Color.Red : Color.Black;
             }

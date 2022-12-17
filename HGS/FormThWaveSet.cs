@@ -22,17 +22,10 @@ namespace HGS
         OPAPI.Connect sisconn_temp = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
         Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
 
-        readonly int[] step = new int[] { 30, 60, 120, 240, 480, 960, 1920 };
+        readonly int[] step = new int[] { 32, 64, 128, 256, 512, 1024, 2048 };
         const double MULTI = 1.1;
         //------------
         Dictionary<int, PointData> dic_pd = null;
-        Dictionary<int, PointData> dic_pd_stat_30s = null;
-        Dictionary<int, PointData> dic_pd_stat_60s = null;
-        Dictionary<int, PointData> dic_pd_stat_120s = null;
-        Dictionary<int, PointData> dic_pd_stat_240s = null;
-        Dictionary<int, PointData> dic_pd_stat_480s = null;
-        Dictionary<int, PointData> dic_pd_stat_960s = null;
-        Dictionary<int, PointData> dic_pd_stat_1920s = null;
         //---------------
         public FormThWaveSet(HashSet<point> hsPoint, DateTime begin, DateTime end, bool bAdmin = false )
         {
@@ -106,7 +99,7 @@ namespace HGS
                         for (int i = 0; i < pt.Wd3s_th.Length; i++)
                         {
                             if (pt.Wd3s_th != null && pt.Wd3s_th[i] <= 1e30)
-                                itm.SubItems[string.Format("pp{0}s", (1<<i) * 30)].Text =
+                                itm.SubItems[string.Format("pp{0}s", (1<<i) * 32)].Text =
                                     Math.Round(pt.Wd3s_th[i], 3).ToString();
                         }
                     }
@@ -366,68 +359,91 @@ namespace HGS
 
         private void toolStripButton_stat_th_Click(object sender, EventArgs e)
         {
+            if (hsPoint == null) return;
             try
             {
-                dic_pd_stat_30s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
-                    dateTimePicker1.Value, dateTimePicker2.Value, 32);
-                dic_pd_stat_60s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
-                    dateTimePicker1.Value, dateTimePicker2.Value, 64);
-                dic_pd_stat_120s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
-                    dateTimePicker1.Value, dateTimePicker2.Value, 128);
-                dic_pd_stat_240s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
-                    dateTimePicker1.Value, dateTimePicker2.Value, 256);
-                dic_pd_stat_480s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
-                    dateTimePicker1.Value, dateTimePicker2.Value, 512);
-                dic_pd_stat_960s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
-                    dateTimePicker1.Value, dateTimePicker2.Value, 1024);
-                dic_pd_stat_1920s = SisConnect.GetsisStat(sisconn_temp, hsPoint,
-                    dateTimePicker1.Value, dateTimePicker2.Value, 2048);
+                //
+                double dspan = (dateTimePicker2.Value - dateTimePicker1.Value).TotalHours;
+                if (dspan < 8)
+                    dateTimePicker1.Value = dateTimePicker1.Value.AddHours(dspan - 8);
 
-                List<GLItem> lsitem = new List<GLItem>();
-                glacialList_new.Items.Clear();
-                foreach (PointData pd in dic_pd.Values)
+                //int[] ScanSpan = new int[] { 32, 64, 128, 256, 512, 1024, 2048 };//s
+                Dictionary<int, float[]> dic_dtw_th = new Dictionary<int, float[]>();
+                //
+                HashSet<point> calcpoint = new HashSet<point>();
+                foreach (point cp in hsPoint)
                 {
-                    GLItem itm = new GLItem(glacialList_new);
-                    itm.SubItems["PN"].Text = pd.GN;
-                    itm.SubItems["ED"].Text = pd.ED;
-                    itm.SubItems["EU"].Text = pd.EU;
-                    point pt;
-                    if (Data.inst().cd_Point.TryGetValue(pd.ID, out pt))
-                    {
-                        itm.Tag = pt;
-                        PointData pd_stat;
-                        if (dic_pd_stat_30s.TryGetValue(pd.ID, out pd_stat))
-                        {
-                            itm.SubItems["pp30s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
-                        }
-                        if (dic_pd_stat_60s.TryGetValue(pd.ID, out pd_stat))
-                        {
-                            itm.SubItems["pp60s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
-                        }
-                        if (dic_pd_stat_120s.TryGetValue(pd.ID, out pd_stat))
-                        {
-                            itm.SubItems["pp120s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
-                        }
-                        if (dic_pd_stat_240s.TryGetValue(pd.ID, out pd_stat))
-                        {
-                            itm.SubItems["pp240s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
-                        }
-                        if (dic_pd_stat_480s.TryGetValue(pd.ID, out pd_stat))
-                        {
-                            itm.SubItems["pp480s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
-                        }
-                        if (dic_pd_stat_960s.TryGetValue(pd.ID, out pd_stat))
-                        {
-                            itm.SubItems["pp960s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
-                        }
-                        if (dic_pd_stat_1920s.TryGetValue(pd.ID, out pd_stat))
-                        {
-                            itm.SubItems["pp1920s"].Text = Math.Round(pd_stat.DifAV * MULTI, 3).ToString();
-                        }
-                    }
-                    lsitem.Add(itm);
+                    if (cp.pointsrc == pointsrc.calc)
+                        calcpoint.Add(cp);
                 }
-                glacialList_new.Items.AddRange(lsitem.ToArray());
+                List<GLItem> lsItem = new List<GLItem>();
+                for (int i = 0; i < step.Length; i++)
+                {
+                    DateTime end = dateTimePicker2.Value;
+                    DateTime begin = end.AddSeconds(-step[i]);
+
+                    Cursor = Cursors.WaitCursor;
+                    Dictionary<int, PointData> dic_pd = null;
+                    Dictionary<int, PointData> dic_pd_stat = SisConnect.GetsisStat(sisconn_temp, hsPoint,
+                        dateTimePicker1.Value, dateTimePicker2.Value, step[i]);
+                    //统计计算点。
+                    while (begin >= dateTimePicker1.Value && calcpoint.Count > 0)
+                    {
+                        dic_pd = SisConnect.GetPointData_dic(sisconn_temp, calcpoint, begin, end);
+
+                        foreach (PointData pd in dic_pd.Values)
+                        {
+                            float[] v;
+                            if (!dic_dtw_th.TryGetValue(pd.ID, out v))
+                            {
+                                v = new float[step.Length];
+                                for (int m = 0; m < v.Length; m++)
+                                {
+                                    v[m] = float.MinValue;
+                                }
+                                dic_dtw_th.Add(pd.ID, v);
+                            }
+                            v[i] = Math.Max((float)((pd.MaxAv - pd.MinAv) * MULTI), v[i]);
+
+                        }
+                        begin = begin.AddMinutes(-step[i]);
+                        end = end.AddMinutes(-step[i]);
+                    }
+                    foreach (PointData pd in dic_pd_stat.Values)
+                    {
+                        float[] v;
+                        if (!dic_dtw_th.TryGetValue(pd.ID, out v))
+                        {
+                            v = new float[step.Length];
+                            for (int m = 0; m < v.Length; m++)
+                            {
+                                v[m] = float.MinValue;
+                            }
+                            dic_dtw_th.Add(pd.ID, v);
+                        }
+                        v[i] = Math.Max((float)((pd.DifAV) * MULTI), v[i]);
+                    }
+
+                }
+                foreach (KeyValuePair<int, float[]> th in dic_dtw_th)
+                {
+                    GLItem item = new GLItem(glacialList_new);
+                    point pt = Data.inst().cd_Point[th.Key];
+
+                    item.SubItems["PN"].Text = pt.pn;
+                    item.SubItems["ED"].Text = pt.ed;
+                    item.SubItems["EU"].Text = pt.eu;
+                    item.Tag = pt;
+
+                    for (int i = 0; i < step.Length; i++)
+                    {
+                        item.SubItems[string.Format("pp{0}s", step[i])].Text = Math.Round(th.Value[i], 3).ToString();
+                    }
+                    lsItem.Add(item);
+                }
+                Cursor = Cursors.Default;
+                glacialList_new.Items.Clear();
+                glacialList_new.Items.AddRange(lsItem.ToArray());
                 glacialList_new.Invalidate();
                 tabControl.SelectedIndex = 1;
             }

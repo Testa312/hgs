@@ -126,6 +126,7 @@ namespace HGS
         
         public void SendCompleted(object sender, AsyncCompletedEventArgs e)
         {
+            //??????
             MailMessage mail = (MailMessage)e.UserState;
             string subject = mail.Subject;
 
