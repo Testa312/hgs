@@ -932,11 +932,11 @@ namespace HGS
                 }
                 else if (_av < th * RATION)
                 {
-                    alarmbit &= ~(uint)1 << bitnum;
+                    alarmbit &= ~((uint)1 << bitnum);
                 }
             }
             else
-                alarmbit &= ~(uint)1 << bitnum;
+                alarmbit &= ~((uint)1 << bitnum);
         }
         private void SetAlarmBit_L(ref uint alarmbit, int bitnum, double? th)
         {
@@ -949,11 +949,11 @@ namespace HGS
                 }
                 else if (_av > th * RATION)
                 {
-                    alarmbit &= ~(uint)1<< bitnum;
+                    alarmbit &= ~((uint)1<< bitnum);
                 }
             }
             else
-                alarmbit &= ~(uint)1 << bitnum;
+                alarmbit &= ~((uint)1 << bitnum);
         }
         //素数11, 23, 43, 83, 167, 317
         static int[] prime = { 11, 23, 43, 83, 167, 317, 641 };
