@@ -49,6 +49,7 @@ namespace HGS
     }
     public class point
     {
+        private object root = new object();
         private int _id_sis = 0;//sis点id
         public int Id_sis
         {

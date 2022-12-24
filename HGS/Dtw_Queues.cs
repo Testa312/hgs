@@ -9,6 +9,8 @@ namespace HGS
     //滑动窗口取极值,可降采样
     public class Dtw_queues
     {
+        object root = new object();
+        //
         Deque<float> qdata = new Deque<float>();
         Deque<int> qmax = new Deque<int>();
         Deque<int> qmin = new Deque<int>();
@@ -16,6 +18,7 @@ namespace HGS
         //DequeSafe<float> qdata = new DequeSafe<float>();
         //DequeSafe<int> qmax = new DequeSafe<int>();
         //DequeSafe<int> qmin = new DequeSafe<int>();
+
         private int size = 100;//窗口size.
         private int downsample = 1;
         private int totalsampls = 1;
@@ -58,63 +61,72 @@ namespace HGS
         */
         public void add(float d,bool bDS)
         {
-            totalsampls++;
-            if (!bDS || (totalsampls % downsample == 0))
+            lock (root)
             {
-                ///滤波，初始化时约需要120个数据
-                y1 = y2;
-                y2 = d;
-                d = x = a * x + b * y1 + (1 - a - b) * y2;
-                
-                p++;
-                int im;
-                qdata.Push(d);
-                if (qdata.Count > size)
+                totalsampls++;
+                if (!bDS || (totalsampls % downsample == 0))
                 {
-                    qdata.PopFirst();
+                    ///滤波，初始化时约需要120个数据
+                    y1 = y2;
+                    y2 = d;
+                    d = x = a * x + b * y1 + (1 - a - b) * y2;
 
-                    if (qmax.TryPeekFirst(out im))
-                        if (p - im >= size) qmax.PopFirst();
+                    p++;
+                    int im;
+                    qdata.Push(d);
+                    if (qdata.Count > size)
+                    {
+                        qdata.PopFirst();
+
+                        if (qmax.TryPeekFirst(out im))
+                            if (p - im >= size) qmax.PopFirst();
+                        //
+                        if (qmin.TryPeekFirst(out im))
+                            if (p - im >= size) qmin.PopFirst();
+                    }
+                    int start = p - size + 1;
+                    start = start >= 0 ? start : 0;
+                    while (qmax.TryPeekLast(out im))
+                        if (d - qdata[im - start] >= 1e-6)
+                        {
+                            float x = qmax.PopLast();
+                        }
+                        else break;
+                    qmax.Push(p);
                     //
-                    if (qmin.TryPeekFirst(out im))
-                        if (p - im >= size) qmin.PopFirst();
+                    while (qmin.TryPeekLast(out im))
+                        if (qdata[im - start] - d >= 1e-6)
+                        {
+                            float x = qmin.PopLast();
+                        }
+                        else break;
+                    qmin.Push(p);
                 }
-                int start = p - size + 1;
-                start = start >= 0 ? start : 0;
-                while (qmax.TryPeekLast(out im))
-                    if (d - qdata[im - start] >= 1e-6)
-                    {
-                        float x = qmax.PopLast();
-                    }
-                    else break;
-                qmax.Push(p);
-                //
-                while (qmin.TryPeekLast(out im))
-                    if (qdata[im - start] - d >= 1e-6)
-                    {
-                        float x = qmin.PopLast();
-                    }
-                    else break;
-                qmin.Push(p);
             }
         }
         private float Max()
         {
-            if (qdata.Count != size) throw new Exception("数据量不对！");
-            int start = p - size + 1;
-            start = start >= 0 ? start : 0;
-            return qdata[qmax.PeekFirst() - start];
+            lock (root)
+            {
+                if (qdata.Count != size) throw new Exception("数据量不对！");
+                int start = p - size + 1;
+                start = start >= 0 ? start : 0;
+                return qdata[qmax.PeekFirst() - start];
+            }
         }
         private float Min()
         {
-            if (qdata.Count != size) throw new Exception("数据量不对！");
-            int start = p - size + 1;
-            start = start >= 0 ? start : 0;
-            return qdata[qmin.PeekFirst() - start];
+            lock (root)
+            {
+                if (qdata.Count != size) throw new Exception("数据量不对！");
+                int start = p - size + 1;
+                start = start >= 0 ? start : 0;
+                return qdata[qmin.PeekFirst() - start];
+            }
         }
         public float[] Data()
         {
-            lock (Pref.Inst().root)
+            lock (root)
             {
                 if (qdata.Count != size) return null;
                 return qdata.ToArray();
@@ -124,7 +136,7 @@ namespace HGS
         //设备启动后，延迟一定时间
         public float DeltaP_P()
         {
-            lock (Pref.Inst().root)
+            lock (root)
             {
                 if (p <= size + delay / downsample + 10)
                     return 0;
@@ -133,7 +145,7 @@ namespace HGS
         }
         public void Clear()
         {
-            lock (Pref.Inst().root)
+            lock (root)
             {
                 qdata.Clear();
                 qmax.Clear();

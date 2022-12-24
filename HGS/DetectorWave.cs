@@ -99,7 +99,8 @@ namespace HGS
     }
     public class DetectorWave
     {
-
+        object root = new object();
+        //
         int size = 32;
         int p = 0;
         SlideWindow step1 , step2, step3;
@@ -128,20 +129,23 @@ namespace HGS
         }
         public void add(float d, bool bDS)
         {
-            totalsampls++;
-            if (!bDS || (totalsampls % downsample == 0))
+            lock (root)
             {
-                p++;
-                ///滤波，初始化时约需要增加20个数据
-                y1 = y2;
-                y2 = d;
-                d = x = a * x + b * y1 + (1 - a - b) * y2;
-                step3.add(step2.add(step1.add(d)));
+                totalsampls++;
+                if (!bDS || (totalsampls % downsample == 0))
+                {
+                    p++;
+                    ///滤波，初始化时约需要增加20个数据
+                    y1 = y2;
+                    y2 = d;
+                    d = x = a * x + b * y1 + (1 - a - b) * y2;
+                    step3.add(step2.add(step1.add(d)));
+                }
             }
         }
         public float[] Data()
         {
-            lock (Pref.Inst().root)
+            lock (root)
             {
                 List<float> rsl = new List<float>();
                 rsl.AddRange(step3.Data());
@@ -152,7 +156,7 @@ namespace HGS
         }
         public void Clear()
         {
-            lock (Pref.Inst().root)
+            lock (root)
             {
                 step1.Clear();
                 step2.Clear();
@@ -163,7 +167,7 @@ namespace HGS
         //th 为阈值
         public bool IsWaved(float th)
         {
-            lock (Pref.Inst().root)
+            lock (root)
             {
                 if (p <= 3 * size + delay / downsample + 10)
                     return false;
@@ -179,7 +183,7 @@ namespace HGS
         }
         public float Delta_pp_Wave()
         {
-            lock (Pref.Inst().root)
+            lock (root)
             {
                 if (p <= 3 * size + delay / downsample + 10)
                     return 0;
@@ -188,7 +192,7 @@ namespace HGS
         }
         public float skip_pp()
         {
-            lock (Pref.Inst().root)
+            lock (root)
             {
                 if (p <= size + delay / downsample + 10)
                     return 0;
@@ -198,31 +202,34 @@ namespace HGS
         //有2次谐波的的最大值
         public bool harmonic_2rd_ok()
         {
-            int imax = -1;
-            if (p > 3 * size + delay / downsample + 10)// + delay)
+            lock (root)
             {
-                float[] step1data = step1.Data();
-                if (step1data != null)
+                int imax = -1;
+                if (p > 3 * size + delay / downsample + 10)// + delay)
                 {
-#if DEBUG
-                    if (step1data.Length != 32) throw new Exception("FFT数据量不对！");
-#endif
-                    double[] data = new double[step1data.Length];
-                    step1data.CopyTo(data, 0);
-                    double[] Spectrum = fft.Spectrum(data, true);
-                    double dmax = double.MinValue;
-                    for (int i = 1; i < Spectrum.Length; i++)
+                    float[] step1data = step1.Data();
+                    if (step1data != null)
                     {
-                        if (dmax - Spectrum[i] < -1e-6)
+#if DEBUG
+                        if (step1data.Length != 32) throw new Exception("FFT数据量不对！");
+#endif
+                        double[] data = new double[step1data.Length];
+                        step1data.CopyTo(data, 0);
+                        double[] Spectrum = fft.Spectrum(data, true);
+                        double dmax = double.MinValue;
+                        for (int i = 1; i < Spectrum.Length; i++)
                         {
-                            dmax = Spectrum[i];
-                            imax = i;
+                            if (dmax - Spectrum[i] < -1e-6)
+                            {
+                                dmax = Spectrum[i];
+                                imax = i;
+                            }
+                            if (imax >= 2) break;
                         }
-                        if (imax >= 2) break;
                     }
                 }
+                return imax >= 2;
             }
-            return imax >= 2;
         }
 
     }
