@@ -55,12 +55,15 @@
             this.glacialList1 = new GlacialComponents.Controls.GlacialList();
             this.plotView1 = new OxyPlot.WindowsForms.PlotView();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.接受为高低限报警值ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -279,6 +282,7 @@
             glColumn5,
             glColumn6,
             glColumn7});
+            this.glacialList1.ContextMenuStrip = this.contextMenuStrip1;
             this.glacialList1.ControlStyle = GlacialComponents.Controls.GLControlStyles.Normal;
             this.glacialList1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.glacialList1.FullRowSelect = true;
@@ -329,6 +333,21 @@
             this.timer1.Interval = 30000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.接受为高低限报警值ToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(185, 48);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            // 
+            // 接受为高低限报警值ToolStripMenuItem
+            // 
+            this.接受为高低限报警值ToolStripMenuItem.Name = "接受为高低限报警值ToolStripMenuItem";
+            this.接受为高低限报警值ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.接受为高低限报警值ToolStripMenuItem.Text = "接受为高低限报警值";
+            this.接受为高低限报警值ToolStripMenuItem.Click += new System.EventHandler(this.接受为高低限报警值ToolStripMenuItem_Click);
+            // 
             // FormPlotCurves
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -352,6 +371,7 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -377,5 +397,7 @@
         private System.Windows.Forms.ToolStripButton toolStripButton_Divide;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem 接受为高低限报警值ToolStripMenuItem;
     }
 }

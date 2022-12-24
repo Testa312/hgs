@@ -963,8 +963,12 @@ namespace HGS
             uint curAlarmBit = 0;
             if (_Alarmifav && _isAvalarm)
             {
-                curAlarmBit = (uint)1 << 7;
-                curAlarmBit |= (uint)63 << 10;
+                if (_wd3s_Queues_Array != null && _wd3s_th != null)
+                {
+                    if (Skip_Checked)
+                        curAlarmBit = (uint)1 << 7;
+                    curAlarmBit |= (uint)63 << 10;
+                }
                 curAlarmBit &= _lastAlarmBitInfo;//保留波动
             }           
             if (ps != PointState.Good && ps != PointState.Force)
@@ -1013,7 +1017,7 @@ namespace HGS
                     SetAlarmBit_L(ref curAlarmBit, 1, _ll);
                     SetAlarmBit_L(ref curAlarmBit, 5, _bv);
                     
-                    if ((_id + _TimeTick) % 7 == 0 && _wd3s_Queues_Array != null && _wd3s_th != null)
+                    if ((_id + _TimeTick) % 7 == 0 && _wd3s_Queues_Array != null && _wd3s_th != null && _Skip_Checked)
                     {
                         curAlarmBit &= ~((uint)1 << 7);
                         float pp = _wd3s_Queues_Array[0].skip_pp();

@@ -344,7 +344,7 @@ namespace HGS
                     {
                         for (int i = 0; i < pt.Wd3s_th.Length; i++)
                         {
-                            itm.SubItems[string.Format("pp{0}s", (1 << i) * 30)].Text = "";
+                            itm.SubItems[string.Format("pp{0}s", (1 << i) * 32)].Text = "";
                                 //Math.Round(pt.Wd3s_th[i], 3).ToString();
                         }
                     }
