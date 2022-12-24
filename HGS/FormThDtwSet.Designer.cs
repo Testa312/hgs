@@ -406,7 +406,7 @@ namespace HGS
             glColumn1.Text = "时间窗";
             glColumn1.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             glColumn1.Width = 60;
-            glColumn2.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn2.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn2.CheckBoxes = false;
             glColumn2.ImageIndex = -1;
             glColumn2.Name = "alarm_th";
@@ -954,7 +954,7 @@ namespace HGS
             glColumn6.Text = "描述";
             glColumn6.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             glColumn6.Width = 250;
-            glColumn7.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn7.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn7.CheckBoxes = false;
             glColumn7.ImageIndex = -1;
             glColumn7.Name = "m15";
@@ -962,7 +962,7 @@ namespace HGS
             glColumn7.Text = "15m";
             glColumn7.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn7.Width = 80;
-            glColumn8.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn8.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn8.CheckBoxes = false;
             glColumn8.ImageIndex = -1;
             glColumn8.Name = "m30";
@@ -970,7 +970,7 @@ namespace HGS
             glColumn8.Text = "30m";
             glColumn8.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn8.Width = 80;
-            glColumn9.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn9.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn9.CheckBoxes = false;
             glColumn9.ImageIndex = -1;
             glColumn9.Name = "m60";
@@ -978,7 +978,7 @@ namespace HGS
             glColumn9.Text = "60m";
             glColumn9.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn9.Width = 80;
-            glColumn10.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn10.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn10.CheckBoxes = false;
             glColumn10.ImageIndex = -1;
             glColumn10.Name = "m120";
@@ -986,7 +986,7 @@ namespace HGS
             glColumn10.Text = "120m";
             glColumn10.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn10.Width = 80;
-            glColumn11.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn11.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn11.CheckBoxes = false;
             glColumn11.ImageIndex = -1;
             glColumn11.Name = "m240";
@@ -994,7 +994,7 @@ namespace HGS
             glColumn11.Text = "240m";
             glColumn11.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
             glColumn11.Width = 80;
-            glColumn12.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn12.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
             glColumn12.CheckBoxes = false;
             glColumn12.ImageIndex = -1;
             glColumn12.Name = "m480";

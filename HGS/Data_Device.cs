@@ -427,6 +427,12 @@ namespace HGS
                     if (TimeTick % prime[i] == 0)
                     {
                         //curAlarmBit &= ~((uint)1 << i); ;
+                        //??????????????
+                        if (id == 48)
+                        {
+                            double x = 0;
+                        }
+                        //
                         point pt = Dtw_th_h(i);
                         if (pt != null)
                             AlarmCalc_dtw(pt, i);
@@ -446,7 +452,7 @@ namespace HGS
                     }
                 }
             }
-            lastAlarmBit = curAlarmBit;
+            //lastAlarmBit = curAlarmBit;
             //lastAlarmIf = curAlarmIf;
         }
     }
