@@ -179,9 +179,9 @@ namespace HGS
 
                 try
                 {
-                    //#if SERVER
+#if SERVER
                     AlarmSet.GetInst().SaveAlarmInfoToPG();
-                    //#endif
+#endif
                 }
                 catch (Exception ee)
                 {

@@ -308,7 +308,6 @@ namespace HGS
                 point pt;
                 if (Data.inst().cd_Point.TryGetValue(pd.ID, out pt))
                 {
-                    pt.ll = Math.Round(pd.MinAv * 0.9, 3);
                     pt.hl = Math.Round(pd.MaxAv * 1.1, 3);
                 }
             }
@@ -321,7 +320,26 @@ namespace HGS
 
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
-            接受为高低限报警值ToolStripMenuItem.Visible = glacialList1.Items.SelectedItems.Count > 0;
+            接受为高限报警值ToolStripMenuItem.Visible = glacialList1.Items.SelectedItems.Count > 0;
+            接受为低限报警值ToolStripMenuItem1.Visible = glacialList1.Items.SelectedItems.Count > 0;
+        }
+
+        private void 接受为低限报警值ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            foreach (GLItem item in glacialList1.Items.SelectedItems)
+            {
+                PointData pd = (PointData)item.Tag;
+                point pt;
+                if (Data.inst().cd_Point.TryGetValue(pd.ID, out pt))
+                {
+                    pt.ll = Math.Round(pd.MinAv * 0.9, 3);
+                }
+            }
+            if (glacialList1.Items.SelectedItems.Count > 0)
+            {
+                Data.inst().SavetoPG();
+                MessageEvent();
+            }
         }
     }
 }

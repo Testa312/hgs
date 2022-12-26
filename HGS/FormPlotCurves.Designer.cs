@@ -54,9 +54,10 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.glacialList1 = new GlacialComponents.Controls.GlacialList();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.接受为高低限报警值ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.接受为高限报警值ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.plotView1 = new OxyPlot.WindowsForms.PlotView();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.接受为低限报警值ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -317,17 +318,18 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.接受为高低限报警值ToolStripMenuItem});
+            this.接受为高限报警值ToolStripMenuItem,
+            this.接受为低限报警值ToolStripMenuItem1});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(185, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
-            // 接受为高低限报警值ToolStripMenuItem
+            // 接受为高限报警值ToolStripMenuItem
             // 
-            this.接受为高低限报警值ToolStripMenuItem.Name = "接受为高低限报警值ToolStripMenuItem";
-            this.接受为高低限报警值ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
-            this.接受为高低限报警值ToolStripMenuItem.Text = "接受为高低限报警值";
-            this.接受为高低限报警值ToolStripMenuItem.Click += new System.EventHandler(this.接受为高低限报警值ToolStripMenuItem_Click);
+            this.接受为高限报警值ToolStripMenuItem.Name = "接受为高限报警值ToolStripMenuItem";
+            this.接受为高限报警值ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.接受为高限报警值ToolStripMenuItem.Text = "接受为高限报警值";
+            this.接受为高限报警值ToolStripMenuItem.Click += new System.EventHandler(this.接受为高低限报警值ToolStripMenuItem_Click);
             // 
             // plotView1
             // 
@@ -347,6 +349,13 @@
             this.timer1.Enabled = true;
             this.timer1.Interval = 30000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // 接受为低限报警值ToolStripMenuItem1
+            // 
+            this.接受为低限报警值ToolStripMenuItem1.Name = "接受为低限报警值ToolStripMenuItem1";
+            this.接受为低限报警值ToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.接受为低限报警值ToolStripMenuItem1.Text = "接受为低限报警值";
+            this.接受为低限报警值ToolStripMenuItem1.Click += new System.EventHandler(this.接受为低限报警值ToolStripMenuItem1_Click);
             // 
             // FormPlotCurves
             // 
@@ -398,6 +407,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem 接受为高低限报警值ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 接受为高限报警值ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 接受为低限报警值ToolStripMenuItem1;
     }
 }
