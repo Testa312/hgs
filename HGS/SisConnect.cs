@@ -455,7 +455,7 @@ namespace HGS
                 }
                 cost = dd_dtw.dtw_distance_cs(x, y,max_dist, use_pruning);
             }
-            return cost;
+            return cost * Math.Sqrt(x.Length);//归一化
         }
         //最小欧氏距离
         public static float GetED(PointData pd1, PointData pd2)
@@ -510,8 +510,28 @@ namespace HGS
                 x[i] = pd1.data[i].Value - pd1.data[i - 1].Value;
                 y[i] = pd2.data[i].Value - pd2.data[i - 1].Value;
             }
-            return dd_dtw.dtw_distance_cs(x, y, max_dist, use_pruning); 
+            return dd_dtw.dtw_distance_cs(x, y, max_dist, use_pruning) * Math.Sqrt(x.Length); //归一化
         }
+        public static double Get_diff_integral(PointData pd1, PointData pd2)
+        {
+            if (pd1.data.Count != pd2.data.Count)
+                throw new ArgumentException("数组长度应相等！");
+
+            double[] x = new double[pd1.data.Count];
+            double[] y = new double[pd1.data.Count];
+            x[0] = y[0] = 0;
+            double dmax = 0,rmax =double.MinValue;
+            for (int i = 1; i < pd1.data.Count; i++)
+            {
+                x[i] = pd1.data[i].Value - pd1.data[i - 1].Value;
+                y[i] = pd2.data[i].Value - pd2.data[i - 1].Value;
+                //
+                dmax += x[i] - y[i];
+                rmax = Math.Max(Math.Abs(dmax), rmax);
+            }
+            return rmax;
+        }
+
         public static double GetDtw_dd_diff(float[] x, float[] y, double max_dist = 0, bool use_pruning = false)
         {
             if (x.Length != y.Length)
@@ -525,7 +545,26 @@ namespace HGS
                 xx[i] = x[i] - x[i - 1];
                 yy[i] = y[i] - y[i - 1];
             }
-            return dd_dtw.dtw_distance_cs(xx, yy, max_dist, use_pruning); 
+            return dd_dtw.dtw_distance_cs(xx, yy, max_dist, use_pruning) * Math.Sqrt(xx.Length); //归一化
+        }
+        public static double Get_diff_integral(float[] x, float[] y)
+        {
+            if (x.Length != y.Length)
+                throw new ArgumentException("数组长度应相等！");
+
+            double[] xx = new double[x.Length];
+            double[] yy = new double[x.Length];
+            xx[0] = yy[0] = 0;
+            double dmax = 0, rmax = double.MinValue;
+            for (int i = 1; i < x.Length; i++)
+            {
+                xx[i] = x[i] - x[i - 1];
+                yy[i] = y[i] - y[i - 1];
+                //
+                dmax += xx[i] - yy[i];
+                rmax = Math.Max(Math.Abs(dmax), rmax);
+            }
+            return rmax;
         }
         public static DateTime GetSisSystemTime(OPAPI.Connect sisconn)
         {

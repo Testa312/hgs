@@ -122,8 +122,8 @@ namespace HGS
                     pd.DifAV = pd_stat.DifAV;
                 }
                 */
-                itm.SubItems["MAX"].Text = Math.Round(pd.MaxAv * 1.1, 3).ToString();
-                itm.SubItems["MIN"].Text = Math.Round(pd.MinAv * 0.9, 3).ToString(); 
+                itm.SubItems["MAX"].Text = Math.Round(pd.MaxAv, 3).ToString();
+                itm.SubItems["MIN"].Text = Math.Round(pd.MinAv, 3).ToString(); 
                 //itm.SubItems["Skip_pp"].Text = Math.Round(pd.DifAV * 1.1, 3).ToString();
                 lsitem.Add(itm);
             }
@@ -302,19 +302,27 @@ namespace HGS
 
         private void 接受为高低限报警值ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (GLItem item in glacialList1.Items.SelectedItems)
+            FormThRatio ftr = new FormThRatio(false);
+            ftr.Text = "选择高限阈值系数";
+            if (ftr.ShowDialog() == DialogResult.OK)
             {
-                PointData pd = (PointData)item.Tag;
-                point pt;
-                if (Data.inst().cd_Point.TryGetValue(pd.ID, out pt))
+                foreach (GLItem item in glacialList1.Items.SelectedItems)
                 {
-                    pt.hl = Math.Round(pd.MaxAv * 1.1, 3);
+                    PointData pd = (PointData)item.Tag;
+                    point pt;
+                    if (Data.inst().cd_Point.TryGetValue(pd.ID, out pt))
+                    {
+                        if(ftr.isMulti)
+                            pt.hl = Math.Round(pd.MaxAv * ftr.ratio, 3);
+                        else
+                            pt.hl = Math.Round(pd.MaxAv + ftr.ratio, 3);
+                    }
                 }
-            }
-            if (glacialList1.Items.SelectedItems.Count > 0)
-            {
-                Data.inst().SavetoPG();
-                MessageEvent();
+                if (glacialList1.Items.SelectedItems.Count > 0)
+                {
+                    Data.inst().SavetoPG();
+                    MessageEvent();
+                }
             }
         }
 
@@ -326,19 +334,29 @@ namespace HGS
 
         private void 接受为低限报警值ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            foreach (GLItem item in glacialList1.Items.SelectedItems)
+            FormThRatio ftr = new FormThRatio(true);
+            ftr.Text = "选择低限阈值系数";
+            if (ftr.ShowDialog() == DialogResult.OK)
             {
-                PointData pd = (PointData)item.Tag;
-                point pt;
-                if (Data.inst().cd_Point.TryGetValue(pd.ID, out pt))
+                foreach (GLItem item in glacialList1.Items.SelectedItems)
                 {
-                    pt.ll = Math.Round(pd.MinAv * 0.9, 3);
+                    PointData pd = (PointData)item.Tag;
+                    point pt;
+                    if (Data.inst().cd_Point.TryGetValue(pd.ID, out pt))
+                    {
+                        if (ftr.isMulti)
+                        {
+                            pt.ll = Math.Round(pd.MinAv * ftr.ratio, 3);
+                        }
+                        else
+                            pt.ll = Math.Round(pd.MinAv - ftr.ratio, 3);
+                    }
                 }
-            }
-            if (glacialList1.Items.SelectedItems.Count > 0)
-            {
-                Data.inst().SavetoPG();
-                MessageEvent();
+                if (glacialList1.Items.SelectedItems.Count > 0)
+                {
+                    Data.inst().SavetoPG();
+                    MessageEvent();
+                }
             }
         }
     }

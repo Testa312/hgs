@@ -427,12 +427,12 @@ namespace HGS
                     if (TimeTick % prime[i] == 0)
                     {
                         //curAlarmBit &= ~((uint)1 << i); ;
-                        //??????????????
+                        /*
                         if (id == 48)
                         {
                             double x = 0;
                         }
-                        //
+                        */
                         point pt = Dtw_th_h(i);
                         if (pt != null)
                             AlarmCalc_dtw(pt, i);
@@ -502,6 +502,7 @@ namespace HGS
             catch (Exception e) { throw new Exception(string.Format("读入设备节点时发生错误！"), e); }
             finally { pgconn.Close(); }
         }
+        
         public static DeviceInfo GetDevice(int DeviceId)
         {
             var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);

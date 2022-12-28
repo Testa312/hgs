@@ -210,6 +210,7 @@ namespace HGS
                                 for (int m = 0; m < lspd.Count; m++)
                                 {
                                     cost = Math.Max(cost, SisConnect.GetDtw_dd_diff(pt_main, lspd[m], 0, false));
+                                    //cost = Math.Max(cost, SisConnect.Get_diff_integral(pt_main, lspd[m]));
                                     dtw++;
                                 }
                                 pt_main = lspd[0];

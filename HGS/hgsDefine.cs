@@ -51,6 +51,10 @@ namespace HGS
     {
         private object root = new object();
         private int _id_sis = 0;//sis点id
+        //???????
+       // public int pds = 0;
+        //
+
         public int Id_sis
         {
             set {
@@ -911,15 +915,15 @@ namespace HGS
             {"Bool" ,""                 },//6
             {"Skip", "跳变报警！"       },//7
             {"NULL", "NULL"             },//8
-            {"Bad",  "坏点"             },//9
+            {"Bad",  "坏点或超时！"             },//9
 
-            {"Wave90s", "90秒内波动报警"       },//10
-            {"Wave180s", "3分钟内波动报警"     },//11
-            {"Wave360s", "6分钟内波动报警"     },//12
-            {"Wave720s", "12分钟内波动报警"    },//13
-            {"Wave1440s", "24分钟内波动报警"   },//14
-            {"Wave2880s", "48分钟内波动报警"   },//15
-            {"Wave5760s", "90分钟内波动报警"   }};//16
+            {"Wave90s", "90秒内波动报警！"       },//10
+            {"Wave180s", "3分钟内波动报警！"     },//11
+            {"Wave360s", "6分钟内波动报警！"     },//12
+            {"Wave720s", "12分钟内波动报警！"    },//13
+            {"Wave1440s", "24分钟内波动报警！"   },//14
+            {"Wave2880s", "48分钟内波动报警！"   },//15
+            {"Wave5760s", "90分钟内波动报警！"   }};//16
         //---------------------
         private void SetAlarmBit_H(ref uint alarmbit,int bitnum,double? th)
         {
@@ -971,7 +975,7 @@ namespace HGS
                 }
                 curAlarmBit &= _lastAlarmBitInfo;//保留波动
             }           
-            if (ps != PointState.Good && ps != PointState.Force)
+            if (ps == PointState.Bad || ps == PointState.Error || ps == PointState.Timeout)
             {
                 //_Alarmingav = -1;
                 curAlarmBit |= (uint)1 << 9;

@@ -90,6 +90,7 @@
             this.labelf = new System.Windows.Forms.Label();
             this.buttonSet = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.maskedTextBox_delay = new MaskedTextBox.MaskedTextBox();
             this.textBoxBV = new System.Windows.Forms.TextBox();
             this.button_WaveTh = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
@@ -101,6 +102,7 @@
             this.button_HL = new System.Windows.Forms.Button();
             this.textBoxZH = new System.Windows.Forms.TextBox();
             this.textBoxZL = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.textBoxHL = new System.Windows.Forms.TextBox();
@@ -125,8 +127,6 @@
             this.删除节点ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.节点属性ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.maskedTextBox_delay = new MaskedTextBox.MaskedTextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -726,6 +726,15 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "模拟量";
             // 
+            // maskedTextBox_delay
+            // 
+            this.maskedTextBox_delay.Location = new System.Drawing.Point(658, 56);
+            this.maskedTextBox_delay.Masked = MaskedTextBox.Mask.Digit;
+            this.maskedTextBox_delay.Name = "maskedTextBox_delay";
+            this.maskedTextBox_delay.Size = new System.Drawing.Size(80, 21);
+            this.maskedTextBox_delay.TabIndex = 12;
+            this.maskedTextBox_delay.Text = "0";
+            // 
             // textBoxBV
             // 
             this.textBoxBV.Location = new System.Drawing.Point(121, 54);
@@ -823,6 +832,15 @@
             this.textBoxZL.Name = "textBoxZL";
             this.textBoxZL.Size = new System.Drawing.Size(74, 21);
             this.textBoxZL.TabIndex = 7;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(598, 62);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 12);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "延时(s):";
             // 
             // label13
             // 
@@ -1057,24 +1075,6 @@
             this.timer1.Enabled = true;
             this.timer1.Interval = 30000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // maskedTextBox_delay
-            // 
-            this.maskedTextBox_delay.Location = new System.Drawing.Point(658, 56);
-            this.maskedTextBox_delay.Masked = MaskedTextBox.Mask.Digit;
-            this.maskedTextBox_delay.Name = "maskedTextBox_delay";
-            this.maskedTextBox_delay.Size = new System.Drawing.Size(80, 21);
-            this.maskedTextBox_delay.TabIndex = 12;
-            this.maskedTextBox_delay.Text = "0";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(598, 62);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 12);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "延时(s):";
             // 
             // FormPointSet
             // 

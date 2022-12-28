@@ -274,7 +274,8 @@ namespace HGS
 
                 const short gb1 = -32256;
                 const short gb2 = -32768;
-  
+                const short gb3 = 1 << 8;
+
                 while (resultSet.next())//next()执行一次，游标下移一行
                 {
                     point Point = Data.inst().dic_SisIdtoPoint[resultSet.getInt(0)];
@@ -286,6 +287,12 @@ namespace HGS
                     }
                                     
                     short ds = resultSet.getShort(2);
+                    /*
+                    if (Point.id == 13511)
+                    {
+                        double x = 0;
+                    }
+                    */
                     if ((ds & gb1) == 0)
                     {
                         Point.ps = PointState.Good;
@@ -294,11 +301,15 @@ namespace HGS
                     {
                         Point.ps = PointState.Timeout;
                     }
+                    else if ((ds & gb3) == gb3)
+                    {
+                        Point.ps = PointState.Force;
+                    }
                     else
                         Point.ps = PointState.Bad;
 
                     int Tm = resultSet.getInt(1);
-                    if (Tm - lastTm >= 5)//超时为5s
+                    if (Tm - lastTm >= 60)//超时为60s
                     {
                        // Point.Av = -1;不能这样。
                         Point.ps = PointState.Bad;
@@ -415,6 +426,11 @@ namespace HGS
         private void timerkeeplive_Tick(object sender, EventArgs e)
         {
             SisConnect.GetSisSystemTime(SisConnect.siscon_keep);
+        }
+
+        private void 临时更新ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

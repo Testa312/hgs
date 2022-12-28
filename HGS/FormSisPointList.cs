@@ -209,6 +209,8 @@ namespace HGS
                     }
                     else
                         sim.Text = "Bad";
+                    //
+                    //sim.Text = ds.ToString();
                 }
                 if (resultSet != null)
                 {

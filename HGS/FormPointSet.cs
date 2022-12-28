@@ -287,11 +287,12 @@ namespace HGS
 
         }
         private void timerUpdateValue_Tick(object sender, EventArgs e)
-        {
+        {          
             if (this.Size.Height <= 100)
                 timerUpdateValue.Interval = 30000;
             else
                 timerUpdateValue.Interval = 2000;
+            
             try
             {
                 foreach (GLItem item in glacialList1.Items)

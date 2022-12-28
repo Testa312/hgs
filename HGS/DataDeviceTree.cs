@@ -14,7 +14,47 @@ namespace HGS
     }
     static class DataDeviceTree
     {
+        /*
+        //临时
+        public static void updatedtwth()
+        {
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
+            try
+            {
+                pgconn.Open();
+                string sql = string.Format(@"SELECT * FROM devicetree  order by sort;");
+                var cmd = new NpgsqlCommand(sql, pgconn);
+                NpgsqlDataReader pgreader = cmd.ExecuteReader();
+                StringBuilder sb = new StringBuilder();
+                while (pgreader.Read())
+                {
+                    //DeviceInfo di = new DeviceInfo();
 
+                    int id = (int)pgreader["id"];
+
+                    object ob = pgreader["alarm_th_dis"];
+                    if (ob != DBNull.Value)
+                    {
+                        float[] th = (float[])ob;
+                        for (int i = 0; i < th.Length; i++)
+                        {
+                            th[i] *= 10;
+                        }
+                        sb.AppendLine(string.Format(@"update devicetree set alarm_th_dis={0} where id = {1};",
+                                    ArraytoString(th), id));
+                    }
+                }
+                //
+               pgconn.Close();
+               cmd = new NpgsqlCommand(sb.ToString(), pgconn);
+               pgconn.Open();
+               cmd.ExecuteNonQuery();
+            }
+            catch (Exception e) { throw new Exception(string.Format("读入设备节点时发生错误！"), e); }
+            finally { pgconn.Close(); }
+        }
+        */
+        //-------------------
         public static int GetNextTreeNodeId()
         {
             int imax = 0;
