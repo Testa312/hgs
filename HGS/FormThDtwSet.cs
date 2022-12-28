@@ -209,8 +209,8 @@ namespace HGS
                             {
                                 for (int m = 0; m < lspd.Count; m++)
                                 {
-                                    cost = Math.Max(cost, SisConnect.GetDtw_dd_diff(pt_main, lspd[m], 0, false));
-                                    //cost = Math.Max(cost, SisConnect.Get_diff_integral(pt_main, lspd[m]));
+                                    //cost = Math.Max(cost, SisConnect.GetDtw_dd_diff(pt_main, lspd[m], 0, false));
+                                    cost = Math.Max(cost, SisConnect.Get_diff_integral(pt_main, lspd[m]));
                                     dtw++;
                                 }
                                 pt_main = lspd[0];
@@ -430,7 +430,7 @@ namespace HGS
                     ttg.DelayAlarmTime = 0;
 
                 ttg.DelayAlarmTime = ttg.DelayAlarmTime >= 0 ? ttg.DelayAlarmTime : 0;
-                ttg.DelayAlarmTime = ttg.DelayAlarmTime <= 3600 ? ttg.DelayAlarmTime : 3600;
+                ttg.DelayAlarmTime = ttg.DelayAlarmTime <= 10800 ? ttg.DelayAlarmTime : 10800;
 
                 //传感器
                 if (ttg.Sensors_set().Count >= 2)

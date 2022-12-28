@@ -323,7 +323,8 @@ namespace HGS
                             if (secdata != null)
                             {
                                 CountofDTWCalc++;
-                                double cost = SisConnect.GetDtw_dd_diff(maindata, secdata,alarm_th_dis[Step] * 1.414);
+                                //double cost = SisConnect.GetDtw_dd_diff(maindata, secdata,alarm_th_dis[Step] * 1.414);
+                                double cost = SisConnect.Get_diff_integral(maindata, secdata);
                                 if (cost > alarm_th_dis[Step])
                                 {
                                     curAlarmBit |= (uint)1 << Step;

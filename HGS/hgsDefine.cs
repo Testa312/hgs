@@ -600,6 +600,7 @@ namespace HGS
             }
             get { return _Skip_Checked; }
         }
+        private int _BadDelay = 0;
         private int _DelayAlarmTime = 0;
         public int DelayAlarmTime
         {
@@ -974,28 +975,48 @@ namespace HGS
                     curAlarmBit |= (uint)63 << 10;
                 }
                 curAlarmBit &= _lastAlarmBitInfo;//保留波动
-            }           
-            if (ps == PointState.Bad || ps == PointState.Error || ps == PointState.Timeout)
-            {
-                //_Alarmingav = -1;
-                curAlarmBit |= (uint)1 << 9;
+            }
+            //保留坏点
+            curAlarmBit |= (uint)1 << 9;
+            curAlarmBit &= _lastAlarmBitInfo;
 
-                //if (_DetectionSkip != null)
-                    //_DetectionSkip.Clear();
-                    
-                if (_dtw_Queues_Array != null)
+            bool isBad = ps == PointState.Bad || ps == PointState.Error || ps == PointState.Timeout;
+            if (!isBad)
+            {
+                _BadDelay--;
+                if (_BadDelay <= 0)
                 {
-                    for (int i = 0; i < _dtw_Queues_Array.Length; i++)
-                    {
-                        _dtw_Queues_Array[i].Clear();
-                    }
+                    _BadDelay = 0;
+                    uint tmp = ~((uint)1 << 9);
+                    curAlarmBit &= tmp;
                 }
-                //
-                if (_wd3s_Queues_Array != null)
+            }
+            if (isBad)
+            {
+                _BadDelay++;
+                if (_BadDelay >= 5)
                 {
-                    for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
+                    _BadDelay = 5;
+                    //_Alarmingav = -1;
+                    curAlarmBit |= (uint)1 << 9;
+
+                    //if (_DetectionSkip != null)
+                    //_DetectionSkip.Clear();
+
+                    if (_dtw_Queues_Array != null)
                     {
-                        _wd3s_Queues_Array[i].Clear();
+                        for (int i = 0; i < _dtw_Queues_Array.Length; i++)
+                        {
+                            _dtw_Queues_Array[i].Clear();
+                        }
+                    }
+                    //
+                    if (_wd3s_Queues_Array != null)
+                    {
+                        for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
+                        {
+                            _wd3s_Queues_Array[i].Clear();
+                        }
                     }
                 }
             }

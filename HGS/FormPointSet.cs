@@ -246,7 +246,7 @@ namespace HGS
                                 pt.DelayAlarmTime = 0;
 
                             pt.DelayAlarmTime = pt.DelayAlarmTime >= 0 ? pt.DelayAlarmTime : 0;
-                            pt.DelayAlarmTime = pt.DelayAlarmTime <= 3600 ? pt.DelayAlarmTime : 3600;
+                            pt.DelayAlarmTime = pt.DelayAlarmTime <= 10800 ? pt.DelayAlarmTime : 10800;
                             maskedTextBox_delay.Text = pt.DelayAlarmTime.ToString();
 
 

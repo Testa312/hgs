@@ -274,7 +274,7 @@ namespace HGS
 
                 const short gb1 = -32256;
                 const short gb2 = -32768;
-                const short gb3 = 1 << 8;
+                const short gb3 = 768;
 
                 while (resultSet.next())//next()执行一次，游标下移一行
                 {

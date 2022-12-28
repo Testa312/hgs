@@ -90,7 +90,7 @@ namespace HGS
             {
                 foreach (point pt in hsp)
                 {
-                    if (pt.ps != PointState.Good)
+                    if (pt.ps == PointState.Bad || pt.ps == PointState.Timeout)
                     {
                         ps = PointState.Error;
                         break;
