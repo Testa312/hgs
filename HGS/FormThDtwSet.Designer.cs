@@ -201,8 +201,8 @@ namespace HGS
             // toolStripStatusLabel2
             // 
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(109, 17);
-            this.toolStripStatusLabel2.Text = "可靠性系数1.1倍。";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(201, 17);
+            this.toolStripStatusLabel2.Text = "可靠性系数:报警1.5倍，启动1.1倍。";
             // 
             // toolStripStatusLabel_dtw
             // 

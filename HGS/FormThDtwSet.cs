@@ -24,7 +24,8 @@ namespace HGS
         OPAPI.Connect sisconn_temp = null; 
         //
         readonly int[] ScanSpan = Pref.Inst().ScanSpan;//分钟
-        const double MULTI = 1.1;
+        const double StartthRatio = 1.1;
+        const double AlarmThRatio = 1.5;
         public FormThDtwSet(DeviceInfo ttg)
         {
             InitializeComponent();
@@ -231,7 +232,7 @@ namespace HGS
                                 }
                                 dic_dtw_th.Add(pd.ID, v);
                             }
-                            v[i] = Math.Max((float)((pd.MaxAv - pd.MinAv) * MULTI), v[i]);                            
+                            v[i] = Math.Max((float)((pd.MaxAv - pd.MinAv) * StartthRatio), v[i]);                            
                         }
                         foreach (PointData pd in dic_pd_stat.Values)
                         {
@@ -245,7 +246,7 @@ namespace HGS
                                 }
                                 dic_dtw_th.Add(pd.ID, v);
                             }
-                            v[i] = Math.Max((float)((pd.DifAV) * MULTI), v[i]);
+                            v[i] = Math.Max((float)((pd.DifAV) * StartthRatio), v[i]);
                         }
                         begin = begin.AddMinutes(-ScanSpan[i] / 5);
                         end = end.AddMinutes(-ScanSpan[i] / 5);
@@ -254,7 +255,7 @@ namespace HGS
                     GLItem item = new GLItem(glacialList_dev_new);
                     item.SubItems["TW"].Text = ScanSpan[i].ToString() + "m";
                     //item.SubItems["start_th"].Text = Math.Round(maxpp * 1.1, 3).ToString();
-                    cost *= MULTI;
+                    cost *= AlarmThRatio;
                     item.SubItems["alarm_th"].Text = Math.Round(cost, 3).ToString();
                     lsItem.Add(item);
                     

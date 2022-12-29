@@ -517,17 +517,17 @@ namespace HGS
             if (pd1.data.Count != pd2.data.Count)
                 throw new ArgumentException("数组长度应相等！");
 
-            double[] x = new double[pd1.data.Count];
-            double[] y = new double[pd1.data.Count];
-            x[0] = y[0] = 0;
-            double dmax = 0,rmax =double.MinValue;
-            for (int i = 1; i < pd1.data.Count; i++)
+            //double[] x = new double[pd1.data.Count];
+            //double[] y = new double[pd1.data.Count];
+            double dx, dy;
+            double rmax =double.MinValue;
+            for (int i = 0; i < pd1.data.Count; i++)
             {
-                x[i] = pd1.data[i].Value - pd1.data[i - 1].Value;
-                y[i] = pd2.data[i].Value - pd2.data[i - 1].Value;
+                dx = pd1.data[i].Value - pd1.data[0].Value;
+                dy = pd2.data[i].Value - pd2.data[0].Value;
                 //
-                dmax += x[i] - y[i];
-                rmax = Math.Max(Math.Abs(dmax), rmax);
+                //dmax += x[i] - y[i];
+                rmax = Math.Max(Math.Abs(dx-dy), rmax);
             }
             return rmax;
         }
@@ -552,17 +552,17 @@ namespace HGS
             if (x.Length != y.Length)
                 throw new ArgumentException("数组长度应相等！");
 
-            double[] xx = new double[x.Length];
-            double[] yy = new double[x.Length];
-            xx[0] = yy[0] = 0;
-            double dmax = 0, rmax = double.MinValue;
-            for (int i = 1; i < x.Length; i++)
+            //double[] xx = new double[x.Length];
+            //double[] yy = new double[x.Length];
+            double dx, dy;
+            double rmax = double.MinValue;
+            for (int i = 0; i < x.Length; i++)
             {
-                xx[i] = x[i] - x[i - 1];
-                yy[i] = y[i] - y[i - 1];
+                dx = x[i] - x[0];
+                dy = y[i] - y[0];
                 //
-                dmax += xx[i] - yy[i];
-                rmax = Math.Max(Math.Abs(dmax), rmax);
+                //dmax += xx[i] - yy[i];
+                rmax = Math.Max(Math.Abs(dx-dy), rmax);
             }
             return rmax;
         }
