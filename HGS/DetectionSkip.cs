@@ -46,8 +46,8 @@ namespace HGS
             
         public void add(float d)
         {
-
-            ///滤波，初始化时约需要加至少30个数据
+            if (p < 0)
+                x = y2 = y1 = d;
             y1 = y2;
             y2 = d;
             d = x = a * x + b * y1 + (1 - a - b) * y2;
@@ -108,7 +108,7 @@ namespace HGS
         //返回极差
         public float DeltaP_P()
         {
-            if (p <= size + 20) 
+            if (p <= size + 1) 
                 return 0;
             return Math.Abs(Max() - Min());
         }
@@ -116,7 +116,7 @@ namespace HGS
         //调用前要保证数据极差异常，否则结果是错的。
         public bool isSkip(float th)
         {
-            if (p <= size + 20)//有滤波，数据量要加30个左右才能稳定。
+            if (p <= size + 1)//有滤波，数据量要加30个左右才能稳定。
                 return false;
             if (DeltaP_P() > th)
                 return true;

@@ -134,8 +134,9 @@ namespace HGS
                 totalsampls++;
                 if (!bDS || (totalsampls % downsample == 0))
                 {
+                    if (p == 0)
+                        x = y1 = y2 = d;
                     p++;
-                    ///滤波，初始化时约需要增加20个数据
                     y1 = y2;
                     y2 = d;
                     d = x = a * x + b * y1 + (1 - a - b) * y2;
@@ -169,7 +170,7 @@ namespace HGS
         {
             lock (root)
             {
-                if (p <= 3 * size + delay / downsample + 10)
+                if (p <= 3 * size + delay / downsample + 1)
                     return false;
 
                 bool s1 = step1.DeltaP_P() > th;
@@ -185,7 +186,7 @@ namespace HGS
         {
             lock (root)
             {
-                if (p <= 3 * size + delay / downsample + 10)
+                if (p <= 3 * size + delay / downsample + 1)
                     return 0;
                 return Math.Max(Math.Max(step1.DeltaP_P(), step2.DeltaP_P()), step3.DeltaP_P());
             }
@@ -194,7 +195,7 @@ namespace HGS
         {
             lock (root)
             {
-                if (p <= size + delay / downsample + 10)
+                if (p <= size + delay / downsample + 1)
                     return 0;
                 return step1.DeltaP_P();
             }
@@ -205,7 +206,7 @@ namespace HGS
             lock (root)
             {
                 int imax = -1;
-                if (p > 3 * size + delay / downsample + 10)// + delay)
+                if (p > 3 * size + delay / downsample + 1)// + delay)
                 {
                     float[] step1data = step1.Data();
                     if (step1data != null)

@@ -24,7 +24,7 @@ namespace HGS
         OPAPI.Connect sisconn_temp = null; 
         //
         readonly int[] ScanSpan = Pref.Inst().ScanSpan;//分钟
-        const double StartthRatio = 1.1;
+        const double StartthRatio = 1.2;
         const double AlarmThRatio = 1.5;
         public FormThDtwSet(DeviceInfo ttg)
         {

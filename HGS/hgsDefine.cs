@@ -49,7 +49,7 @@ namespace HGS
     }
     public class point
     {
-        private object root = new object();
+        private readonly object root = new object();
         private int _id_sis = 0;//sis点id
         //???????
        // public int pds = 0;
@@ -712,6 +712,8 @@ namespace HGS
         }
         //-----------------------------
         //不能多于一次赋值，否则将不对。
+        //滤波器用,x(n)=a*x(n-1)+b*y(n+1)+(1-a-b)*y(n) a+b要小于1;
+        float a = 0.7f, b = 0.15f, x = 0, y1 = 0, y2 = 0;
         public float? av
         {
             get { return _av; }
@@ -740,6 +742,16 @@ namespace HGS
                         _wd3s_Queues_Array[i].add(_av ?? 0, true);
                     }
                 }
+                //
+                if (_TimeTick < 0)
+                    x = y1 = y2 = _av ?? 0;
+                if (pointsrc == pointsrc.sis)
+                {
+                    y1 = y2;
+                    y2 = _av ?? 0;
+                    _av = x = a * x + b * y1 + (1 - a - b) * y2;
+                }
+                //
                 maxav = Math.Max(maxav, av??float.MinValue);
                 minav = Math.Min(minav, av ?? float.MaxValue);
             }
@@ -928,7 +940,7 @@ namespace HGS
         //---------------------
         private void SetAlarmBit_H(ref uint alarmbit,int bitnum,double? th)
         {
-            const double RATION = 0.98f;
+            const double RATION = 0.95f;
             if (th != null)
             {
                 if (_av > th)
@@ -945,7 +957,7 @@ namespace HGS
         }
         private void SetAlarmBit_L(ref uint alarmbit, int bitnum, double? th)
         {
-            const double RATION = 1.02f;
+            const double RATION = 1.05f;
             if (th != null)
             {
                 if (_av < th)
@@ -965,6 +977,8 @@ namespace HGS
         public void AlarmCalc()
         {
             _TimeTick++;
+            //
+            if (_TimeTick <= 0) return;
             uint curAlarmBit = 0;
             if (_Alarmifav && _isAvalarm)
             {
