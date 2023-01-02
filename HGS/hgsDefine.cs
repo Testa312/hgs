@@ -956,19 +956,32 @@ namespace HGS
         //---------------------
         private void SetAlarmBit_H(ref uint alarmbit,int bitnum,double? th)
         {
+            if (id == 13368)
+            {
+                double x = 0;
+            }
             const double RATION = 0.95f;
+            //alarmbit |= (uint)1 << bitnum;
+            alarmbit |= _lastAlarmBitInfo & (uint)1 << bitnum;//保持
             if (th != null)
-            {              
+            {
                 if (_av > th)
                 {
                     PointDelayTimeArray[bitnum]++;
                     if (PointDelayTimeArray[bitnum] > _PointDelayAlarmTime)
+                    {
                         alarmbit |= (uint)1 << bitnum;
+                        PointDelayTimeArray[bitnum] = _PointDelayAlarmTime;
+                    }
                 }
                 else if (_av < th * RATION)
                 {
-                    PointDelayTimeArray[bitnum] = 0;
-                    alarmbit &= ~((uint)1 << bitnum);
+                    PointDelayTimeArray[bitnum]--;
+                    if (_PointDelayAlarmTime - PointDelayTimeArray[bitnum] >= 2)
+                    {
+                        PointDelayTimeArray[bitnum] = 0;
+                        alarmbit &= ~((uint)1 << bitnum);
+                    }
                 }
             }
             else
@@ -977,17 +990,27 @@ namespace HGS
         private void SetAlarmBit_L(ref uint alarmbit, int bitnum, double? th)
         {
             const double RATION = 1.05f;
+            //alarmbit |= (uint)1 << bitnum;
+            alarmbit |= _lastAlarmBitInfo & (uint)1 << bitnum;//保持
             if (th != null)
             {
                 if (_av < th)
                 {
                     PointDelayTimeArray[bitnum]++;
                     if (PointDelayTimeArray[bitnum] > _PointDelayAlarmTime)
-                        alarmbit |= (uint)1<< bitnum;
+                    {
+                        alarmbit |= (uint)1 << bitnum;
+                        PointDelayTimeArray[bitnum] = _PointDelayAlarmTime;
+                    }
                 }
                 else if (_av > th * RATION)
                 {
-                    alarmbit &= ~((uint)1<< bitnum);
+                    PointDelayTimeArray[bitnum]--;
+                    if (_PointDelayAlarmTime - PointDelayTimeArray[bitnum] >= 2)
+                    {
+                        PointDelayTimeArray[bitnum] = 0;
+                        alarmbit &= ~((uint)1 << bitnum);
+                    }
                 }
             }
             else
@@ -1060,15 +1083,25 @@ namespace HGS
                 if (_isboolvAlarm)
                 {
                     bool blv = Convert.ToBoolean(_av);
-
+                    curAlarmBit |= _lastAlarmBitInfo & (uint)1 << 6;//保持
                     if (blv == _boolAlarmif)
                     {
                         PointDelayTimeArray[6]++;
                         if (PointDelayTimeArray[6] > _PointDelayAlarmTime)
+                        {
                             curAlarmBit |= (uint)1 << 6;
+                            PointDelayTimeArray[6] = _PointDelayAlarmTime;
+                        }
                     }
                     else
-                        PointDelayTimeArray[6] = 0;
+                    {
+                        PointDelayTimeArray[6]--;
+                        if (_PointDelayAlarmTime - PointDelayTimeArray[6] >= 2)
+                        {
+                            PointDelayTimeArray[6] = 0;
+                            curAlarmBit &= ~((uint)1 << 6);
+                        }
+                    }
                 }
                 else if (_isAvalarm)
                 {
