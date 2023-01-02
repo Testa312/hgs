@@ -23,7 +23,7 @@ namespace HGS
         Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
 
         readonly int[] step = new int[] { 32, 64, 128, 256, 512, 1024, 2048 };
-        const double MULTI = 1.1;
+        const double MULTI = 1.2;
         //------------
         Dictionary<int, PointData> dic_pd = null;
         //---------------

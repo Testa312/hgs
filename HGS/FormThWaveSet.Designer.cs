@@ -240,7 +240,7 @@
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(109, 17);
-            this.toolStripStatusLabel1.Text = "可靠性系数1.1倍。";
+            this.toolStripStatusLabel1.Text = "可靠性系数1.2倍。";
             // 
             // timer1
             // 
