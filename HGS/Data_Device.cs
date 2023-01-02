@@ -206,16 +206,20 @@ namespace HGS
         {
             foreach (varlinktopoint subpt in lcosp)
             {
-                point Pointx = Data.inst().cd_Point[subpt.sub_id];
-                if (Pointx.pointsrc == pointsrc.calc)
+                point Pointx;
+                if (Data.inst().cd_Point.TryGetValue(subpt.sub_id, out Pointx))
                 {
-                    List<point> lsexp = ExpandOrgPointToSisPoint(Pointx);
-                    if (lsexp != null)
-                        exppt.AddRange(lsexp);
-                }
-                else
-                {
-                    exppt.Add(Pointx);
+                    //point Pointx = Data.inst().cd_Point[subpt.sub_id];
+                    if (Pointx.pointsrc == pointsrc.calc)
+                    {
+                        List<point> lsexp = ExpandOrgPointToSisPoint(Pointx);
+                        if (lsexp != null)
+                            exppt.AddRange(lsexp);
+                    }
+                    else
+                    {
+                        exppt.Add(Pointx);
+                    }
                 }
             }
         }

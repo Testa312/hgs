@@ -193,7 +193,7 @@ namespace HGS
                     simpleSound.Play();
                     break;
                 case 4:
-                    speak.SpeakAsync(string.Format("{0}{1}",ai._ed,ai._Info));
+                    speak.SpeakAsync(string.Format("{0},{1}",ai._ed,ai._Info));
                     break;
                 default: { }break;
             }

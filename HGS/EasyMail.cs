@@ -84,9 +84,9 @@ namespace HGS
 
             try
             {
-                string sTemp = "";
+                //string sTemp = "";
                 if (mSendAsync)
-                    SmtpMail.SendAsync(Email,sTemp);
+                    SmtpMail.SendAsync(Email, Email);
                 else
                     SmtpMail.Send(Email);
             }
@@ -128,7 +128,7 @@ namespace HGS
         {
             MailMessage mail;
             string subject = "";
-            if (e.UserState != null)
+            if (e.UserState is MailMessage)
             {
                 mail = (MailMessage)e.UserState;
                 subject = mail.Subject;
