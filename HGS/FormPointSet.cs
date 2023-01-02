@@ -481,8 +481,16 @@ namespace HGS
                         itemn.SubItems["PN"].Text, itemn.SubItems["ED"].Text), "提示",
                             MessageBoxButtons.OKCancel, MessageBoxIcon.Question))
                     {
+                        //
+                        从分组中移除ToolStripMenuItem_Click(null, null);
+                        //
                         Data.inst().Delete(Data.inst().cd_Point[pt.id]);
-                        glacialList1.Items.Remove(itemn);
+                        TreeNode tn = treeView.SelectedNode;
+                        if (tn == null || tn.Text == "全部")
+                        {
+                            glacialList1.Items.Remove(itemn);
+                        }
+                        glacialList1.Invalidate();
                         bfirst = true;
                     }
                 }
