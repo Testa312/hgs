@@ -601,19 +601,34 @@ namespace HGS
             get { return _Skip_Checked; }
         }
         private int _BadDelay = 0;
-        private int _DelayAlarmTime = 0;
-        public int DelayAlarmTime
+        private int _WaveDelayAlarmTime = 0;
+        public int WaveDelayAlarmTime
         {
             set
             {
-                if (_DelayAlarmTime != value)
+                if (_WaveDelayAlarmTime != value)
                 {
                     Data.inst().Update(this);
-                    _DelayAlarmTime = value;
+                    _WaveDelayAlarmTime = value;
                 }
             }
-            get { return _DelayAlarmTime; }
+            get { return _WaveDelayAlarmTime; }
         }
+        private int _PointDelayAlarmTime = 0;
+        public int PointDelayAlarmTime
+        {
+            set
+            {
+                if (_PointDelayAlarmTime != value)
+                {
+                    Data.inst().Update(this);
+                    _PointDelayAlarmTime = value;
+                }
+            }
+            get { return _PointDelayAlarmTime; }
+        }
+        private int[] PointDelayTimeArray = new int[8];
+
         private int _TimeTick = -1;
 
         private float? _av = null;//点值，实时或计算。
@@ -674,7 +689,8 @@ namespace HGS
             _zh = Functions.CasttoDouble(pgreader["zh"]);
 
             _Skip_Checked = (bool)(pgreader["skip_checked"]);
-            _DelayAlarmTime = (int)(pgreader["delayalarmtime"]);
+            _WaveDelayAlarmTime = (int)(pgreader["delayalarmtime"]);
+            _PointDelayAlarmTime = (int)(pgreader["pointalarmdelaytime"]);
 
             _id_sis = (int)pgreader["id_sis"];
 
@@ -858,7 +874,7 @@ namespace HGS
                 _wd3s_Queues_Array = new DetectorWave[7];
                 for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
                 {
-                    _wd3s_Queues_Array[i] = new DetectorWave((1 << i),_DelayAlarmTime);
+                    _wd3s_Queues_Array[i] = new DetectorWave((1 << i),_WaveDelayAlarmTime);
                 }
             }
             for (int i = 0; i < v.Length; i++)
@@ -876,7 +892,7 @@ namespace HGS
                     _wd3s_Queues_Array = new DetectorWave[7];
                     for (int i = 0; i < _wd3s_Queues_Array.Length; i++)
                     {
-                        _wd3s_Queues_Array[i] = new DetectorWave((1 << i),_DelayAlarmTime);
+                        _wd3s_Queues_Array[i] = new DetectorWave((1 << i),_WaveDelayAlarmTime);
                     }                                      
                 }
                 Dictionary<int, point> dic_intQueues = new Dictionary<int, point>();
@@ -942,13 +958,16 @@ namespace HGS
         {
             const double RATION = 0.95f;
             if (th != null)
-            {
+            {              
                 if (_av > th)
                 {
-                    alarmbit |= (uint)1 << bitnum;
+                    PointDelayTimeArray[bitnum]++;
+                    if (PointDelayTimeArray[bitnum] > _PointDelayAlarmTime)
+                        alarmbit |= (uint)1 << bitnum;
                 }
                 else if (_av < th * RATION)
                 {
+                    PointDelayTimeArray[bitnum] = 0;
                     alarmbit &= ~((uint)1 << bitnum);
                 }
             }
@@ -962,7 +981,9 @@ namespace HGS
             {
                 if (_av < th)
                 {
-                    alarmbit |= (uint)1<< bitnum;
+                    PointDelayTimeArray[bitnum]++;
+                    if (PointDelayTimeArray[bitnum] > _PointDelayAlarmTime)
+                        alarmbit |= (uint)1<< bitnum;
                 }
                 else if (_av > th * RATION)
                 {
@@ -1042,9 +1063,12 @@ namespace HGS
 
                     if (blv == _boolAlarmif)
                     {
-                        //_Alarmingav = Convert.ToDouble(blv);
-                        curAlarmBit |= (uint)1 << 6;
+                        PointDelayTimeArray[6]++;
+                        if (PointDelayTimeArray[6] > _PointDelayAlarmTime)
+                            curAlarmBit |= (uint)1 << 6;
                     }
+                    else
+                        PointDelayTimeArray[6] = 0;
                 }
                 else if (_isAvalarm)
                 {

@@ -127,6 +127,8 @@
             this.删除节点ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.节点属性ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.maskedTextBox_PointDelay = new MaskedTextBox.MaskedTextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -719,16 +721,16 @@
             this.groupBox3.Controls.Add(this.label12);
             this.groupBox3.Controls.Add(this.textBoxLL);
             this.groupBox3.Controls.Add(this.label10);
-            this.groupBox3.Location = new System.Drawing.Point(122, 20);
+            this.groupBox3.Location = new System.Drawing.Point(167, 20);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(754, 100);
+            this.groupBox3.Size = new System.Drawing.Size(717, 100);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "模拟量";
             // 
             // maskedTextBox_delay
             // 
-            this.maskedTextBox_delay.Location = new System.Drawing.Point(658, 56);
+            this.maskedTextBox_delay.Location = new System.Drawing.Point(627, 56);
             this.maskedTextBox_delay.Masked = MaskedTextBox.Mask.Digit;
             this.maskedTextBox_delay.Name = "maskedTextBox_delay";
             this.maskedTextBox_delay.Size = new System.Drawing.Size(80, 21);
@@ -737,14 +739,14 @@
             // 
             // textBoxBV
             // 
-            this.textBoxBV.Location = new System.Drawing.Point(121, 54);
+            this.textBoxBV.Location = new System.Drawing.Point(125, 54);
             this.textBoxBV.Name = "textBoxBV";
             this.textBoxBV.Size = new System.Drawing.Size(74, 21);
             this.textBoxBV.TabIndex = 5;
             // 
             // button_WaveTh
             // 
-            this.button_WaveTh.Location = new System.Drawing.Point(598, 25);
+            this.button_WaveTh.Location = new System.Drawing.Point(567, 25);
             this.button_WaveTh.Name = "button_WaveTh";
             this.button_WaveTh.Size = new System.Drawing.Size(86, 21);
             this.button_WaveTh.TabIndex = 11;
@@ -755,7 +757,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(58, 56);
+            this.label7.Location = new System.Drawing.Point(62, 56);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(65, 12);
             this.label7.TabIndex = 0;
@@ -764,7 +766,7 @@
             // checkBox_skip
             // 
             this.checkBox_skip.AutoSize = true;
-            this.checkBox_skip.Location = new System.Drawing.Point(700, 27);
+            this.checkBox_skip.Location = new System.Drawing.Point(669, 27);
             this.checkBox_skip.Name = "checkBox_skip";
             this.checkBox_skip.Size = new System.Drawing.Size(48, 16);
             this.checkBox_skip.TabIndex = 10;
@@ -774,14 +776,14 @@
             // 
             // textBoxTV
             // 
-            this.textBoxTV.Location = new System.Drawing.Point(121, 21);
+            this.textBoxTV.Location = new System.Drawing.Point(125, 21);
             this.textBoxTV.Name = "textBoxTV";
             this.textBoxTV.Size = new System.Drawing.Size(74, 21);
             this.textBoxTV.TabIndex = 4;
             // 
             // button_LL
             // 
-            this.button_LL.Location = new System.Drawing.Point(355, 58);
+            this.button_LL.Location = new System.Drawing.Point(349, 58);
             this.button_LL.Name = "button_LL";
             this.button_LL.Size = new System.Drawing.Size(55, 23);
             this.button_LL.TabIndex = 7;
@@ -792,7 +794,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(58, 23);
+            this.label5.Location = new System.Drawing.Point(62, 23);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(65, 12);
             this.label5.TabIndex = 0;
@@ -801,7 +803,7 @@
             // checkBoxAlarm
             // 
             this.checkBoxAlarm.AutoSize = true;
-            this.checkBoxAlarm.Location = new System.Drawing.Point(6, 40);
+            this.checkBoxAlarm.Location = new System.Drawing.Point(10, 40);
             this.checkBoxAlarm.Name = "checkBoxAlarm";
             this.checkBoxAlarm.Size = new System.Drawing.Size(48, 16);
             this.checkBoxAlarm.TabIndex = 10;
@@ -811,7 +813,7 @@
             // 
             // button_HL
             // 
-            this.button_HL.Location = new System.Drawing.Point(355, 23);
+            this.button_HL.Location = new System.Drawing.Point(349, 23);
             this.button_HL.Name = "button_HL";
             this.button_HL.Size = new System.Drawing.Size(55, 23);
             this.button_HL.TabIndex = 8;
@@ -821,14 +823,14 @@
             // 
             // textBoxZH
             // 
-            this.textBoxZH.Location = new System.Drawing.Point(499, 25);
+            this.textBoxZH.Location = new System.Drawing.Point(482, 25);
             this.textBoxZH.Name = "textBoxZH";
             this.textBoxZH.Size = new System.Drawing.Size(74, 21);
             this.textBoxZH.TabIndex = 9;
             // 
             // textBoxZL
             // 
-            this.textBoxZL.Location = new System.Drawing.Point(499, 56);
+            this.textBoxZL.Location = new System.Drawing.Point(482, 56);
             this.textBoxZL.Name = "textBoxZL";
             this.textBoxZL.Size = new System.Drawing.Size(74, 21);
             this.textBoxZL.TabIndex = 7;
@@ -836,7 +838,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(598, 62);
+            this.label3.Location = new System.Drawing.Point(567, 62);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 12);
             this.label3.TabIndex = 0;
@@ -845,7 +847,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(430, 28);
+            this.label13.Location = new System.Drawing.Point(413, 28);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(83, 12);
             this.label13.TabIndex = 0;
@@ -854,7 +856,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(430, 62);
+            this.label11.Location = new System.Drawing.Point(413, 62);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(83, 12);
             this.label11.TabIndex = 0;
@@ -862,7 +864,7 @@
             // 
             // textBoxHL
             // 
-            this.textBoxHL.Location = new System.Drawing.Point(282, 25);
+            this.textBoxHL.Location = new System.Drawing.Point(276, 25);
             this.textBoxHL.Name = "textBoxHL";
             this.textBoxHL.Size = new System.Drawing.Size(74, 21);
             this.textBoxHL.TabIndex = 8;
@@ -870,7 +872,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(213, 25);
+            this.label12.Location = new System.Drawing.Point(207, 25);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(77, 12);
             this.label12.TabIndex = 0;
@@ -878,7 +880,7 @@
             // 
             // textBoxLL
             // 
-            this.textBoxLL.Location = new System.Drawing.Point(282, 59);
+            this.textBoxLL.Location = new System.Drawing.Point(276, 59);
             this.textBoxLL.Name = "textBoxLL";
             this.textBoxLL.Size = new System.Drawing.Size(74, 21);
             this.textBoxLL.TabIndex = 6;
@@ -886,7 +888,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(213, 59);
+            this.label10.Location = new System.Drawing.Point(207, 59);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(77, 12);
             this.label10.TabIndex = 0;
@@ -967,17 +969,19 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.label6);
+            this.groupBox4.Controls.Add(this.maskedTextBox_PointDelay);
             this.groupBox4.Controls.Add(this.buttonAlarmIf);
             this.groupBox4.Location = new System.Drawing.Point(16, 20);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(100, 100);
+            this.groupBox4.Size = new System.Drawing.Size(145, 100);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "总报警开关";
             // 
             // buttonAlarmIf
             // 
-            this.buttonAlarmIf.Location = new System.Drawing.Point(13, 33);
+            this.buttonAlarmIf.Location = new System.Drawing.Point(35, 21);
             this.buttonAlarmIf.Name = "buttonAlarmIf";
             this.buttonAlarmIf.Size = new System.Drawing.Size(75, 23);
             this.buttonAlarmIf.TabIndex = 0;
@@ -1076,6 +1080,24 @@
             this.timer1.Interval = 30000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // maskedTextBox_PointDelay
+            // 
+            this.maskedTextBox_PointDelay.Location = new System.Drawing.Point(60, 62);
+            this.maskedTextBox_PointDelay.Masked = MaskedTextBox.Mask.Digit;
+            this.maskedTextBox_PointDelay.Name = "maskedTextBox_PointDelay";
+            this.maskedTextBox_PointDelay.Size = new System.Drawing.Size(75, 21);
+            this.maskedTextBox_PointDelay.TabIndex = 1;
+            this.maskedTextBox_PointDelay.Text = "0";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 65);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(47, 12);
+            this.label6.TabIndex = 2;
+            this.label6.Text = "延时(s)";
+            // 
             // FormPointSet
             // 
             this.AcceptButton = this.buttonSet;
@@ -1105,6 +1127,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.splitContainer2.Panel1.ResumeLayout(false);
@@ -1195,5 +1218,7 @@
         private System.Windows.Forms.CheckBox checkBox_skip;
         private MaskedTextBox.MaskedTextBox maskedTextBox_delay;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label6;
+        private MaskedTextBox.MaskedTextBox maskedTextBox_PointDelay;
     }
 }

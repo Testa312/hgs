@@ -240,14 +240,25 @@ namespace HGS
 
                             if (maskedTextBox_delay.Text.Length > 0)
                             {
-                                pt.DelayAlarmTime = int.Parse(maskedTextBox_delay.Text);
+                                pt.WaveDelayAlarmTime = int.Parse(maskedTextBox_delay.Text);
                             }
                             else
-                                pt.DelayAlarmTime = 0;
+                                pt.WaveDelayAlarmTime = 0;
 
-                            pt.DelayAlarmTime = pt.DelayAlarmTime >= 0 ? pt.DelayAlarmTime : 0;
-                            pt.DelayAlarmTime = pt.DelayAlarmTime <= 10800 ? pt.DelayAlarmTime : 10800;
-                            maskedTextBox_delay.Text = pt.DelayAlarmTime.ToString();
+                            pt.WaveDelayAlarmTime = pt.WaveDelayAlarmTime >= 0 ? pt.WaveDelayAlarmTime : 0;
+                            pt.WaveDelayAlarmTime = pt.WaveDelayAlarmTime <= 10800 ? pt.WaveDelayAlarmTime : 10800;
+                            maskedTextBox_delay.Text = pt.WaveDelayAlarmTime.ToString();
+                            //
+                            if (maskedTextBox_PointDelay.Text.Length > 0)
+                            {
+                                pt.PointDelayAlarmTime = int.Parse(maskedTextBox_PointDelay.Text);
+                            }
+                            else
+                                pt.PointDelayAlarmTime = 0;
+
+                            pt.PointDelayAlarmTime = pt.PointDelayAlarmTime >= 0 ? pt.PointDelayAlarmTime : 0;
+                            pt.PointDelayAlarmTime = pt.PointDelayAlarmTime <= 10800 ? pt.PointDelayAlarmTime : 10800;
+                            maskedTextBox_PointDelay.Text = pt.PointDelayAlarmTime.ToString();
 
 
                             pt.Sound = comboBox_Sound.SelectedIndex;
@@ -344,7 +355,8 @@ namespace HGS
             radioButton_false.Checked = !Point.boolAlarmif;
 
             checkBox_skip.Checked = Point.Skip_Checked;
-            maskedTextBox_delay.Text = Point.DelayAlarmTime.ToString();
+            maskedTextBox_delay.Text = Point.WaveDelayAlarmTime.ToString();
+            maskedTextBox_PointDelay.Text = Point.PointDelayAlarmTime.ToString();
             //textBox_pp.Text = Point.Skip_pp.ToString();
             //
             button_HL.ForeColor = Color.Black;
@@ -442,6 +454,8 @@ namespace HGS
             try
             {
                 bool bfirst = false;
+                TreeNode tn = treeView.SelectedNode;
+                DeviceInfo tt = (DeviceInfo)tn.Tag;
                 foreach (GLItem itemn in glacialList1.SelectedItems)
                 {
                     //itemtag it = (itemtag)itemn.Tag;
@@ -481,19 +495,32 @@ namespace HGS
                         itemn.SubItems["PN"].Text, itemn.SubItems["ED"].Text), "提示",
                             MessageBoxButtons.OKCancel, MessageBoxIcon.Question))
                     {
-                        //
-                        从分组中移除ToolStripMenuItem_Click(null, null);
+                        if (tn != null && tn.Text != "全部")
+                        {
+      
+                                int did = ((point)itemn.Tag).id;
+                                DeviceInfo di;
+                                if (Data_Device.dic_Device.TryGetValue(did, out di))
+                                {
+                                    di.RemoveSensor(did);
+                                }
+                                tt.RemoveSensor(did);
+                        }
                         //
                         Data.inst().Delete(Data.inst().cd_Point[pt.id]);
-                        TreeNode tn = treeView.SelectedNode;
-                        if (tn == null || tn.Text == "全部")
-                        {
-                            glacialList1.Items.Remove(itemn);
-                        }
-                        glacialList1.Invalidate();
+                        glacialList1.Items.Remove(itemn);    
                         bfirst = true;
                     }
                 }
+                if (tn != null && tn.Text != "全部")
+                {
+                    DataDeviceTree.UpdateNodetoDB(tn);
+                    TreeNodeMouseClickEventArgs ee = new TreeNodeMouseClickEventArgs(tn, MouseButtons.Left, 0, 0, 0);
+                    treeView_NodeMouseClick(null, ee);
+                    if (tt.Alarm_th_dis != null)
+                        MessageBox.Show("应重新设置设备报警参数");
+                }
+                glacialList1.Invalidate();
                 Save();
             }
             catch (Exception ee)
