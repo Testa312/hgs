@@ -467,7 +467,7 @@ namespace HGS
         public static Dictionary<int, DeviceInfo> dic_Device = new Dictionary<int, DeviceInfo>();
         public static void GetAllAlarmDevice()
         {
-            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString());
             try
             {
                 pgconn.Open();
@@ -510,7 +510,7 @@ namespace HGS
         
         public static DeviceInfo GetDevice(int DeviceId)
         {
-            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString());
             DeviceInfo di = null;
             try
             {

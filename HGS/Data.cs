@@ -104,7 +104,7 @@ namespace HGS
         public int GetNextPointId()
         {
             int imax = 0;
-            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString());
             try
             {
                 pgconn.Open();
@@ -330,7 +330,7 @@ namespace HGS
     //-------------------------------
     private void LoadData()
         {
-            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString());
             point flagpt = null;
             try
             {
@@ -494,7 +494,7 @@ namespace HGS
             {
                 sb.AppendLine(string.Format("delete  from point where id = {0};", pt.id));
             }
-            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString());
             point flagpt = null;
             try
             {

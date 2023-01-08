@@ -956,10 +956,6 @@ namespace HGS
         //---------------------
         private void SetAlarmBit_H(ref uint alarmbit,int bitnum,double? th)
         {
-            if (id == 13368)
-            {
-                double x = 0;
-            }
             const double RATION = 0.95f;
             //alarmbit |= (uint)1 << bitnum;
             alarmbit |= _lastAlarmBitInfo & (uint)1 << bitnum;//保持

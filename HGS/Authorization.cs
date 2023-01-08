@@ -36,7 +36,7 @@ namespace HGS
         public List<string> GetUser()
         {
             List<string> ls_user = new List<string>();
-            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString());
             try
             {
                 pgconn.Open();
@@ -64,7 +64,7 @@ namespace HGS
         //用户授权
         public bool UserAuthorization(int userid, string pw)
         {
-            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString());
             bool rsl = false;
             try
             {

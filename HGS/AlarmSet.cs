@@ -55,7 +55,7 @@ namespace HGS
     class AlarmSet
     {
         private static AlarmSet inst;
-        private static NpgsqlConnection pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
+        private static NpgsqlConnection pgconn = new NpgsqlConnection(Pref.Inst().pgConnString());
         private static NpgsqlCommand cmd;
 
         private StringBuilder sb_alarmsql = new StringBuilder();
@@ -80,11 +80,18 @@ namespace HGS
         {
             if (inst == null)
             {
-                inst = new AlarmSet();
-                pgconn.Open();
-                cmd = new NpgsqlCommand("", pgconn);
-                speak.Rate = -2;
-                speak.Volume = 100;
+                try
+                {
+                    inst = new AlarmSet();
+                    pgconn.Open();
+                    cmd = new NpgsqlCommand("", pgconn);
+                    speak.Rate = -2;
+                    speak.Volume = 100;
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
 
             }
             return inst;

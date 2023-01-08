@@ -249,6 +249,12 @@
     <Compile Include="FormPlotQueuesWave.Designer.cs">
       <DependentUpon>FormPlotQueuesWave.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSettings.Designer.cs">
+      <DependentUpon>FormSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormThRatio.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -428,6 +434,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormPlotQueuesWave.resx">
       <DependentUpon>FormPlotQueuesWave.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSettings.resx">
+      <DependentUpon>FormSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormThRatio.resx">
       <DependentUpon>FormThRatio.cs</DependentUpon>

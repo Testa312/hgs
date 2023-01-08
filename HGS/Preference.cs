@@ -22,8 +22,11 @@ namespace HGS
             return instance;
         }
         //PostgresSQL-----------
-        static string pghost = "192.168.1.102";
-        string pgconnString = string.Format("Host={0};Username=postgres;Password=hcm1997;Database=hgs", pghost);
+        static string pghost = "192.168.1.82";
+        static string pgport = "5432";
+        static string pgusername = "postgres";
+        static string pgpassword = "hcm1997";
+        //string pgconnString = string.Format("Host={0};Username=postgres;Password=hcm1997;Database=hgs", pghost);
         //SIS------------------
         string sishost = "10.122.18.31";
         int sisport = 8200;
@@ -47,16 +50,37 @@ namespace HGS
         public readonly int[] ScanSpan = { 15, 30, 60, 120, 240, 480 };//分钟
         pointsrc Pointsrc = pointsrc.sis;
         //-------------------------
+        //---------------------
+        public string pgHost
+        {
+            set { pghost = value; }
+            get { return pghost; }
+        }
+        public string pgPort
+        {
+            set { pgport = value; }
+            get { return pgport; }
+        }
+        public string pgUserName
+        {
+            set { pgusername = value; }
+            get { return pgusername; }
+        }
+        public string pgPassword
+        {
+            set { pgpassword = value; }
+            get { return pgpassword; }
+        }
         public string sisHost
         {
             set { sishost = value; }
             get { return sishost; }
         }
         //---------------------
-        public string pgConnString
+        public string pgConnString()
         {
-            set { pgconnString = value; }
-            get { return pgconnString; }
+            //set { pgconnString = value; }
+            return string.Format("Host={0};Port ={1};Username={2};Password={3};Database=hgs", pghost, pgport, pgUserName, pgPassword); 
         }
         public int sisPort
         {

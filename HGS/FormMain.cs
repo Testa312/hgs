@@ -31,6 +31,7 @@ namespace HGS
             toolStripStatusLabel_startdate.Text = startdate.ToString();
             try
             {
+                LoadSet();
                 SisConnect.siscon_keep = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
             Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
                 //装入数据
@@ -39,18 +40,42 @@ namespace HGS
                 ts.siscon_keep = new OPAPI.Connect(Pref.Inst().sisHost, Pref.Inst().sisPort, 60,
             Pref.Inst().sisUser, Pref.Inst().sisPassword);//建立连接
                 ts.setControlValue = new TimerState.SetControlValue(SetTextBoxValue);
+
                 ts.threadTimer = new System.Threading.Timer(new TimerCallback(TimerUp), ts, 1000, 1000);
 
             }
             catch (Exception ee)
             {
+                //ts.threadTimer.
                 FormBugReport.ShowBug(ee);
-                this.Close();
+                //this.Close();
             }
         }
+        private void LoadSet()
+        {
+            XmlSettings settings1 = new XmlSettings();
+            try
+            {
+                settings1.Load("Settings.cfg");
 
-         //定时到点执行的事件
- 
+                Pref.Inst().pgHost = settings1.GetValue<string>(cnstXml.pgHost, "10.122.19.82");
+                Pref.Inst().pgPort = settings1.GetValue<string>(cnstXml.pgPort, "5432");
+                Pref.Inst().pgUserName = settings1.GetValue<string>(cnstXml.pgUserName, "postgres");
+                Pref.Inst().pgPassword = settings1.GetValue<string>(cnstXml.pgPassWord, "hcm1997");
+
+                Pref.Inst().sisHost = settings1.GetValue<string>(cnstXml.sisHost, "10.122.18.31");
+                Pref.Inst().sisPort = settings1.GetValue<int>(cnstXml.sisPort, 8200);
+                Pref.Inst().sisUser = settings1.GetValue<string>(cnstXml.sisUserName, "sis");
+                Pref.Inst().sisPassword = settings1.GetValue<string>(cnstXml.sisPassWord, "openplant");
+
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("没有找到配置文件!");
+            }
+        }
+        //定时到点执行的事件
+
         private void TimerUp(object state)
         {
             TimerState ts = (TimerState)state;
@@ -370,8 +395,10 @@ namespace HGS
         {
             notifyIcon1.Dispose();
             //timerCalc.Enabled = false;
-            SisConnect.siscon_keep.close();
-            ts.siscon_keep.close();
+            if (SisConnect.siscon_keep != null)
+                SisConnect.siscon_keep.close();
+            if (ts.siscon_keep != null)
+                ts.siscon_keep.close();
         }
 
         private void 打开OToolStripMenuItem_Click(object sender, EventArgs e)
@@ -398,7 +425,7 @@ namespace HGS
 
         private void toolStripMenuItem1_DropDownOpening(object sender, EventArgs e)
         {
-            if (AlarmSet.GetInst().bPlay)
+            if ((AlarmSet.GetInst() != null && AlarmSet.GetInst().bPlay))
             {
                 静音ToolStripMenuItem.Text = "静音";
             }
@@ -431,6 +458,16 @@ namespace HGS
         private void 临时更新ToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void 配置PToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormSettings fs = new FormSettings();
+            if(fs.ShowDialog() == DialogResult.OK)
+            {
+                MessageBox.Show("将关闭，请重新打开!");
+                this.Close();
+            }
         }
     }
 }

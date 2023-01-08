@@ -22,7 +22,7 @@ namespace HGS
         }
         private void glacialListInit(string path)
         {
-            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString());
             try
             {
                 string sqlx = string.Format(" nd like'%{0}%' and pn like '%{1}%' and ed like '%{2}%' and device_path like '{3}%'",
@@ -101,7 +101,7 @@ namespace HGS
         {
             if (glacialList_UP.SelectedItems.Count == 1)
             {
-                var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
+                var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString());
                 try
                 {
                     Cursor.Current = Cursors.WaitCursor;

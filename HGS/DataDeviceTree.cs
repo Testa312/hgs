@@ -58,7 +58,7 @@ namespace HGS
         public static int GetNextTreeNodeId()
         {
             int imax = 0;
-            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString());
             try
             {
                 pgconn.Open();
@@ -86,7 +86,7 @@ namespace HGS
         public static int GetMaxSortV()
         {
             int imax = 0;
-            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString());
             try
             {
                 pgconn.Open();
@@ -173,7 +173,7 @@ namespace HGS
         }*/
         public static List<TreeNode> GetAllSubNode(string path)
         {
-            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString());
             List<TreeNode> ltn = new List<TreeNode>();
             try
             {
@@ -225,7 +225,7 @@ namespace HGS
         }
         public static void InsertNodetoDb(TreeNode tn)
         {
-            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString());
             try
             {
                
@@ -276,7 +276,7 @@ namespace HGS
         }
         public static void UpdateNodetoDB(TreeNode tn)
         {
-            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString());
             try
             {
                 var cmd = new NpgsqlCommand(GetUpdateSql(tn), pgconn);
@@ -306,7 +306,7 @@ namespace HGS
                 foreach (TreeNode tnsub in currentTn.Nodes)
                     s_node.Push(tnsub);
             }
-            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString());
             try
             {
                 var cmd = new NpgsqlCommand(sb.ToString(), pgconn);
@@ -319,7 +319,7 @@ namespace HGS
        
         public static void UpdateNode(string sql)
         {
-            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString());
             try
             {
                 var cmd = new NpgsqlCommand(sql, pgconn);
@@ -331,7 +331,7 @@ namespace HGS
         }
         public static void RemoveNode(TreeNode tn)
         {
-            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString);
+            var pgconn = new NpgsqlConnection(Pref.Inst().pgConnString());
             try
             {
                 string sql = string.Format(@"DELETE  FROM devicetree WHERE path like '{0}%';", ((DeviceInfo)tn.Tag).path);

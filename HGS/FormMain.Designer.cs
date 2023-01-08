@@ -55,6 +55,7 @@
             this.打开OToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出XToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timerkeeplive = new System.Windows.Forms.Timer(this.components);
+            this.配置PToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -78,6 +79,7 @@
             this.报警记录ToolStripMenuItem,
             this.form1ToolStripMenuItem,
             this.dTW计算次数ToolStripMenuItem,
+            this.配置PToolStripMenuItem,
             this.静音ToolStripMenuItem,
             this.退出ToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
@@ -251,6 +253,13 @@
             this.timerkeeplive.Interval = 30000;
             this.timerkeeplive.Tick += new System.EventHandler(this.timerkeeplive_Tick);
             // 
+            // 配置PToolStripMenuItem
+            // 
+            this.配置PToolStripMenuItem.Name = "配置PToolStripMenuItem";
+            this.配置PToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.配置PToolStripMenuItem.Text = "配置(&P)...";
+            this.配置PToolStripMenuItem.Click += new System.EventHandler(this.配置PToolStripMenuItem_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -302,6 +311,7 @@
         private System.Windows.Forms.ToolStripMenuItem 关于aToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 简要说明IToolStripMenuItem;
         private System.Windows.Forms.Timer timerkeeplive;
+        private System.Windows.Forms.ToolStripMenuItem 配置PToolStripMenuItem;
     }
 }
 
