@@ -233,7 +233,7 @@ namespace HGS
             TimerState ts = (TimerState)value;
             toolStripStatusLabel_span.Text = (DateTime.Now - startdate).ToString(@"dd\.hh\:mm\:ss");
             usetime.Text = ts.timeconsum.ToString("d4");
-            tssL_error_nums.Text = ts.Formula_error_nums.ToString("d3");
+            tssL_error_nums.Text = ts.Formula_error_nums.ToString("d4");
         }
         
     private void 点设置ToolStripMenuItem_Click(object sender, EventArgs e)

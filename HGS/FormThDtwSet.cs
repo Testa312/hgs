@@ -431,7 +431,7 @@ namespace HGS
                     ttg.DelayAlarmTime = 0;
 
                 ttg.DelayAlarmTime = ttg.DelayAlarmTime >= 0 ? ttg.DelayAlarmTime : 0;
-                ttg.DelayAlarmTime = ttg.DelayAlarmTime <= 10800 ? ttg.DelayAlarmTime : 10800;
+                ttg.DelayAlarmTime = ttg.DelayAlarmTime <= 28800 ? ttg.DelayAlarmTime : 28800;
 
                 //传感器
                 if (ttg.Sensors_set().Count >= 2)

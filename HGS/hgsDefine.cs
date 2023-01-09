@@ -956,7 +956,7 @@ namespace HGS
         //---------------------
         private void SetAlarmBit_H(ref uint alarmbit,int bitnum,double? th)
         {
-            const double RATION = 0.95f;
+            const double RATION = 0.99f;
             //alarmbit |= (uint)1 << bitnum;
             alarmbit |= _lastAlarmBitInfo & (uint)1 << bitnum;//保持
             if (th != null)
@@ -985,7 +985,7 @@ namespace HGS
         }
         private void SetAlarmBit_L(ref uint alarmbit, int bitnum, double? th)
         {
-            const double RATION = 1.05f;
+            const double RATION = 1.01f;
             //alarmbit |= (uint)1 << bitnum;
             alarmbit |= _lastAlarmBitInfo & (uint)1 << bitnum;//保持
             if (th != null)

@@ -45,12 +45,13 @@ namespace HGS
                 item.SubItems["IsCalc"].Text = pt.isCalc ? Pref.Inst().strOk : Pref.Inst().strNo;
             }
         }
-        private void glacialLisint()
+        private void glacialLisint(bool bfind)
         {
             timerUpdateValue.Enabled = false;
             glacialList1.Items.Clear();
             this.Cursor = Cursors.WaitCursor;
             List<GLItem> lsItem = new List<GLItem>();
+            bfind = bfind && treeView.SelectedNode != null && treeView.SelectedNode.Text.Contains("全部");
             foreach (point ptx in Data.inst().hsAllPoint)
             {
                 string[] filtes =  tSTB_ED.Text.Trim().Split(' ');
@@ -66,7 +67,7 @@ namespace HGS
                     ptx.nd.Contains(tSCB_ND.Text.Trim()) &&
                     ptx.pn.Contains(tSTB_PN.Text.Trim()) &&
                     ptx.Orgformula_main.Contains(tSTB_F.Text.Trim()) &&
-                    (ptx.DevicePath.Length == 0 || ptx.DevicePath == "/1"))
+                    (bfind || ptx.DevicePath.Length == 0 || ptx.DevicePath == "/1"))
                 {
                     GLItem item = new GLItem(glacialList1);
                     gllistInitItemTextFromPoint(ptx, item);
@@ -447,7 +448,7 @@ namespace HGS
        
         private void toolStripButtonSelect_Click(object sender, EventArgs e)
         {
-            glacialLisint();
+            glacialLisint(true);
         }
         private void toolStripButtonDelete_Click(object sender, EventArgs e)
         {
@@ -543,7 +544,7 @@ namespace HGS
 
         private void FormPointSet_Shown(object sender, EventArgs e)
         {
-            glacialLisint();
+            glacialLisint(false);
             label_formula.Text = "";
         }
 
@@ -733,7 +734,7 @@ namespace HGS
                 DeviceInfo ttg = (DeviceInfo)e.Node.Tag;
                 if (e.Node.Text == "全部")
                 {
-                    glacialLisint();
+                    glacialLisint(false);
                 }
                 else if (ttg == null ||  ttg.Sensors_set().Count <= 0)
                 {
